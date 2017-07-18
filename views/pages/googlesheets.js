@@ -125,3 +125,4 @@ function listMajors(auth) {
     }
   });
 }
+</script>
