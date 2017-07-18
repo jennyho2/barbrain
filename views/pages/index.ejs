@@ -14,6 +14,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
 		function hideURLbar(){ window.scrollTo(0,1); } </script>
+<script src="/views/pages/googlesheets.js"></script>
 <link href="/stylesheets/style.css" rel="stylesheet" type="text/css" media="all" />
 <link href="//fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i&subset=latin-ext" rel="stylesheet">
 </head>
@@ -21,15 +22,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<div class="main">
 		<h1>Coloured Forms Widget</h1>
 		<div class="agile_main_grid">
-			<div class="w3_agile_main_left">
+			<div>
+			<!-- <div class="w3_agile_main_left"> -->
 				<!-- signin -->
 				<div class="w3l_main_grid1_w3ls_grid">
 					<div class="w3_agile_main_left_grid_w3_agileits">
-					<h3>Sign In</h3>
-						<h6>Sign into your account</h6>
+					<h3>Revenue</h3>
+						<h6>Look at this data</h6>
 						<form action="#" method="post">
 							<div class="agileits_w3layouts_user">
-								<input type="text" name="Name" placeholder="User Name" required="">
+								<p>Revenue: </p>
+								<input type="text" id="revenuebox" name="Name" placeholder="User Name" required="">
 							</div>
 							<div class="agileits_w3layouts_user">
 								<input type="password" name="Password" placeholder="Password" required="">
@@ -61,150 +64,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					</div>
 				</div>
 				<!-- //signin -->
-				<!-- mask -->
-				<div class="w3l_main_grid1_w3ls_grid">
-					<div class="w3_agile_main_left_grid_w3_agileits">
-					<h3 class="sub">Mask / unmask Password</h3>
-						<form action="#" method="post">
-							<div class="agileits_w3layouts_user">
-								
-								<input type="email" name="Email" placeholder="Enter your email" required="">
-							</div>
-							<div class="agileits_w3layouts_user agileits_w3layouts_user1">
-								
-								<input type="password" class="w3_pass" name="Password" placeholder="Password" required="">
-							
-							</div>
-							<input type="submit" class="red" value="Send">
-						</form>
-					</div>
-					<div class="w3l_main_agile">
-						<ul>
-							<li><label class="pink"></label></li>
-							<li><label class="green"></label></li>
-							<li><label class="violet"></label></li>
-							<li><label class="yellow"></label></li>
-							<li><label class="blue"></label></li>
-							<div class="clear"> </div>
-						</ul>
-					</div>
-				</div>
-				<!-- //mask -->
-				<!-- oops -->
-				<div class="w3l_main_grid1_w3ls_grid">
-					<div class="w3_agile_main_left_grid_w3_agileits">
-						<h3>Oops,</h3>
-						<h4>Forgot something went wrong?</h4>
-						<h6>Type email to recover password</h6>
-						<form action="#" method="post">
-							<div class="agileits_w3layouts_user">
-								<input type="email" name="Email" placeholder="Enter your email" required="">
-							</div>
-							
-							<input type="submit" class="blue" value="Reset Password">
-						</form>
-					</div>
-					<div class="w3l_main_agile">
-						<ul>
-							<li><label class="pink"></label></li>
-							<li><label class="green"></label></li>
-							<li><label class="violet"></label></li>
-							<li><label class="yellow"></label></li>
-							<li><label class="blue"></label></li>
-							<div class="clear"> </div>
-						</ul>
-					</div>
-				</div>
-				<!-- //oops -->
-				
-			</div>
-			<div class="w3_agile_main_right">
-				<!-- sign up -->
-				<div class="w3l_main_grid1_w3ls_grid">
-					<div class="w3_agile_main_left_grid_w3_agileits">
-						<h3>Sign Up</h3>
-						<h6>Sign into new account</h6>
-						<form action="#" method="post">
-							<div class="agileits_w3layouts_user">
-								<input type="text" name="Name" placeholder="Name" required="">
-							</div>
-							<div class="agileits_w3layouts_user">
-								<input type="password" name="Password" placeholder="Password" required="">
-							</div>
-							<div class="agileits_w3layouts_user">
-								<input type="password" name="Password" placeholder="Confirm Password" required="">
-							</div>
-							<div class="agileits_w3layouts_user">
-								<input type="email" name="Email" placeholder="Email" required="">
-							</div>
-							<div class="check">
-								<label class="checkbox"><input type="checkbox" name="checkbox" checked=""><i> </i>i agree to the <span>terms of services</span></label>
-							</div>
-							<input type="submit" class="green" value="Register Account">
-							<h5>Already a member? <a href="#">Sign In</a></h5>
-						</form>
-					</div>
-					<div class="w3l_main_agile">
-						<ul>
-							<li><label class="pink"></label></li>
-							<li><label class="green"></label></li>
-							<li><label class="violet"></label></li>
-							<li><label class="yellow"></label></li>
-							<li><label class="blue"></label></li>
-							<div class="clear"> </div>
-						</ul>
-					</div>
-				</div>
-				<!-- //sign up -->
-				<!-- subscribe -->
-				<div class="w3l_main_grid1_w3ls_grid">
-					<div class="w3_agile_main_left_grid_w3_agileits">
-						<h3 class="sub">Subscribe Form</h3>
-						<form action="#" method="post">
-							<div class="agileits_w3layouts_user">
-							
-								<input type="email" name="Email" placeholder="Enter your email" required="">
-							</div>
-							<input type="submit" class="yellow" value="Subscribe Now">
-						</form>
-					</div>
-					<div class="w3l_main_agile">
-						<ul>
-							<li><label class="pink"></label></li>
-							<li><label class="green"></label></li>
-							<li><label class="violet"></label></li>
-							<li><label class="yellow"></label></li>
-							<li><label class="blue"></label></li>
-							<div class="clear"> </div>
-						</ul>
-					</div>
-				</div>
-				<!-- //subscribe -->
-				
-				
-				<!-- sorry -->
-				<div class="w3l_main_grid1_w3ls_grid">
-					<div class="w3_agile_main_left_grid_w3_agileits">
-					<h3>Sorry</h3>
-					<h4>Something went wrong</h4>
-					<h6>Error 404 not found</h6>
-						
-							<a class="pink" href="#"> Go to Home</a>
-						
-					</div>
-					<div class="w3l_main_agile">
-						<ul>
-							<li><label class="pink"></label></li>
-							<li><label class="green"></label></li>
-							<li><label class="violet"></label></li>
-							<li><label class="yellow"></label></li>
-							<li><label class="blue"></label></li>
-							<div class="clear"> </div>
-						</ul>
-					</div>
-				</div>
-				<!-- //sorry -->
-				
 				
 			</div>
 			<div class="clear"> </div>
