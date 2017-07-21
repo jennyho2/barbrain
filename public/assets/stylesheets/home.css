@@ -6,3 +6,37 @@
 .chartHolder {
 	text-align: center;
 }
+
+.center {
+	text-align: center;
+}
+
+#myChart {
+	display: block;
+	margin: 0 auto;
+}
+
+table { 
+	table-layout: fixed;
+	border: none;
+	border-collapse: collapse;
+}
+
+td { width: 33%; }
+
+table td, table th{
+border-left: 1px solid #dcdcdc;
+border-right: 1px solid #dcdcdc;
+}
+
+table td:first-child, table th:first-child {
+border-left: none;
+}
+
+table td:last-child, table th:last-child {
+border-right: none;
+}
+
+.tactics {
+	background-color: #f4f4f4;
+}
