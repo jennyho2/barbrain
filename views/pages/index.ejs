@@ -1,207 +1,286 @@
-<!--
-Author: W3layouts
-Author URL: http://w3layouts.com
-License: Creative Commons Attribution 3.0 Unported
-License URL: http://creativecommons.org/licenses/by/3.0/
--->
 <!DOCTYPE html>
 <html lang="en">
+ <!-- START Head -->
 <head>
-<title>Coloured Forms Widget Flat Responsive Widget Template :: w3layouts</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="keywords" content="Coloured Forms Widget Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
-Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
-<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
-		function hideURLbar(){ window.scrollTo(0,1); } </script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-		<script src="https://cdn.blockspring.com/blockspring.js"></script>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
 
-		<script>
-		  blockspring.runParsed("read-cell-google-sheets", { "file_id": "14HGE-3oSeE1KBPjnGv2C4p749-9mV0JFdvyTJAHRaE0", "worksheet_id": "0", "row": 1, "column": 2}, { "api_key": "edd7d4672aaa5a78a6dbd85af745944a" }, function(res){
-		  		var revenue = document.getElementById('revenuebox');
-		  		revenue.value = res.params.cell;
-		  		console.log(res.params.cell);
-  			})
-		</script>
+    <!-- Enable responsiveness on mobile devices-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
-<link href="/stylesheets/style.css" rel="stylesheet" type="text/css" media="all" />
-<link href="//fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i&subset=latin-ext" rel="stylesheet">
+    <title>
+         SPIN | Starter HTML/CSS 
+    </title>
+
+    <!--START Loader -->
+    <style>
+        #initial-loader{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;width:100%;background:#212121;position:fixed;z-index:10000;top:0;left:0;bottom:0;right:0;transition:opacity .2s ease-out}#initial-loader .initial-loader-top{display:flex;align-items:center;justify-content:space-between;width:200px;border-bottom:1px solid #2d2d2d;padding-bottom:5px}#initial-loader .initial-loader-top > *{display:block;flex-shrink:0;flex-grow:0}#initial-loader .initial-loader-bottom{padding-top:10px;color:#5C5C5C;font-family:-apple-system,"Helvetica Neue",Helvetica,"Segoe UI",Arial,sans-serif;font-size:12px}@keyframes spin{100%{transform:rotate(360deg)}}#initial-loader .loader g{transform-origin:50% 50%;animation:spin .5s linear infinite}body.loading {overflow: hidden !important} body.loaded #initial-loader{opacity:0}
+    </style>
+    <!--END Loader-->
+
+    <!-- SCSS Output -->
+    <!-- build:css assets/stylesheets/app.min.css -->
+    <link rel="stylesheet" href="assets/stylesheets/bootstrap.css">
+    <link rel="stylesheet" href="assets/stylesheets/app.css">
+    <link rel="stylesheet" href="assets/stylesheets/plugins.css">
+    <!-- endbuild -->
+
+    <!-- START Favicon -->
+    <link rel="apple-touch-icon" sizes="57x57" href="assets/images/favicons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="assets/images/favicons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="assets/images/favicons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/images/favicons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="assets/images/favicons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="assets/images/favicons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="assets/images/favicons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="assets/images/favicons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/images/favicons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="assets/images/favicons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicons/favicon-16x16.png">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="assets/images/favicons/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <!-- END Favicon -->
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="atom.xml">
+
+    <!-- Google Analytics -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-83862026-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+    <!-- jekyll settings -->
+    <script>
+        var ASSET_PATH_BASE = '';
+    </script>
 </head>
-<body>
-	<div class="main">
-		<h1>Coloured Forms Widget</h1>
-		<div class="agile_main_grid">
-			<div>
-			<!-- <div class="w3_agile_main_left"> -->
-				<!-- signin -->
-				<div class="w3l_main_grid1_w3ls_grid">
-					<div class="w3_agile_main_left_grid_w3_agileits">
-					<h3>Revenue</h3>
-						<h6>Look at this data</h6>
-						<form action="#" method="post">
-							<div class="agileits_w3layouts_user">
-								<p>Revenue: </p>
-								<input type="text" id="revenuebox" name="Name">
-							</div>
-							<div class="agileits_w3layouts_user">
-								<input type="password" name="Password" placeholder="Password" required="">
-							</div>
-							<div class="agile_remember">
-								<div class="agile_remember_left">
-									<div class="check">
-										<label class="checkbox"><input type="checkbox" name="checkbox"><i> </i>remember me</label>
-									</div>
-								</div>
-								<div class="agile_remember_right">
-									<a href="#">Forgot Password?</a>
-								</div>
-								<div class="clear"> </div>
-							</div>
-							<input type="submit" class="violet" value="Sign In">
-							<h5>Don't have an account? <a href="#">Sign Up</a></h5>
-						</form>
-					</div>
-					<div class="w3l_main_agile">
-						<ul>
-							<li><label class="pink"></label></li>
-							<li><label class="green"></label></li>
-							<li><label class="violet"></label></li>
-							<li><label class="yellow"></label></li>
-							<li><label class="blue"></label></li>
-							<div class="clear"> </div>
-						</ul>
-					</div>
-				</div>
-				<!-- //signin -->
-				
-			</div>
-			<div class="clear"> </div>
-		</div>
-		<div class="agileits_copyright">
-			<p>© 2017 Coloured Forms Widget. All rights reserved | Design by <a href="http://w3layouts.com">W3layouts</a></p>
-		</div>
-	</div>
+<!-- END Head -->
 
-	<button id="authorize-button" style="display: none;">Authorize</button>
-	<button id="signout-button" style="display: none;">Sign Out</button>
 
-	<pre id="content"></pre>
+<body class="">
+    <script src="assets/vendor/js/lib.min.js"></script>
 
-	<!-- <script type="text/javascript">
-      // Client ID and API key from the Developer Console
-      var CLIENT_ID = '629103024280-t675bqr558cgkp8a734j1n2ep91uh206.apps.googleusercontent.com';
+    <div class="main-wrap">
+        <nav class="navigation">
+            <!-- START Navbar -->
+<div class="navbar-inverse navbar navbar-fixed-top">
+       <div class="container-fluid">
+          
+           <div class="navbar-header">
+            <a class="current navbar-brand" href="starter.html">
+                <img alt="Spin Logo Inverted" class="h-20" src="assets/images/spin-logo-inverted-@2X.png">
+            </a>
+            <button class="navbar-toggle collapsed" data-target="#navbar" data-toggle="collapse" type="button">
+                <i class="fa fa-fw fa-user text-white"></i>
+            </button>
+            <button class="action-sidebar-open navbar-toggle collapsed" type="button">
+                <i class="fa fa-fw fa-bars text-white"></i>
+            </button>
+          </div>
+          
+        <div class="collapse navbar-collapse" id="navbar">
+           
+            <!-- START Search Mobile -->
+            <div class="form-group hidden-lg hidden-md hidden-sm m-t-2">
+                <div class="input-group hidden-lg hidden-md">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button"><i class="fa fa-fw fa-search"></i></button>
+                    </span>
+                </div>
+            </div>
+            <!-- END Search Mobile -->
 
-      // Array of API discovery doc URLs for APIs used by the quickstart
-      var DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
+            <!-- START Left Side Navbar -->
+            <ul class="nav navbar-nav navbar-left clearfix yamm">
 
-      // Authorization scopes required by the API; multiple scopes can be
-      // included, separated by spaces.
-      var SCOPES = "https://www.googleapis.com/auth/spreadsheets.readonly";
+                <!-- START Switch Sidebar ON/OFF -->
+                <li id="sidebar-switch" class="hidden-xs">
+                    <a class="action-toggle-sidebar-slim" data-placement="bottom" data-toggle="tooltip" href="#" title="Slim sidebar on/off">
+                        <i class="fa fa-lg fa-bars fa-fw"></i>
+                    </a>
+                </li>
+                <!-- END Switch Sidebar ON/OFF -->
 
-      var authorizeButton = document.getElementById('authorize-button');
-      var signoutButton = document.getElementById('signout-button');
+                <li class="spin-search-box clearfix hidden-xs">
+                    <a href="#" class="pull-left">
+                        <i class="fa fa-search fa-lg icon-inactive"></i>
+                        <i class="fa fa-close  fa-lg icon-active"></i>
+                    </a>
+                    <div class="input-group input-group-sm pull-left p-10">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn active">
+                            <button class="btn btn-primary" type="button">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </li>
+            </ul>
+            <!-- START Left Side Navbar -->
 
-      /**
-       *  On load, called to load the auth2 library and API client library.
-       */
-      function handleClientLoad() {
-        gapi.load('client:auth2', initClient);
-      }
+            <!-- START Right Side Navbar -->
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Sign Out<i class="m-l-1 fa-lg fa fa-fw fa-sign-out m-r-1"></i></a></li>
 
-      /**
-       *  Initializes the API client library and sets up sign-in state
-       *  listeners.
-       */
-      function initClient() {
-        gapi.client.init({
-          discoveryDocs: DISCOVERY_DOCS,
-          clientId: CLIENT_ID,
-          scope: SCOPES
-        }).then(function () {
-          // Listen for sign-in state changes.
-          gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+            </ul>
+            <!-- END Right Side Navbar -->
+        </div>
+      
+    </div>
+</div>
+<!-- END Navbar -->
+ <!-- START Sidebars -->
+<aside class="navbar-default sidebar">
 
-          // Handle the initial sign-in state.
-          updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-          authorizeButton.onclick = handleAuthClick;
-          signoutButton.onclick = handleSignoutClick;
-        });
-      }
+    <div class="sidebar-overlay-head">
+        <img src="assets/images/spin-logo-inverted.png" alt="Logo" />
+        <a href="javascript:void(0)" class="sidebar-switch action-sidebar-close">
+            <i class="fa fa-times"></i>
+        </a>
+    </div>
+    <div class="sidebar-logo">
+        <img class="logo-default" src="assets/images/spin-logo-big-inverse-@2X.png" alt="Logo" width="53">
+        <img class="logo-slim" src="assets/images/spin-logo-slim.png" alt="Logo">
+    </div>
 
-      /**
-       *  Called when the signed in status changes, to update the UI
-       *  appropriately. After a sign-in, the API is called.
-       */
-      function updateSigninStatus(isSignedIn) {
-        if (isSignedIn) {
-          authorizeButton.style.display = 'none';
-          signoutButton.style.display = 'block';
-          listMajors();
-        } else {
-          authorizeButton.style.display = 'block';
-          signoutButton.style.display = 'none';
-        }
-      }
+    <div class="sidebar-content">
+        <!-- START Tree -->
+        <ul class="side-menu m-t-2">
+            <li class="Dashboards">
+                <a href="#" title="Dashboards">
+                    <i class="fa  fa-folder-open-o fa-lg fa-fw"></i><span class="nav-label">Folder</span><i class="fa arrow"></i>
+                </a>
+                <ul>
+                    <li class='active'>
+                        <a href="#"><span class="nav-label">Starter HTML/CSS</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" title="Page">
+                    <i class="fa fa-lg fa-file-o fa-fw"></i><span class="nav-label">Page</span>
+                    <span class="pull-right label label-primary label-outline text-uppercase">New</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" title="Apps">
+                    <i class="fa fa-files-o fa-fw fa-lg"></i><span class="nav-label">Levels</span> <i class="fa arrow"></i>
+                </a>
+            <ul>
+                <li>
+                    <a href="#">
+                        <span class="nav-label">Level One</span> <i class="fa arrow"></i>
+                    </a>
+                    <ul>
+                    <li>
+                        <a href="#"><span class="nav-label">Sub-level</span></a>
+                    </li>
+                    </ul>
+                </li>
+            </ul>
+            </li>
+        </ul>
+        <!-- END Tree  -->
 
-      /**
-       *  Sign in the user upon button click.
-       */
-      function handleAuthClick(event) {
-        gapi.auth2.getAuthInstance().signIn();
-      }
+        <div class="sidebar-default-visible"><hr></div>
 
-      /**
-       *  Sign out the user upon button click.
-       */
-      function handleSignoutClick(event) {
-        gapi.auth2.getAuthInstance().signOut();
-      }
+    </div>
+</aside>
+<!-- END Sidebars -->
 
-      /**
-       * Append a pre element to the body containing the given message
-       * as its text node. Used to display the results of the API call.
-       *
-       * @param {string} message Text to be placed in pre element.
-       */
-      function appendPre(message) {
-        var pre = document.getElementById('content');
-        var textContent = document.createTextNode(message + '\n');
-        pre.appendChild(textContent);
-      }
+        </nav>
 
-      /**
-       * Print the names and majors of students in a sample spreadsheet:
-       * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
-       */
-      function listMajors() {
-        gapi.client.sheets.spreadsheets.values.get({
-          spreadsheetId: '14HGE-3oSeE1KBPjnGv2C4p749-9mV0JFdvyTJAHRaE0',
-          range: 'Sheet1!B1',
-        }).then(function(response) {
-          var range = response.result;
-          if (range.values.length > 0) {
-            for (i = 0; i < range.values.length; i++) {
-              var row = range.values[i];
-              // Print columns A and E, which correspond to indices 0 and 4.
-              var revBox = document.getElementById('revenuebox');
-              revBox.value = row[0];
-              //var textContent = document.createTextNode('$' + row[0]);
-              //revBox.appendChild(textContent);
-            }
-          } else {
-            appendPre('No data found.');
-          }
-        }, function(response) {
-          appendPre('Error: ' + response.result.error.message);
-        });
-      }
+        <div class="content">
+            <!-- START Sub-Navbar with Header only-->
+<div class="sub-navbar sub-navbar__header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="page-header m-t-0">
+                    <h3 class="m-t-0">Starter HTML/CSS</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END Sub-Navbar with Header only-->
 
-    </script> -->
+<!-- START Sub-Navbar with Header and Breadcrumbs-->
+<div class="sub-navbar sub-navbar__header-breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 sub-navbar-column">
+                <div class="sub-navbar-header">
+                    <h3>Starter HTML/CSS</h3>
+                </div>
+                <ol class="breadcrumb navbar-text navbar-right no-bg">
+                    <li class="current-parent">
+                        <a class="current-parent" href="index.html">
+                            <i class="fa fa-fw fa-home"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            Folder
+                        </a>
+                    </li>
+                    <li class="active">Starter HTML/CSS</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END Sub-Navbar with Header and Breadcrumbs-->
 
-   <!--  <script async defer src="https://apis.google.com/js/api.js"
-      onload="this.onload=function(){};handleClientLoad()"
-      onreadystatechange="if (this.readyState === 'complete') this.onload()">
-    </script> -->
+
+<div class="container">
+
+    <!-- START Content -->
+    <div class="row">
+        <div class="col-lg-12">
+
+            <p>This is a clean Starter version of <strong>Spin Dashboard</strong>.
+            This base project can be quickly attached to any web application based on <strong>HTML/CSS/JS</strong>, or to start a new project.
+            Suits well for technologies such as PHP / Ruby on Rails / Django / ASP.NET / Meteor etc.</p>
+
+        </div>
+    </div>
+    <!-- END Content -->
+
+</div>
+
+        </div>
+
+        <!-- START Footer -->
+<footer>
+    <div class="container-fluid">
+        <p class="text-gray-dark">
+            © 2016 - Your Company Name
+        </p>
+    </div>
+</footer>
+<!-- END Footer -->
+
+    </div>
+
+    <link rel="stylesheet" href="assets/vendor/css/lib.min.css">
+
+    <!-- JS -->
+    <script src="assets/javascript/app/helpers.js"></script>
+    <script src="assets/javascript/app/layoutControl.js"></script>
+    <script src="assets/javascript/app/rightSidebar.js"></script>
+    <script src="assets/javascript/app/sidebar.js"></script>
+    <script src="assets/javascript/app/main.js"></script>
 </body>
+
 </html>
