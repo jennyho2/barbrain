@@ -17,12 +17,14 @@
 }
 
 table { 
+	width: 100%;
 	table-layout: fixed;
 	border: none;
 	border-collapse: collapse;
 }
 
-td { width: 33%; }
+td { width: 33%;
+	text-align: center; }
 
 table td, table th{
 border-left: 1px solid #dcdcdc;
