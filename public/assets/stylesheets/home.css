@@ -25,6 +25,10 @@
 	vertical-align: text-top;
 	text-align: right;
 }
+.bottomCenter{
+	vertical-align: text-bottom;
+	text-align: center;
+}
 .v-a-m {
   	vertical-align: middle !important; 
   	border: none;
