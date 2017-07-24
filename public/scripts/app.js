@@ -1,4 +1,4 @@
-var app = angular.module("goalsApp", ["ngRoute", "ngStorage"]);
+var app = angular.module("goalsApp", ["ngRoute", "ngStorage", "filters.stringUtils"]);
 
 app.controller('mainController', function($scope, $localStorage, $sessionStorage)  {
 	$scope.storage = $localStorage;
@@ -25,6 +25,17 @@ app.config(function($routeProvider) {
   	templateUrl : "staff.html"
   });
 });
+
+angular.module('filters.stringUtils', [])
+
+.filter('removeSpaces', [function() {
+    return function(string) {
+        if (!angular.isString(string)) {
+            return string;
+        }
+        return string.replace(/[\s]/g, '');
+    };
+}])
 
 
 
