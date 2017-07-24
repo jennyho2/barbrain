@@ -26,58 +26,15 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
-  <script src="app.js"></script>
+  <script src="scripts/app.js"></script>
 
  
 
 </head>
 
-<body>
+<body ng-controller="mainController">
 
-<!--    Made by Erik Terwan    -->
-<!--   24th of November 2015   -->
-<!--    All rights reserved    -->
-<nav role="navigation">
-  <div id="menuToggle">
-    <!--
-    A fake / hidden checkbox is used as click reciever,
-    so you can use the :checked selector on it.
-    -->
-    <input id="burgerCheck" type="checkbox" />
-
-    <span></span>
-    <span></span>
-    <span></span>
-    
-    <!--
-    Too bad the menu has to be inside of the button
-    but hey, it's pure CSS magic.
-    -->
-    <ul id="menu">
-      <a href="#!/" onclick="closeHamburger()"><li>Home</li></a>
-      <a href="#!history" onclick="closeHamburger()"><li>History</li></a>
-      <a href="#!insights" onclick="closeHamburger()"><li>Insights</li></a>
-    </ul>
-  </div>
-</nav>
-
-<div ng-view></div>
-
-<script>
-  var app = angular.module("goalsApp", ["ngRoute"]);
-  app.config(function($routeProvider) {
-      $routeProvider
-      .when("/", {
-          templateUrl : "partials/home.html"
-      })
-      .when("/history", {
-          templateUrl : "partials/history.html"
-      })
-      .when("/insights", {
-          templateUrl : "partials/insights.html"
-      });
-    });
-</script>
+<div ng-view class="full"></div>
 
 </body>
 </html>

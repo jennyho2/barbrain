@@ -1,3 +1,5 @@
+<div ng-include src="'partials/navbar.html'"></div>
+
 <header class="progress">
   <h2>
     Your Progress
@@ -117,7 +119,7 @@ var myChart = new Chart(ctx, {
                         <br>
                         <span class="smallFont">$12.30</span>
                         </td>
-                        <td class="v-a-m"><span class="smallFont" style="color:deepskyblue">View</span>
+                        <td class="v-a-m"><span class="smallFont" style="color:deepskyblue" ng-click="openStaff('John')">View</span>
                         </td>
                     </tr>
                 </tbody>
