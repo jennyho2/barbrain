@@ -7,14 +7,29 @@
 	text-align: center;
 }
 .tableEmployeeStat {
-	border-bottom: 1px solid #dcdcdc;	
+	width: 100%;
+	table-layout: fixed;
+	border: none;
+	border-collapse: collapse;
+	border-bottom: 1px solid #dcdcdc;
+}
+.tableEmployeeStat td { 
+	width: 33%;
+	text-align: center; 
+}
+
+.tableEmployeeStat td, ..tableEmployeeStat th{
+	border: none;
 }
 .v-a-m {
   	vertical-align: middle !important; 
-  	border:none;
+  	border: none;
 }
 .center {
 	text-align: center;
+}
+.equalSpace{
+	line-height: 1.5;
 }
 .xlargeFont {
 	font-size: x-large;
@@ -26,20 +41,35 @@
 	font-size: small;
 }
 
+.tactics {
+	background-color: #f4f4f4;
+}
+
+.selected {
+	background-color: #4acde2;
+}
+
 #myChart {
 	display: block;
 	margin: 0 auto;
 }
-
+.boxed {
+    margin: auto;
+    width: 80%;
+    border: none;
+    padding: 10px;
+    background-color: #fff;
+}
 .dividerTable { 
 	width: 100%;
 	table-layout: fixed;
 	border: none;
 	border-collapse: collapse;
 }
-
-.dividerTable td { width: 33%;
-	text-align: center; }
+.dividerTable td { 
+	width: 33%;
+	text-align: center; 
+}
 
 .dividerTable td, .dividerTable th{
 border-left: 1px solid #dcdcdc;
@@ -52,12 +82,4 @@ border-left: none;
 
 table td:last-child, table th:last-child {
 border-right: none;
-}
-
-.tactics {
-	background-color: #f4f4f4;
-}
-
-.selected {
-	background-color: #4acde2;
 }

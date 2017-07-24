@@ -37,10 +37,6 @@
   </tr>
 </table>
 
-<div ng-if="section==0">
-  Dummy data
-</div>
-
 <div ng-if="section==1">
   <table class="dividerTable">
     <tr>
@@ -56,17 +52,17 @@
 
 </div>
 
-<div ng-if="section==2">
-  Triple dummy
-</div>
-
 <!-- Insights -->
-<div>
-
-Weekly Insights <hr />
-Only $3,098 of desserts have been sold this week, push more.
-
-</div> <!-- End Insights -->
+<div class="tactics">
+<br>
+  <div class="center">
+    <span class="smallFont"><b>Weekly Insights</b></span>
+    <div class="boxed ">
+      <span class="smallFont">Only $3,098 of desserts have been sold this week. This is 19% below average. Try selling more by encouraging your staff!</span>
+    </div>
+  </div> <!-- End Insights -->
+<br>
+</div>
 
 <div ng-include src="'partials/daily.html'"></div>
 
