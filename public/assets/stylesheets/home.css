@@ -64,6 +64,11 @@
     padding: 10px;
     background-color: #fff;
 }
+.boxedColor {
+    margin: auto;
+    width: 30%;
+    border: none;
+}
 .dividerTable { 
 	width: 100%;
 	table-layout: fixed;
