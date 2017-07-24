@@ -54,7 +54,9 @@ border-right: none;
 .tactics {
 	background-color: #f4f4f4;
 }
-
+.darkGrey{
+	font-color: #606060;
+}
 .selected {
 	background-color: #4acde2;
 }
