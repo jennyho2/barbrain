@@ -6,9 +6,21 @@
 .chartHolder {
 	text-align: center;
 }
-
+.tableEmployeeStat {
+	border-bottom: 1px solid #dcdcdc;	
+}
+.v-a-m {
+  	vertical-align: middle !important; 
+  	border:none;
+}
 .center {
 	text-align: center;
+}
+.mediumFont {
+	font-size: medium;
+}
+.smallFont {
+	font-size: small;
 }
 
 #myChart {
