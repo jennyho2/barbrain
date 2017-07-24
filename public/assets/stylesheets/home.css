@@ -94,3 +94,32 @@ border-left: none;
 table td:last-child, table th:last-child {
 border-right: none;
 }
+
+.tactics {
+	background-color: #f4f4f4;
+}
+
+.selected {
+	background-color: #4acde2;
+}
+
+.grayBKG {
+	background-color: #9b9b9b;
+	flex-grow: 1;
+}
+
+tr.spaceUnder>td {
+  padding-bottom: 1em;
+}
+
+html,
+body {
+	height: 100%;
+	margin: 0;
+}
+
+.full {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
