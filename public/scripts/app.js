@@ -23,7 +23,14 @@ app.config(function($routeProvider) {
   })
   .when("/staff", {
   	templateUrl : "staff.html"
+  })
+  .when("/yesterday", {
+  	templateUrl : "partials/yesterday.html"
+  })
+  .when("/setGoal", {
+  	templateUrl : "partials/setGoal.html"
   });
+
 });
 
 angular.module('filters.stringUtils', [])
