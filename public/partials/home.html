@@ -1,0 +1,128 @@
+<header class="progress">
+  <h2>
+    Your Progress
+  </h2>
+</header>
+
+<div class="chartHolder">
+  <canvas id="myChart" width="200" height="200"></canvas>
+</div>
+<script>
+var ctx = document.getElementById("myChart").getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        datasets: [{
+            data: [40, 60]
+        }]
+    },
+    options: {
+      responsive: false
+    }
+});
+</script>
+
+<div class="center">
+<br />
+40% <br />
+Of goal achieved <br />
+Adjust goal
+</div>
+
+<table style="width:100%">
+  <tr class="center">
+    <th>Goals</th>
+    <th>Current</th>
+    <th>Projected End</th>
+  </tr>
+  <tr class="center">
+    <td>$4,300</td>
+    <td>$1,700</td>
+    <td>$2,600</td>
+  </td>
+</table>
+
+<div class="center tactics">
+  <br />
+  Tactical goal <br />
+  Earn $750 in dessert sales <br />
+  <br />
+  Adjust goals
+
+</div>
+
+<button>Notify</button>
+
+<!-- Notification div -->
+<div style="display: none;">
+  No
+</div>
+
+<div class="container">
+    <!-- START EDIT CONTENT -->
+
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- START Basic Example Table -->
+            <h4 class="m-t-3">Staff Table</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="small text-muted text-uppercase"><strong>Staff</strong>
+                        </th>
+                        <th class="small text-muted text-uppercase"><strong>Sales</strong>
+                        </th>
+                        <th class="small text-muted text-uppercase"><strong>Avg. Ticket</strong>
+                        </th>
+                        <th class="small text-muted text-uppercase"><strong>Order #</strong>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="v-a-m">
+                            <div class="media media-auto">
+                                <div class="media-body">
+                                    <span class="media-heading text-white">Mariane Thiel</span>
+                                    <br>
+                                    <span class="media-heading"><span>Kitchen</span></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="v-a-m"> <span class="text-white">$ 143.00</span>
+                            <br>Made
+                        </td>
+                        <td class="v-a-m"> <span class="text-white">$ 12.30</span>
+                        </td>
+                        <td class="v-a-m"><i class="fa fa-circle-o text-lastfm m-r-1"></i> <span class="text-white">Behind</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="v-a-m">
+                            <div class="media media-auto">
+                                <div class="media-body">
+                                    <span class="media-heading text-white">Leanna Kozey</span>
+                                    <br>
+                                    <span class="media-heading"><span>Bar</span></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="v-a-m"> <span class="text-white">$ 159.00</span>
+                            <br>Made
+                        </td>
+                        <td class="v-a-m"> <span class="text-white">$ 12.00</span>
+                        </td>
+                        <td class="v-a-m"><i class="fa fa-circle-o text-mint-green m-r-1"></i> <span class="text-white">On Track</span>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+    <!-- END EDIT CONTENT -->
+</div>

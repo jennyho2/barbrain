@@ -1,0 +1,39 @@
+<header class="progress">
+  <h2>
+    Weekly Goal Progress
+  </h2>
+  <h3>$6,841 / $12,000</h3>
+  <h4>56% of goal achieved</h4>
+  Adjust goal
+</header>
+
+<div class="chartHolder">
+  <canvas id="myChart" width="200" height="200"></canvas>
+</div>
+
+<script>
+  var ctx = document.getElementById("myChart").getContext('2d');
+  var myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+          datasets: [{
+              data: [40, 60]
+          }]
+      },
+      options: {
+        responsive: false
+      }
+  });
+</script>
+
+<table ng-init="section = 0">
+  <tr>
+    <th ng-class="{'selected': section === 0}" ng-click="section = 0">Staff</th>
+    <th ng-class="{'selected': section === 1}" ng-click="section = 1">Department</th>
+    <th ng-class="{'selected': section === 2}" ng-click="section = 2">Category</th>
+  </tr>
+</table>
+
+<div ng-if="section==0">Dummy data</div>
+<div ng-if="section==1">Other dummy</div>
+<div ng-if="section==2">Triple dummy</div>
