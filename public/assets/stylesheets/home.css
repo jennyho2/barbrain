@@ -104,9 +104,12 @@ border-right: none;
 }
 
 .grayBKG {
-	background-color: #E8E8E8;
 	background-color: #f4f4f4;
 	flex-grow: 1;
+}
+
+.cyanBKG {
+	background-color: #4acde2;
 }
 
 tr.spaceUnder>td {
@@ -123,4 +126,18 @@ body {
 	height: 100%;
 	display: flex;
 	flex-direction: column;
+}
+
+.footer {
+	padding-bottom: 10px;
+}
+
+.nextButton {
+	background-color: #4acde2;
+	border-radius: 10px;
+	margin: 20px;
+}
+
+.noBreak {
+	display: inline;
 }
