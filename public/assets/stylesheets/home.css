@@ -21,6 +21,10 @@
 .tableEmployeeStat td, ..tableEmployeeStat th{
 	border: none;
 }
+.topRight{
+	vertical-align: text-top;
+	text-align: right;
+}
 .v-a-m {
   	vertical-align: middle !important; 
   	border: none;
@@ -66,15 +70,17 @@
 	border: none;
 	border-collapse: collapse;
 }
-.dividerTable td { 
-	width: 33%;
-	text-align: center; 
-}
 
 .dividerTable td, .dividerTable th{
-border-left: 1px solid #dcdcdc;
-border-right: 1px solid #dcdcdc;
+	width: 33%;
+	text-align: center; 
+	border-left: 1px solid #dcdcdc;
+	border-right: 1px solid #dcdcdc;
 }
+.bottomLine{
+	border-bottom: 1px solid #dcdcdc;
+}
+
 
 table td:first-child, table th:first-child {
 border-left: none;
