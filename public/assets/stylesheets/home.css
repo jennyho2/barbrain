@@ -18,7 +18,7 @@
 	text-align: center; 
 }
 
-.tableEmployeeStat td, ..tableEmployeeStat th{
+.tableEmployeeStat td, .tableEmployeeStat th{
 	border: none;
 }
 .topRight{
@@ -104,7 +104,7 @@ border-right: none;
 }
 
 .grayBKG {
-	background-color: #9b9b9b;
+	background-color: #E8E8E8;
 	flex-grow: 1;
 }
 
