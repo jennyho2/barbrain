@@ -29,7 +29,11 @@ app.config(function($routeProvider) {
   })
   .when("/setGoal", {
   	templateUrl : "partials/setGoal.html"
+  })
+    .when("/adjustStaffGoals", {
+    templateUrl : "partials/adjustStaffGoals.html"
   });
+  
 
 });
 
