@@ -1,4 +1,4 @@
-.progress {
+.progressHeader {
 	text-align: center;
 	margin-top: -25px;
 }
@@ -140,4 +140,24 @@ body {
 
 .noBreak {
 	display: inline;
+}
+
+.padding {
+	padding: 0px 10px;
+	width: 100%;
+}
+
+.pull-left {
+	text-align: left;
+	padding-left: 20px;
+}
+
+.pull-right {
+	text-align: right;
+	padding-right: 20px;
+}
+
+.areaClass {
+	width: 100%;
+	padding: 0px 10px;
 }

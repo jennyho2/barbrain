@@ -42,7 +42,9 @@ angular.module('filters.stringUtils', [])
         }
         return string.replace(/[\s]/g, '');
     };
-}])
+}]);
+
+
 
 
 
