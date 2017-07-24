@@ -1,10 +1,11 @@
-var app = angular.module("goalsApp", ["ngRoute"]);
+var app = angular.module("goalsApp", ["ngRoute", "ngStorage"]);
 
-app.controller('mainController', function($scope)  {
-	$scope.staff = '';
+app.controller('mainController', function($scope, $localStorage, $sessionStorage)  {
+	$scope.storage = $localStorage;
+	//$scope.storage.staff = '';
 	$scope.openStaff = function(staff) {
 		// set data
-		$scope.staff = staff;
+		$scope.storage.staff = staff;
 		location.href = '#!staff';
 	};
 });
