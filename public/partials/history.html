@@ -29,7 +29,7 @@
   });
 </script>
 
-<table ng-init="section = 0">
+<table class="dividerTable" ng-init="section = 0">
   <tr>
     <th ng-class="{'selected': section === 0}" ng-click="section = 0">Staff</th>
     <th ng-class="{'selected': section === 1}" ng-click="section = 1">Department</th>
@@ -37,6 +37,36 @@
   </tr>
 </table>
 
-<div ng-if="section==0">Dummy data</div>
-<div ng-if="section==1">Other dummy</div>
-<div ng-if="section==2">Triple dummy</div>
+<div ng-if="section==0">
+  Dummy data
+</div>
+
+<div ng-if="section==1">
+  <table class="dividerTable">
+    <tr>
+      <th>Bar</th>
+      <th>Tables</th>
+    </tr>
+
+    <tr>
+      <td>$3,000</td>
+      <td>$9,500</td>
+    </tr>
+  </table>
+
+</div>
+
+<div ng-if="section==2">
+  Triple dummy
+</div>
+
+<!-- Insights -->
+<div>
+
+Weekly Insights <hr />
+Only $3,098 of desserts have been sold this week, push more.
+
+</div> <!-- End Insights -->
+
+<div ng-include src="'partials/daily.html'"></div>
+
