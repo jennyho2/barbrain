@@ -6,5 +6,23 @@
 	<h5>
 		THIS WEEK'S GOAL
 	</h5>
-	<input type="range" min="0" max="100" step="5" />
+	<input type="range" min="0" max="100" step="5" id="weeklyGoalRange" oninput="weeklyGoalInput.value = weeklyGoalRange.value" />
+	<input type="text" value="50" id="weeklyGoalInput" />
 </div>
+
+<hr class="hrRule">
+
+<div>
+	Set Incentives<br />
+	<textarea class="areaClass">e.g. Sell $450 of dessert</textarea>
+</div>
+
+<div class="full">
+	<div class="center">
+		<img src="assets/images/plus.png" height="15px" width="15px" /> ADD INCENTIVE
+	</div>
+</div>
+
+<a href="#!/" class="center footer nextButton">
+	<input type="button" value="DONE"/>
+</a>

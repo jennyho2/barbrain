@@ -1,8 +1,11 @@
+<a ng-click="back()">
+    <img src="assets/images/backArrow.png" height="20px" width="20px" />
+</a>
 <h3 class="center">
-    <span class="mediumFont">Weekly Goal Progress</span>
+    <span class="mediumFont">ADJUST STAFF GOALS</span>
     <hr>
 </h3>
-<div class="container">
+<div class="container full">
     <!-- START EDIT CONTENT -->
     <div class="row">
         <div">
@@ -15,7 +18,7 @@
                             <span class="smallFont"><b>Mariane Thiel</b></span>                
                         </td>
                         <td class="v-a-m">
-                            <span class="smallFont" style="color:deepskyblue">Adjust</span>
+                            <input type="number" value="" />
                         </td>
                     </tr>
                     <tr class="tableEmployeeStat">
@@ -23,7 +26,7 @@
                             <span class="smallFont"><b>Logan Dawson</b></span>
                         </td>
                         <td class="v-a-m">
-                            <span class="smallFont" style="color:deepskyblue">Adjust</span>
+                            <input type="number" value="" />
                         </td>
                     </tr>
                     <tr class="tableEmployeeStat">
@@ -31,7 +34,7 @@
                             <span class="smallFont"><b>Jennie Rice</b></span>
                         </td>
                         <td class="v-a-m">
-                            <span class="smallFont" style="color:deepskyblue">Adjust</span>
+                            <input type="number" value="" />
                         </td>
                     </tr>
                 </tbody>
@@ -41,8 +44,8 @@
     </div>
 </div>
 
-<div class="center">
-    <a role="button" href="#!setGoal">
-        <span style="color:deepskyblue">SET</span>
-    </a>
-</div>
+
+
+<a href="#!weeklyGoals" class="center footer nextButton">
+    <input type="button" value="NEXT"/>
+</a>
