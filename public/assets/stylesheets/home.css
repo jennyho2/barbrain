@@ -137,6 +137,10 @@ border-right: none;
 	background-color: #4acde2;
 }
 
+.whiteBKG {
+	background-color: #ffffff;
+}
+
 tr.spaceUnder>td {
   padding-bottom: 1em;
 }
