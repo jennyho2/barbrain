@@ -1,4 +1,4 @@
-var app = angular.module("goalsApp", ["ngRoute", "ngStorage", "filters.stringUtils"]);
+var app = angular.module("goalsApp", ["ngRoute", "ngStorage", "filters.stringUtils", "angularModalService"]);
 
 app.controller('mainController', function($scope, $localStorage, $sessionStorage)  {
 	$scope.storage = $localStorage;
@@ -84,6 +84,3 @@ angular.module('filters.stringUtils', [])
 function enableInput()  {
 	$('#tacticalGoalsInput').prop("disabled", function(i, v) { return !v; });
 }
-
-
-
