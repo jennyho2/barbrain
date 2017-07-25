@@ -8,10 +8,6 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		$scope.storage.staff = staff;
 		location.href = '#!staff';
 	};
-
-
-
-
 });
 
 app.config(function($routeProvider) {
@@ -42,11 +38,7 @@ app.config(function($routeProvider) {
   })
   .when("/daily", {
     templateUrl : "partials/setDailyGoals.html"
-  })
-  ;
-  
-  
-
+  });
 });
 
 app.run(function ($rootScope, $location, $localStorage) {
@@ -79,6 +71,12 @@ angular.module('filters.stringUtils', [])
         return string.replace(/[\s]/g, '');
     };
 }]);
+
+$(app).ready(function(){
+    $("pp").click(function(){
+        $(this).hide();
+    });
+});
 
 
 function enableInput()  {
