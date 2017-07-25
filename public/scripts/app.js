@@ -37,10 +37,19 @@ app.config(function($routeProvider) {
   .when("/adjustStaffGoals", {
     templateUrl : "partials/adjustStaffGoals.html"
   })
+  .when("/weeklyGoals", {
+  	templateUrl : "partials/weeklyGoals.html"
+  })
   .when("/daily", {
     templateUrl : "partials/setDailyGoals.html"
+<<<<<<< HEAD
   });
 
+=======
+  })
+  ;
+  
+>>>>>>> 0621836460d95142157f1b81d3b413b5be888fa5
   
 
 });
@@ -83,6 +92,10 @@ $(app).ready(function(){
 });
 
 
+function enableInput()  {
+	$('#tacticalGoalsInput').prop("disabled", function(i, v) { return !v; });
+}
+>>>>>>> 0621836460d95142157f1b81d3b413b5be888fa5
 
 
 

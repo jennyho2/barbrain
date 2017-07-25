@@ -29,7 +29,7 @@ var myChart = new Chart(ctx, {
 <br>
 <span class="smallFont">Of goal achieved</span>
 <br>
-<span class="smallFont" style="color:deepskyblue">Adjust goal</span>
+<a href="#!setGoal"><span class="smallFont" style="color:deepskyblue">Adjust goal</span></a>
 </div>
 <br>
 
@@ -49,9 +49,10 @@ var myChart = new Chart(ctx, {
 <div class="center tactics">
   <span class="smallFont">Tactical goal</span>
   <br>
-  <span class="smallFont">Earn $750 in dessert sales</span>  
+  <input class="smallFont" type="text" value="Earn $750 in dessert sales" id="tacticalGoalsInput" disabled />
+  <!-- <span class="smallFont">Earn $750 in dessert sales</span>   -->
   <br>
-  <span class="smallFont" style="color:deepskyblue">Adjust goals</span>
+  <a onclick="enableInput()"><span class="smallFont" style="color:deepskyblue">Edit Goal</span>
 
 </div>
 
