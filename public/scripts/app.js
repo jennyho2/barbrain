@@ -37,6 +37,7 @@ app.config(function($routeProvider) {
 
 });
 
+
 angular.module('filters.stringUtils', [])
 
 .filter('removeSpaces', [function() {
