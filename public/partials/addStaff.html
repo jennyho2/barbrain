@@ -1,3 +1,13 @@
+<script>
+$( "#clickme" ).click(function() {
+      $( "#book" ).toggle( {
+        
+      });
+    $(this).text(function(i, text){
+    return text === "Add" ? "Remove" : "Add";
+    })
+});
+</script>
 <div class="container">
     <!-- START EDIT CONTENT -->
     <div class="row">
@@ -39,19 +49,14 @@
                             </table>
                         </td>
                         <td class="v-a-m">
-                            <table class="subTable">
+                             <table class="subTable">
                                 <td>
-                                    <span id="demo"></span>
-                                    <script>
-                                    function clicked() {
-                                        document.getElementById("demo").innerHTML = "<img height='10px' src='assets/images/check.png'  hspace='20'/>";
-                                    }
-                                    </script> 
+                                    <span id="book" hidden="true"><img height='10px' src='assets/images/check.png'  hspace='20'/></span>
                                 </td>
-                                <td> 
-                                   <span id="demo" onclick="clicked()" syle="color:deepskyblue">Add</span>
+                                <td>
+                                    <div id="clickme" style="color:deepskyblue">Add</div>
                                 </td>
-                            </table>   
+                            </table>  
                         </td>
                     </tr>
                     <tr class="tableEmployeeStat">
@@ -66,7 +71,14 @@
                             </table>
                         </td>
                         <td class="v-a-m">
-                            <span class="smallFont" style="color:deepskyblue">Add</span>
+                            <table class="subTable">
+                                <td>
+                                    <span id="book" hidden="true"><img height='10px' src='assets/images/check.png'  hspace='20'/></span>
+                                </td>
+                                <td>
+                                    <div id="clickme">Add</div>
+                                </td>
+                            </table>
                         </td>
                     </tr>
                 </tbody>
@@ -75,17 +87,5 @@
         </div>
     </div>
 </div>
-<script>
-$( "#clickme" ).click(function() {
-  $( "#book" ).toggle( {
-    
-  });
-$(this).text(function(i, text){
-return text === "Add" ? "Remove" : "Add";
-})
-});
-</script>
-<div id="clickme">
-  Add
-</div>
-<span id="book"><img height='10px' src='assets/images/check.png'  hspace='20'/></span>
+
+

@@ -8,10 +8,6 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		$scope.storage.staff = staff;
 		location.href = '#!staff';
 	};
-
-
-
-
 });
 
 app.config(function($routeProvider) {
@@ -42,16 +38,7 @@ app.config(function($routeProvider) {
   })
   .when("/daily", {
     templateUrl : "partials/setDailyGoals.html"
-<<<<<<< HEAD
   });
-
-=======
-  })
-  ;
-  
->>>>>>> 0621836460d95142157f1b81d3b413b5be888fa5
-  
-
 });
 
 app.run(function ($rootScope, $location, $localStorage) {
@@ -95,7 +82,6 @@ $(app).ready(function(){
 function enableInput()  {
 	$('#tacticalGoalsInput').prop("disabled", function(i, v) { return !v; });
 }
->>>>>>> 0621836460d95142157f1b81d3b413b5be888fa5
 
 
 
