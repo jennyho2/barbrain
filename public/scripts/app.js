@@ -40,7 +40,11 @@ app.config(function($routeProvider) {
   .when("/weeklyGoals", {
   	templateUrl : "partials/weeklyGoals.html"
   })
+  .when("/daily", {
+    templateUrl : "partials/setDailyGoals.html"
+  })
   ;
+  
   
 
 });
