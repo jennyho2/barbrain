@@ -12,6 +12,22 @@
 
 <hr class="hrRule">
 
+<div class="chartHolder">
+  <canvas id="myChart" width="200" height="200"></canvas>
+</div>
+
+<script>
+	var ctx = document.getElementById("myChart").getContext('2d');
+	var myBarChart = new Chart(ctx, {
+    	type: 'bar',
+    	data: [20, 10],
+      options: {
+        responsive: false
+      }
+  });
+
+</script>
+
 <div>
 	Set Incentives<br />
 	<textarea class="areaClass">e.g. Sell $450 of dessert</textarea>

@@ -81,9 +81,9 @@ angular.module('filters.stringUtils', [])
 }]);
 
 
-
-
-
+function enableInput()  {
+	$('#tacticalGoalsInput').prop("disabled", function(i, v) { return !v; });
+}
 
 
 
