@@ -9,7 +9,7 @@
   <br>
   <span class="smallFont">56% of goal achieved</span>
   <br>
-  <span class="smallFont" style="color:deepskyblue">Adjust goal</span>
+    <a data-toggle="modal" data-target="#weeklyGoalsModal"><span class="smallFont" style="color:deepskyblue">Adjust goal</span></a>
 </header>
 
 <div class="chartHolder">
@@ -69,4 +69,32 @@
     </div>
   </div> <!-- End Insights -->
 <br>
+</div>
+
+
+<!-- Modal -->
+<div id="weeklyGoalsModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Adjust Week's Goal</h4>
+      </div>
+      <div class="modal-body">
+        <div class="center">
+          <h5>
+            THIS WEEK'S GOAL
+          </h5>
+          <input type="range" min="0" max="100" step="5" id="weeklyGoalRange" oninput="weeklyGoalInput.value = weeklyGoalRange.value" />
+          <input type="text" value="50" id="weeklyGoalInput" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
 </div>
