@@ -29,7 +29,7 @@ var myChart = new Chart(ctx, {
 <br>
 <span class="smallFont">Of goal achieved</span>
 <br>
-<a href="#!setGoal"><span class="smallFont" style="color:deepskyblue">Adjust goal</span></a>
+<a data-toggle="modal" data-target="#myModal"><span class="smallFont" style="color:deepskyblue">Adjust goal</span></a>
 </div>
 <br>
 
@@ -60,4 +60,29 @@ var myChart = new Chart(ctx, {
 <div ng-include src="'partials/staffTable.html'"></div>
 
 <a href="#!yesterday">yesterday</a>
+
+<!-- Trigger the modal with a button -->
+<!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button> -->
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Adjust Today's Goal</h4>
+      </div>
+      <div class="modal-body">
+        <input type="range" min="0" max="100" step="5" id="weeklyGoalRange" oninput="weeklyGoalInput.value = weeklyGoalRange.value" />
+        <input type="text" value="50" id="weeklyGoalInput" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
     <!-- END EDIT CONTENT -->
