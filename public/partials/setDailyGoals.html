@@ -1,5 +1,39 @@
-<h3 class="center">
+<div ng-include src="'partials/navbar.html'"></div>
+
+<header class="progressHeader">
+  <h3>
     <span class="mediumFont">Weekly Goal Progress</span>
-    <span class="xlargeFont"> </span>
-    <hr>
-</h3>
+  </h3>
+  <br>
+  <span class="xlargeFont"><span style="color:deepskyblue">$841</span>/ $12,000</span>
+  <br>
+  <span class="smallFont">4% of goal achieved</span>
+</header>
+
+<br>
+
+<div class="center tactics">
+<br>
+  <span class="smallFont">Today's Goal</span>
+  <br>
+  <span class="smallFont">25 July 2017</span>
+  <br>
+
+
+<input type="range" min="0" max="50" value="0" step="5" onchange="showValue(this.value)" />
+<span id="range">0</span>
+<script type="text/javascript">
+function showValue(newValue)
+{
+    document.getElementById("range").innerHTML=newValue;
+}
+</script>
+
+
+
+  <span class="smallFont">Earn $750 in dessert sales</span>  
+  <br>
+  <span class="smallFont" style="color:deepskyblue">Adjust goals</span>
+<br>
+<br>
+</div>
