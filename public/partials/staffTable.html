@@ -72,7 +72,30 @@
     <a role="button" href="#!adjustStaffGoals">
         <span style="color:deepskyblue" class="smallFont"> 
             <div class="center">
-                <img height="15px" src="assets/images/favicons/plus.png"/>   Add Staff 
+                <a data-toggle="modal" data-target="#addStaffModal">
+                    <img height="15px" src="assets/images/favicons/plus.png"/>   Add Staff 
+                </a>
             </div>
         </span>
     </a>
+
+<!-- Modal -->
+<div id="addStaffModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add/Remove Staff</h4>
+      </div>
+      <div class="modal-body">
+        <div ng-include src="'partials/addStaff.html'" class="full"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>

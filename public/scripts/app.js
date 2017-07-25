@@ -1,6 +1,6 @@
 var app = angular.module("goalsApp", ["ngRoute", "ngStorage", "filters.stringUtils", "angularModalService"]);
 
-app.controller('mainController', function($scope, $localStorage, $sessionStorage)  {
+app.controller('mainController', function($scope, $localStorage, $sessionStorage, $http)  {
 	$scope.storage = $localStorage;
 	//$scope.storage.staff = '';
 	$scope.openStaff = function(staff) {
@@ -8,6 +8,17 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		$scope.storage.staff = staff;
 		location.href = '#!staff';
 	};
+
+	$http({
+	    method: 'GET',
+	    url: 'https://api.omnivore.io/1.0/locations/ing4zrzT',
+	    headers: {'Api-Key': '017bab8e46fa4ca9bb92f54f427269a4'}
+	})
+	.then(function(data, status, headers, config) {
+	  console.log(data);
+	},function(data, status, headers, config) {
+	    console.log(data);
+	});
 });
 
 app.config(function($routeProvider) {
@@ -85,3 +96,7 @@ $(app).ready(function(){
 function enableInput()  {
 	$('#tacticalGoalsInput').prop("disabled", function(i, v) { return !v; });
 }
+
+$(document).ready(function()  {
+	
+})
