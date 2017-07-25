@@ -38,6 +38,9 @@ app.config(function($routeProvider) {
   })
   .when("/daily", {
     templateUrl : "partials/setDailyGoals.html"
+  })
+  .when("/tips", {
+  	templateUrl : "partials/tips.html"
   });
 });
 
