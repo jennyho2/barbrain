@@ -20,20 +20,34 @@
   <br>
 
 
-<input type="range" min="0" max="50" value="0" step="5" onchange="showValue(this.value)" />
-<span id="range">0</span>
-<script type="text/javascript">
-function showValue(newValue)
-{
-    document.getElementById("range").innerHTML=newValue;
-}
-</script>
 
-
-
-  <span class="smallFont">Earn $750 in dessert sales</span>  
-  <br>
-  <span class="smallFont" style="color:deepskyblue">Adjust goals</span>
-<br>
-<br>
+    <input type="range" min="0" max="2000" value="0" step="1" onchange="showValue(this.value)" />
+        <p class="left"> 
+            Less 
+            <span style="float:right;"> More </span>
+        </p>
+    <div class="xlargeFont">
+        <span>$
+            <span id="range">0</span>
+        </span>
+        <script type="text/javascript">
+        function showValue(newValue)
+        {
+            document.getElementById("range").innerHTML=newValue;
+        }
+        </script>
+    </div>
+    <table class="dividerTable">
+        <tr>
+            <td class="smallFont">Bars</td>
+            <td class="smallFont">Table</td>
+        </tr>
+        <tr>
+            <td class="mediumFont">$1,500</td>
+            <td class="mediumFont">$1,500</td>
+        </tr>
+    </table>
+    <br>
 </div>
+
+<div ng-include src="'partials/addStaff.html'" class="full"></div>

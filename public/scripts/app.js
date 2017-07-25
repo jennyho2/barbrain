@@ -40,7 +40,7 @@ app.config(function($routeProvider) {
   .when("/daily", {
     templateUrl : "partials/setDailyGoals.html"
   });
-  
+
   
 
 });
@@ -76,7 +76,11 @@ angular.module('filters.stringUtils', [])
     };
 }]);
 
-
+$(app).ready(function(){
+    $("pp").click(function(){
+        $(this).hide();
+    });
+});
 
 
 
