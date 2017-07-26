@@ -49,10 +49,10 @@ var myChart = new Chart(ctx, {
     <th class="smallFont">Projected End</th>
   </tr>
   <tr class="center">
-    <td class="mediumFont">${{ section == 0 ? dailyGoal : weeklyGoal }}
+    <td class="mediumFont">{{ section == 0 ? dailyGoal : weeklyGoal}}</td>
     <td class="mediumFont">{{ section == 0 ? '$1,700' : '$6,841' }}</td>
     <td class="mediumFont">{{ section == 0 ? '$2,600' : '$9,856' }}</td>
-  </td>
+  </tr>
 </table>
   <br>
 <div class="center tactics">
@@ -84,10 +84,11 @@ var myChart = new Chart(ctx, {
         <h4 class="modal-title">Adjust {{ section == 0 ? 'Today\'s' : 'This Week\'s' }} Goal</h4>
       </div>
       <div class="modal-body">
-        <input type="range" min="0" max="{{ section == 0 ? dailyGoal + 1000 : weeklyGoal + 1000 }}" step="5" id="weeklyGoalRange" oninput="weeklyGoalInput.value = weeklyGoalRange.value" value="{{ section == 0 ? dailyGoal : weeklyGoal }}/>
-        <input type="text" value="50" id="weeklyGoalInput" />
+        <input type="range" min="{{min}}" max="{{max}}" id="weeklyGoalRange" ng-model="storage.dailyGoal"/>
+        <input type="text" string-to-number ng-model="storage.dailyGoal" id="weeklyGoalInput" />
       </div>
       <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="callUpdateGoals()">Update</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>

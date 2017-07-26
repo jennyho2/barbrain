@@ -8,6 +8,22 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		$scope.storage.staff = staff;
 		location.href = '#!staff';
 	};
+	$scope.dailyGoal = $scope.storage.dailyGoal;
+	$scope.callUpdateGoals = function()  {
+		var newGoal = $('#weeklyGoalInput').val();
+		$http.post("/updateGoals", 
+			{
+				"location": "10 Barrel Boise",
+				"dailyGoal": newGoal,
+				"weeklyGoal": "5,000"
+		})
+		.then(function(data,status,headers,config)  {
+			$scope.storage.dailyGoal = parseInt(newGoal);
+			$scope.dailyGoal = $scope.storage.dailyGoal;
+		}, function(data,status,headers,config)  {
+			console.log("failure");
+		});
+	}
 
 	// $http({
 	//     method: 'GET',
@@ -22,7 +38,12 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
 	$http.get("/goals")
 	.then(function(data,status,headers,config) {
-		$scope.dailyGoal = data.data[0].dailyGoal;
+		if (!$scope.storage.dailyGoal)  {
+			$scope.storage.dailyGoal = parseInt(data.data[0].dailyGoal);	
+		}
+		
+		$scope.min = 0;
+		$scope.max = 5000;
 		$scope.weeklyGoal = data.data[0].weeklyGoal;
 	},function(data, status, headers, config)  {
 		console.log('fail');
@@ -123,6 +144,8 @@ $( "#clickme" ).click(function() {
     return text === "Add" ? "Remove" : "Add";
     })
 });
+
+
 
 // app.service("Contacts", function($http) {
 //   this.getContacts = function() {

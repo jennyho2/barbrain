@@ -58,4 +58,25 @@ app.get("/goals", function(req, res) {
   });
 });
 
+app.post("/updateGoals", function(req, res) {
+  var newGoal = req.body;
+  newGoal.createDate = new Date();
+
+  db.collection(GOALS_COLLECTION).updateOne(
+	   { location: "10 Barrel Boise" },
+	   {
+	     $set: {
+	       dailyGoal: newGoal.dailyGoal,
+	       weeklyGoal: newGoal.weeklyGoal
+	     }
+	   }, function(err, doc)  {
+	   	if (err)  {
+	   		handleError(res, err.message, "Failed to update goals.");
+	   	} else {
+	   		res.status(200).end();
+	   		//res.status(204).end();
+	   	}
+   });
+});
+
 
