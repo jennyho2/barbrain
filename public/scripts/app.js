@@ -9,16 +9,25 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		location.href = '#!staff';
 	};
 
-	$http({
-	    method: 'GET',
-	    url: 'https://api.omnivore.io/1.0/locations/ing4zrzT',
-	    headers: {'Api-Key': '017bab8e46fa4ca9bb92f54f427269a4'}
-	})
-	.then(function(data, status, headers, config) {
-	  console.log(data);
-	},function(data, status, headers, config) {
-	    console.log(data);
+	// $http({
+	//     method: 'GET',
+	//     url: 'https://api.omnivore.io/1.0/locations/ing4zrzT',
+	//     headers: {'Api-Key': '017bab8e46fa4ca9bb92f54f427269a4'}
+	// })
+	// .then(function(data, status, headers, config) {
+	//   console.log(data);
+	// },function(data, status, headers, config) {
+	//     console.log(data);
+	// });
+
+	$http.get("/goals")
+	.then(function(data,status,headers,config) {
+		$scope.dailyGoal = data.data[0].dailyGoal;
+		$scope.weeklyGoal = data.data[0].weeklyGoal;
+	},function(data, status, headers, config)  {
+		console.log('fail');
 	});
+
 });
 
 app.config(function($routeProvider) {
@@ -105,3 +114,23 @@ $(app).ready(function(){
 function enableInput()  {
 	$('#tacticalGoalsInput').prop("disabled", function(i, v) { return !v; });
 }
+
+$( "#clickme" ).click(function() {
+      $( "#book" ).toggle( {
+        
+      });
+    $(this).text(function(i, text){
+    return text === "Add" ? "Remove" : "Add";
+    })
+});
+
+// app.service("Contacts", function($http) {
+//   this.getContacts = function() {
+//     return $http.get("/contacts").
+//       then(function(response) {
+//         return response;
+//       }, function(response) {
+//         alert("Error retrieving contacts.");
+//       });
+//   }
+// });
