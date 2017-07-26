@@ -38,6 +38,9 @@ app.config(function($routeProvider) {
   .when("/yesterday", {
   	templateUrl : "partials/yesterday.html"
   })
+  .when("/yesterdayTab", {
+  	templateUrl : "partials/yesterdayTab.html"
+  })
   .when("/setGoal", {
   	templateUrl : "partials/setGoal.html"
   })
@@ -46,6 +49,9 @@ app.config(function($routeProvider) {
   })
   .when("/weeklyGoals", {
   	templateUrl : "partials/weeklyGoals.html"
+  })
+  .when("/weeklyGoalsTab", {
+  	templateUrl : "partials/weeklyGoalsTab.html"
   })
   .when("/daily", {
     templateUrl : "partials/setDailyGoals.html"
