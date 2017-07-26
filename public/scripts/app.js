@@ -57,7 +57,7 @@ app.config(function($routeProvider) {
     templateUrl : "partials/adjustStaffGoals.html"
   })
   .when("/weeklyGoals", {
-  	templateUrl : "partials/weeklyGoals.html"
+  	templateUrl : "partials/setWeeklyGoals.html"
   })
   .when("/weeklyGoalsTab", {
   	templateUrl : "partials/weeklyGoalsTab.html"

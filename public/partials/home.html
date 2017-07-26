@@ -1,24 +1,12 @@
 <div ng-include src="'partials/navbar.html'"></div>
-<script type="text/javascript">
-$( "#editGoal" ).click(function() {
-      $( "#book" ).toggle( {
-        
-      });
-    $(this).text(function(i, text){
-    return text === "Edit Goal" ? "Set Goal" : "Edit Goal";
-    })
-});
-</script>
-
 
 <header class="progressHeader">
 <br>
   <span class="xlargeFont">
     Your Progress
   </span>
-</div>
 </header>
-<div>
+
 <table class="dividerTable" ng-init="section = 0">
   <tr class="smallFont bottomLine">
     <th ng-class="{'selected': section === 0}" ng-click="section = 0">Daily</th>
@@ -96,7 +84,7 @@ var myChart = new Chart(ctx, {
         <h4 class="modal-title">Adjust {{ section == 0 ? 'Today\'s' : 'This Week\'s' }} Goal</h4>
       </div>
       <div class="modal-body">
-        <input type="range" min="0" max="100" step="5" id="weeklyGoalRange" oninput="weeklyGoalInput.value = weeklyGoalRange.value" />
+        <input type="range" min="0" max="{{ section == 0 ? dailyGoal + 1000 : weeklyGoal + 1000 }}" step="5" id="weeklyGoalRange" oninput="weeklyGoalInput.value = weeklyGoalRange.value" value="{{ section == 0 ? dailyGoal : weeklyGoal }}/>
         <input type="text" value="50" id="weeklyGoalInput" />
       </div>
       <div class="modal-footer">
