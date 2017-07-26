@@ -123,14 +123,3 @@ $( "#clickme" ).click(function() {
     return text === "Add" ? "Remove" : "Add";
     })
 });
-
-// app.service("Contacts", function($http) {
-//   this.getContacts = function() {
-//     return $http.get("/contacts").
-//       then(function(response) {
-//         return response;
-//       }, function(response) {
-//         alert("Error retrieving contacts.");
-//       });
-//   }
-// });

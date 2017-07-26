@@ -64,14 +64,14 @@ var myChart = new Chart(ctx, {
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Adjust Today's Goal</h4>
+        <h4 class="modal-title center">Adjust Today's Goal</h4>
       </div>
-      <div class="modal-body">
+      <div class="modal-body center mediumFont">
         <input type="range" min="0" max="100" step="5" id="weeklyGoalRange" oninput="weeklyGoalInput.value = weeklyGoalRange.value" />
         <input type="text" value="50" id="weeklyGoalInput" />
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      <div class="modal-footer center">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><span style="color:deepskyblue">Close</span></button>
       </div>
     </div>
 
