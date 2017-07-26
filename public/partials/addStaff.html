@@ -1,6 +1,6 @@
 <script>
-$( "#clickme" ).click(function() {
-      $( "#book" ).toggle( {
+$( "#clickme1" ).click(function() {
+      $( "#staff1" ).toggle( {
         
       });
     $(this).text(function(i, text){
@@ -8,6 +8,28 @@ $( "#clickme" ).click(function() {
     })
 });
 </script>
+<script>
+$( "#clickme2" ).click(function() {
+      $( "#staff2" ).toggle( {
+        
+      });
+    $(this).text(function(i, text){
+    return text === "Add" ? "Remove" : "Add";
+    })
+});
+</script>
+
+<script>
+$( "#clickme3" ).click(function() {
+      $( "#staff3" ).toggle( {
+        
+      });
+    $(this).text(function(i, text){
+    return text === "Add" ? "Remove" : "Add";
+    })
+});
+</script>
+
 <div class="container">
     <!-- START EDIT CONTENT -->
     <div class="row">
@@ -34,7 +56,15 @@ $( "#clickme" ).click(function() {
                             </table>                 
                         </td>
                         <td class="v-a-m">
-                            <span class="smallFont" style="color:deepskyblue">Add</span>
+                            <table class="subTable">
+                                <td>
+                                    <span id="staff1" hidden="true"><img height='10px' src='assets/images/check.png'  hspace='20'/>
+                                    </span>
+                                </td>
+                                <td>
+                                    <div id="clickme1" style="color:deepskyblue">Add</div>
+                                </td>
+                            </table>
                         </td>
                     </tr>
                     <tr class="tableEmployeeStat">
@@ -51,34 +81,35 @@ $( "#clickme" ).click(function() {
                         <td class="v-a-m">
                              <table class="subTable">
                                 <td>
-                                    <span id="book" hidden="true"><img height='10px' src='assets/images/check.png'  hspace='20'/></span>
+                                    <span id="staff2" hidden="true"><img height='10px' src='assets/images/check.png'  hspace='20'/>
+                                    </span>
                                 </td>
                                 <td>
-                                    <div id="clickme" style="color:deepskyblue">Add</div>
+                                    <div id="clickme2" style="color:deepskyblue">Add</div>
                                 </td>
                             </table>  
                         </td>
-                    </tr>
-                    <tr class="tableEmployeeStat">
+                    </tr><tr class="tableEmployeeStat">
                         <td class="v-a-m">
                             <table>
                                 <td>
-                                    <img height="30px" src="assets/images/empty-profile.png" hspace="20"/>
+                                    <img height="30px" src="assets/images/empty-profile.png"  hspace="20"/>
                                 </td>
                                 <td>
-                                    <span class="smallFont"><b>Jennie Rice</b></span>
+                                    <span class="smallFont"><b>Logan Dawson</b></span>
                                 </td>
                             </table>
                         </td>
                         <td class="v-a-m">
-                            <table class="subTable">
+                             <table class="subTable">
                                 <td>
-                                    <span id="book" hidden="true"><img height='10px' src='assets/images/check.png'  hspace='20'/></span>
+                                    <span id="staff3" hidden="true"><img height='10px' src='assets/images/check.png'  hspace='20'/>
+                                    </span>
                                 </td>
                                 <td>
-                                    <div id="clickme">Add</div>
+                                    <div id="clickme3" style="color:deepskyblue">Add</div>
                                 </td>
-                            </table>
+                            </table>  
                         </td>
                     </tr>
                 </tbody>
