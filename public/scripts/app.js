@@ -48,7 +48,7 @@ app.config(function($routeProvider) {
     templateUrl : "partials/adjustStaffGoals.html"
   })
   .when("/weeklyGoals", {
-  	templateUrl : "partials/weeklyGoals.html"
+  	templateUrl : "partials/setWeeklyGoals.html"
   })
   .when("/weeklyGoalsTab", {
   	templateUrl : "partials/weeklyGoalsTab.html"
@@ -105,15 +105,3 @@ $(app).ready(function(){
 function enableInput()  {
 	$('#tacticalGoalsInput').prop("disabled", function(i, v) { return !v; });
 }
-
-$( "#clickme" ).click(function() {
-      $( "#book" ).toggle( {
-        
-      });
-    $(this).text(function(i, text){
-    return text === "Add" ? "Remove" : "Add";
-    })
-});
-$(document).ready(function()  {
-	
-})

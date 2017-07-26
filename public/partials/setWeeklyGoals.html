@@ -1,0 +1,67 @@
+<div ng-include src="'partials/navbar.html'"></div>
+
+<header class="progressHeader">
+  <h3>
+    <span class="mediumFont">Set Weekly Goal</span>
+  </h3>
+   <br>
+   <div class="xlargeFont">
+  <span class="xlargeFont"><span style="color:deepskyblue">$3,841</span>/</span>       
+  		 <span>$
+            <span id="range">6,000</span>
+        </span>
+  <br>
+  </div>
+  <span class="smallFont">6% of goal achieved</span>
+
+</header>
+
+<br>
+<div class="center tactics">
+<input type="range" min="4000" max="20000" value="0" step="1" onchange="showValue(this.value)" />
+        <p class="left"> 
+            Less 
+            <span style="float:right;"> More </span>
+        </p>
+    <div class="xlargeFont">
+        <script type="text/javascript">
+        function showValue(newValue)
+        {
+            var val = document.getElementById("range").innerHTML=newValue;
+        }
+        </script>
+    </div>
+</div>
+
+<hr class="hrRule">
+
+<div class="chartHolder">
+  <canvas id="myChart" width="200" height="200"></canvas>
+</div>
+
+<script>
+	var ctx = document.getElementById("myChart").getContext('2d');
+	var myBarChart = new Chart(ctx, {
+    	type: 'bar',
+    	data: [20, 10],
+      options: {
+        responsive: false
+      }
+  });
+
+</script>
+
+<div>
+	Set Incentives<br />
+	<textarea class="areaClass" placeholder="e.g. Sell $450 of dessert"></textarea>
+</div>
+
+<div class="full">
+	<div class="center">
+		<img src="assets/images/plus.png" height="15px" width="15px" /> ADD INCENTIVE
+	</div>
+</div>
+
+<a href="#!/" class="center footer nextButton">
+	<input type="button" value="DONE"/>
+</a>
