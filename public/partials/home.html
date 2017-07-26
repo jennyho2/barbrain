@@ -14,13 +14,84 @@
   </tr>
 </table>
 
+<div class="chartHolder">
+  <canvas id="myChart" width="200" height="200"></canvas>
+</div>
+<script>
+var ctx = document.getElementById("myChart").getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        datasets: [{
+            data: [40, 60]
+        }]
+    },
+    options: {
+      responsive: false
+    }
+});
+</script>
 
+<div class="center">
+<span class="mediumFont">40%</span>
+<br>
+<span class="smallFont">Of goal achieved</span>
+<br>
+<a data-toggle="modal" data-target="#myModal"><span class="smallFont" style="color:deepskyblue">Adjust goal</span></a>
+</div>
+<br>
 
-<!-- choose to view in weekly --> 
-<div ng-if="section==1">
-  <div ng-include src="'partials/weeklyView.html'"> </div>
+<table class="dividerTable">
+  <tr class="center">
+    <th class="smallFont">Goals</th>
+    <th class="smallFont">Current</th>
+    <th class="smallFont">Projected End</th>
+  </tr>
+  <tr class="center">
+    <td class="mediumFont">{{ section == 0 ? dailyGoal : weeklyGoal}}</td>
+    <td class="mediumFont">{{ section == 0 ? '$1,700' : '$6,841' }}</td>
+    <td class="mediumFont">{{ section == 0 ? '$2,600' : '$9,856' }}</td>
+  </tr>
+</table>
+  <br>
+<div class="center tactics">
+  <span class="smallFont">Tactical goal</span>
+  <br>
+  <input class="smallFont" type="text" value="Earn $750 in dessert sales" id="tacticalGoalsInput" disabled />
+  <!-- <span class="smallFont">Earn $750 in dessert sales</span>   -->
+  <br>
+  <a onclick="enableInput()"><span class="smallFont" style="color:deepskyblue"><div id="editGoal">Edit Goal</div></span>
+
 </div>
 
-<div ng-if="section==0">
-  <div ng-include src="'partials/dailyView.html'"> </div>
+
+<div ng-include src="'partials/staffTable.html'"></div>
+
+<a href="#!yesterday">yesterday</a>
+
+<!-- Trigger the modal with a button -->
+<!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button> -->
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Adjust {{ section == 0 ? 'Today\'s' : 'This Week\'s' }} Goal</h4>
+      </div>
+      <div class="modal-body">
+        <input type="range" min="{{min}}" max="{{max}}" id="weeklyGoalRange" ng-model="storage.dailyGoal"/>
+        <input type="text" string-to-number ng-model="storage.dailyGoal" id="weeklyGoalInput" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="callUpdateGoals()">Update</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
 </div>
+    <!-- END EDIT CONTENT -->
