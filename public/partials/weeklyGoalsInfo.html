@@ -1,0 +1,65 @@
+<div class="center">
+	<h4>WEEKLY GOAL PROGRESS</h4>
+	<h2>$6,841/$12,000</h2>
+	<h4>56% OF GOAL ACHIEVED</h4>
+</div>
+
+<div class="chartHolder">
+  <canvas id="myChart" width="200" height="200"></canvas>
+</div>
+
+<script>
+  var ctx = document.getElementById("myChart").getContext('2d');
+  var myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+          datasets: [{
+              data: [40, 60]
+          }]
+      },
+      options: {
+        responsive: false
+      }
+  });
+</script>
+
+<div class="center grayBKG">
+	<h5>TODAY'S GOAL</h5>
+	<input id="ex1" type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14"/>
+	$3,000
+	<table class="dividerTable">
+		<tr>
+			<td>BARS</td>
+			<td>TABLES</td>
+		</tr>
+		<tr>
+			<td>$1,500</td>
+			<td>$1,500</td>
+		</tr>
+	</table>
+</div>
+
+<div>
+	<table class="padding">
+		<tr>
+			<td class="pull-left">STAFF</td>
+			<td class="pull-right">ADJUST GOALS</td>
+		</tr>
+	</table>
+
+	<table class="dividerTable">
+		<tr>
+			<td>IMG</td>
+			<td>Name</td>
+			<td>Add/remove</td>
+
+		</tr>
+
+	</table>
+
+</div>
+
+<div>
+	Today's Tactics <br />
+	<textarea class="areaClass" placeholder="e.g. Sell $450 of dessert"></textarea>
+</div>
