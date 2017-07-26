@@ -1,0 +1,71 @@
+<div ng-include src="'partials/navbar.html'"></div>
+
+<header class="progressHeader">
+  <h3>
+    <span class="mediumFont">Last Week's Performance</span>
+  </h3>
+  <br>
+  <span class="xlargeFont"><span style="color:deepskyblue">$6,841</span>/ $12,000</span>
+  <br>
+  <span class="smallFont">56% of goal achieved</span>
+
+</header>
+
+<div class="chartHolder">
+  <canvas id="myChart" width="200" height="200"></canvas>
+</div>
+
+<script>
+  var ctx = document.getElementById("myChart").getContext('2d');
+  var myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+          datasets: [{
+              data: [40, 60]
+          }]
+      },
+      options: {
+        responsive: false
+      }
+  });
+</script>
+
+<table class="dividerTable" ng-init="section = 0">
+  <tr class="smallFont bottomLine">
+    <th ng-class="{'selected': section === 0}" ng-click="section = 0">Staff</th>
+    <th ng-class="{'selected': section === 1}" ng-click="section = 1">Department</th>
+    <th ng-class="{'selected': section === 2}" ng-click="section = 2">Category</th>
+  </tr>
+</table>
+
+<div ng-if="section==0">
+  <div ng-include src="'partials/staffTableNoTitle.html'"> </div>
+</div>
+
+<div ng-if="section==1">
+<br>
+  <table class="dividerTable smallFont">
+    <tr >
+      <td>Bar</td>
+      <td>Tables</td>
+    </tr>
+    <tr class="mediumFont">
+      <td>$3,000</td>
+      <td>$9,500</td>
+    </tr>
+  </table>
+  <br>
+
+</div>
+
+<!-- Insights -->
+<div class="tactics">
+<br>
+  <div class="center">
+    <span class="smallFont"><b>Weekly Insights</b></span>
+    <div class="boxed ">
+      <span class="smallFont">Only $3,098 of desserts have been sold this week. This is 19% below average. Try selling more by encouraging your staff!</span>
+    </div>
+  </div> <!-- End Insights -->
+<br>
+</div>

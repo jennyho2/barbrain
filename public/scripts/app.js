@@ -41,6 +41,9 @@ app.config(function($routeProvider) {
   })
   .when("/tips", {
   	templateUrl : "partials/tips.html"
+  })
+    .when("/lastWeek", {
+    templateUrl : "partials/lastWeek.html"
   });
 });
 
@@ -85,3 +88,12 @@ $(app).ready(function(){
 function enableInput()  {
 	$('#tacticalGoalsInput').prop("disabled", function(i, v) { return !v; });
 }
+
+$( "#clickme" ).click(function() {
+      $( "#book" ).toggle( {
+        
+      });
+    $(this).text(function(i, text){
+    return text === "Add" ? "Remove" : "Add";
+    })
+});
