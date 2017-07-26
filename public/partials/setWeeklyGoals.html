@@ -1,5 +1,5 @@
 <div ng-include src="'partials/navbar.html'"></div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <header class="progressHeader">
   <h3>
     <span class="mediumFont">Set Weekly Goal</span>
@@ -39,17 +39,28 @@
   <canvas id="myChart" width="200" height="200"></canvas>
 </div>
 
+<div>
 <script>
 	var ctx = document.getElementById("myChart").getContext('2d');
 	var myBarChart = new Chart(ctx, {
     	type: 'bar',
-    	data: [20, 10],
+    	data: {
+    		labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    		datasets: [{
+		          backgroundColor: ["#00bfff", "#00bfff","#00bfff","#00bfff","#00bfff","#00bfff","#00bfff"],
+		          data: [900, 1200, 2478, 4134, 5267, 3784, 1200]
+        	}]
+	    },
       options: {
-        responsive: false
+      legend: { display: false },
+      title: {
+        display: true
       }
+    }
   });
 
 </script>
+</div>
 
 <div>
 	Set Incentives<br />
