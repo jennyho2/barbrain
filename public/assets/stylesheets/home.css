@@ -134,7 +134,7 @@ border-right: none;
 }
 
 .cyanBKG {
-	background-color: #4acde2;
+	background-color: deepskyblue;
 }
 
 .whiteBKG {
@@ -191,7 +191,6 @@ body {
 	padding: 0px 10px;
 }
 
-<<<<<<< HEAD
 .switch {
   position: relative;
   display: inline-block;
@@ -247,7 +246,10 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
-
+.padded{
+	width: 80%;
+	text-align: center; 
+}
 .hrRule {
 	width: 100%;
 	border-width: 2px;

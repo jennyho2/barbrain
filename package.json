@@ -6,11 +6,19 @@
   "dependencies": {
     "angular-modal-service": "^0.12.1",
     "blockspring": "^0.0.6",
+<<<<<<< HEAD
     "body-parser": "^1.13.3",
     "chart.js": "^2.6.0",
     "ejs": "^2.5.6",
     "express": "^4.15.3",
     "mongodb": "^2.1.6",
+=======
+    "body-parser": "^1.17.2",
+    "chart.js": "^2.6.0",
+    "ejs": "^2.5.6",
+    "express": "^4.15.3",
+    "mongodb": "^2.2.30",
+>>>>>>> 077977525505fcd91ef8589cac6fe1bcd940d964
     "mysql": "^2.13.0",
     "uniq": "^1.0.1"
   },

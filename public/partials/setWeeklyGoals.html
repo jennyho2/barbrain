@@ -18,19 +18,17 @@
 
 <br>
 <div class="center tactics">
-<input type="range" min="4000" max="20000" value="0" step="1" onchange="showValue(this.value)" />
+	<input type="range" min="4000" max="20000" value="0" step="1" onchange="showValue(this.value)" />
         <p class="left"> 
             Less 
             <span style="float:right;"> More </span>
         </p>
-    <div class="xlargeFont">
         <script type="text/javascript">
         function showValue(newValue)
         {
             var val = document.getElementById("range").innerHTML=newValue;
         }
         </script>
-    </div>
 </div>
 
 <hr class="hrRule">
@@ -62,9 +60,11 @@
 </script>
 </div>
 
-<div>
+<div class="center">
 	Set Incentives<br />
-	<textarea class="areaClass" placeholder="e.g. Sell $450 of dessert"></textarea>
+	<div class="boxed">
+		<textarea class="areaClass" placeholder="e.g. Sell $450 of dessert"></textarea>
+	</div>
 </div>
 
 <div class="full">
@@ -72,7 +72,7 @@
 		<img src="assets/images/plus.png" height="15px" width="15px" /> ADD INCENTIVE
 	</div>
 </div>
-
+<br>
 <a href="#!/" class="center footer nextButton">
 	<input type="button" value="DONE"/>
 </a>
