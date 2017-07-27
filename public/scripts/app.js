@@ -1,14 +1,16 @@
 var app = angular.module("goalsApp", ["ngRoute", "ngStorage", "filters.stringUtils", "angularModalService"]);
 
 app.controller('mainController', function($scope, $localStorage, $sessionStorage, $http)  {
-	$scope.storage = $localStorage;
+	$scope.$storage = $localStorage;
+	$scope.$storage.dailyGoal = new DailyGoal($http);
+	//$scope.$storage.dailyGoal = new DailyGoal($http);
 	//$scope.storage.staff = '';
 	$scope.openStaff = function(staff) {
 		// set data
-		$scope.storage.staff = staff;
+		$local.$storage.staff = staff;
 		location.href = '#!staff';
 	};
-	$scope.dailyGoal = $scope.storage.dailyGoal;
+	
 	$scope.callUpdateGoals = function()  {
 		var newGoal = $('#weeklyGoalInput').val();
 		$http.post("/updateGoals", 
@@ -18,38 +20,54 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 				"weeklyGoal": "5,000"
 		})
 		.then(function(data,status,headers,config)  {
-			$scope.storage.dailyGoal = parseInt(newGoal);
-			$scope.dailyGoal = $scope.storage.dailyGoal;
+			console.log("new goal: " + newGoal);
+			$scope.$storage.dailyGoal.value = parseInt(newGoal);
+			//$scope.dailyGoal = $storage.dailyGoal;
 		}, function(data,status,headers,config)  {
 			console.log("failure");
 		});
 	}
 
-	// $http({
-	//     method: 'GET',
-	//     url: 'https://api.omnivore.io/1.0/locations/ing4zrzT',
-	//     headers: {'Api-Key': '017bab8e46fa4ca9bb92f54f427269a4'}
-	// })
-	// .then(function(data, status, headers, config) {
-	//   console.log(data);
-	// },function(data, status, headers, config) {
-	//     console.log(data);
-	// });
+	$scope.callGetGoals = function()  {
+		$http.get("/goals")
+		.then(function(data,status,headers,config) {
+
+			// if (!$scope.$storage.dailyGoal)  {
+			 	$scope.$storage.dailyGoal.value = parseInt(data.data[0].dailyGoal);	
+			// }
+			
+			$scope.min = 0;
+			$scope.max = 5000;
+			$scope.weeklyGoal = data.data[0].weeklyGoal;
+		},function(data, status, headers, config)  {
+			console.log('fail');
+		});
+	}
+
+	$scope.callGetGoals();
+
+});
+
+function DailyGoal($http)  {
+	var value = 2000;
 
 	$http.get("/goals")
-	.then(function(data,status,headers,config) {
-		if (!$scope.storage.dailyGoal)  {
-			$scope.storage.dailyGoal = parseInt(data.data[0].dailyGoal);	
-		}
-		
-		$scope.min = 0;
-		$scope.max = 5000;
-		$scope.weeklyGoal = data.data[0].weeklyGoal;
-	},function(data, status, headers, config)  {
+	.then(function(data, status, headers, config)  {
+		value = parseInt(data.data[0].dailyGoal);
+		console.log(value);
+	},function(data,status,headers,config)  {
 		console.log('fail');
 	});
 
-});
+	this.__defineGetter__("value", function () {
+        return value;
+    });
+
+    this.__defineSetter__("value", function (val) {        
+        val = parseInt(val);
+        value = val;
+    });
+}
 
 app.config(function($routeProvider) {
   $routeProvider
