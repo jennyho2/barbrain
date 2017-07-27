@@ -9,29 +9,32 @@
 
 <table class="dividerTable" ng-init="section = 0">
   <tr class="smallFont bottomLine">
-    <th ng-class="{'selected': section === 0}" ng-click="section = 0">Daily</th>
-    <th ng-class="{'selected': section === 1}" ng-click="section = 1">Weekly</th>
+    <th ng-class="{'selected': section === 0}" ng-click="section = 0; switch(0)">Daily</th>
+    <th ng-class="{'selected': section === 1}" ng-click="section = 1; switch(1)">Weekly</th>
   </tr>
 </table>
 
 <div class="chartHolder">
-  <canvas id="myChart" width="200" height="200"></canvas>
+  <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
+  <canvas id="doughnut" class="chart chart-doughnut"
+    chart-data="data" chart-labels="labels" chart-options="options">
+  </canvas> 
 </div>
+
+
 <script>
-var ctx = document.getElementById("myChart").getContext('2d');
-var storedGoal = localStorage.getItem('ngStorage-goal');
-var dailyGoal = JSON.parse(storedGoal).dailyGoal;
-var myChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-        datasets: [{
-            data: [40, dailyGoal]
-        }]
-    },
-    options: {
-      responsive: false
-    }
-});
+//var ctx = document.getElementById("myChart").getContext('2d');
+// //var myChart = new Chart(ctx, {
+//     type: 'doughnut',
+//     data: {
+//         datasets: [{
+//             data: [40, dailyGoal]
+//         }]
+//     },
+//     options: {
+//       responsive: false
+//     }
+// });
 </script>
 
 <div class="center">
