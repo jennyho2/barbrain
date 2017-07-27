@@ -48,7 +48,7 @@ var myChart = new Chart(ctx, {
     <th class="smallFont">Projected End</th>
   </tr>
   <tr class="center">
-    <td class="mediumFont" ng-init="callGetGoals()">{{ $storage.dailyGoal.value }}</td>
+    <td class="mediumFont" ng-init="callGetGoals()">${{ $storage.goal.dailyGoal }}</td>
     <td class="mediumFont">{{ section == 0 ? '$1,700' : '$6,841' }}</td>
     <td class="mediumFont">{{ section == 0 ? '$2,600' : '$9,856' }}</td>
   </tr>
@@ -83,8 +83,8 @@ var myChart = new Chart(ctx, {
         <h4 class="modal-title">Adjust {{ section == 0 ? 'Today\'s' : 'This Week\'s' }} Goal</h4>
       </div>
       <div class="modal-body">
-        <input type="range" min="{{min}}" max="{{max}}" id="weeklyGoalRange" ng-model="$storage.dailyGoal.value" />
-        <input type="number" id="weeklyGoalInput" ng-model="$storage.dailyGoal.value" />
+        <input type="range" min="{{min}}" max="{{max}}" id="weeklyGoalRange" ng-model="$storage.goal.dailyGoal" />
+        <input type="number" id="weeklyGoalInput" ng-model="$storage.goal.dailyGoal" />
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" ng-click="callUpdateGoals()">Update</button>

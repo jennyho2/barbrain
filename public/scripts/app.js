@@ -2,7 +2,7 @@ var app = angular.module("goalsApp", ["ngRoute", "ngStorage", "filters.stringUti
 
 app.controller('mainController', function($scope, $localStorage, $sessionStorage, $http)  {
 	$scope.$storage = $localStorage;
-	$scope.$storage.dailyGoal = new DailyGoal($http);
+	$scope.$storage.goal = new Goal($http);
 	//$scope.$storage.dailyGoal = new DailyGoal($http);
 	//$scope.storage.staff = '';
 	$scope.openStaff = function(staff) {
@@ -20,8 +20,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 				"weeklyGoal": "5,000"
 		})
 		.then(function(data,status,headers,config)  {
-			console.log("new goal: " + newGoal);
-			$scope.$storage.dailyGoal.value = parseInt(newGoal);
+			$scope.$storage.goal.dailyGoal = parseInt(newGoal);
 			//$scope.dailyGoal = $storage.dailyGoal;
 		}, function(data,status,headers,config)  {
 			console.log("failure");
@@ -31,16 +30,12 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.callGetGoals = function()  {
 		$http.get("/goals")
 		.then(function(data,status,headers,config) {
-
-			// if (!$scope.$storage.dailyGoal)  {
-			 	$scope.$storage.dailyGoal.value = parseInt(data.data[0].dailyGoal);	
-			// }
-			
+			$scope.$storage.goal.dailyGoal = parseInt(data.data[0].dailyGoal);	
 			$scope.min = 0;
 			$scope.max = 5000;
 			$scope.weeklyGoal = data.data[0].weeklyGoal;
 		},function(data, status, headers, config)  {
-			console.log('fail');
+			console.log('fail here');
 		});
 	}
 
@@ -48,24 +43,23 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
 });
 
-function DailyGoal($http)  {
-	var value = 2000;
+function Goal($http)  {
+	var dailyGoal = 2000;
 
 	$http.get("/goals")
 	.then(function(data, status, headers, config)  {
-		value = parseInt(data.data[0].dailyGoal);
-		console.log(value);
+		dailyGoal = parseInt(data.data[0].dailyGoal);
 	},function(data,status,headers,config)  {
-		console.log('fail');
+		console.log('fail hur');
 	});
 
-	this.__defineGetter__("value", function () {
-        return value;
+	this.__defineGetter__("dailyGoal", function () {
+        return dailyGoal;
     });
 
-    this.__defineSetter__("value", function (val) {        
+    this.__defineSetter__("dailyGoal", function (val) {        
         val = parseInt(val);
-        value = val;
+        dailyGoal = val;
     });
 }
 
