@@ -61,6 +61,20 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		}
 	}
 
+	$scope.callUpdateDailyGoal = function()  {
+		$http.post("/updateGoals",
+		{
+			"location": "10 Barrel Boise",
+			"dailyGoal": $scope.$storage.goal.dailyGoal,
+			"weeklyGoal": $scope.$storage.goal.weeklyGoal
+		})
+		.then(function(data,status,headers,config)  {
+			$scope.data = [$scope.$storage.currentProgress, $scope.$storage.goal.dailyGoal - $scope.$storage.currentProgress];
+		}, function(data,status,headers,config)  {
+			console.log("failing");
+		});
+	}
+
 	$scope.callGetGoals = function()  {
 		$http.get("/goals")
 		.then(function(data,status,headers,config) {
