@@ -21,14 +21,14 @@
 
 
 
-    <input type="range" min="0" max="2000" value="0" step="1" onchange="showValue(this.value)" />
+    <input type="range" min="0" max="2000" value="0" step="1" ng-model="$storage.goal.dailyGoal" onchange="showValue(this.value)" />
         <p class="left"> 
             Less 
             <span style="float:right;"> More </span>
         </p>
     <div class="xlargeFont">
         <span>$
-            <span id="range">0</span>
+            <span id="range" ng-model="$storage.goal.dailyGoal">0</span>
         </span>
         <script type="text/javascript">
         function showValue(newValue)

@@ -7,13 +7,13 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	//$scope.storage.staff = '';
 	$scope.openStaff = function(staff) {
 		// set data
-		$local.$storage.staff = staff;
+		$scope.$storage.staff = staff;
 		location.href = '#!staff';
 	};
 	
 	$scope.callUpdateGoals = function(section)  {
 		var newGoal = $('#weeklyGoalInput').val();
-		console.log("Section: " + section);
+		//console.log("Section: " + section);
 		if (section === 0)  {
 			$http.post("/updateGoals", 
 				{
@@ -48,14 +48,38 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		.then(function(data,status,headers,config) {
 			$scope.$storage.goal.dailyGoal = parseInt(data.data[0].dailyGoal);	
 			$scope.min = 0;
-			$scope.max = 5000;
+			$scope.max = parseInt(data.data[0].weeklyGoal) + 2000;
 			$scope.$storage.goal.weeklyGoal = parseInt(data.data[0].weeklyGoal);
 		},function(data, status, headers, config)  {
 			console.log('fail here');
 		});
 	}
 
+	$scope.callGetTactics = function()  {
+		$http.get("/tactics")
+		.then(function(data,status,headers,config) {
+			$scope.$storage.tactic = data.data[0].tactic;
+		}, function(data, status, headers, config)  {
+			console.log("fail getting tactics");
+		});
+	}
+
+	$scope.callUpdateTactic = function()  {
+		var newTactic = $('#tacticalGoalsInput').val();
+		$http.post("/updateTactics",
+		{
+			"location": "10 Barrel Boise",
+			"tactic": newTactic
+		})
+		.then(function(data,status,headers,config)  {
+			$scope.$storage.tactic = newTactic;
+		}, function(data,status,headers,config)  {
+			console.log('failure');
+		});
+	}
+
 	$scope.callGetGoals();
+	$scope.callGetTactics();
 
 });
 
