@@ -38,7 +38,8 @@
 </script>
 
 <div class="center">
-<span class="mediumFont">40%</span>
+<span class="mediumFont" ng-if="section == 0">{{ ($storage.currentProgress / $storage.goal.dailyGoal) * 100 | number:2 }}%</span>
+<span class="mediumFont" ng-if="section == 1">{{ ($storage.currentProgress / $storage.goal.weeklyGoal) * 100 | number:2 }}%</span>
 <br>
 <span class="smallFont">Of goal achieved</span>
 <br>
@@ -54,8 +55,8 @@
   </tr>
   <tr class="center">
     <td class="mediumFont" ng-init="callGetGoals()">${{ section == 0 ? $storage.goal.dailyGoal : $storage.goal.weeklyGoal }}</td>
-    <td class="mediumFont">{{ section == 0 ? '$1,700' : '$6,841' }}</td>
-    <td class="mediumFont">{{ section == 0 ? '$2,600' : '$9,856' }}</td>
+    <td class="mediumFont">${{ $storage.currentProgress }}</td>
+    <td class="mediumFont">${{ $storage.projectedEnd }}</td>
   </tr>
 </table>
   <br>

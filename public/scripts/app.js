@@ -7,9 +7,20 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
   	$scope.options = { responsive: false };
 
-  	$scope.labels = ["Current Sales", "Daily Goal"];
-  	$scope.data = [500, $scope.$storage.goal.dailyGoal];
+  	$scope.labels = ["Current Sales", "Difference From Goal"];
+  	$scope.data = [$scope.$storage.currentProgress, ($scope.$storage.goal.dailyGoal - $scope.$storage.currentProgress)];
 
+  	$scope.getCurrentProgress = function()  {
+  		blockspring.runParsed("read-cell-google-sheets", { "file_id": "14HGE-3oSeE1KBPjnGv2C4p749-9mV0JFdvyTJAHRaE0", "worksheet_id": 0, "row": 1,
+   			"column": 2}, { "api_key": "edd7d4672aaa5a78a6dbd85af745944a" }, function(res){
+   				$scope.$storage.currentProgress = parseInt(res.params.cell);
+  		});
+  		blockspring.runParsed("read-cell-google-sheets", { "file_id": "14HGE-3oSeE1KBPjnGv2C4p749-9mV0JFdvyTJAHRaE0", "worksheet_id": 0, "row": 2,
+   			"column": 2}, { "api_key": "edd7d4672aaa5a78a6dbd85af745944a" }, function(res){
+   				$scope.$storage.projectedEnd = parseInt(res.params.cell);
+  		});
+
+  	};
 	//$scope.$storage.dailyGoal = new DailyGoal($http);
 	//$scope.storage.staff = '';
 	$scope.openStaff = function(staff) {
@@ -30,7 +41,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			})
 			.then(function(data,status,headers,config)  {
 				$scope.$storage.goal.dailyGoal = parseInt(newGoal);
-				$scope.data = [500, parseInt(newGoal)];
+				$scope.data = [$scope.$storage.currentProgress, (parseInt(newGoal) - $scope.$storage.currentProgress)];
 				//$scope.dailyGoal = $storage.dailyGoal;
 			}, function(data,status,headers,config)  {
 				console.log("failure");
@@ -55,7 +66,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		$http.get("/goals")
 		.then(function(data,status,headers,config) {
 			$scope.$storage.goal.dailyGoal = parseInt(data.data[0].dailyGoal);	
-			$scope.data = [500, parseInt(data.data[0].dailyGoal)];
+			$scope.data = [$scope.$storage.currentProgress, (parseInt(data.data[0].dailyGoal) - $scope.$storage.currentProgress)];
 			$scope.min = 0;
 			$scope.max = parseInt(data.data[0].weeklyGoal) + 2000;
 			$scope.$storage.goal.weeklyGoal = parseInt(data.data[0].weeklyGoal);
@@ -90,16 +101,16 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	}
 
 	$scope.callGetGoals();
-
+	$scope.getCurrentProgress();
   	console.log($scope.$storage.goal.dailyGoal);
 	$scope.callGetTactics();
 
 
 	$scope.switch = function (num) {
 		if (num == 0)  {
-			$scope.data = [500, $scope.$storage.goal.dailyGoal];
+			$scope.data = [$scope.$storage.currentProgress, ($scope.$storage.goal.dailyGoal - $scope.$storage.currentProgress)];
 		} else {
-			$scope.data = [500, $scope.$storage.goal.weeklyGoal];
+			$scope.data = [$scope.$storage.currentProgress, ($scope.$storage.goal.weeklyGoal - $scope.$storage.currentProgress)];
 		}
 	}
 });
