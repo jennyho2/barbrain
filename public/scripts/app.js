@@ -8,7 +8,6 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   	$scope.options = { responsive: false };
 
   	$scope.labels = ["Current Sales", "Difference From Goal"];
-  	$scope.data = [$scope.$storage.currentProgress, ($scope.$storage.goal.dailyGoal - $scope.$storage.currentProgress)];
 
   	$scope.getCurrentProgress = function()  {
   		blockspring.runParsed("read-cell-google-sheets", { "file_id": "14HGE-3oSeE1KBPjnGv2C4p749-9mV0JFdvyTJAHRaE0", "worksheet_id": 0, "row": 1,
@@ -143,6 +142,8 @@ $scope.callUpdateWeekGoals = function(section)  {
 			$scope.data = [$scope.$storage.currentProgress, ($scope.$storage.goal.weeklyGoal - $scope.$storage.currentProgress)];
 		}
 	}
+
+	$scope.data = [$scope.$storage.currentProgress, ($scope.$storage.goal.dailyGoal - $scope.$storage.currentProgress)];
 });
 
 function Goal($http)  {
