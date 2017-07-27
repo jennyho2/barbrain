@@ -1,19 +1,43 @@
-<div ng-include src="'partials/navbar.html'"></div>
+<!-- <div ng-include src="'partials/navbar.html'"></div> -->
 <header class="progressHeader">
   <h3>
-    <span class="mediumFont">Set Daily Goal</span>
+    <span class="mediumFont">Weekly Goal Progress</span>
   </h3>
   <br>
-  <span class="xlargeFont"><span style="color:deepskyblue">$841</span>/ $12,000</span>
+  <span class="xlargeFont"><span style="color:deepskyblue">$841</span>/ ${{ $storage.goal.weeklyGoal}}</span>
   <br>
-  <span class="smallFont">4% of goal achieved</span>
+  <span class="smallFont">{{ (841 / $storage.goal.weeklyGoal) * 100 | number:2 }}% of goal achieved</span>
 </header>
 
-<div class="chartHolder">
-  <canvas id="myChart" width="200" height="200"></canvas>
+
+<div class="grayBKG">
+	<div class="center">
+		Today's goal {{ date | date:'dd MMMM yyyy'}}
+
+		<input type="range" min="{{min}}" max="{{max}}" id="weeklyGoalRange" ng-model="$storage.goal.dailyGoal" />
+		${{ $storage.goal.dailyGoal }}
+
+		<table class="dividerTable">
+			<tr>
+				<th>Bar</th>
+				<th>Tables</th>
+			</tr>
+
+			<tr>
+				<td>${{ $storage.goal.dailyGoal * 0.7 | number:2 }}</td>
+				<td>${{ $storage.goal.dailyGoal * 0.3 | number:2 }}</td>
+			</tr>
+		</table>
+	</div>
 </div>
 
-<script>
+<div ng-include src="'partials/addStaff.html'"></div>
+
+<!-- <div class="chartHolder">
+  <canvas id="myChart" width="200" height="200"></canvas>
+</div> -->
+
+<!-- <script>
   var ctx = document.getElementById("myChart").getContext('2d');
   var myChart = new Chart(ctx, {
       type: 'line',
@@ -26,37 +50,10 @@
         responsive: false
       }
   });
-</script>
+</script> -->
 
-<div class="center grayBKG">
-	<h5>TODAY'S GOAL</h5>
-	<input id="ex1" type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14"/>
-	$3,000
-	<table class="dividerTable">
-		<tr>
-			<td>BARS</td>
-			<td>TABLES</td>
-		</tr>
-		<tr>
-			<td>$1,500</td>
-			<td>$1,500</td>
-		</tr>
-	</table>
-</div>
-
-<div>
-	<table class="padding">
-		<tr>
-			<td class="pull-left">STAFF</td>
-			<td class="pull-right">SELECT IF WORKING TODAY</td>
-		</tr>
-	</table>
-
-	<div ng-include src="'partials/staffTableNoTitle.html'" class="full"></div>
-
-</div>
 
 <div>
 	Today's Tactics <br />
-	<textarea class="areaClass" placeholder="e.g. Sell $450 of dessert"></textarea>
+	<textarea class="areaClass tacticalGoalsInput" placeholder="e.g. Sell $450 of dessert" ng-model="$storage.tactic" ng-change="callUpdateTactic()"></textarea>
 </div>

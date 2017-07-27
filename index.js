@@ -23,6 +23,7 @@ var mongodb = require("mongodb");
 var ObjectID = mongodb.ObjectID;
 
 var GOALS_COLLECTION = "goals";
+var TACTICS_COLLECTION = "tactics";
 
 app.use(bodyParser.json());
 
@@ -78,5 +79,38 @@ app.post("/updateGoals", function(req, res) {
 	   	}
    });
 });
+
+
+app.get("/tactics", function(req, res) {
+  db.collection(TACTICS_COLLECTION).find({}).toArray(function(err, docs) {
+    if (err) {
+      handleError(res, err.message, "Failed to get tactics.");
+    } else {
+      res.status(200).json(docs);
+    }
+  });
+});
+
+app.post("/updateTactics", function(req, res)  {
+	var newTactics = req.body;
+	newTactics.createDate = new Date();
+
+	db.collection(TACTICS_COLLECTION).updateOne(
+		{ location: "10 Barrel Boise" },
+		{
+			$set: {
+				tactic: newTactics.tactic
+			}
+		}, function(err, doc)  {
+			if (err)  {
+				handleError(res, err.message, "Failed to update tactics.");
+			} else {
+				res.status(200).end();
+			}
+		});
+});
+
+
+
 
 
