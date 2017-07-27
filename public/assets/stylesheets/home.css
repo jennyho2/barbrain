@@ -153,14 +153,13 @@ body {
 }
 
 .full {
-	height: 100%;
 	display: flex;
+	flex: 1;
 	flex-direction: column;
 }
 
 .footer {
-	padding-top: 10px;
-	padding-bottom: 0px;
+	padding-bottom: 10px;
 }
 
 .nextButton {
