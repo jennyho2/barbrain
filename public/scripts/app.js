@@ -3,6 +3,8 @@ var app = angular.module("goalsApp", ["ngRoute", "ngStorage", "filters.stringUti
 app.controller('mainController', function($scope, $localStorage, $sessionStorage, $http)  {
 	$scope.$storage = $localStorage;
 	$scope.$storage.goal = new Goal($http);
+	$scope.Math = window.Math;
+	$scope.date = new Date();
 	//$scope.$storage.dailyGoal = new DailyGoal($http);
 	//$scope.storage.staff = '';
 	$scope.openStaff = function(staff) {
@@ -14,7 +16,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.callUpdateGoals = function(section)  {
 		var newGoal = $('#weeklyGoalInput').val();
 		//console.log("Section: " + section);
-		if (section === 0)  {
+		if (section == 0)  {
 			$http.post("/updateGoals", 
 				{
 					"location": "10 Barrel Boise",
@@ -50,6 +52,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			$scope.min = 0;
 			$scope.max = parseInt(data.data[0].weeklyGoal) + 2000;
 			$scope.$storage.goal.weeklyGoal = parseInt(data.data[0].weeklyGoal);
+			// console.log("Weekly goal: " + $scope.$storage.goal.weeklyGoal);
+			// console.log("Pulling: " + data.data[0].weeklyGoal);
 		},function(data, status, headers, config)  {
 			console.log('fail here');
 		});
@@ -65,7 +69,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	}
 
 	$scope.callUpdateTactic = function()  {
-		var newTactic = $('#tacticalGoalsInput').val();
+		var newTactic = $('.tacticalGoalsInput').val();
 		$http.post("/updateTactics",
 		{
 			"location": "10 Barrel Boise",
@@ -196,7 +200,7 @@ $(app).ready(function(){
 
 
 function enableInput()  {
-	$('#tacticalGoalsInput').prop("disabled", function(i, v) { return !v; });
+	$('.tacticalGoalsInput').prop("disabled", function(i, v) { return !v; });
 }
 
 $( "#clickme" ).click(function() {
