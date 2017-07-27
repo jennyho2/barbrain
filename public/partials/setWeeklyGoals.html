@@ -7,8 +7,8 @@
    <br>
    <div class="xlargeFont">
   <span class="xlargeFont"><span style="color:deepskyblue">$3,841</span>/</span>       
-  		 <span>$
-            <span id="value">6,000</span>
+  		 <span>${{ $storage.goal.weeklyGoal }}
+            <!-- <textarea id="weekGoalInput" ng-model="$storage.goal.weekGoal">6,000</textarea> -->
         </span>
   <br>
   </div>
@@ -18,7 +18,7 @@
 
 <br>
 <div class="center tactics">
-	<input type="range" min="4000" max="20000" value="0" step="1" onchange="showValue(this.value)" />
+	<input type="range" min="{{min}}" max="{{max}}" id="weeklyGoalRange" ng-model="$storage.goal.weeklyGoal"/>
         <p class="left"> 
             Less 
             <span style="float:right;"> More </span>
@@ -31,15 +31,6 @@
         </script>
 </div>
 
-<!-- EXPERIEMNT 
-<p id="demo"></p>
-
-<script>
-var x = 100 + 50;
-document.getElementById("demo").innerHTML = x;
-</script>
--->
-
 <hr class="hrRule">
 
 <div class="chartHolder">
@@ -47,6 +38,9 @@ document.getElementById("demo").innerHTML = x;
 </div>
 
 <div>
+
+<!--                    kawbrglkarwglrkgkegliekbarjekbeglrkgbraeilgkaergaerig               -->
+
 <script>
 	var ctx = document.getElementById("myChart").getContext('2d');
   var x = +parseInt($(this).find('.value').text());

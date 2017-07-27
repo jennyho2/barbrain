@@ -54,7 +54,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 					"weeklyGoal": newGoal
 			})
 			.then(function(data,status,headers,config)  {
-				$scope.$storage.goal.weeklyGoal = parseInt(newGoal);
+				$scope.$storage.goal.weekGoal = parseInt(newGoal);
 				//$scope.dailyGoal = $storage.dailyGoal;
 			}, function(data,status,headers,config)  {
 				console.log("failure");
@@ -99,6 +99,39 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			console.log('failure');
 		});
 	}
+
+
+$scope.callUpdateWeekGoals = function(section)  {
+    var newGoal = $('#weekGoalInput').val();
+    //console.log("Section: " + section);
+      $http.post("/updateWeekGoal", 
+        {
+          "location": "10 Barrel Boise",
+          "weekGoal": newGoal
+      })
+      .then(function(data,status,headers,config)  {
+        $scope.$storage.goal.weekGoal = parseInt(newGoal);
+        //$scope.dailyGoal = $storage.dailyGoal;
+      }, function(data,status,headers,config)  {
+        console.log("failure");
+      });    
+  }
+
+  $scope.callGetWeekGoals = function()  {
+    $http.get("/weekGoal")
+    .then(function(data,status,headers,config) {
+      $scope.$storage.goal.dailyGoal = parseInt(data.data[0].dailyGoal);  
+      $scope.min = 0;
+      $scope.max = parseInt(data.data[0].weeklyGoal) + 2000;
+      $scope.$storage.goal.weeklyGoal = parseInt(data.data[0].weeklyGoal);
+      // console.log("Weekly goal: " + $scope.$storage.goal.weeklyGoal);
+      // console.log("Pulling: " + data.data[0].weeklyGoal);
+    },function(data, status, headers, config)  {
+      console.log('fail here');
+    });
+  }
+
+
 
 	$scope.callGetGoals();
 	$scope.getCurrentProgress();
