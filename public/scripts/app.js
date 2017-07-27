@@ -97,9 +97,9 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
 	$scope.switch = function (num) {
 		if (num == 0)  {
-			$scope.data = [400, $scope.$storage.goal.dailyGoal];
+			$scope.data = [500, $scope.$storage.goal.dailyGoal];
 		} else {
-			$scope.data = [400, $scope.$storage.goal.weeklyGoal];
+			$scope.data = [500, $scope.$storage.goal.weeklyGoal];
 		}
 	}
 });
