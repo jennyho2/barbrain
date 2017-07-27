@@ -112,8 +112,8 @@ app.post("/updateTactics", function(req, res)  {
 		});
 });
 
-app.get("/weekGoal", function(req, res) {
-  db.collection(GOALS_COLLECTION).find({}).toArray(function(err, docs) {
+app.get("/week", function(req, res) {
+  db.collection(WEEKLY_SET).find({}).toArray(function(err, docs) {
     if (err) {
       handleError(res, err.message, "Failed to get goals.");
     } else {
@@ -122,15 +122,15 @@ app.get("/weekGoal", function(req, res) {
   });
 });
 
-app.post("/updateWeekGoal", function(req, res) {
+app.post("/updateWeek", function(req, res) {
   var newWeekGoal = req.body;
   newWeekGoal.createDate = new Date();
 
-  db.collection(GOALS_COLLECTION).updateOne(
+  db.collection(WEEKLY_SET).updateOne(
      { location: "10 Barrel Boise" },
      {
        $set: {
-         weeklGoal: newWeekGoal.weekGoal
+         weekGoal: newWeekGoal.weekGoal
        }
      }, function(err, doc)  {
       if (err)  {

@@ -1,5 +1,7 @@
 <div ng-include src="'partials/navbar.html'"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script src="node_modules/chart.js/Chart.min.js"></script>
+<script src="node_modules/angular-chart.js/dist/angular-chart.min.js"></script>
 <header class="progressHeader">
   <h3>
     <span class="mediumFont">Set Weekly Goal</span>
@@ -18,19 +20,19 @@
 
 <br>
 <div class="center tactics">
-	<input type="range" min="{{min}}" max="{{max}}" id="weeklyGoalRange" ng-model="$storage.goal.weeklyGoal"/>
+	<input type="range" min="{{min}}" max="{{max}}" id="weekGoalInput" ng-model="$storage.goal.weeklyGoal" />
         <p class="left"> 
             Less 
             <span style="float:right;"> More </span>
         </p>
-        <script type="text/javascript">
-        function showValue(newValue)
-        {
-            document.getElementById("value").innerHTML=newValue;
-        }
-        </script>
+        <button type="button" class="btn btn-default" ng-click="updateWeek">Update</button>
 </div>
 
+<div class="chartHolder">
+  <canvas id="bar" class="chart chart-bar" chart-data="weeklyData" 
+      chart-labels="weeklyLabels" chart-options="options">
+  </canvas> 
+</div>
 <hr class="hrRule">
 
 <div class="chartHolder">
@@ -39,19 +41,18 @@
 
 <div>
 
-<!--                    kawbrglkarwglrkgkegliekbarjekbeglrkgbraeilgkaergaerig               -->
+<!--                    kawbrglkarwglrkgkegliekbarjekbeglrkgbraeilgkaergaerig               
 
 <script>
 	var ctx = document.getElementById("myChart").getContext('2d');
   var x = +parseInt($(this).find('.value').text());
-  data_ = [300, 500, 2478, 4134, 5267, 3784, 1200];
 	var myBarChart = new Chart(ctx, {
     	type: 'bar',
     	data: {
     		labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
     		datasets: [{
 		          backgroundColor: ["#00bfff", "#00bfff","#00bfff","#00bfff","#00bfff","#00bfff","#00bfff"],
-		          data: data_
+		          data: {{weeklyData}}
         	}]
 	    },
       options: {
@@ -63,7 +64,7 @@
   });
 </script>
 </div>
-
+-->
 <div class="center">
 	Set Incentives<br />
 	<div class="boxed">
