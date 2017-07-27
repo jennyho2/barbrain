@@ -6,7 +6,7 @@
   <br>
   <span class="xlargeFont"><span style="color:deepskyblue">$841</span>/ ${{ $storage.goal.weeklyGoal}}</span>
   <br>
-  <span class="smallFont">{{ Math.round( (841 / $storage.goal.weeklyGoal) * 100) }}% of goal achieved</span>
+  <span class="smallFont">{{ (841 / $storage.goal.weeklyGoal) * 100 | number:2 }}% of goal achieved</span>
 </header>
 
 
@@ -24,8 +24,8 @@
 			</tr>
 
 			<tr>
-				<td>${{ Math.round($storage.goal.dailyGoal * 0.7) }}</td>
-				<td>${{ Math.round($storage.goal.dailyGoal * 0.3) }}</td>
+				<td>${{ $storage.goal.dailyGoal * 0.7 | number:2 }}</td>
+				<td>${{ $storage.goal.dailyGoal * 0.3 | number:2 }}</td>
 			</tr>
 		</table>
 	</div>
@@ -37,7 +37,7 @@
   <canvas id="myChart" width="200" height="200"></canvas>
 </div> -->
 
-<script>
+<!-- <script>
   var ctx = document.getElementById("myChart").getContext('2d');
   var myChart = new Chart(ctx, {
       type: 'line',
@@ -50,7 +50,7 @@
         responsive: false
       }
   });
-</script>
+</script> -->
 
 
 <div>

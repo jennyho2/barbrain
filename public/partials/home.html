@@ -19,11 +19,13 @@
 </div>
 <script>
 var ctx = document.getElementById("myChart").getContext('2d');
+var storedGoal = localStorage.getItem('ngStorage-goal');
+var dailyGoal = JSON.parse(storedGoal).dailyGoal;
 var myChart = new Chart(ctx, {
     type: 'doughnut',
     data: {
         datasets: [{
-            data: [40, 60]
+            data: [40, dailyGoal]
         }]
     },
     options: {

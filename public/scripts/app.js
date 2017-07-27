@@ -3,7 +3,6 @@ var app = angular.module("goalsApp", ["ngRoute", "ngStorage", "filters.stringUti
 app.controller('mainController', function($scope, $localStorage, $sessionStorage, $http)  {
 	$scope.$storage = $localStorage;
 	$scope.$storage.goal = new Goal($http);
-	$scope.Math = window.Math;
 	$scope.date = new Date();
 	//$scope.$storage.dailyGoal = new DailyGoal($http);
 	//$scope.storage.staff = '';
