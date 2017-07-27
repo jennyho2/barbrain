@@ -1,9 +1,15 @@
-var app = angular.module("goalsApp", ["ngRoute", "ngStorage", "filters.stringUtils", "angularModalService"]);
+var app = angular.module("goalsApp", ["ngRoute", "ngStorage", "filters.stringUtils", "angularModalService", "chart.js"]);
 
 app.controller('mainController', function($scope, $localStorage, $sessionStorage, $http)  {
 	$scope.$storage = $localStorage;
 	$scope.$storage.goal = new Goal($http);
 	$scope.date = new Date();
+
+  	$scope.options = { responsive: false };
+
+  	$scope.labels = ["Current Sales", "Daily Goal"];
+  	$scope.data = [500, $scope.$storage.goal.dailyGoal];
+
 	//$scope.$storage.dailyGoal = new DailyGoal($http);
 	//$scope.storage.staff = '';
 	$scope.openStaff = function(staff) {
@@ -24,6 +30,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			})
 			.then(function(data,status,headers,config)  {
 				$scope.$storage.goal.dailyGoal = parseInt(newGoal);
+				$scope.data = [500, parseInt(newGoal)];
 				//$scope.dailyGoal = $storage.dailyGoal;
 			}, function(data,status,headers,config)  {
 				console.log("failure");
@@ -48,6 +55,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		$http.get("/goals")
 		.then(function(data,status,headers,config) {
 			$scope.$storage.goal.dailyGoal = parseInt(data.data[0].dailyGoal);	
+			$scope.data = [500, parseInt(data.data[0].dailyGoal)];
 			$scope.min = 0;
 			$scope.max = parseInt(data.data[0].weeklyGoal) + 2000;
 			$scope.$storage.goal.weeklyGoal = parseInt(data.data[0].weeklyGoal);
@@ -82,8 +90,18 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	}
 
 	$scope.callGetGoals();
+
+  	console.log($scope.$storage.goal.dailyGoal);
 	$scope.callGetTactics();
 
+
+	$scope.switch = function (num) {
+		if (num == 0)  {
+			$scope.data = [400, $scope.$storage.goal.dailyGoal];
+		} else {
+			$scope.data = [400, $scope.$storage.goal.weeklyGoal];
+		}
+	}
 });
 
 function Goal($http)  {
@@ -210,6 +228,7 @@ $( "#clickme" ).click(function() {
     return text === "Add" ? "Remove" : "Add";
     })
 });
+
 
 
 
