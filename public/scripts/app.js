@@ -12,11 +12,19 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   	$scope.getCurrentProgress = function()  {
   		blockspring.runParsed("read-cell-google-sheets", { "file_id": "14HGE-3oSeE1KBPjnGv2C4p749-9mV0JFdvyTJAHRaE0", "worksheet_id": 0, "row": 1,
    			"column": 2}, { "api_key": "edd7d4672aaa5a78a6dbd85af745944a" }, function(res){
-   				$scope.$storage.currentProgress = parseInt(res.params.cell);
+   				$scope.$storage.currentDayProgress = parseInt(res.params.cell);
   		});
   		blockspring.runParsed("read-cell-google-sheets", { "file_id": "14HGE-3oSeE1KBPjnGv2C4p749-9mV0JFdvyTJAHRaE0", "worksheet_id": 0, "row": 2,
    			"column": 2}, { "api_key": "edd7d4672aaa5a78a6dbd85af745944a" }, function(res){
-   				$scope.$storage.projectedEnd = parseInt(res.params.cell);
+   				$scope.$storage.currentWeekProgress = parseInt(res.params.cell);
+  		});
+  		blockspring.runParsed("read-cell-google-sheets", { "file_id": "14HGE-3oSeE1KBPjnGv2C4p749-9mV0JFdvyTJAHRaE0", "worksheet_id": 0, "row": 3,
+   			"column": 2}, { "api_key": "edd7d4672aaa5a78a6dbd85af745944a" }, function(res){
+   				$scope.$storage.projectedDayEnd = parseInt(res.params.cell);
+  		});
+  		blockspring.runParsed("read-cell-google-sheets", { "file_id": "14HGE-3oSeE1KBPjnGv2C4p749-9mV0JFdvyTJAHRaE0", "worksheet_id": 0, "row": 4,
+   			"column": 2}, { "api_key": "edd7d4672aaa5a78a6dbd85af745944a" }, function(res){
+   				$scope.$storage.projectedWeekEnd = parseInt(res.params.cell);
   		});
 
   	};
@@ -40,7 +48,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			})
 			.then(function(data,status,headers,config)  {
 				$scope.$storage.goal.dailyGoal = parseInt(newGoal);
-				$scope.data = [$scope.$storage.currentProgress, (parseInt(newGoal) - $scope.$storage.currentProgress)];
+				$scope.data = [$scope.$storage.currentDayProgress, (parseInt(newGoal) - $scope.$storage.currentDayProgress)];
 				//$scope.dailyGoal = $storage.dailyGoal;
 			}, function(data,status,headers,config)  {
 				console.log("failure");
@@ -54,6 +62,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			})
 			.then(function(data,status,headers,config)  {
 				$scope.$storage.goal.weekGoal = parseInt(newGoal);
+				$scope.data = [$scope.$storage.currentWeekProgress, (parseInt(newGoal) - $scope.$storage.currentWeekProgress)]
 				//$scope.dailyGoal = $storage.dailyGoal;
 			}, function(data,status,headers,config)  {
 				console.log("failure");
@@ -69,7 +78,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			"weeklyGoal": $scope.$storage.goal.weeklyGoal
 		})
 		.then(function(data,status,headers,config)  {
-			$scope.data = [$scope.$storage.currentProgress, $scope.$storage.goal.dailyGoal - $scope.$storage.currentProgress];
+			$scope.data = [$scope.$storage.currentDayProgress, $scope.$storage.goal.dailyGoal - $scope.$storage.currentDayProgress];
 		}, function(data,status,headers,config)  {
 			console.log("failing");
 		});
@@ -79,7 +88,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		$http.get("/goals")
 		.then(function(data,status,headers,config) {
 			$scope.$storage.goal.dailyGoal = parseInt(data.data[0].dailyGoal);	
-			$scope.data = [$scope.$storage.currentProgress, (parseInt(data.data[0].dailyGoal) - $scope.$storage.currentProgress)];
+			$scope.data = [$scope.$storage.currentDayProgress, (parseInt(data.data[0].dailyGoal) - $scope.$storage.currentDayProgress)];
 			$scope.min = 0;
 			$scope.max = parseInt(data.data[0].weeklyGoal) + 2000;
 			$scope.$storage.goal.weeklyGoal = parseInt(data.data[0].weeklyGoal);
@@ -151,13 +160,13 @@ $scope.callUpdateWeekGoals = function(section)  {
 
 	$scope.switch = function (num) {
 		if (num == 0)  {
-			$scope.data = [$scope.$storage.currentProgress, ($scope.$storage.goal.dailyGoal - $scope.$storage.currentProgress)];
+			$scope.data = [$scope.$storage.currentDayProgress, ($scope.$storage.goal.dailyGoal - $scope.$storage.currentDayProgress)];
 		} else {
-			$scope.data = [$scope.$storage.currentProgress, ($scope.$storage.goal.weeklyGoal - $scope.$storage.currentProgress)];
+			$scope.data = [$scope.$storage.currentWeekProgress, ($scope.$storage.goal.weeklyGoal - $scope.$storage.currentWeekProgress)];
 		}
 	}
 
-	$scope.data = [$scope.$storage.currentProgress, ($scope.$storage.goal.dailyGoal - $scope.$storage.currentProgress)];
+	//$scope.data = [$scope.$storage.currentDayProgress, ($scope.$storage.goal.dailyGoal - $scope.$storage.currentDayProgress)];
 });
 
 function Goal($http)  {
