@@ -7,8 +7,8 @@
    <br>
    <div class="xlargeFont">
   <span class="xlargeFont"><span style="color:deepskyblue">$3,841</span>/</span>       
-  		 <span>$
-            <span id="value">6,000</span>
+  		 <span>${{ $storage.goal.weeklyGoal }}
+            <!-- <textarea id="weekGoalInput" ng-model="$storage.goal.weekGoal">6,000</textarea> -->
         </span>
   <br>
   </div>
@@ -18,7 +18,7 @@
 
 <br>
 <div class="center tactics">
-	<input type="range" min="4000" max="20000" value="0" step="1" onchange="showValue(this.value)" />
+	<input type="range" min="{{min}}" max="{{max}}" id="weeklyGoalRange" ng-model="$storage.goal.weeklyGoal"/>
         <p class="left"> 
             Less 
             <span style="float:right;"> More </span>
@@ -31,15 +31,6 @@
         </script>
 </div>
 
-<!-- EXPERIEMNT 
-<p id="demo"></p>
-
-<script>
-var x = 100 + 50;
-document.getElementById("demo").innerHTML = x;
-</script>
--->
-
 <hr class="hrRule">
 
 <div class="chartHolder">
@@ -49,26 +40,6 @@ document.getElementById("demo").innerHTML = x;
 <div>
 
 <!--                    kawbrglkarwglrkgkegliekbarjekbeglrkgbraeilgkaergaerig               -->
-
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Adjust {{ section == 0 ? 'Today\'s' : 'This Week\'s' }} Goal</h4>
-      </div>
-      <div class="modal-body">
-        <input type="range" min="{{min}}" max="{{max}}" id="weeklyGoalRange" ng-model="$storage.goal.dailyGoal" />
-        <input type="number" id="weeklyGoalInput" ng-model="$storage.goal.dailyGoal" />
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" ng-click="callUpdateGoals()">Update</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-
-
 
 <script>
 	var ctx = document.getElementById("myChart").getContext('2d');

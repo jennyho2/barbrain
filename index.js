@@ -23,7 +23,9 @@ var mongodb = require("mongodb");
 var ObjectID = mongodb.ObjectID;
 
 var GOALS_COLLECTION = "goals";
+
 var TACTICS_COLLECTION = "tactics";
+var WEEKLY_SET = "weekGoal";
 
 app.use(bodyParser.json());
 
@@ -108,6 +110,36 @@ app.post("/updateTactics", function(req, res)  {
 				res.status(200).end();
 			}
 		});
+});
+
+app.get("/weekGoal", function(req, res) {
+  db.collection(GOALS_COLLECTION).find({}).toArray(function(err, docs) {
+    if (err) {
+      handleError(res, err.message, "Failed to get goals.");
+    } else {
+      res.status(200).json(docs);
+    }
+  });
+});
+
+app.post("/updateWeekGoal", function(req, res) {
+  var newWeekGoal = req.body;
+  newWeekGoal.createDate = new Date();
+
+  db.collection(GOALS_COLLECTION).updateOne(
+     { location: "10 Barrel Boise" },
+     {
+       $set: {
+         weeklGoal: newWeekGoal.weekGoal
+       }
+     }, function(err, doc)  {
+      if (err)  {
+        handleError(res, err.message, "Failed to update goals.");
+      } else {
+        res.status(200).end();
+        //res.status(204).end();
+      }
+   });
 });
 
 
