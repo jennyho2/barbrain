@@ -48,7 +48,7 @@ var myChart = new Chart(ctx, {
     <th class="smallFont">Projected End</th>
   </tr>
   <tr class="center">
-    <td class="mediumFont" ng-init="callGetGoals()">${{ $storage.goal.dailyGoal }}</td>
+    <td class="mediumFont" ng-init="callGetGoals()">${{ section == 0 ? $storage.goal.dailyGoal : $storage.goal.weeklyGoal }}</td>
     <td class="mediumFont">{{ section == 0 ? '$1,700' : '$6,841' }}</td>
     <td class="mediumFont">{{ section == 0 ? '$2,600' : '$9,856' }}</td>
   </tr>
@@ -83,11 +83,14 @@ var myChart = new Chart(ctx, {
         <h4 class="modal-title">Adjust {{ section == 0 ? 'Today\'s' : 'This Week\'s' }} Goal</h4>
       </div>
       <div class="modal-body">
-        <input type="range" min="{{min}}" max="{{max}}" id="weeklyGoalRange" ng-model="$storage.goal.dailyGoal" />
-        <input type="number" id="weeklyGoalInput" ng-model="$storage.goal.dailyGoal" />
+        <input type="range" min="{{min}}" max="{{max}}" id="weeklyGoalRange" ng-if="section == 0" ng-model="$storage.goal.dailyGoal" />
+        <input type="range" min="{{min}}" max="{{max}}" id="weeklyGoalRange" ng-if="section == 1" ng-model="$storage.goal.weeklyGoal" />
+        <input type="number" id="weeklyGoalInput" ng-if="section == 0" ng-model="$storage.goal.dailyGoal" />
+        <input type="number" id="weeklyGoalInput" ng-if="section == 1" ng-model="$storage.goal.weeklyGoal" />
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" ng-click="callUpdateGoals()">Update</button>
+        <button type="button" class="btn btn-default" ng-click="callUpdateGoals(0)" ng-if="section == 0">Update</button>
+        <button type="button" class="btn btn-default" ng-click="callUpdateGoals(1)" ng-if="section == 1">Update</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>

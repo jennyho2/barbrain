@@ -11,20 +11,36 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		location.href = '#!staff';
 	};
 	
-	$scope.callUpdateGoals = function()  {
+	$scope.callUpdateGoals = function(section)  {
 		var newGoal = $('#weeklyGoalInput').val();
-		$http.post("/updateGoals", 
-			{
-				"location": "10 Barrel Boise",
-				"dailyGoal": newGoal,
-				"weeklyGoal": "5,000"
-		})
-		.then(function(data,status,headers,config)  {
-			$scope.$storage.goal.dailyGoal = parseInt(newGoal);
-			//$scope.dailyGoal = $storage.dailyGoal;
-		}, function(data,status,headers,config)  {
-			console.log("failure");
-		});
+		console.log("Section: " + section);
+		if (section === 0)  {
+			$http.post("/updateGoals", 
+				{
+					"location": "10 Barrel Boise",
+					"dailyGoal": newGoal,
+					"weeklyGoal": $scope.$storage.goal.weeklyGoal
+			})
+			.then(function(data,status,headers,config)  {
+				$scope.$storage.goal.dailyGoal = parseInt(newGoal);
+				//$scope.dailyGoal = $storage.dailyGoal;
+			}, function(data,status,headers,config)  {
+				console.log("failure");
+			});
+		} else {
+			$http.post("/updateGoals", 
+				{
+					"location": "10 Barrel Boise",
+					"dailyGoal": $scope.$storage.goal.dailyGoal,
+					"weeklyGoal": newGoal
+			})
+			.then(function(data,status,headers,config)  {
+				$scope.$storage.goal.weeklyGoal = parseInt(newGoal);
+				//$scope.dailyGoal = $storage.dailyGoal;
+			}, function(data,status,headers,config)  {
+				console.log("failure");
+			});
+		}
 	}
 
 	$scope.callGetGoals = function()  {
@@ -33,7 +49,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			$scope.$storage.goal.dailyGoal = parseInt(data.data[0].dailyGoal);	
 			$scope.min = 0;
 			$scope.max = 5000;
-			$scope.weeklyGoal = data.data[0].weeklyGoal;
+			$scope.$storage.goal.weeklyGoal = parseInt(data.data[0].weeklyGoal);
 		},function(data, status, headers, config)  {
 			console.log('fail here');
 		});
@@ -45,10 +61,12 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
 function Goal($http)  {
 	var dailyGoal = 2000;
+	var weeklyGoal = 10000;
 
 	$http.get("/goals")
 	.then(function(data, status, headers, config)  {
 		dailyGoal = parseInt(data.data[0].dailyGoal);
+		weeklyGoal = parseInt(data.data[0].weeklyGoal);
 	},function(data,status,headers,config)  {
 		console.log('fail hur');
 	});
@@ -60,6 +78,15 @@ function Goal($http)  {
     this.__defineSetter__("dailyGoal", function (val) {        
         val = parseInt(val);
         dailyGoal = val;
+    });
+
+    this.__defineGetter__("weeklyGoal", function () {
+        return weeklyGoal;
+    });
+
+    this.__defineSetter__("weeklyGoal", function (val) {        
+        val = parseInt(val);
+        weeklyGoal = val;
     });
 }
 
