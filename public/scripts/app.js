@@ -131,11 +131,8 @@ $scope.callUpdateWeekGoals = function(section)  {
     });
   }
 
-
-
-	$scope.callGetGoals();
 	$scope.getCurrentProgress();
-  	console.log($scope.$storage.goal.dailyGoal);
+	$scope.callGetGoals();
 	$scope.callGetTactics();
 
 
