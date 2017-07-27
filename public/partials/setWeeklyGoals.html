@@ -8,7 +8,7 @@
    <div class="xlargeFont">
   <span class="xlargeFont"><span style="color:deepskyblue">$3,841</span>/</span>       
   		 <span>$
-            <span id="range">6,000</span>
+            <span id="value">6,000</span>
         </span>
   <br>
   </div>
@@ -26,10 +26,19 @@
         <script type="text/javascript">
         function showValue(newValue)
         {
-            var val = document.getElementById("range").innerHTML=newValue;
+            document.getElementById("value").innerHTML=newValue;
         }
         </script>
 </div>
+
+<!-- EXPERIEMNT 
+<p id="demo"></p>
+
+<script>
+var x = 100 + 50;
+document.getElementById("demo").innerHTML = x;
+</script>
+-->
 
 <hr class="hrRule">
 
@@ -40,13 +49,15 @@
 <div>
 <script>
 	var ctx = document.getElementById("myChart").getContext('2d');
+  var x = +parseInt($(this).find('.value').text());
+  data_ = [300, 500, 2478, 4134, 5267, 3784, 1200];
 	var myBarChart = new Chart(ctx, {
     	type: 'bar',
     	data: {
     		labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
     		datasets: [{
 		          backgroundColor: ["#00bfff", "#00bfff","#00bfff","#00bfff","#00bfff","#00bfff","#00bfff"],
-		          data: [900, 1200, 2478, 4134, 5267, 3784, 1200]
+		          data: data_
         	}]
 	    },
       options: {
@@ -56,7 +67,6 @@
       }
     }
   });
-
 </script>
 </div>
 
