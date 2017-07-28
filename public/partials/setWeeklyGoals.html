@@ -10,6 +10,7 @@
    <div class="xlargeFont">
   <span class="xlargeFont"><span style="color:deepskyblue">${{ $storage.currentWeekProgress }}</span>/</span>       
   		 <span>${{ $storage.goal.weeklyGoal }}
+       
             <!-- <textarea id="weekGoalInput" ng-model="$storage.goal.weekGoal">6,000</textarea> -->
         </span>
   <br>
@@ -20,29 +21,22 @@
 
 <br>
 <div class="center tactics">
-	<input type="range" min="{{min}}" max="{{max}}" id="weekGoalInput" ng-model="$storage.goal.weeklyGoal" />
+	<input type="range" min="{{min}}" max="{{max}}" id="weeklyGoalInput" ng-change="callUpdateGoals(1)" ng-model="$storage.goal.weeklyGoal" />
         <p class="left"> 
             Less 
             <span style="float:right;"> More </span>
         </p>
-        <button type="button" class="btn btn-default" ng-click="updateWeek">Update</button>
+        <button type="button" class="btn btn-default" ng-click="callUpdateGoals(1)">Update</button>
 </div>
 
-<div class="chartHolder">
+<div class="chartHolder padding">
   <canvas id="bar" class="chart chart-bar" chart-data="weeklyData" 
-      chart-labels="weeklyLabels" chart-options="options">
+      chart-labels="weeklyLabels" chart-options="options" >
   </canvas> 
 </div>
-<hr class="hrRule">
 
-<div class="chartHolder">
-  <canvas id="myChart" width="200" height="200"></canvas>
-</div>
-
-<div>
-
-<!--                    kawbrglkarwglrkgkegliekbarjekbeglrkgbraeilgkaergaerig               
-
+  
+<!--
 <script>
 	var ctx = document.getElementById("myChart").getContext('2d');
   var x = +parseInt($(this).find('.value').text());
@@ -52,7 +46,7 @@
     		labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
     		datasets: [{
 		          backgroundColor: ["#00bfff", "#00bfff","#00bfff","#00bfff","#00bfff","#00bfff","#00bfff"],
-		          data: {{weeklyData}}
+		          data: [100,400,400]
         	}]
 	    },
       options: {
@@ -62,9 +56,7 @@
       }
     }
   });
-</script>
-</div>
--->
+</script>-->
 <div class="center">
 	Set Incentives<br />
 	<div class="boxed">

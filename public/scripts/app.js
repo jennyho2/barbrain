@@ -29,7 +29,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
   	};
   	$scope.labels = ["Current Sales", "Daily Goal"];
-  	$scope.data = [500, $scope.$storage.goal.dailyGoal];
+  	//$scope.data = [, $scope.$storage.goal.dailyGoal];
 
     $scope.weeklyData = [500,700,
                     3000,
@@ -68,22 +68,21 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 					"location": "10 Barrel Boise",
 					"dailyGoal": $scope.$storage.goal.dailyGoal,
 					"weeklyGoal": newGoal
+    
 			})
 			.then(function(data,status,headers,config)  {
 				$scope.$storage.goal.weekGoal = parseInt(newGoal);
 				$scope.data = [$scope.$storage.currentWeekProgress, (parseInt(newGoal) - $scope.$storage.currentWeekProgress)]
 				$scope.$storage.goal.weeklyGoal = parseInt(newGoal);
-        $scope.weeklyData = [.15*parseInt(newGoal),.2*parseInt(newGoal),
-                          .3*parseInt(newGoal),.5*parseInt(newGoal),
-                          .6*parseInt(newGoal),.4*parseInt(newGoal),
-                          .3*parseInt(newGoal)] //FIX THIS
 				//$scope.dailyGoal = $storage.dailyGoal;
-        
         
 			}, function(data,status,headers,config)  {
 				console.log("failure");
 			});
+      $scope.weeklyData =[parseInt(newGoal)*.05,.1*parseInt(newGoal),.2*parseInt(newGoal),
+                        parseInt(newGoal)*.25,parseInt(newGoal)*.4,parseInt(newGoal)*.3,parseInt(newGoal)*.1];
 		}
+    
 
 	}
 
@@ -204,11 +203,7 @@ $scope.updateWeek = function(section)  {
 			$scope.data = [$scope.$storage.currentDayProgress, ($scope.$storage.goal.dailyGoal - $scope.$storage.currentDayProgress)];
 		} else {
 			$scope.data = [$scope.$storage.currentWeekProgress, ($scope.$storage.goal.weeklyGoal - $scope.$storage.currentWeekProgress)];
-			$scope.data = [400, $scope.$storage.goal.weeklyGoal];
-      $scope.weeklyData = $scope.data = [.15*$scope.$storage.goal.weeklyGoal,.2*$scope.$storage.goal.weeklyGoal,
-                          .3*$scope.$storage.goal.weeklyGoal,.5*$scope.$storage.goal.weeklyGoal,
-                          .6*$scope.$storage.goal.weeklyGoal,.4*$scope.$storage.goal.weeklyGoal,
-                          .3*$scope.$storage.goal.weeklyGoal]; //FIX THIS
+			//$scope.data = [400, $scope.$storage.goal.weeklyGoal];
 
 		}
 	}
@@ -219,7 +214,6 @@ $scope.updateWeek = function(section)  {
 function Goal($http)  {
 	var dailyGoal = 2000;
 	var weeklyGoal = 10000;
-  var weekGoal = 10000;
 
 	$http.get("/goals")
 	.then(function(data, status, headers, config)  {
@@ -329,19 +323,6 @@ $(app).ready(function(){
     });
 });
 
-
-function enableInput()  {
-	$('.tacticalGoalsInput').prop("disabled", function(i, v) { return !v; });
-}
-
-$( "#clickme" ).click(function() {
-      $( "#book" ).toggle( {
-        
-      });
-    $(this).text(function(i, text){
-    return text === "Add" ? "Remove" : "Add";
-    })
-});
 
 
 
