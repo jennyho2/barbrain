@@ -89,7 +89,8 @@ $( "#clickme3" ).click(function() {
                                 </td>
                             </table>  
                         </td>
-                    </tr><tr class="tableEmployeeStat">
+                    </tr>
+                    <tr class="tableEmployeeStat">
                         <td class="v-a-m">
                             <table>
                                 <td>
@@ -111,6 +112,55 @@ $( "#clickme3" ).click(function() {
                                 </td>
                             </table>  
                         </td>
+                        <!-- TESTING --> 
+                    </tr>
+                    <tr class="tableEmployeeStat">
+                        <td class="v-a-m">
+                            <table>
+                                <td>
+                                    <img height="30px" src="assets/images/empty-profile.png"  hspace="20"/>
+                                </td>
+                                <td>
+                                    <div class="smallFont" id="staffName">Logan Dawson</div>
+                                </td>
+                            </table>
+                        </td>
+                        <td class="v-a-m">
+                             <table class="subTable">
+                                <td>
+                                    <span id="staff3" hidden="true"><img height='10px' src='assets/images/check.png'  hspace='20'/>
+                                    </span>
+                                </td>
+                                <td>
+                                    <div ng-click="addStaff()" style="color:deepskyblue">Add</div>
+                                </td>
+                            </table>  
+                        </td>
+                        <!-- TESTING --> 
+                    </tr>
+                    <tr class="tableEmployeeStat">
+                        <td class="v-a-m">
+                            <table>
+                                <td>
+                                    <img height="30px" src="assets/images/empty-profile.png"  hspace="20"/>
+                                </td>
+                                <td>
+                                    <div class="smallFont" id="staffName">Jenny</div>
+                                </td>
+                            </table>
+                        </td>
+                        <td class="v-a-m">
+                             <table class="subTable">
+                                <td>
+                                    <span id="staff3" hidden="true"><img height='10px' src='assets/images/check.png'  hspace='20'/>
+                                    </span>
+                                </td>
+                                <td>
+                                    <div ng-click="addStaff()" style="color:deepskyblue">Add</div>
+                                </td>
+                            </table>  
+                        </td>
+                        <!-- TESTING --> 
                     </tr>
                 </tbody>
             </table>
@@ -118,5 +168,11 @@ $( "#clickme3" ).click(function() {
         </div>
     </div>
 </div>
+<input type="text" ng-model="staffList"/>
+<table><tbody>
+    <tr ng-repeat="sharedetail">
+      <td>{{fullStaff}}</td>
+    </tr>
+</tbody></table>
 
 

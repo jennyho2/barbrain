@@ -15,6 +15,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
                     6000,4000,
                     200];
     $scope.weeklyLabels = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    $scope.staffList = [];
+    $scope.fullStaff = ["Jenny", "Logan", "David", "Mary"]
 
 
 	//$scope.$storage.dailyGoal = new DailyGoal($http);
@@ -57,7 +59,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			}, function(data,status,headers,config)  {
 				console.log("failure");
 			});
-      $scope.weeklyData =[parseInt(newGoal)*.05,.1*parseInt(newGoal),.2*parseInt(newGoal),
+     		 $scope.weeklyData =[parseInt(newGoal)*.05,.1*parseInt(newGoal),.2*parseInt(newGoal),
                         parseInt(newGoal)*.25,parseInt(newGoal)*.4,parseInt(newGoal)*.3,parseInt(newGoal)*.1];
 		}
     
@@ -101,8 +103,17 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		}, function(data,status,headers,config)  {
 			console.log('failure');
 		});
+
 	}
 
+	$scope.addStaff = function(){
+		$scope.newStaff=angular.element('#staffName').text();
+		//var newStaff = $('#staffName');
+		//$scope.staffList = ['lauren'];
+		//$scope.staffList.push('lauren');
+		//$scope.staffList.push(newStaff);
+		$scope.staffList = $scope.staffList.concat($scope.newStaff);
+	}
 
 
 
@@ -117,8 +128,6 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			$scope.data = [400, $scope.$storage.goal.dailyGoal];
 		} else {
 			$scope.data = [400, $scope.$storage.goal.weeklyGoal];
-
-      
 		}
 	}
 });
@@ -234,7 +243,6 @@ $(app).ready(function(){
         $(this).hide();
     });
 });
-
 
 
 
