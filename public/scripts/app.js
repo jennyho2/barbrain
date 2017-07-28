@@ -16,8 +16,16 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
                     200];
     $scope.weeklyLabels = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     $scope.staffList = [];
-    $scope.fullStaff = ["Jenny", "Logan", "David", "Tara"];
+    $scope.fullStaff = [
+    					{id:'Jenny',add:'Add'}, 
+    					{id:'Logan',add:'Add'},
+    					{id:'Lauren',add:'Add'},
+    					{id:'Mike',add:'Add'},
+    					{id:'Mary',add:'Add'},
+    					{id:'Jake',add:'Add'}
+    					];
     $scope.staffButton = [];
+    
 
 	//$scope.$storage.dailyGoal = new DailyGoal($http);
 	//$scope.storage.staff = '';
@@ -112,11 +120,9 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		//var newStaff = $('#staffName');
 		//$scope.staffList = ['lauren'];
 		$scope.staffList.push(name);
-		$scope.toggleButton(name);
+//		var idx = $scope.fullStaff.findIndex(i => i.id === name);
+//		$scope.staffList[idx] = {id:name,}
 		//$scope.staffList = $scope.staffList.concat($scope.addName);
-	}
-	$scope.toggleButton = function(name){
-		return jQuery.inArray( name, $scope.staffList ); 
 	}
 
 

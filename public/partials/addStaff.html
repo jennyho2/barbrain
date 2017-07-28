@@ -1,5 +1,5 @@
 <script>
-$( "#button" ).click(function() {
+$( "button" ).click(function() {
       $( "#name" ).toggle( {
         
       });
@@ -29,12 +29,12 @@ $( "#clickme3" ).click(function() {
     })
 });
 </script>
-
+<!--
 <div class="container">
-    <!-- START EDIT CONTENT -->
+    
     <div class="row">
         <div">
-            <!-- START Basic Example Table -->
+    
             <table class="table">
             <table class="tableEmployeeStat">
                 <th style="text-align:center;"">
@@ -112,7 +112,7 @@ $( "#clickme3" ).click(function() {
                                 </td>
                             </table>  
                         </td>
-                        <!-- TESTING --> 
+                       
                     </tr>
                     <tr class="tableEmployeeStat">
                         <td class="v-a-m">
@@ -136,7 +136,7 @@ $( "#clickme3" ).click(function() {
                                 </td>
                             </table>  
                         </td>
-                        <!-- TESTING --> 
+                        
                     </tr>
                     <tr class="tableEmployeeStat">
                         <td class="v-a-m">
@@ -160,7 +160,42 @@ $( "#clickme3" ).click(function() {
                                 </td>
                             </table>  
                         </td>
-                        <!-- TESTING --> 
+                        
+                    </tr>
+                </tbody>
+            </table>
+            </table>
+        </div>
+    </div>
+</div> -->
+<div class="container">
+    <!-- START EDIT CONTENT -->
+    <div class="row">
+        <div">
+            <!-- START Basic Example Table -->
+            <table class="table">
+            <table class="tableEmployeeStat">
+                <th style="text-align:center;"">
+                    Staff
+                </th>
+                <th style="text-align:center;">
+                    Select if <br>Working today
+                </th>
+                <tbody>
+                     <tr ng-repeat="name in fullStaff" class="tableEmployeeStat">
+                        <td>
+                            <img height="30px" src="assets/images/empty-profile.png"  hspace="20"/>
+                        </td>
+                        <td>
+                            {{name.id}}
+                        </td>
+                        <td>
+                            <span ng-show="show"><img height='10px' src='assets/images/check.png'  hspace='20'/>
+                            </span>
+                        </td>
+                        <td>
+                            <div ng-click="addStaff(name.id) ; show=!show" ng-model="myVar" style="color:deepskyblue">{{name.add}}</div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -169,20 +204,3 @@ $( "#clickme3" ).click(function() {
     </div>
 </div>
 <span>{{staffList}}</span>
-<table border="1">
-    <tr ng-repeat="name in fullStaff" class="tableEmployeeStat">
-        <td>
-            {{name}}
-        </td>
-        <td>
-
-            <span id="name" hidden="true"><img height='10px' src='assets/images/check.png'  hspace='20'/>
-            </span>
-        </td>
-        <td>
-            <div ng-click="addStaff(name)" style="color:deepskyblue">Add</div>
-        </td>
-    </tr>
-</table>
-
-
