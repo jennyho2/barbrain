@@ -16,8 +16,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
                     200];
     $scope.weeklyLabels = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     $scope.staffList = [];
-    $scope.fullStaff = ["Jenny", "Logan", "David", "Mary"]
-
+    $scope.fullStaff = ["Jenny", "Logan", "David", "Tara"];
+    $scope.staffButton = [];
 
 	//$scope.$storage.dailyGoal = new DailyGoal($http);
 	//$scope.storage.staff = '';
@@ -106,13 +106,17 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
 	}
 
-	$scope.addStaff = function(){
-		$scope.newStaff=angular.element('#staffName').text();
+	$scope.addStaff = function(name){
+		//$scope.newStaff=angular.element('#staffName').text();
+		//$scope.addName=angular.element('#addStaff').text();
 		//var newStaff = $('#staffName');
 		//$scope.staffList = ['lauren'];
-		//$scope.staffList.push('lauren');
-		//$scope.staffList.push(newStaff);
-		$scope.staffList = $scope.staffList.concat($scope.newStaff);
+		$scope.staffList.push(name);
+		$scope.toggleButton(name);
+		//$scope.staffList = $scope.staffList.concat($scope.addName);
+	}
+	$scope.toggleButton = function(name){
+		return jQuery.inArray( name, $scope.staffList ); 
 	}
 
 

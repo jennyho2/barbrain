@@ -1,6 +1,6 @@
 <script>
-$( "#clickme1" ).click(function() {
-      $( "#staff1" ).toggle( {
+$( "#button" ).click(function() {
+      $( "#name" ).toggle( {
         
       });
     $(this).text(function(i, text){
@@ -168,11 +168,21 @@ $( "#clickme3" ).click(function() {
         </div>
     </div>
 </div>
-<input type="text" ng-model="staffList"/>
-<table><tbody>
-    <tr ng-repeat="sharedetail">
-      <td>{{fullStaff}}</td>
+<span>{{staffList}}</span>
+<table border="1">
+    <tr ng-repeat="name in fullStaff" class="tableEmployeeStat">
+        <td>
+            {{name}}
+        </td>
+        <td>
+
+            <span id="name" hidden="true"><img height='10px' src='assets/images/check.png'  hspace='20'/>
+            </span>
+        </td>
+        <td>
+            <div ng-click="addStaff(name)" style="color:deepskyblue">Add</div>
+        </td>
     </tr>
-</tbody></table>
+</table>
 
 
