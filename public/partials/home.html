@@ -63,7 +63,8 @@
 <div class="center tactics">
   <span class="smallFont">Tactical goal</span>
   <br>
-  <input class="smallFont tacticalGoalsInput" type="text" ng-model="$storage.tactic" ng-change="callUpdateTactic()" disabled />
+  <input class="smallFont tacticalGoalsInput" type="text" ng-model="$storage.dailyTactic" ng-change="callUpdateTactic(0)" disabled ng-if="section == 0" />
+  <input class="smallFont tacticalGoalsInput" type="text" ng-model="$storage.weeklyTactic" ng-change="callUpdateTactic(1)" ng-if="section == 1" disabled />
   <!-- <span class="smallFont">Earn $750 in dessert sales</span>   -->
   <br>
   <a onclick="enableInput()"><span class="smallFont" style="color:deepskyblue"><div id="editGoal">Edit Goal</div></span>
