@@ -17,14 +17,26 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
     $scope.weeklyLabels = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     $scope.staffList = [];
     $scope.fullStaff = new Staff($http);
-    $scope.staffButton = [];
-    
+    $scope.$storage.staff = {};
+    $scope.$storage.staffName = {};
 
 	//$scope.$storage.dailyGoal = new DailyGoal($http);
 	//$scope.storage.staff = '';
-	$scope.openStaff = function(staff) {
+	$scope.openStaff = function(staffName) {
+		$scope.$storage.staffName = staffName;
+		var array = staffName.split(' ');
+		var index = -1;
+		count = 0;
+		while(count < $scope.fullStaff.staff.length){
+			if($scope.fullStaff.staff[count].lastName == array[1]){
+				index = count;
+				$scope.$storage.staff = $scope.fullStaff.staff[count];
+				break;
+			}
+			count++;
+		}
 		// set data
-		$scope.$storage.staff = staff;
+		
 		location.href = '#!staff';
 	};
 	
@@ -128,7 +140,18 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			}
 		}
 	}
-
+	$scope.updateStaff = function(){
+		$http.post("/updateStaff",
+		{
+			"location" : "10 Barrel Boise",
+			"staff" : $scope.staffList
+		})
+		.then(function(data,status,headers,config)  {
+			
+		}, function(data,status,headers,config)  {
+			console.log('failure');
+		});
+	}
 	$scope.callGetGoals();
 
   	console.log($scope.$storage.goal.dailyGoal);
@@ -191,7 +214,7 @@ function Staff($http)  {
         return staff;
     });
 
-    this.__defineSetter__("staff", function () {        
+    this.__defineSetter__("staff", function (val) {        
         
     });
 }
