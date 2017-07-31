@@ -129,15 +129,7 @@ app.post("/updateStaff", function(req, res)  {
     { location: "10 Barrel Boise" },
     {
       $set: {
-        firstName: newStaff.firstName,
-        lastName: newStaff.lastName,
-        goal: newStaff.goal,
-        currentProgress: newStaff.currentProgress,
-        averageTicket: newStaff.averageTicket,
-        orders: newStaff.orders,
-        tipPercentage: newStaff.tipPercentage,
-        itemsPerOrder: newStaff.itemsPerOrder,
-        orderTime: newStaff.orderTime
+        staff : newStaff
       }
     }, function(err, doc)  {
       if (err)  {
