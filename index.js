@@ -23,8 +23,8 @@ var mongodb = require("mongodb");
 var ObjectID = mongodb.ObjectID;
 
 var GOALS_COLLECTION = "goals";
-
 var TACTICS_COLLECTION = "tactics";
+var STAFF_COLLECTION = "staff";
 
 app.use(bodyParser.json());
 
@@ -111,6 +111,42 @@ app.post("/updateTactics", function(req, res)  {
 		});
 });
 
+app.get("/staff", function(req, res) {
+  db.collection(STAFF_COLLECTION).find({}).toArray(function(err, docs) {
+    if (err) {
+      handleError(res, err.message, "Failed to get staff.");
+    } else {
+      res.status(200).json(docs);
+    }
+  });
+});
+
+app.post("/updateStaff", function(req, res)  {
+  var newStaff = req.body;
+  newStaff.createDate = new Date();
+
+  db.collection(TACTICS_COLLECTION).updateOne(
+    { location: "10 Barrel Boise" },
+    {
+      $set: {
+        firstName: newStaff.firstName,
+        lastName: newStaff.lastName,
+        goal: newStaff.goal,
+        currentProgress: newStaff.currentProgress,
+        averageTicket: newStaff.averageTicket,
+        orders: newStaff.orders,
+        tipPercentage: newStaff.tipPercentage,
+        itemsPerOrder: newStaff.itemsPerOrder,
+        orderTime: newStaff.orderTime
+      }
+    }, function(err, doc)  {
+      if (err)  {
+        handleError(res, err.message, "Failed to update Staff.");
+      } else {
+        res.status(200).end();
+      }
+    });
+});
 
 
 

@@ -16,14 +16,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
                     200];
     $scope.weeklyLabels = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     $scope.staffList = [];
-    $scope.fullStaff = [
-    					{id:'Jenny',add:'Add'}, 
-    					{id:'Logan',add:'Add'},
-    					{id:'Lauren',add:'Add'},
-    					{id:'Mike',add:'Add'},
-    					{id:'Mary',add:'Add'},
-    					{id:'Jake',add:'Add'}
-    					];
+    $scope.fullStaff = new Staff($http);
     $scope.staffButton = [];
     
 
@@ -114,18 +107,27 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
 	}
 
-	$scope.addStaff = function(name){
-		//$scope.newStaff=angular.element('#staffName').text();
-		//$scope.addName=angular.element('#addStaff').text();
-		//var newStaff = $('#staffName');
-		//$scope.staffList = ['lauren'];
-		$scope.staffList.push(name);
-//		var idx = $scope.fullStaff.findIndex(i => i.id === name);
-//		$scope.staffList[idx] = {id:name,}
-		//$scope.staffList = $scope.staffList.concat($scope.addName);
+	$scope.scheduleStaff = function(staffInfo){
+		if(staffInfo.add == "Add"){
+			staffInfo.add = "Remove";
+			$scope.staffList.push(staffInfo);
+		}
+		else{
+			staffInfo.add = "Add";
+			var index = -1;
+			count = 0;
+			while(count < $scope.staffList.length){
+				if($scope.staffList[count] == staffInfo){
+					index = count;
+					break;
+				}
+				count++;
+			}
+			if (index > -1) {
+    			$scope.staffList.splice(index, 1);
+			}
+		}
 	}
-
-
 
 	$scope.callGetGoals();
 
@@ -171,8 +173,29 @@ function Goal($http)  {
         val = parseInt(val);
         weeklyGoal = val;
     });
-
 }
+function Staff($http)  {
+	//var staff = '';
+	staff = [];
+
+	$http.get("/staff")
+	.then(function(data, status, headers, config)  {
+		staff = data.data;
+		//lastName = data.data[0].lastName;
+		
+	},function(data,status,headers,config)  {
+		console.log('fail hur');
+	});
+	this.__defineGetter__("staff", function () {
+        //return {firstName,lastName};
+        return staff;
+    });
+
+    this.__defineSetter__("staff", function () {        
+        
+    });
+}
+
 
 app.config(function($routeProvider) {
   $routeProvider
