@@ -26,6 +26,10 @@ var GOALS_COLLECTION = "goals";
 
 var TACTICS_COLLECTION = "tactics";
 
+var SALES_COLLECTION = "sales";
+
+var STAFF_COLLECTION = "staff";
+
 app.use(bodyParser.json());
 
 // Create a database variable outside of the database connection callback to reuse the connection pool in your app.
@@ -110,6 +114,28 @@ app.post("/updateTactics", function(req, res)  {
 				res.status(200).end();
 			}
 		});
+});
+
+
+app.get("/weeklySales", function(req, res)  {
+	db.collection(SALES_COLLECTION).find({}).toArray(function(err, docs)  {
+		if (err)  {
+			handleError(res, err.mesage, "Failed to get sales.");
+		} else {
+			res.status(200).json(docs);
+		}
+	});
+});
+
+app.get("/staff/:location", function(req, res)  {
+	var location = req.params.location;
+	db.collection(STAFF_COLLECTION).find({ "location": parseInt(location)}).toArray(function(err, docs)  {
+		if (err) {
+			handleError(res, err.message, "Failed to get staff.");
+		} else {
+			res.status(200).json(docs);
+		}
+	});
 });
 
 

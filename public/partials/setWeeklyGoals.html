@@ -60,7 +60,9 @@
 <div class="center">
 	Set Incentives<br />
 	<div class="boxed">
-		<textarea class="areaClass" placeholder="e.g. Sell $450 of dessert"></textarea>
+    <textarea class="areaClass tacticalGoalsInput" placeholder="e.g. Sell $450 of dessert" ng-model="$storage.weeklyTactic" ng-change="callUpdateTactic(1)"></textarea>
+
+		<!-- <textarea class="areaClass" placeholder="e.g. Sell $450 of dessert"></textarea> -->
 	</div>
 </div>
 

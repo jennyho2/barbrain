@@ -3,10 +3,40 @@ var app = angular.module("goalsApp", ["ngRoute", "ngStorage", "filters.stringUti
 app.controller('mainController', function($scope, $localStorage, $sessionStorage, $http)  {
 	$scope.$storage = $localStorage;
 	$scope.$storage.goal = new Goal($http);
+	$scope.$storage.weeklySales = new Week($http, $scope);
 	$scope.date = new Date();
 
   	$scope.options = { responsive: true };
+  	$scope.weeklyLineOptions = { responsive: true };
+  	$scope.weeklyLineSeries = [ "Sales" ];
+  	$scope.weeklyLineLabels = 
+  		[
+  			"Monday",
+  			"Tuesday",
+  			"Wednesday",
+  			"Thursday",
+  			"Friday",
+  			"Saturday",
+  			"Sunday"
+  		];
 
+  	$scope.weeklyLineData = //[ 10, 20, 30, 40, 50, 40, 20 ];
+  	[
+  		$scope.$storage.weeklySales.monday,
+  		$scope.$storage.weeklySales.tuesday,
+  		$scope.$storage.weeklySales.wednesday,
+  		$scope.$storage.weeklySales.thursday,
+  		$scope.$storage.weeklySales.friday,
+  		$scope.$storage.weeklySales.saturday,
+  		$scope.$storage.weeklySales.sunday
+  	];
+
+  	$http.get("/staff/1")
+  	.then(function(data, status, headers, config)  {
+  		console.log(data);
+  	}, function(data, status, headers, config)  {
+
+  	});
   	$scope.labels = ["Current Sales", "Difference From Goal"];
 
   	$scope.getCurrentProgress = function()  {
@@ -196,6 +226,7 @@ $scope.updateWeek = function(section)  {
 	$scope.getCurrentProgress();
 	$scope.callGetGoals();
 	$scope.callGetTactics();
+	//$scope.$storage.weeklySales.setWeeklyInfo();
 
 
 	$scope.switch = function (num) {
@@ -208,6 +239,18 @@ $scope.updateWeek = function(section)  {
 		}
 	}
 
+	$scope.getMonday = function ()  {
+		blockspring.runParsed("read-cell-google-sheets", { "file_id": "14HGE-3oSeE1KBPjnGv2C4p749-9mV0JFdvyTJAHRaE0", "worksheet_id": 0, "row": 7,
+   		"column": 2}, { "api_key": "edd7d4672aaa5a78a6dbd85af745944a" }, function(res){
+   			$scope.$storage.weeklySales.monday = parseFloat(res.params.cell);
+  		});
+  		return $scope.$storage.weeklySales.monday;
+
+	}
+		
+
+	
+
 	//$scope.data = [$scope.$storage.currentDayProgress, ($scope.$storage.goal.dailyGoal - $scope.$storage.currentDayProgress)];
 });
 
@@ -217,8 +260,8 @@ function Goal($http)  {
 
 	$http.get("/goals")
 	.then(function(data, status, headers, config)  {
-		dailyGoal = parseInt(data.data[0].dailyGoal);
-		weeklyGoal = parseInt(data.data[0].weeklyGoal);
+		dailyGoal = parseFloat(data.data[0].dailyGoal);
+		weeklyGoal = parseFloat(data.data[0].weeklyGoal);
 	},function(data,status,headers,config)  {
 		console.log('fail hur');
 	});
@@ -228,7 +271,7 @@ function Goal($http)  {
     });
 
     this.__defineSetter__("dailyGoal", function (val) {        
-        val = parseInt(val);
+        val = parseFloat(val);
         dailyGoal = val;
     });
 
@@ -237,10 +280,136 @@ function Goal($http)  {
     });
 
     this.__defineSetter__("weeklyGoal", function (val) {        
-        val = parseInt(val);
+        val = parseFloat(val);
         weeklyGoal = val;
     });
 
+}
+
+
+
+function Week($http, $scope)  {
+	var monday = 0;
+	var	tuesday = 0;
+	var	wednesday = 0;
+	var	thursday = 0;
+	var	friday = 0;
+	var	saturday = 0;
+	var	sunday = 0;
+
+	$http.get("/weeklySales")
+	.then(function(data, status, headers, config)  {
+		monday = parseFloat(data.data[0].weeklySales.monday);
+		tuesday = parseFloat(data.data[0].weeklySales.tuesday);
+		wednesday = parseFloat(data.data[0].weeklySales.wednesday);
+		thursday = parseFloat(data.data[0].weeklySales.thursday);
+		friday = parseFloat(data.data[0].weeklySales.friday);
+		saturday = parseFloat(data.data[0].weeklySales.saturday);
+		sunday = parseFloat(data.data[0].weeklySales.sunday);
+		$scope.weeklyLineData = [ monday, tuesday, wednesday, thursday, friday, saturday, sunday];
+		//$scope.$apply();
+	}, function(data,status,headers,config)  {
+		console.log("Failure grabbing weekly sales");
+	});
+		
+	// blockspring.runParsed("read-cell-google-sheets", { "file_id": "14HGE-3oSeE1KBPjnGv2C4p749-9mV0JFdvyTJAHRaE0", "worksheet_id": 0, "row": 7,
+ //   		"column": 2}, { "api_key": "edd7d4672aaa5a78a6dbd85af745944a" }, function(res){
+ //   			monday = parseFloat(res.params.cell);
+ //   			//$scope.$storage.weeklySales.monday = parseFloat(res.params.cell);
+ //   			console.log($scope.$storage.weeklySales.monday);
+ //   			$scope.$apply();
+ //  	});
+ //  	blockspring.runParsed("read-cell-google-sheets", { "file_id": "14HGE-3oSeE1KBPjnGv2C4p749-9mV0JFdvyTJAHRaE0", "worksheet_id": 0, "row": 8,
+ //   		"column": 2}, { "api_key": "edd7d4672aaa5a78a6dbd85af745944a" }, function(res){
+ //   			$scope.$storage.weeklySales.tuesday = parseFloat(res.params.cell);
+ //   			$scope.$apply();
+ //  	});
+ //  	blockspring.runParsed("read-cell-google-sheets", { "file_id": "14HGE-3oSeE1KBPjnGv2C4p749-9mV0JFdvyTJAHRaE0", "worksheet_id": 0, "row": 9,
+ //   		"column": 2}, { "api_key": "edd7d4672aaa5a78a6dbd85af745944a" }, function(res){
+ //   			$scope.$storage.weeklySales.wednesday = parseFloat(res.params.cell);
+ //   			$scope.$apply();
+ //  	});
+ //  	blockspring.runParsed("read-cell-google-sheets", { "file_id": "14HGE-3oSeE1KBPjnGv2C4p749-9mV0JFdvyTJAHRaE0", "worksheet_id": 0, "row": 10,
+ //   		"column": 2}, { "api_key": "edd7d4672aaa5a78a6dbd85af745944a" }, function(res){
+ //   			$scope.$storage.weeklySales.thursday = parseFloat(res.params.cell);
+ //   			$scope.$apply();
+ //  	});
+ //  	blockspring.runParsed("read-cell-google-sheets", { "file_id": "14HGE-3oSeE1KBPjnGv2C4p749-9mV0JFdvyTJAHRaE0", "worksheet_id": 0, "row": 11,
+ //   		"column": 2}, { "api_key": "edd7d4672aaa5a78a6dbd85af745944a" }, function(res){
+ //   			$scope.$storage.weeklySales.friday = parseFloat(res.params.cell);
+ //   			$scope.$apply();
+ //  	});
+ //  	blockspring.runParsed("read-cell-google-sheets", { "file_id": "14HGE-3oSeE1KBPjnGv2C4p749-9mV0JFdvyTJAHRaE0", "worksheet_id": 0, "row": 12,
+ //   		"column": 2}, { "api_key": "edd7d4672aaa5a78a6dbd85af745944a" }, function(res){
+ //   			$scope.$storage.weeklySales.saturday = parseFloat(res.params.cell);
+ //   			$scope.$apply();
+ //  	});
+ //  	blockspring.runParsed("read-cell-google-sheets", { "file_id": "14HGE-3oSeE1KBPjnGv2C4p749-9mV0JFdvyTJAHRaE0", "worksheet_id": 0, "row": 13,
+ //   		"column": 2}, { "api_key": "edd7d4672aaa5a78a6dbd85af745944a" }, function(res){
+ //   			$scope.$storage.weeklySales.sunday = parseFloat(res.params.cell);
+ //   			$scope.$apply();
+ //  	});
+
+
+	
+
+
+	this.__defineGetter__("monday", function () {
+        return monday;
+    });
+
+    this.__defineSetter__("monday", function (val) {        
+        val = parseFloat(val);
+        monday = val;
+    });
+    this.__defineGetter__("tuesday", function () {
+        return tuesday;
+    });
+
+    this.__defineSetter__("tuesday", function (val) {        
+        val = parseFloat(val);
+        tuesday = val;
+    });
+    this.__defineGetter__("wednesday", function () {
+        return wednesday;
+    });
+
+    this.__defineSetter__("wednesday", function (val) {        
+        val = parseFloat(val);
+        wednesday = val;
+    });
+    this.__defineGetter__("thursday", function () {
+        return thursday;
+    });
+
+    this.__defineSetter__("thursday", function (val) {        
+        val = parseFloat(val);
+        thursday = val;
+    });
+    this.__defineGetter__("friday", function () {
+        return friday;
+    });
+
+    this.__defineSetter__("friday", function (val) {        
+        val = parseFloat(val);
+        friday = val;
+    });
+    this.__defineGetter__("saturday", function () {
+        return saturday;
+    });
+
+    this.__defineSetter__("saturday", function (val) {        
+        val = parseFloat(val);
+        saturday = val;
+    });
+    this.__defineGetter__("sunday", function () {
+        return sunday;
+    });
+
+    this.__defineSetter__("sunday", function (val) {        
+        val = parseFloat(val);
+        sunday = val;
+    });
 }
 
 app.config(function($routeProvider) {
@@ -322,6 +491,11 @@ $(app).ready(function(){
         $(this).hide();
     });
 });
+
+
+function enableInput()  {
+	$('.tacticalGoalsInput').prop('disabled', function(i, v) { return !v; });
+}
 
 
 
