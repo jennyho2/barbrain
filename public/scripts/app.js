@@ -109,10 +109,12 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
 	$scope.scheduleStaff = function(staffInfo){
 		if(staffInfo.add == "Add"){
+			staffInfo.add = "Remove";
 			$scope.staffList.push(staffInfo);
 		}
 		else{
-			var index -1;
+			staffInfo.add = "Add";
+			var index = -1;
 			count = 0;
 			while(count < $scope.staffList.length){
 				if($scope.staffList[count] == staffInfo){
@@ -122,7 +124,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 				count++;
 			}
 			if (index > -1) {
-    			$scope.staffList.splice(2, 1);
+    			$scope.staffList.splice(index, 1);
 			}
 		}
 	}
