@@ -67,7 +67,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			})
 			.then(function(data,status,headers,config)  {
 				$scope.$storage.goal.weeklyGoal = parseInt(newGoal);
-				$scope.data = [$scope.$storage.goal.weeklyProgress, parseInt(newGoal)];
+				$scope.data = [$scope.$storage.goal.weeklyProgress, Math.abs($scope.$storage.goal.weeklyProgress-parseInt(newGoal))];
 				//$scope.dailyGoal = $storage.dailyGoal;
         
 			}, function(data,status,headers,config)  {
@@ -84,15 +84,11 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		$http.get("/goals")
 		.then(function(data,status,headers,config) {
 			$scope.$storage.goal.dailyGoal = parseInt(data.data[0].dailyGoal);	
-			$scope.$storage.goal.weeklyGoal = parseInt(data.data[0].weeklyGoal);	
-			$scope.data = [parseInt(data.data[0].dailyProgress), Math.abs(parseInt(data.data[0].dailyProgress)-parseInt(data.data[0].dailyGoal))];
-			$scope.min = 0;
-			$scope.max = parseInt(data.data[0].weeklyGoal) + 2000;
-			$scope.$storage.goal.weeklyProgress = parseInt(data.data[0].weeklyProgress);
 			$scope.$storage.goal.dailyProgress = parseInt(data.data[0].dailyProgress);
-      
-			// console.log("Weekly goal: " + $scope.$storage.goal.weeklyGoal);
-			// console.log("Pulling: " + data.data[0].weeklyGoal);
+			$scope.$storage.goal.dailyProjected = parseInt(data.data[0].dailyProjected);
+			$scope.$storage.goal.weeklyGoal = parseInt(data.data[0].weeklyGoal);	
+			$scope.$storage.goal.weeklyProgress = parseInt(data.data[0].weeklyProgress);
+			$scope.$storage.goal.weeklyProjected = parseInt(data.data[0].weeklyProjected);
 		},function(data, status, headers, config)  {
 			console.log('fail here');
 		});
@@ -157,7 +153,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	}
 	$scope.callGetGoals();
 
-  	console.log($scope.$storage.goal.dailyGoal);
+  	//console.log($scope.$storage.goal.dailyGoal);
 	$scope.callGetTactics();
 
 
@@ -180,6 +176,8 @@ function Goal($http)  {
 		weeklyGoal = parseInt(data.data[0].weeklyGoal);
 		weeklyProgress = parseInt(data.data[0].weeklyProgress);
 		dailyProgress = parseInt(data.data[0].dailyProgress);
+		weeklyProjected = parseInt(data.data[0].weeklyProjected);
+		dailyProjected = parseInt(data.data[0].dailyProjected);
 	},function(data,status,headers,config)  {
 		console.log('fail hur');
 	});

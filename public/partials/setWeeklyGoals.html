@@ -8,20 +8,20 @@
   </h3>
    <br>
    <div class="xlargeFont">
-  <span class="xlargeFont"><span style="color:deepskyblue">$3,841</span>/</span>       
-  		 <span>${{ $storage.goal.weeklyGoal }}
-       
-            <!-- <textarea id="weekGoalInput" ng-model="$storage.goal.weekGoal">6,000</textarea> -->
-        </span>
+  <span class="xlargeFont">
+      <span style="color:deepskyblue">${{$storage.goal.weeklyProgress}}</span>/
+  </span>       
+  		 <span>${{ $storage.goal.weeklyGoal }}</span>
   <br>
   </div>
-  <span class="smallFont">6% of goal achieved</span>
+  <span class="smallFont">{{$storage.goal.weeklyProgress / $storage.goal.weeklyGoal * 100| number:0 }}%</span>
+  <span class="smallFont">of goal achieved</span>
 
 </header>
 
 <br>
 <div class="center tactics">
-	<input type="range" min="{{min}}" max="{{max}}" id="weeklyGoalInput" ng-change="callUpdateGoals(1)" ng-model="$storage.goal.weeklyGoal" />
+	<input type="range" min="5000" max="13000" id="weeklyGoalInput" ng-change="callUpdateGoals(1)" ng-model="$storage.goal.weeklyGoal"/>
         <p class="left"> 
             Less 
             <span style="float:right;"> More </span>

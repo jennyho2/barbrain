@@ -5,38 +5,34 @@
     <span class="mediumFont">Set Daily Goal</span>
   </h3>
   <br>
-  <span class="xlargeFont"><span style="color:deepskyblue">$841</span>/ $12,000</span>
+  <span class="xlargeFont"><span style="color:deepskyblue">${{$storage.goal.dailyProgress}}</span>/${{$storage.goal.dailyGoal}}</span>
   <br>
-  <span class="smallFont">4% of goal achieved</span>
+  <span class="smallFont">{{$storage.goal.dailyProgress / $storage.goal.dailyGoal * 100| number:0 }}%</span>
+  <span class="smallFont">of goal achieved</span>
 </header>
 
 <br>
-
 <div class="center tactics">
-<br>
-  <span class="smallFont">Today's Goal</span>
-  <br>
-  <span class="smallFont">25 July 2017</span>
-  <br>
-
-
-
-    <input type="range" min="0" max="2000" value="0" step="1" ng-model="$storage.goal.dailyGoal" onchange="showValue(this.value)" />
+  <input type="range" min="0" max="1000" id="weeklyGoalInput" ng-change="callUpdateGoals(0)" ng-model="$storage.goal.dailyGoal"/>
         <p class="left"> 
             Less 
             <span style="float:right;"> More </span>
         </p>
-    <div class="xlargeFont">
-        <span>$
-            <span id="range" ng-model="$storage.goal.dailyGoal">0</span>
-        </span>
-        <script type="text/javascript">
-        function showValue(newValue)
-        {
-            var val = document.getElementById("range").innerHTML=newValue;
-        }
-        </script>
-    </div>
+        <button type="button" class="btn btn-default" ng-click="callUpdateGoals(0)">Update</button>
+</div>
+<!--
+<div class="center tactics">
+<br>
+  <span class="smallFont">Today's Goal</span>
+  <br>
+  <span class="smallFont">{{ date|date:'dd MMMM yyyy'}}</span>
+  <br>
+    <input type="range" min="1" max="2000" id="weeklyGoalInput" ng-change="callUpdateGoals(0)" ng-model="$storage.goal.dailyGoal"/>
+        <p class="left"> 
+            Less 
+            <span style="float:right;"> More </span>
+        </p>
+        <button type="button" class="btn btn-default" ng-click="callUpdateGoals(0)">Update</button>
     <table class="dividerTable">
         <tr>
             <td class="smallFont">Bars</td>
@@ -49,5 +45,7 @@
     </table>
     <br>
 </div>
+-->
+
 
 <div ng-include src="'partials/addStaff.html'" class="full"></div>
