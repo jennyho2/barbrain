@@ -1,4 +1,4 @@
-
+<span>{{$storage.staffName}}</span>
 <div class="container">
     <!-- START EDIT CONTENT -->
 
@@ -19,21 +19,23 @@
                     </tr> 
                 </thead>
                 <tbody>
-                    <tr class="tableEmployeeStat">
+                     <tr ng-repeat="staffInfo in staffList" class="tableEmployeeStat"> 
                         <td class="v-a-m">
-                            <span class="smallFont"><b>Mariane Thiel</b></span>
+                            <span class="smallFont"><b>{{staffInfo.firstName + " " + staffInfo.lastName}}</b></span>
                             <br>                          
-                            <span class="smallFont">$143.00/$200</span>
+                            <span class="smallFont">${{staffInfo.currentProgress}}/${{staffInfo.goal}}</span>
                         </td>
                         <td class="v-a-m"> 
                         <span class="smallFont">Ticket</span>
                         <br>
-                        <span class="smallFont">$12.30</span>
+                        <span class="smallFont">${{staffInfo.averageTicket}}</span>
                         </td>
-                        <td class="v-a-m"><span class="smallFont" style="color:deepskyblue" ng-click="openStaff('Mariane Thiel')">View</span>
+                        <td class="v-a-m"><span class="smallFont" style="color:deepskyblue" name="staffInfo.firstName + ' ' + staffInfo.lastName" ng-click="openStaff(name)">View</span>
                         </td>
                     </tr>
-                    <tr class="tableEmployeeStat">
+
+
+                    <!--<tr class="tableEmployeeStat">
                         <td class="v-a-m">
                             <span class="smallFont"><b>Logan Dawson</b></span>
                             <br>                          
@@ -60,7 +62,7 @@
                         </td>
                         <td class="v-a-m"><span class="smallFont" style="color:deepskyblue" ng-click="openStaff('Jennie Rice')">View</span>
                         </td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
             </table>

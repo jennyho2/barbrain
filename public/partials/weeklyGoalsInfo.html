@@ -4,7 +4,7 @@
     <span class="mediumFont">Weekly Goal Progress</span>
   </h3>
   <br>
-  <span class="xlargeFont"><span style="color:deepskyblue">${{ $storage.currentWeekProgress }}</span>/ ${{ $storage.goal.weeklyGoal}}</span>
+  <span class="xlargeFont"><span style="color:deepskyblue">£{{ $storage.currentWeekProgress }}</span>/ £{{ $storage.goal.weeklyGoal}}</span>
   <br>
   <span class="smallFont">{{ ($storage.currentWeekProgress / $storage.goal.weeklyGoal) * 100 | number:2 }}% of goal achieved</span>
 </header>
@@ -15,7 +15,7 @@
 		Today's goal {{ date | date:'dd MMMM yyyy'}}
 
 		<input type="range" min="{{min}}" max="{{max}}" id="weeklyGoalRange" ng-model="$storage.goal.dailyGoal" />
-		${{ $storage.goal.dailyGoal }}
+		£{{ $storage.goal.dailyGoal }}
 
 		<table class="dividerTable">
 			<tr>
@@ -24,8 +24,8 @@
 			</tr>
 
 			<tr>
-				<td>${{ $storage.goal.dailyGoal * 0.7 | number:2 }}</td>
-				<td>${{ $storage.goal.dailyGoal * 0.3 | number:2 }}</td>
+				<td>£{{ $storage.goal.dailyGoal * 0.7 | number:2 }}</td>
+				<td>£{{ $storage.goal.dailyGoal * 0.3 | number:2 }}</td>
 			</tr>
 		</table>
 	</div>

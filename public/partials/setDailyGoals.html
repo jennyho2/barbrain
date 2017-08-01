@@ -5,7 +5,7 @@
     <span class="mediumFont">Set Daily Goal</span>
   </h3>
   <br>
-  <span class="xlargeFont"><span style="color:deepskyblue">${{ $storage.currentDayProgress }} </span>/ ${{ $storage.goal.dailyGoal }}</span>
+  <span class="xlargeFont"><span style="color:deepskyblue">£{{ $storage.currentDayProgress }} </span>/ £{{ $storage.goal.dailyGoal }}</span>
   <br>
   <span class="smallFont">{{ $storage.currentDayProgress / $storage.goal.dailyGoal * 100 | number:2 }}% of goal achieved</span>
 </header>
@@ -27,7 +27,7 @@
             <span style="float:right;"> More </span>
         </p>
     <div class="xlargeFont">
-        <span>$
+        <span>£
             <span id="range">{{ $storage.goal.dailyGoal }}</span>
         </span>
     </div>
@@ -37,8 +37,8 @@
             <td class="smallFont">Table</td>
         </tr>
         <tr>
-            <td class="mediumFont">${{ $storage.goal.dailyGoal * 0.3 | number:2 }}</td>
-            <td class="mediumFont">${{ $storage.goal.dailyGoal * 0.7 | number:2 }}</td>
+            <td class="mediumFont">£{{ $storage.goal.dailyGoal * 0.3 | number:2 }}</td>
+            <td class="mediumFont">£{{ $storage.goal.dailyGoal * 0.7 | number:2 }}</td>
         </tr>
     </table>
     <br>

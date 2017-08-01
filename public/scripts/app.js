@@ -33,31 +33,31 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
   	$http.get("/staff/1")
   	.then(function(data, status, headers, config)  {
-  		console.log(data);
+  		$scope.$storage.staff = data.data[0].staff;
   	}, function(data, status, headers, config)  {
 
   	});
   	$scope.labels = ["Current Sales", "Difference From Goal"];
 
-  	$scope.getCurrentProgress = function()  {
-  		blockspring.runParsed("read-cell-google-sheets", { "file_id": "14HGE-3oSeE1KBPjnGv2C4p749-9mV0JFdvyTJAHRaE0", "worksheet_id": 0, "row": 1,
-   			"column": 2}, { "api_key": "edd7d4672aaa5a78a6dbd85af745944a" }, function(res){
-   				$scope.$storage.currentDayProgress = parseInt(res.params.cell);
-  		});
-  		blockspring.runParsed("read-cell-google-sheets", { "file_id": "14HGE-3oSeE1KBPjnGv2C4p749-9mV0JFdvyTJAHRaE0", "worksheet_id": 0, "row": 2,
-   			"column": 2}, { "api_key": "edd7d4672aaa5a78a6dbd85af745944a" }, function(res){
-   				$scope.$storage.currentWeekProgress = parseInt(res.params.cell);
-  		});
-  		blockspring.runParsed("read-cell-google-sheets", { "file_id": "14HGE-3oSeE1KBPjnGv2C4p749-9mV0JFdvyTJAHRaE0", "worksheet_id": 0, "row": 3,
-   			"column": 2}, { "api_key": "edd7d4672aaa5a78a6dbd85af745944a" }, function(res){
-   				$scope.$storage.projectedDayEnd = parseInt(res.params.cell);
-  		});
-  		blockspring.runParsed("read-cell-google-sheets", { "file_id": "14HGE-3oSeE1KBPjnGv2C4p749-9mV0JFdvyTJAHRaE0", "worksheet_id": 0, "row": 4,
-   			"column": 2}, { "api_key": "edd7d4672aaa5a78a6dbd85af745944a" }, function(res){
-   				$scope.$storage.projectedWeekEnd = parseInt(res.params.cell);
-  		});
+  	// $scope.getCurrentProgress = function()  {
+  	// 	blockspring.runParsed("read-cell-google-sheets", { "file_id": "14HGE-3oSeE1KBPjnGv2C4p749-9mV0JFdvyTJAHRaE0", "worksheet_id": 0, "row": 1,
+   // 			"column": 2}, { "api_key": "edd7d4672aaa5a78a6dbd85af745944a" }, function(res){
+   // 				$scope.$storage.currentDayProgress = parseInt(res.params.cell);
+  	// 	});
+  	// 	blockspring.runParsed("read-cell-google-sheets", { "file_id": "14HGE-3oSeE1KBPjnGv2C4p749-9mV0JFdvyTJAHRaE0", "worksheet_id": 0, "row": 2,
+   // 			"column": 2}, { "api_key": "edd7d4672aaa5a78a6dbd85af745944a" }, function(res){
+   // 				$scope.$storage.currentWeekProgress = parseInt(res.params.cell);
+  	// 	});
+  	// 	blockspring.runParsed("read-cell-google-sheets", { "file_id": "14HGE-3oSeE1KBPjnGv2C4p749-9mV0JFdvyTJAHRaE0", "worksheet_id": 0, "row": 3,
+   // 			"column": 2}, { "api_key": "edd7d4672aaa5a78a6dbd85af745944a" }, function(res){
+   // 				$scope.$storage.projectedDayEnd = parseInt(res.params.cell);
+  	// 	});
+  	// 	blockspring.runParsed("read-cell-google-sheets", { "file_id": "14HGE-3oSeE1KBPjnGv2C4p749-9mV0JFdvyTJAHRaE0", "worksheet_id": 0, "row": 4,
+   // 			"column": 2}, { "api_key": "edd7d4672aaa5a78a6dbd85af745944a" }, function(res){
+   // 				$scope.$storage.projectedWeekEnd = parseInt(res.params.cell);
+  	// 	});
 
-  	};
+  	// };
   	$scope.labels = ["Current Sales", "Daily Goal"];
   	//$scope.data = [, $scope.$storage.goal.dailyGoal];
 
@@ -138,6 +138,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			$scope.min = 0;
 			$scope.max = parseInt(data.data[0].weeklyGoal) + 2000;
 			$scope.$storage.goal.weeklyGoal = parseInt(data.data[0].weeklyGoal);
+      $scope.$storage.goal.currentDayProgress = parseFloat(data.data[0].dailyProgress);
+      $scope.$storage.goal.currentWeekProgress = parseFloat(data.data[0].weeklyProgress);
       
 			// console.log("Weekly goal: " + $scope.$storage.goal.weeklyGoal);
 			// console.log("Pulling: " + data.data[0].weeklyGoal);
@@ -215,6 +217,7 @@ $scope.updateWeek = function(section)  {
       $scope.min = 0;
       $scope.max = parseInt(data.data[0].weekGoal) + 2000;
       $scope.$storage.goal.weekGoal = parseInt(data.data[0].weekGoal);
+      $scope.$storage.goal.currentWeekProgress = parseFloat(data.data[0].weeklyProgress);
       
       // console.log("Weekly goal: " + $scope.$storage.goal.weeklyGoal);
       // console.log("Pulling: " + data.data[0].weeklyGoal);
@@ -223,7 +226,7 @@ $scope.updateWeek = function(section)  {
     });
 
   }
-	$scope.getCurrentProgress();
+	// $scope.getCurrentProgress();
 	$scope.callGetGoals();
 	$scope.callGetTactics();
 	//$scope.$storage.weeklySales.setWeeklyInfo();
@@ -257,11 +260,16 @@ $scope.updateWeek = function(section)  {
 function Goal($http)  {
 	var dailyGoal = 2000;
 	var weeklyGoal = 10000;
+  var currentDayProgress = 200;
+  var currentWeekProgress = 200;
 
 	$http.get("/goals")
 	.then(function(data, status, headers, config)  {
 		dailyGoal = parseFloat(data.data[0].dailyGoal);
 		weeklyGoal = parseFloat(data.data[0].weeklyGoal);
+    currentDayProgress = parseFloat(data.data[0].dailyProgress);
+    currentWeekProgress = parseFloat(data.data[0].weeklyProgress);
+
 	},function(data,status,headers,config)  {
 		console.log('fail hur');
 	});
@@ -283,6 +291,25 @@ function Goal($http)  {
         val = parseFloat(val);
         weeklyGoal = val;
     });
+
+    this.__defineGetter__("currentDayProgress", function () {
+        return currentDayProgress;
+    });
+
+    this.__defineSetter__("currentDayProgress", function (val) {        
+        val = parseFloat(val);
+        currentDayProgress = val;
+    });
+
+    this.__defineGetter__("currentWeekProgress", function () {
+        return currentWeekProgress;
+    });
+
+    this.__defineSetter__("currentWeekProgress", function (val) {        
+        val = parseFloat(val);
+        currentWeekProgress = val;
+    });
+
 
 }
 

@@ -54,9 +54,9 @@
     <th class="smallFont">Projected End</th>
   </tr>
   <tr class="center">
-    <td class="mediumFont" ng-init="callGetGoals()">${{ section == 0 ? $storage.goal.dailyGoal : $storage.goal.weeklyGoal }}</td>
-    <td class="mediumFont">${{ section == 0 ? $storage.currentDayProgress : $storage.currentWeekProgress }}</td>
-    <td class="mediumFont">${{ section == 0 ? $storage.projectedDayEnd : $storage.projectedWeekEnd }}</td>
+    <td class="mediumFont" ng-init="callGetGoals()">£{{ section == 0 ? $storage.goal.dailyGoal : $storage.goal.weeklyGoal }}</td>
+    <td class="mediumFont">£{{ section == 0 ? $storage.goal.currentDayProgress : $storage.goal.currentWeekProgress }}</td>
+    <td class="mediumFont">£{{ section == 0 ? 610 : 2000 }}</td>
   </tr>
 </table>
   <br>

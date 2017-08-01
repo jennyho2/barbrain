@@ -23,8 +23,8 @@ var mongodb = require("mongodb");
 var ObjectID = mongodb.ObjectID;
 
 var GOALS_COLLECTION = "goals";
-
 var TACTICS_COLLECTION = "tactics";
+var STAFF_COLLECTION = "staff";
 
 var SALES_COLLECTION = "sales";
 
@@ -116,6 +116,34 @@ app.post("/updateTactics", function(req, res)  {
 		});
 });
 
+app.get("/staff", function(req, res) {
+  db.collection(STAFF_COLLECTION).find({}).toArray(function(err, docs) {
+    if (err) {
+      handleError(res, err.message, "Failed to get staff.");
+    } else {
+      res.status(200).json(docs);
+    }
+  });
+});
+
+app.post("/updateStaff", function(req, res)  {
+  var newStaff = req.body;
+  newStaff.createDate = new Date();
+
+  db.collection(TACTICS_COLLECTION).updateOne(
+    { location: "10 Barrel Boise" },
+    {
+      $set: {
+        staff : newStaff
+      }
+    }, function(err, doc)  {
+      if (err)  {
+        handleError(res, err.message, "Failed to update Staff.");
+      } else {
+        res.status(200).end();
+      }
+    });
+});
 
 app.get("/weeklySales", function(req, res)  {
 	db.collection(SALES_COLLECTION).find({}).toArray(function(err, docs)  {
