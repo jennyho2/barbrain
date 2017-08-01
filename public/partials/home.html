@@ -40,6 +40,8 @@
 <div class="center">
 <span class="mediumFont" ng-if="section == 0">{{ ($storage.goal.currentDayProgress / $storage.goal.dailyGoal) * 100 | number:2 }}%</span>
 <span class="mediumFont" ng-if="section == 1">{{ ($storage.goal.currentWeekProgress / $storage.goal.weeklyGoal) * 100 | number:2 }}%</span>
+<span class="mediumFont" ng-if="section == 0">{{$storage.goal.dailyProgress / $storage.goal.dailyGoal * 100| number:0 }}%</span>
+<span class="mediumFont" ng-if="section == 1">{{$storage.goal.weeklyProgress / $storage.goal.weeklyGoal * 100| number:0 }}%</span>
 <br>
 <span class="smallFont">Of goal achieved</span>
 <br>
@@ -57,14 +59,23 @@
     <td class="mediumFont" ng-init="callGetGoals()">£{{ section == 0 ? $storage.goal.dailyGoal : $storage.goal.weeklyGoal }}</td>
     <td class="mediumFont">£{{ section == 0 ? $storage.goal.currentDayProgress : $storage.goal.currentWeekProgress }}</td>
     <td class="mediumFont">£{{ section == 0 ? 610 : 2000 }}</td>
+    <td class="mediumFont" ng-init="callGetGoals()">${{ section == 0 ? $storage.goal.dailyGoal : $storage.goal.weeklyGoal }}</td>
+    <td class="mediumFont">${{ section == 0 ? $storage.goal.dailyProgress : $storage.goal.weeklyProgress }}</td>
+    <td class="mediumFont">{{ section == 0 ? '$2,600' : '$9,856' }}</td>
   </tr>
 </table>
   <br>
+
 <div class="center tactics">
-  <span class="smallFont">Tactical goal</span>
+<br>
+  <span class="smallFont"><b>Tactical goal</b></span>
   <br>
   <input class="smallFont tacticalGoalsInput" type="text" ng-model="$storage.dailyTactic" ng-change="callUpdateTactic(0)" disabled ng-if="section == 0" />
   <input class="smallFont tacticalGoalsInput" type="text" ng-model="$storage.weeklyTactic" ng-change="callUpdateTactic(1)" ng-if="section == 1" disabled />
+  <div class="boxed ">
+      <span class="smallFont">Offer a free bottle of wine to the staffer with the highest amount of sales today to boost the wine category.</span>
+    </div>
+  <input class="smallFont tacticalGoalsInput" type="text" ng-model="$storage.tactic" ng-change="callUpdateTactic()" disabled />
   <!-- <span class="smallFont">Earn $750 in dessert sales</span>   -->
   <br>
   <a onclick="enableInput()"><span class="smallFont" style="color:deepskyblue"><div id="editGoal">Edit Goal</div></span></a>

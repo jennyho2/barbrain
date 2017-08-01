@@ -61,6 +61,9 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   	//$scope.labels = ["Current Sales", "Daily Goal"];
   	//$scope.data = [, $scope.$storage.goal.dailyGoal];
 
+  	$scope.labels = ["Current Sales", "Distance From Goal"];
+  	$scope.data = [$scope.$storage.goal.dailyProgress, $scope.$storage.goal.dailyGoal];
+
     $scope.weeklyData = [500,700,
                     3000,
                     6000,4000,
@@ -88,6 +91,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			.then(function(data,status,headers,config)  {
 				$scope.$storage.goal.dailyGoal = parseInt(newGoal);
 				$scope.data = [$scope.$storage.goal.currentDayProgress, (parseInt(newGoal) - $scope.$storage.goal.currentDayProgress)];
+				$scope.data = [$scope.$storage.goal.dailyProgress, Math.abs($scope.$storage.goal.dailyProgress-parseInt(newGoal))];
 				//$scope.dailyGoal = $storage.dailyGoal;
 			}, function(data,status,headers,config)  {
 				console.log("failure");
@@ -104,6 +108,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 				$scope.$storage.goal.weekGoal = parseInt(newGoal);
 				$scope.data = [$scope.$storage.goal.currentWeekProgress, (parseInt(newGoal) - $scope.$storage.goal.currentWeekProgress)]
 				$scope.$storage.goal.weeklyGoal = parseInt(newGoal);
+				$scope.data = [$scope.$storage.goal.weeklyProgress, parseInt(newGoal)];
 				//$scope.dailyGoal = $storage.dailyGoal;
         
 			}, function(data,status,headers,config)  {
@@ -133,13 +138,19 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.callGetGoals = function()  {
 		$http.get("/goals")
 		.then(function(data,status,headers,config) {
-			$scope.$storage.goal.dailyGoal = parseInt(data.data[0].dailyGoal);	
+			$scope.$storage.goal.dailyGoal = parseInt(data.data[0].dailyGoal);
 			$scope.data = [$scope.$storage.goal.currentDayProgress, (parseInt(data.data[0].dailyGoal) - $scope.$storage.goal.currentDayProgress)];
 			$scope.min = 0;
 			$scope.max = parseInt(data.data[0].weeklyGoal) + 2000;
 			$scope.$storage.goal.weeklyGoal = parseInt(data.data[0].weeklyGoal);
       $scope.$storage.goal.currentDayProgress = parseFloat(data.data[0].dailyProgress);
       $scope.$storage.goal.currentWeekProgress = parseFloat(data.data[0].weeklyProgress);
+			$scope.$storage.goal.weeklyGoal = parseInt(data.data[0].weeklyGoal);	
+			$scope.data = [parseInt(data.data[0].dailyProgress), Math.abs(parseInt(data.data[0].dailyProgress)-parseInt(data.data[0].dailyGoal))];
+			$scope.min = 0;
+			$scope.max = parseInt(data.data[0].weeklyGoal) + 2000;
+			$scope.$storage.goal.weeklyProgress = parseInt(data.data[0].weeklyProgress);
+			$scope.$storage.goal.dailyProgress = parseInt(data.data[0].dailyProgress);
       
 			// console.log("Weekly goal: " + $scope.$storage.goal.weeklyGoal);
 			// console.log("Pulling: " + data.data[0].weeklyGoal);
@@ -238,7 +249,9 @@ $scope.updateWeek = function(section)  {
 		} else {
 			$scope.data = [$scope.$storage.goal.currentWeekProgress, ($scope.$storage.goal.weeklyGoal - $scope.$storage.goal.currentWeekProgress)];
 			//$scope.data = [400, $scope.$storage.goal.weeklyGoal];
-
+			$scope.data = [$scope.$storage.goal.dailyProgress, Math.abs($scope.$storage.goal.dailyProgress-$scope.$storage.goal.dailyGoal)];
+		} else {
+			$scope.data = [$scope.$storage.goal.weeklyProgress, Math.abs($scope.$storage.goal.weeklyProgress-$scope.$storage.goal.weeklyGoal)];
 		}
 	}
 
@@ -265,11 +278,18 @@ function Goal($http)  {
 
 	$http.get("/goals")
 	.then(function(data, status, headers, config)  {
+<<<<<<< HEAD
 		dailyGoal = parseFloat(data.data[0].dailyGoal);
 		weeklyGoal = parseFloat(data.data[0].weeklyGoal);
     currentDayProgress = parseFloat(data.data[0].dailyProgress);
     currentWeekProgress = parseFloat(data.data[0].weeklyProgress);
 
+=======
+		dailyGoal = parseInt(data.data[0].dailyGoal);
+		weeklyGoal = parseInt(data.data[0].weeklyGoal);
+		weeklyProgress = parseInt(data.data[0].weeklyProgress);
+		dailyProgress = parseInt(data.data[0].dailyProgress);
+>>>>>>> b0e57cb5ac95a2c5bc569e8861c32b1b6ef15cb0
 	},function(data,status,headers,config)  {
 		console.log('fail hur');
 	});
