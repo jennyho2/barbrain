@@ -172,7 +172,7 @@ app.post("/webhookUpdate/:location", function(req, res)  {
   var dailySales = 90;
   var weeklySales = 200;
   db.collection(GOALS_COLLECTION).updateOne({
-    location: "1"
+    location: 1
   },
   {
     $set: {
