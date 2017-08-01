@@ -7,8 +7,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
   	$scope.options = { responsive: true };
 
-  	$scope.labels = ["Current Sales", "Daily Goal"];
-  	$scope.data = [500, $scope.$storage.goal.dailyGoal];
+  	$scope.labels = ["Current Sales", "Distance From Goal"];
+  	$scope.data = [$scope.$storage.goal.dailyProgress, $scope.$storage.goal.dailyGoal];
 
     $scope.weeklyData = [500,700,
                     3000,
@@ -52,7 +52,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			})
 			.then(function(data,status,headers,config)  {
 				$scope.$storage.goal.dailyGoal = parseInt(newGoal);
-				$scope.data = [500, parseInt(newGoal)];
+				$scope.data = [$scope.$storage.goal.dailyProgress, Math.abs($scope.$storage.goal.dailyProgress-parseInt(newGoal))];
 				//$scope.dailyGoal = $storage.dailyGoal;
 			}, function(data,status,headers,config)  {
 				console.log("failure");
@@ -67,6 +67,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			})
 			.then(function(data,status,headers,config)  {
 				$scope.$storage.goal.weeklyGoal = parseInt(newGoal);
+				$scope.data = [$scope.$storage.goal.weeklyProgress, parseInt(newGoal)];
 				//$scope.dailyGoal = $storage.dailyGoal;
         
 			}, function(data,status,headers,config)  {
@@ -83,10 +84,12 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		$http.get("/goals")
 		.then(function(data,status,headers,config) {
 			$scope.$storage.goal.dailyGoal = parseInt(data.data[0].dailyGoal);	
-			$scope.data = [500, parseInt(data.data[0].dailyGoal)];
+			$scope.$storage.goal.weeklyGoal = parseInt(data.data[0].weeklyGoal);	
+			$scope.data = [parseInt(data.data[0].dailyProgress), Math.abs(parseInt(data.data[0].dailyProgress)-parseInt(data.data[0].dailyGoal))];
 			$scope.min = 0;
 			$scope.max = parseInt(data.data[0].weeklyGoal) + 2000;
-			$scope.$storage.goal.weeklyGoal = parseInt(data.data[0].weeklyGoal);
+			$scope.$storage.goal.weeklyProgress = parseInt(data.data[0].weeklyProgress);
+			$scope.$storage.goal.dailyProgress = parseInt(data.data[0].dailyProgress);
       
 			// console.log("Weekly goal: " + $scope.$storage.goal.weeklyGoal);
 			// console.log("Pulling: " + data.data[0].weeklyGoal);
@@ -160,9 +163,9 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
 	$scope.switch = function (num) {
 		if (num == 0)  {
-			$scope.data = [400, $scope.$storage.goal.dailyGoal];
+			$scope.data = [$scope.$storage.goal.dailyProgress, Math.abs($scope.$storage.goal.dailyProgress-$scope.$storage.goal.dailyGoal)];
 		} else {
-			$scope.data = [400, $scope.$storage.goal.weeklyGoal];
+			$scope.data = [$scope.$storage.goal.weeklyProgress, Math.abs($scope.$storage.goal.weeklyProgress-$scope.$storage.goal.weeklyGoal)];
 		}
 	}
 });
@@ -175,6 +178,8 @@ function Goal($http)  {
 	.then(function(data, status, headers, config)  {
 		dailyGoal = parseInt(data.data[0].dailyGoal);
 		weeklyGoal = parseInt(data.data[0].weeklyGoal);
+		weeklyProgress = parseInt(data.data[0].weeklyProgress);
+		dailyProgress = parseInt(data.data[0].dailyProgress);
 	},function(data,status,headers,config)  {
 		console.log('fail hur');
 	});
