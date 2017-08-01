@@ -167,8 +167,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 });
 
 function Goal($http)  {
-	var dailyGoal = 2000;
-	var weeklyGoal = 10000;
+	var dailyGoal = 600;
+	var weeklyGoal = 8000;
 
 	$http.get("/goals")
 	.then(function(data, status, headers, config)  {
@@ -236,9 +236,6 @@ app.config(function($routeProvider) {
   })
   .when("/staff", {
   	templateUrl : "partials/staff.html"
-  })
-  .when("/yesterday", {
-  	templateUrl : "partials/yesterday.html"
   })
   .when("/yesterdayTab", {
   	templateUrl : "partials/yesterdayTab.html"
