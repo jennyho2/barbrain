@@ -4,9 +4,9 @@
     <span class="mediumFont">Weekly Goal Progress</span>
   </h3>
   <br>
-  <span class="xlargeFont"><span style="color:deepskyblue">£{{ $storage.currentWeekProgress }}</span>/ £{{ $storage.goal.weeklyGoal}}</span>
+  <span class="xlargeFont"><span style="color:deepskyblue">£{{ $storage.goal.currentWeekProgress }}</span>/ £{{ $storage.goal.weeklyGoal}}</span>
   <br>
-  <span class="smallFont">{{ ($storage.currentWeekProgress / $storage.goal.weeklyGoal) * 100 | number:2 }}% of goal achieved</span>
+  <span class="smallFont">{{ ($storage.goal.currentWeekProgress / $storage.goal.weeklyGoal) * 100 | number:2 }}% of goal achieved</span>
 </header>
 
 
