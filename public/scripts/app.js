@@ -58,7 +58,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   	// 	});
 
   	// };
-  	$scope.labels = ["Current Sales", "Daily Goal"];
+  	//$scope.labels = ["Current Sales", "Daily Goal"];
   	//$scope.data = [, $scope.$storage.goal.dailyGoal];
 
     $scope.weeklyData = [500,700,
@@ -87,7 +87,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			})
 			.then(function(data,status,headers,config)  {
 				$scope.$storage.goal.dailyGoal = parseInt(newGoal);
-				$scope.data = [$scope.$storage.currentDayProgress, (parseInt(newGoal) - $scope.$storage.currentDayProgress)];
+				$scope.data = [$scope.$storage.goal.currentDayProgress, (parseInt(newGoal) - $scope.$storage.goal.currentDayProgress)];
 				//$scope.dailyGoal = $storage.dailyGoal;
 			}, function(data,status,headers,config)  {
 				console.log("failure");
@@ -102,7 +102,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			})
 			.then(function(data,status,headers,config)  {
 				$scope.$storage.goal.weekGoal = parseInt(newGoal);
-				$scope.data = [$scope.$storage.currentWeekProgress, (parseInt(newGoal) - $scope.$storage.currentWeekProgress)]
+				$scope.data = [$scope.$storage.goal.currentWeekProgress, (parseInt(newGoal) - $scope.$storage.goal.currentWeekProgress)]
 				$scope.$storage.goal.weeklyGoal = parseInt(newGoal);
 				//$scope.dailyGoal = $storage.dailyGoal;
         
@@ -124,7 +124,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			"weeklyGoal": $scope.$storage.goal.weeklyGoal
 		})
 		.then(function(data,status,headers,config)  {
-			$scope.data = [$scope.$storage.currentDayProgress, $scope.$storage.goal.dailyGoal - $scope.$storage.currentDayProgress];
+			$scope.data = [$scope.$storage.goal.currentDayProgress, $scope.$storage.goal.dailyGoal - $scope.$storage.goal.currentDayProgress];
 		}, function(data,status,headers,config)  {
 			console.log("failing");
 		});
@@ -134,7 +134,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		$http.get("/goals")
 		.then(function(data,status,headers,config) {
 			$scope.$storage.goal.dailyGoal = parseInt(data.data[0].dailyGoal);	
-			$scope.data = [$scope.$storage.currentDayProgress, (parseInt(data.data[0].dailyGoal) - $scope.$storage.currentDayProgress)];
+			$scope.data = [$scope.$storage.goal.currentDayProgress, (parseInt(data.data[0].dailyGoal) - $scope.$storage.goal.currentDayProgress)];
 			$scope.min = 0;
 			$scope.max = parseInt(data.data[0].weeklyGoal) + 2000;
 			$scope.$storage.goal.weeklyGoal = parseInt(data.data[0].weeklyGoal);
@@ -234,9 +234,9 @@ $scope.updateWeek = function(section)  {
 
 	$scope.switch = function (num) {
 		if (num == 0)  {
-			$scope.data = [$scope.$storage.currentDayProgress, ($scope.$storage.goal.dailyGoal - $scope.$storage.currentDayProgress)];
+			$scope.data = [$scope.$storage.goal.currentDayProgress, ($scope.$storage.goal.dailyGoal - $scope.$storage.goal.currentDayProgress)];
 		} else {
-			$scope.data = [$scope.$storage.currentWeekProgress, ($scope.$storage.goal.weeklyGoal - $scope.$storage.currentWeekProgress)];
+			$scope.data = [$scope.$storage.goal.currentWeekProgress, ($scope.$storage.goal.weeklyGoal - $scope.$storage.goal.currentWeekProgress)];
 			//$scope.data = [400, $scope.$storage.goal.weeklyGoal];
 
 		}
