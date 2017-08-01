@@ -8,14 +8,14 @@
   </h3>
    <br>
    <div class="xlargeFont">
-  <span class="xlargeFont"><span style="color:deepskyblue">£{{ $storage.currentWeekProgress }}</span>/</span>       
+  <span class="xlargeFont"><span style="color:deepskyblue">£{{ $storage.goal.currentWeekProgress }}</span>/</span>       
   		 <span>£{{ $storage.goal.weeklyGoal }}
        
             <!-- <textarea id="weekGoalInput" ng-model="$storage.goal.weekGoal">6,000</textarea> -->
         </span>
   <br>
   </div>
-  <span class="smallFont">{{ ($storage.currentWeekProgress / $storage.goal.weeklyGoal) * 100 | number:2 }}% of goal achieved</span>
+  <span class="smallFont">{{ ($storage.goal.currentWeekProgress / $storage.goal.weeklyGoal) * 100 | number:2 }}% of goal achieved</span>
 
 </header>
 
