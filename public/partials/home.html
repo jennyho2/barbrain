@@ -38,8 +38,8 @@
 </script>
 
 <div class="center">
-<span class="mediumFont" ng-if="section == 0">{{ ($storage.currentDayProgress / $storage.goal.dailyGoal) * 100 | number:2 }}%</span>
-<span class="mediumFont" ng-if="section == 1">{{ ($storage.currentWeekProgress / $storage.goal.weeklyGoal) * 100 | number:2 }}%</span>
+<span class="mediumFont" ng-if="section == 0">{{ ($storage.goal.currentDayProgress / $storage.goal.dailyGoal) * 100 | number:2 }}%</span>
+<span class="mediumFont" ng-if="section == 1">{{ ($storage.goal.currentWeekProgress / $storage.goal.weeklyGoal) * 100 | number:2 }}%</span>
 <br>
 <span class="smallFont">Of goal achieved</span>
 <br>
