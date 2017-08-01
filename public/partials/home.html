@@ -1,3 +1,13 @@
+<script>
+$( "Goal" ).click(function() {
+      $( "Display" ).toggle( {
+        
+      });
+    $(this).text(function(i, text){
+    return text === "Edit Goal" ? "Change Goal" : "Edit Goal";
+    })
+});
+</script>
 <div ng-include src="'partials/navbar.html'"></div>
 
 <header class="progressHeader">
@@ -38,8 +48,6 @@
 </script>
 
 <div class="center">
-<span class="mediumFont" ng-if="section == 0">{{ ($storage.goal.currentDayProgress / $storage.goal.dailyGoal) * 100 | number:2 }}%</span>
-<span class="mediumFont" ng-if="section == 1">{{ ($storage.goal.currentWeekProgress / $storage.goal.weeklyGoal) * 100 | number:2 }}%</span>
 <span class="mediumFont" ng-if="section == 0">{{$storage.goal.dailyProgress / $storage.goal.dailyGoal * 100| number:0 }}%</span>
 <span class="mediumFont" ng-if="section == 1">{{$storage.goal.weeklyProgress / $storage.goal.weeklyGoal * 100| number:0 }}%</span>
 <br>
@@ -56,17 +64,25 @@
     <th class="smallFont">Projected End</th>
   </tr>
   <tr class="center">
-    <td class="mediumFont" ng-init="callGetGoals()">£{{ section == 0 ? $storage.goal.dailyGoal : $storage.goal.weeklyGoal }}</td>
-    <td class="mediumFont">£{{ section == 0 ? $storage.goal.currentDayProgress : $storage.goal.currentWeekProgress }}</td>
-    <td class="mediumFont">£{{ section == 0 ? 610 : 2000 }}</td>
     <td class="mediumFont" ng-init="callGetGoals()">${{ section == 0 ? $storage.goal.dailyGoal : $storage.goal.weeklyGoal }}</td>
     <td class="mediumFont">${{ section == 0 ? $storage.goal.dailyProgress : $storage.goal.weeklyProgress }}</td>
-    <td class="mediumFont">{{ section == 0 ? '$2,600' : '$9,856' }}</td>
+    <td class="mediumFont">${{ section == 0 ? $storage.goal.dailyProjected : $storage.goal.weeklyProjected  }}</td>
   </tr>
 </table>
   <br>
 
-<div class="center tactics">
+
+<!-- Insights -->
+
+<script>
+$( "tacticsButton" ).click(function() {
+    $(this).text(function(i, text){
+    return text === "Update" ? "Set" : "Update";
+    })
+});
+</script>
+
+<div class="tactics">
 <br>
   <span class="smallFont"><b>Tactical goal</b></span>
   <br>
@@ -79,8 +95,19 @@
   <!-- <span class="smallFont">Earn $750 in dessert sales</span>   -->
   <br>
   <a onclick="enableInput()"><span class="smallFont" style="color:deepskyblue"><div id="editGoal">Edit Goal</div></span></a>
+  <div class="center">
+    <span class="smallFont"><b>Incentives</b></span>
+    <br>
+      <textarea class="smallFont boxed">Offer a free bottle of wine to the staffer with the highest amount of sales today to boost the wine category</textarea> 
+      <br>
+      <!--<a onclick="enableInput()"><span class="smallFont" style="color:deepskyblue"><div id="editGoal">Set Tactics</div></span>-->
+      <div type="button" id="tacticsButton" class="btn btn-default" ng-click="callUpdateTactic">Update</div>
 
+  </div>
+  <br>
 </div>
+
+
 
 
 <div ng-include src="'partials/staffTable.html'"></div>
@@ -101,8 +128,8 @@
         <h4 class="modal-title">Adjust {{ section == 0 ? 'Today\'s' : 'This Week\'s' }} Goal</h4>
       </div>
       <div class="modal-body">
-        <input type="range" min="{{min}}" max="{{max}}" id="weeklyGoalRange" ng-if="section == 0" ng-model="$storage.goal.dailyGoal" />
-        <input type="range" min="{{min}}" max="{{max}}" id="weeklyGoalRange" ng-if="section == 1" ng-model="$storage.goal.weeklyGoal" />
+        <input type="range" min="{{$storage.goal.dailyProjected-300}}" max="{{$storage.goal.dailyProjected+300}}" id="weeklyGoalRange" ng-if="section == 0" ng-model="$storage.goal.dailyGoal" />
+        <input type="range" min="{{$storage.goal.weeklyProjected-2000}}" max="{{$storage.goal.weeklyProjected+2000}}" id="weeklyGoalRange" ng-if="section == 1" ng-model="$storage.goal.weeklyGoal" />
         <input type="number" id="weeklyGoalInput" ng-if="section == 0" ng-model="$storage.goal.dailyGoal" />
         <input type="number" id="weeklyGoalInput" ng-if="section == 1" ng-model="$storage.goal.weeklyGoal" />
       </div>

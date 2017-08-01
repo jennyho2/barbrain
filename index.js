@@ -166,6 +166,37 @@ app.get("/staff/:location", function(req, res)  {
 	});
 });
 
+app.post("/webhookUpdate/:location", function(req, res)  {
+  var location = req.params.location;
+
+  var dailySales = 90;
+  var weeklySales = 200;
+  db.collection(GOALS_COLLECTION).updateOne({
+    location: "1"
+  },
+  {
+    $set: {
+      dailyProgress : dailySales,
+      weeklyProgress: weeklySales
+    }
+  }, function(err, doc)  {
+    if (err)  {
+      handleError(res, err.message, "Failed to update sales.");
+    } else {
+      res.status(200).end();
+    }
+  });
+  // poll Omnivore API to grab all tickets for today & accumulate total sales
+  // poll Omnivore API to grab all tickets for week & accumulate total sales
+  // store daily sales and then just add for week
+  // then update database
+
+});
+
+app.get("/webhookUpdate/:location", function(req, res)  {
+  res.send("c6d1b589165541368d1faccee55a3163").end();
+});
+
 
 
 

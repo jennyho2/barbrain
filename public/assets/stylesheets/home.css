@@ -78,6 +78,9 @@
     padding: 10px;
     background-color: #fff;
 }
+textarea {
+    resize: none;
+}
 .boxedColor {
     margin: auto;
     width: 30%;

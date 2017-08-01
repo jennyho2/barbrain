@@ -108,7 +108,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 				$scope.$storage.goal.weekGoal = parseInt(newGoal);
 				$scope.data = [$scope.$storage.goal.currentWeekProgress, (parseInt(newGoal) - $scope.$storage.goal.currentWeekProgress)]
 				$scope.$storage.goal.weeklyGoal = parseInt(newGoal);
-				$scope.data = [$scope.$storage.goal.weeklyProgress, parseInt(newGoal)];
+				$scope.data = [$scope.$storage.goal.weeklyProgress, Math.abs($scope.$storage.goal.weeklyProgress-parseInt(newGoal))];
 				//$scope.dailyGoal = $storage.dailyGoal;
         
 			}, function(data,status,headers,config)  {
@@ -145,15 +145,12 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			$scope.$storage.goal.weeklyGoal = parseInt(data.data[0].weeklyGoal);
       $scope.$storage.goal.currentDayProgress = parseFloat(data.data[0].dailyProgress);
       $scope.$storage.goal.currentWeekProgress = parseFloat(data.data[0].weeklyProgress);
-			$scope.$storage.goal.weeklyGoal = parseInt(data.data[0].weeklyGoal);	
-			$scope.data = [parseInt(data.data[0].dailyProgress), Math.abs(parseInt(data.data[0].dailyProgress)-parseInt(data.data[0].dailyGoal))];
-			$scope.min = 0;
-			$scope.max = parseInt(data.data[0].weeklyGoal) + 2000;
-			$scope.$storage.goal.weeklyProgress = parseInt(data.data[0].weeklyProgress);
+			$scope.$storage.goal.dailyGoal = parseInt(data.data[0].dailyGoal);	
 			$scope.$storage.goal.dailyProgress = parseInt(data.data[0].dailyProgress);
-      
-			// console.log("Weekly goal: " + $scope.$storage.goal.weeklyGoal);
-			// console.log("Pulling: " + data.data[0].weeklyGoal);
+			$scope.$storage.goal.dailyProjected = parseInt(data.data[0].dailyProjected);
+			$scope.$storage.goal.weeklyGoal = parseInt(data.data[0].weeklyGoal);	
+			$scope.$storage.goal.weeklyProgress = parseInt(data.data[0].weeklyProgress);
+			$scope.$storage.goal.weeklyProjected = parseInt(data.data[0].weeklyProjected);
 		},function(data, status, headers, config)  {
 			console.log('fail here');
 		});
@@ -239,6 +236,7 @@ $scope.updateWeek = function(section)  {
   }
 	// $scope.getCurrentProgress();
 	$scope.callGetGoals();
+  	//console.log($scope.$storage.goal.dailyGoal);
 	$scope.callGetTactics();
 	//$scope.$storage.weeklySales.setWeeklyInfo();
 
@@ -250,8 +248,6 @@ $scope.updateWeek = function(section)  {
 			$scope.data = [$scope.$storage.goal.currentWeekProgress, ($scope.$storage.goal.weeklyGoal - $scope.$storage.goal.currentWeekProgress)];
 			//$scope.data = [400, $scope.$storage.goal.weeklyGoal];
 			$scope.data = [$scope.$storage.goal.dailyProgress, Math.abs($scope.$storage.goal.dailyProgress-$scope.$storage.goal.dailyGoal)];
-		} else {
-			$scope.data = [$scope.$storage.goal.weeklyProgress, Math.abs($scope.$storage.goal.weeklyProgress-$scope.$storage.goal.weeklyGoal)];
 		}
 	}
 
@@ -278,18 +274,16 @@ function Goal($http)  {
 
 	$http.get("/goals")
 	.then(function(data, status, headers, config)  {
-<<<<<<< HEAD
 		dailyGoal = parseFloat(data.data[0].dailyGoal);
 		weeklyGoal = parseFloat(data.data[0].weeklyGoal);
     currentDayProgress = parseFloat(data.data[0].dailyProgress);
     currentWeekProgress = parseFloat(data.data[0].weeklyProgress);
-
-=======
 		dailyGoal = parseInt(data.data[0].dailyGoal);
 		weeklyGoal = parseInt(data.data[0].weeklyGoal);
 		weeklyProgress = parseInt(data.data[0].weeklyProgress);
 		dailyProgress = parseInt(data.data[0].dailyProgress);
->>>>>>> b0e57cb5ac95a2c5bc569e8861c32b1b6ef15cb0
+		weeklyProjected = parseInt(data.data[0].weeklyProjected);
+		dailyProjected = parseInt(data.data[0].dailyProjected);
 	},function(data,status,headers,config)  {
 		console.log('fail hur');
 	});
