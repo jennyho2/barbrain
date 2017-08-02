@@ -11,28 +11,32 @@ $( "button" ).click(function() {
 
 <div class="container">
     <!-- START EDIT CONTENT -->
-    <div class="row">
-        <div>
+    
             <!-- START Basic Example Table -->
             <table class="table">
-            <table class="tableEmployeeStat">
-                <th style="text-align:center;"">
-                    Staff
-                </th>
-                <th style="text-align:center;">
-                    Select if <br>Working today
-                </th>
+            
+                <thead>
+                    <tr class = "tableEmployeeStat">
+                        <td>
+                        <br>
+                            <strong>Staff</strong>
+                        </td>
+                        <td>
+                            <strong>Select if <br>Working today</strong>
+                        </td>
+                </thead>
                 <tbody>
-                     <tr ng-repeat="staffInfo in fullStaff.staff" class="tableEmployeeStat"> 
+                    <tr ng-repeat="staffInfo in fullStaff.staff" class="tableEmployeeStat"> 
                         <td class="v-a-m center">
-                            <table class = "center">                    
-                                <td class = "center">
+                                               
+                               <!-- <td class = "center">
                                     <img height="30px" src="assets/images/empty-profile.png"  hspace="20"/>
-                                </td>
-                                <td class = "center">
+                                </td> 
+                                -->
+                                <span>
                                     {{staffInfo.firstName + " " + staffInfo.lastName}}
-                                </td>
-                            </table>
+                                </span>
+                            
                         </td>
                         
                         <td class="v-a-m">
@@ -52,9 +56,8 @@ $( "button" ).click(function() {
                         </td>               
                     </tr>
                 </tbody>
+            
             </table>
-            </table>
-        </div>
-    </div>
+    
 </div>
 <button type="button" class="btn btn-default" ng-click="updateStaff()">Update</button>
