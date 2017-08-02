@@ -93,7 +93,7 @@ app.get("/tactics", function(req, res) {
   });
 });
 
-app.post("/updateTactics", function(req, res)  {
+app.put("/updateTactics", function(req, res)  {
 	var newTactics = req.body;
 	newTactics.createDate = new Date();
 
@@ -101,7 +101,7 @@ app.post("/updateTactics", function(req, res)  {
 		{ location: "10 Barrel Boise" },
 		{
 			$set: {
-				dailyTactics: "newTactics.tactics.dailyTactics",
+				dailyTactics: newTactics.tactics.dailyTactics,
         weeklyTactics: newTactics.tactics.weeklyTactics
 			}
 		}, function(err, doc)  {

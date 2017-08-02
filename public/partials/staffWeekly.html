@@ -1,0 +1,52 @@
+<div class="full">
+	<a ng-click="back()">
+		<img src="assets/images/backArrow.png" height="20px" width="20px" />
+	</a>
+	<div class="center">
+		<img height="100px" src="assets/images/{{$storage.staff.firstName + $storage.staff.lastName}}.png" />
+		<h2>{{$storage.staff.firstName + " " + $storage.staff.lastName}}</h2>
+		<span class="smallFont">${{$storage.staff.weekly.currentProgress}}/${{$storage.staff.weekly.goal}}</span>
+		<br>
+		<span class="smallFont">ON TRACK</span>
+	</div>
+	<br>
+	<div class="grayBKG">
+	<br>
+		<table class="dividerTable">
+			<tr>
+				<td class="smallFont">Goal</td>
+				<td class="smallFont">Achieved</td>
+			</tr>
+			<tr class="spaceUnder">
+				<td>${{$storage.staff.weekly.goal}}</td>
+				<td>${{$storage.staff.weekly.currentProgress}}</td>
+			</tr>
+			<tr>
+				<td class="smallFont">Ticket</td>
+				<td class="smallFont">Orders</td>
+			</tr>
+			<tr class="spaceUnder">
+				<td>${{$storage.staff.weekly.averageTicket}}</td>
+				<td>{{$storage.staff.weekly.orders}}</td>
+			</tr>
+			<tr>
+				<td class="smallFont">Tip</td>
+				<td class="smallFont">Item / Order</td>
+			</tr>
+			<tr class="spaceUnder">
+				<td>{{$storage.staff.weekly.tipPercentage}}%</td>
+				<td>{{$storage.staff.weekly.itemsPerOrder}}</td>
+			</tr>
+			<tr>
+				<td class="smallFont">Order Time</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>{{$storage.staff.weekly.orderTime}} min</td>
+				<td></td>
+			</tr>
+
+		</table>
+	</div>
+
+</div>

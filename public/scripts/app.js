@@ -4,7 +4,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.$storage = $localStorage;
 	$scope.$storage.goal = new Goal($http);
 	$scope.date = new Date();
-
+	//SET THE FUCKING LOCATION
+	$scope.location = 1;
   	$scope.options = { responsive: true };
 
   	$scope.labels = ["Current Sales", "Distance From Goal"];
@@ -24,7 +25,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
 	//$scope.$storage.dailyGoal = new DailyGoal($http);
 	//$scope.storage.staff = '';
-	$scope.openStaff = function(staffName) {
+	$scope.openStaff = function(staffName,day) {
 		$scope.$storage.staffName = staffName;
 		var array = staffName.split(' ');
 		var index = -1;
@@ -38,8 +39,16 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			count++;
 		}
 		// set data
-		
-		location.href = '#!staff';
+		if(day==0){
+			location.href = '#!staff';
+		}
+		else if(day==1){
+			location.href = '#!staffYesterday';
+		}
+		else{
+			location.href = '#!staffWeekly';
+			console.log("hi");
+		}
 	};
 	
 	$scope.callUpdateGoals = function(section)  {
@@ -112,7 +121,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 				{
 					"location": "10 Barrel Boise",
 					"dailyTactics": newTactic,
-					"weeklyTactics": $scope.$storage.fullTactics.tactics.weeklyTactics
+					"weeklyTactics": $scope.$storage.fullTactics.tactics[0].dailyTactics
 			})
 			.then(function(data,status,headers,config)  {
 				//$scope.dailyGoal = $storage.dailyGoal;
@@ -120,7 +129,19 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 				console.log("failure");
 			});
 		}
-
+		if (section == 1)  {
+			$http.post("/updateGoals", 
+				{
+					"location": "10 Barrel Boise",
+					"dailyTactics": $scope.$storage.fullTactics.tactics[0].weeklyTactics,
+					"weeklyTactics": newTactic
+			})
+			.then(function(data,status,headers,config)  {
+				//$scope.dailyGoal = $storage.dailyGoal;
+			}, function(data,status,headers,config)  {
+				console.log("failure");
+			});
+		}
 
 	}
 
@@ -172,7 +193,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	}
 
 	$scope.staffLocation = function(staff) {
-    	return staff.location === 1;
+    	return staff.location === 2;
 	}
 	$scope.tacticsLocation = function(tactics) {
     	return tactics.location === 1;
@@ -263,7 +284,7 @@ function Tactics($http)  {
 
 	$http.get("/tactics")
 	.then(function(data, status, headers, config)  {
-		tactics = data.data[0];
+		tactics = data.data;
 		//lastName = data.data[0].lastName;
 		
 	},function(data,status,headers,config)  {
@@ -317,6 +338,12 @@ app.config(function($routeProvider) {
   })
     .when("/lastWeek", {
     templateUrl : "partials/lastWeek.html"
+  })
+    .when("/staffYesterday", {
+  	templateUrl : "partials/staffYesterday.html"
+  })
+    .when("/staffWeekly", {
+  	templateUrl : "partials/staffWeekly.html"
   });
     
 });

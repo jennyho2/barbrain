@@ -1,4 +1,3 @@
-
 <div class="container">
     <!-- START EDIT CONTENT -->
 
@@ -23,14 +22,14 @@
                         <td class="v-a-m">
                             <span class="smallFont"><b>{{staffInfo.firstName + " " + staffInfo.lastName}}</b></span>
                             <br>                          
-                            <span class="smallFont">${{staffInfo.currentProgress}}/${{staffInfo.goal}}</span>
+                            <span class="smallFont">${{staffInfo.yesterday.currentProgress}}/${{staffInfo.yesterday.goal}}</span>
                         </td>
                         <td class="v-a-m"> 
                         <span class="smallFont">Ticket</span>
                         <br>
-                        <span class="smallFont">${{staffInfo.averageTicket}}</span>
+                        <span class="smallFont">${{staffInfo.yesterday.averageTicket}}</span>
                         </td>
-                        <td class="v-a-m"><span class="smallFont" style="color:deepskyblue" ng-click="openStaff(staffInfo.firstName + ' ' + staffInfo.lastName,0)">View</span>
+                        <td class="v-a-m"><span class="smallFont" style="color:deepskyblue" ng-click="openStaff(staffInfo.firstName + ' ' + staffInfo.lastName, 1)">View</span>
                         </td>
                     </tr>
                 </tbody>
