@@ -173,6 +173,9 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
 	$scope.staffLocation = function(staff) {
     	return staff.location === 1;
+	}
+	$scope.tacticsLocation = function(tactics) {
+    	return tactics.location === 1;
 	}	
 });
 
