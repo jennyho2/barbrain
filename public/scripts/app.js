@@ -10,7 +10,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
   	$scope.labels = ["Current Sales", "Distance From Goal"];
   	$scope.data = [$scope.$storage.goal.dailyProgress, $scope.$storage.goal.dailyGoal];
-
+  	$scope.lastweekData = [547.60,1931.64,0,0,0,0,0];
     $scope.weeklyData = [500,700,
                     3000,
                     6000,4000,

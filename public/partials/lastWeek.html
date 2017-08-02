@@ -11,24 +11,11 @@
 
 </header>
 
-<div class="chartHolder">
-  <canvas id="myChart" width="200" height="200"></canvas>
+<div class="chartHolder padding">
+  <canvas id="line" class="chart chart-line" chart-data="lastweekData" 
+      chart-labels="weeklyLabels" chart-options="options" >
+  </canvas> 
 </div>
-
-<script>
-  var ctx = document.getElementById("myChart").getContext('2d');
-  var myChart = new Chart(ctx, {
-      type: 'line',
-      data: {
-          datasets: [{
-              data: [40, 60]
-          }]
-      },
-      options: {
-        responsive: false
-      }
-  });
-</script>
 
 <table class="dividerTable" ng-init="section = 0">
   <tr class="smallFont bottomLine">
