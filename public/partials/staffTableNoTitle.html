@@ -1,52 +1,36 @@
+
 <div class="container">
     <!-- START EDIT CONTENT -->
 
     <div class="row">
-        <div">
+        <div>
+        <br>
             <!-- START Basic Example Table -->
             <table class="table">
             <table class="tableEmployeeStat">
+              <thead>
+                    <tr class="tableEmployeeStat">
+                        <td class="v-a-m smallFont"><strong>Staff</strong>
+                        </td>
+                        <td class="v-a-m smallFont"><strong>Avg. Ticket</strong>
+                        </td>
+                        <td class="v-a-m smallFont"><strong>Order #</strong>
+                        </td>
+                    </tr> 
+                </thead>
                 <tbody>
-                    <tr class="tableEmployeeStat">
+                     <tr ng-repeat="staffInfo in fullStaff.staff | filter:staffLocation" class="tableEmployeeStat"> 
                         <td class="v-a-m">
-                            <span class="smallFont"><b>Mariane Thiel</b></span>
+                            <span class="smallFont"><b>{{staffInfo.firstName + " " + staffInfo.lastName}}</b></span>
                             <br>                          
-                            <span class="smallFont">$143.00/$200</span>
+                            <span class="smallFont">${{staffInfo.currentProgress}}/${{staffInfo.goal}}</span>
                         </td>
                         <td class="v-a-m"> 
                         <span class="smallFont">Ticket</span>
                         <br>
-                        <span class="smallFont">$12.30</span>
+                        <span class="smallFont">${{staffInfo.averageTicket}}</span>
                         </td>
-                        <td class="v-a-m"><span class="smallFont" style="color:deepskyblue" ng-click="openStaff('Mariane Thiel')">View</span>
-                        </td>
-                    </tr>
-                    <tr class="tableEmployeeStat">
-                        <td class="v-a-m">
-                            <span class="smallFont"><b>Logan Dawson</b></span>
-                            <br>                          
-                            <span class="smallFont">$99.58/$300</span>
-                        </td>
-                        <td class="v-a-m"> 
-                        <span class="smallFont">Ticket</span>
-                        <br>
-                        <span class="smallFont">$14.30</span>
-                        </td>
-                        <td class="v-a-m"><span class="smallFont" style="color:deepskyblue" ng-click="openStaff('Logan Dawson')">View</span>
-                        </td>
-                    </tr>
-                    <tr class="tableEmployeeStat">
-                        <td class="v-a-m">
-                            <span class="smallFont"><b>Jennie Rice</b></span>
-                            <br>                          
-                            <span class="smallFont">$289.58/$600</span>
-                        </td>
-                        <td class="v-a-m"> 
-                        <span class="smallFont">Ticket</span>
-                        <br>
-                        <span class="smallFont">$12.30</span>
-                        </td>
-                        <td class="v-a-m"><span class="smallFont" style="color:deepskyblue" ng-click="openStaff('Jennie Rice')">View</span>
+                        <td class="v-a-m"><span class="smallFont" style="color:deepskyblue" ng-click="openStaff(staffInfo.firstName + ' ' + staffInfo.lastName)">View</span>
                         </td>
                     </tr>
                 </tbody>
@@ -55,4 +39,3 @@
         </div>
     </div>
 </div>
-

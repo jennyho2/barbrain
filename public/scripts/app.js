@@ -17,6 +17,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
     $scope.weeklyLabels = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     $scope.staffList = [];
     $scope.fullStaff = new Staff($http);
+    $scope.fullSales = new Sales($http);
+    $scope.$storage.fullTactics = new Tactics($http);
     $scope.$storage.staff = {};
     $scope.$storage.staffName = {};
 
@@ -103,18 +105,22 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		});
 	}
 
-	$scope.callUpdateTactic = function()  {
-		var newTactic = $('.tacticalGoalsInput').val();
-		$http.post("/updateTactics",
-		{
-			"location": "10 Barrel Boise",
-			"tactic": newTactic
-		})
-		.then(function(data,status,headers,config)  {
-			$scope.$storage.tactic = newTactic;
-		}, function(data,status,headers,config)  {
-			console.log('failure');
-		});
+	$scope.callUpdateTactic = function(section)  {
+		var newTactic = $('#tacticalGoalsInput').val();
+		if (section == 0)  {
+			$http.post("/updateGoals", 
+				{
+					"location": "10 Barrel Boise",
+					"dailyTactics": newTactic,
+					"weeklyTactics": $scope.$storage.fullTactics.tactics.weeklyTactics
+			})
+			.then(function(data,status,headers,config)  {
+				//$scope.dailyGoal = $storage.dailyGoal;
+			}, function(data,status,headers,config)  {
+				console.log("failure");
+			});
+		}
+
 
 	}
 
@@ -164,6 +170,10 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			$scope.data = [$scope.$storage.goal.weeklyProgress, Math.abs($scope.$storage.goal.weeklyProgress-$scope.$storage.goal.weeklyGoal)];
 		}
 	}
+
+	$scope.staffLocation = function(staff) {
+    	return staff.location === 1;
+	}	
 });
 
 function Goal($http)  {
@@ -199,7 +209,7 @@ function Goal($http)  {
         val = parseInt(val);
         weeklyGoal = val;
     });
-}
+};
 function Staff($http)  {
 	//var staff = '';
 	staff = [];
@@ -220,7 +230,51 @@ function Staff($http)  {
     this.__defineSetter__("staff", function (val) {        
         
     });
-}
+};
+
+function Sales($http)  {
+	//var staff = '';
+	sales = [];
+
+	$http.get("/sales")
+	.then(function(data, status, headers, config)  {
+		sales = data.data[0];
+		//lastName = data.data[0].lastName;
+		
+	},function(data,status,headers,config)  {
+		console.log('fail sales');
+	});
+	this.__defineGetter__("sales", function () {
+        //return {firstName,lastName};
+        return sales;
+    });
+
+    this.__defineSetter__("sales", function (val) {        
+        
+    }); 
+};
+
+function Tactics($http)  {
+	//var staff = '';
+	tactics = [];
+
+	$http.get("/tactics")
+	.then(function(data, status, headers, config)  {
+		tactics = data.data[0];
+		//lastName = data.data[0].lastName;
+		
+	},function(data,status,headers,config)  {
+		console.log('fail tactics');
+	});
+	this.__defineGetter__("tactics", function () {
+        //return {firstName,lastName};
+        return tactics;
+    });
+
+    this.__defineSetter__("tactics", function (val) {        
+        
+    });
+};
 
 
 app.config(function($routeProvider) {
@@ -261,6 +315,7 @@ app.config(function($routeProvider) {
     .when("/lastWeek", {
     templateUrl : "partials/lastWeek.html"
   });
+    
 });
 
 app.run(function ($rootScope, $location, $localStorage) {
