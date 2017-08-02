@@ -117,7 +117,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.callUpdateTactic = function(section)  {
 		var newTactic = $('#tacticalGoalsInput').val();
 		if (section == 0)  {
-			$http.post("/updateGoals", 
+			$http.post("/updateTactics", 
 				{
 					"location": "10 Barrel Boise",
 					"dailyTactics": newTactic,
@@ -130,7 +130,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			});
 		}
 		if (section == 1)  {
-			$http.post("/updateGoals", 
+			$http.post("/updateTactics", 
 				{
 					"location": "10 Barrel Boise",
 					"dailyTactics": $scope.$storage.fullTactics.tactics[0].weeklyTactics,
@@ -208,10 +208,10 @@ function Goal($http)  {
 	.then(function(data, status, headers, config)  {
 		dailyGoal = parseInt(data.data[0].dailyGoal);
 		weeklyGoal = parseInt(data.data[0].weeklyGoal);
-		weeklyProgress = parseInt(data.data[0].weeklyProgress);
-		dailyProgress = parseInt(data.data[0].dailyProgress);
-		weeklyProjected = parseInt(data.data[0].weeklyProjected);
-		dailyProjected = parseInt(data.data[0].dailyProjected);
+		//weeklyProgress = parseInt(data.data[0].weeklyProgress);
+		//dailyProgress = parseInt(data.data[0].dailyProgress);
+		//weeklyProjected = parseInt(data.data[0].weeklyProjected);
+		//dailyProjected = parseInt(data.data[0].dailyProjected);
 	},function(data,status,headers,config)  {
 		console.log('fail hur');
 	});

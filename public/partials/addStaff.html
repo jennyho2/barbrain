@@ -8,145 +8,7 @@ $( "button" ).click(function() {
     })
 });
 </script>
-<!--
-<div class="container">
-    
-    <div class="row">
-        <div">
-    
-            <table class="table">
-            <table class="tableEmployeeStat">
-                <th style="text-align:center;"">
-                    Staff
-                </th>
-                <th style="text-align:center;">
-                    Select if <br>Working today
-                </th>
-                <tbody>
-                    <tr class="tableEmployeeStat">
-                        <td class="v-a-m">
-                            <table>
-                                <td>
-                                    <img height="30px" src="assets/images/empty-profile.png" hspace="20" />
-                                </td>
-                                <td>
-                                    <span class="smallFont"><b>Mariane Thiel</b></span>   
-                                </td>
-                            </table>                 
-                        </td>
-                        <td class="v-a-m">
-                            <table class="subTable">
-                                <td>
-                                    <span id="staff1" hidden="true"><img height='10px' src='assets/images/check.png'  hspace='20'/>
-                                    </span>
-                                </td>
-                                <td>
-                                    <div id="clickme1" style="color:deepskyblue">Add</div>
-                                </td>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr class="tableEmployeeStat">
-                        <td class="v-a-m">
-                            <table>
-                                <td>
-                                    <img height="30px" src="assets/images/empty-profile.png"  hspace="20"/>
-                                </td>
-                                <td>
-                                    <span class="smallFont"><b>Logan Dawson</b></span>
-                                </td>
-                            </table>
-                        </td>
-                        <td class="v-a-m">
-                             <table class="subTable">
-                                <td>
-                                    <span id="staff2" hidden="true"><img height='10px' src='assets/images/check.png'  hspace='20'/>
-                                    </span>
-                                </td>
-                                <td>
-                                    <div id="clickme2" style="color:deepskyblue">Add</div>
-                                </td>
-                            </table>  
-                        </td>
-                    </tr>
-                    <tr class="tableEmployeeStat">
-                        <td class="v-a-m">
-                            <table>
-                                <td>
-                                    <img height="30px" src="assets/images/empty-profile.png"  hspace="20"/>
-                                </td>
-                                <td>
-                                    <span class="smallFont"><b>Logan Dawson</b></span>
-                                </td>
-                            </table>
-                        </td>
-                        <td class="v-a-m">
-                             <table class="subTable">
-                                <td>
-                                    <span id="staff3" hidden="true"><img height='10px' src='assets/images/check.png'  hspace='20'/>
-                                    </span>
-                                </td>
-                                <td>
-                                    <div id="clickme3" style="color:deepskyblue">Add</div>
-                                </td>
-                            </table>  
-                        </td>
-                       
-                    </tr>
-                    <tr class="tableEmployeeStat">
-                        <td class="v-a-m">
-                            <table>
-                                <td>
-                                    <img height="30px" src="assets/images/empty-profile.png"  hspace="20"/>
-                                </td>
-                                <td>
-                                    <div class="smallFont" id="staffName">Logan Dawson</div>
-                                </td>
-                            </table>
-                        </td>
-                        <td class="v-a-m">
-                             <table class="subTable">
-                                <td>
-                                    <span id="staff3" hidden="true"><img height='10px' src='assets/images/check.png'  hspace='20'/>
-                                    </span>
-                                </td>
-                                <td>
-                                    <div ng-click="addStaff()" style="color:deepskyblue">Add</div>
-                                </td>
-                            </table>  
-                        </td>
-                        
-                    </tr>
-                    <tr class="tableEmployeeStat">
-                        <td class="v-a-m">
-                            <table>
-                                <td>
-                                    <img height="30px" src="assets/images/empty-profile.png"  hspace="20"/>
-                                </td>
-                                <td>
-                                    <div class="smallFont" id="staffName">Jenny</div>
-                                </td>
-                            </table>
-                        </td>
-                        <td class="v-a-m">
-                             <table class="subTable">
-                                <td>
-                                    <span id="staff3" hidden="true"><img height='10px' src='assets/images/check.png'  hspace='20'/>
-                                    </span>
-                                </td>
-                                <td>
-                                    <div ng-click="addStaff()" style="color:deepskyblue">Add</div>
-                                </td>
-                            </table>  
-                        </td>
-                        
-                    </tr>
-                </tbody>
-            </table>
-            </table>
-        </div>
-    </div>
-</div> -->
+
 <div class="container">
     <!-- START EDIT CONTENT -->
     <div class="row">
@@ -162,12 +24,12 @@ $( "button" ).click(function() {
                 </th>
                 <tbody>
                      <tr ng-repeat="staffInfo in fullStaff.staff" class="tableEmployeeStat"> 
-                        <td class="v-a-m">
-                            <table>                    
-                                <td>
+                        <td class="v-a-m center">
+                            <table class = "center">                    
+                                <td class = "center">
                                     <img height="30px" src="assets/images/empty-profile.png"  hspace="20"/>
                                 </td>
-                                <td>
+                                <td class = "center">
                                     {{staffInfo.firstName + " " + staffInfo.lastName}}
                                 </td>
                             </table>
