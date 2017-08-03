@@ -285,10 +285,7 @@ app.post("/updateSales", function(req, res)  {
     });
 });
 
-app.get("/lookupLavu/:location", function(req, res)  {
-
-
-
+app.get("/lookupYesterdayLavu", function(req, res)  {
 
   var api_url = "https://api.poslavu.com/cp/reqserv/";
     var datanameString = "cerveza_patago13";  
@@ -299,11 +296,57 @@ app.get("/lookupLavu/:location", function(req, res)  {
 
     
     //var json_obj = JSON.parse(options);
+    var yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    yesterday.setHours(-4,0,0,0);
+    var today = new Date();
+    today.setHours(-4,0,0,0);
 
-    request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:tableString,valid_xml:1,limit:10000,column:"closed",value_min:"2017-08-02 00:00:00",value_max:"2017-08-03 00:00:00"}
+    request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:tableString,valid_xml:1,limit:10000,column:"closed",value_min: yesterday.toISOString().substring(0, 19).replace('T', ' '),value_max: today.toISOString().substring(0, 19).replace('T', ' ')}
     },function(error, response, body){
       res.send(body).status(200).end();
-      console.log(body)
+      //console.log(body)
+    });
+});
+
+app.get("/lookupLavuToday", function(req, res)  {
+
+  var api_url = "https://api.poslavu.com/cp/reqserv/";
+    var datanameString = "cerveza_patago13";  
+    var keyString = "XCXxRHUsSuF3n3D4s6Lm";
+    var tokenString = "bsn9GpsHt8UClvnEukGa";
+    var tableString = "orders";
+
+  var today = new Date();
+    today.setHours(-4,0,0,0);
+    console.log(today);
+    var tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + 1);
+
+   request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:tableString,valid_xml:1,limit:10000,column:"closed",value_min: today.toISOString().substring(0, 19).replace('T', ' '),value_max: tomorrow.toISOString().substring(0, 19).replace('T', ' ') }
+    }, function(error, response, body)  {
+      console.log(body);
+      res.send(body).status(200).end();
+    });
+});
+
+app.post("/updateTodaySales/:location", function(req, res)  {
+  var locationParam = req.params.location;
+  var newSales = req.body;
+  newSales.createDate = new Date();
+
+  db.collection(GOALS_COLLECTION).updateOne(
+    {},
+    {
+      $set: {
+        dailyProgress: newSales.dailyProgress
+      }
+    }, function(err, doc)  {
+      if (err)  {
+        handleError(res, err.message, "Failed to update goals.");
+      } else {
+        res.status(200).end();
+      }
     });
 });
 

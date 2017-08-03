@@ -245,7 +245,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
     // }).catch( function(error)  {
     //   console.log("Failure");
     // });
-    $http.get("/lookupLavu/1")
+    $http.get("/lookupYesterdayLavu")
     .then(function(response)  {
       var total = 0;
       $(response.data).find('row').each(function()  {
@@ -268,6 +268,26 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
       console.log("failure");
     });
 
+    $http.get("/lookupLavuToday")
+    .then(function(response)  {
+      var total = 0;
+      $(response.data).find('row').each(function()  {
+        var $row = $(this);
+        total += parseFloat($row.find('total').text());
+      });
+      $http.post("/updateTodaySales/1",
+      {
+        "location": 1,
+        "dailyProgress": total
+      })
+      .then(function(resposne)  {
+        console.log("Sucess");
+      }, function(resposne)  {
+        console.log("failure");
+      });
+    }, function(response)  {
+      console.log("failure");
+    });
   }
 });
 
