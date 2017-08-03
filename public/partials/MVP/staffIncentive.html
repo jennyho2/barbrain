@@ -1,0 +1,88 @@
+
+<div class="container">
+    <!-- START EDIT CONTENT -->
+
+    <div class="row">
+        <div>
+        <br>
+            <!-- START Basic Example Table -->
+            <table class="table">
+            <table class="tableEmployeeStat">
+              <thead>
+                    <tr class="tableEmployeeStat">
+                        <td class="v-a-m smallFont">
+                        <strong>
+                            Staff Name
+                        </strong>
+                        </td>
+                        <td class="v-a-m smallFont">
+                        <strong>
+                            <a ng-click="orderByField='currentProgress'; reverseSort = !reverseSort">
+                                Total Sales 
+                                <span ng-show="orderByField == 'currentProgress'">
+                                    <span ng-show="!reverseSort">^</span>
+                                    <span ng-show="reverseSort">v</span>
+                                </span>
+                            </a>
+                        </strong>
+                        </td>
+                        <td class="v-a-m smallFont">
+                        <strong>
+                            <a ng-click="orderByField='checks'; reverseSort = !reverseSort">
+                                Total Checks 
+                                <span ng-show="orderByField == 'checks'">
+                                    <span ng-show="!reverseSort">^</span>
+                                    <span ng-show="reverseSort">v</span>
+                                </span>
+                            </a>
+                        </strong>
+                        </td>
+                        <td class="v-a-m smallFont">
+                        <strong>
+                            <a ng-click="orderByField='averageTicket'; reverseSort = !reverseSort">
+                                Avg. Ticket 
+                                <span ng-show="orderByField == 'averageTicket'">
+                                    <span ng-show="!reverseSort">^</span>
+                                    <span ng-show="reverseSort">v</span>
+                                </span>
+                            </a>
+                        </strong>
+                        </td>
+                        <td class="v-a-m smallFont">
+                        <strong>
+                            <a ng-click="orderByField='percentToAvg'; reverseSort = !reverseSort">
+                                % Above/Below 
+                                <span ng-show="orderByField == 'percentToAvg'">
+                                    <span ng-show="!reverseSort">^</span>
+                                    <span ng-show="reverseSort">v</span>
+                                </span>
+                            </a>
+                        </strong>
+                        </td>
+                    </tr> 
+                </thead>
+                <tbody>
+                     <tr ng-repeat="staffInfo in fullStaff.staff | filter:staffLocation |orderBy:orderByField:reverseSort" class="tableEmployeeStat" ng-click="openStaff(staffInfo.firstName + ' ' + staffInfo.lastName, 3)">
+
+                        <td class="v-a-m">
+                            <span class="smallFont"><b>{{staffInfo.firstName}}</b></span>              
+                        </td>
+                        <td class="v-a-m"> 
+                            <span class="smallFont">${{staffInfo.lastWeek.currentProgress}}</span>
+                        </td>
+                        <td class="v-a-m"> 
+                            <span class="smallFont">{{staffInfo.lastWeek.checks}}</span>
+                        </td>
+                        <td class="v-a-m"> 
+                            <span class="smallFont">{{staffInfo.lastWeek.averageTicket}}</span>
+                        </td>
+                        <td class="v-a-m"> 
+                            <span class="smallFont">{{staffInfo.lastWeek.percentToAvg}}%</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </table>
+        </div>
+    </div>
+</div>

@@ -26,7 +26,7 @@
 </table>
 
 <div ng-if="section==0">
-  <div ng-include src="'partials/staffTableNoTitleWeekly.html'"> </div>
+  <div ng-include src="'partials/staffTableNoTitleLastWeek.html'"> </div>
 </div>
 
 <div ng-if="section==1">
@@ -38,9 +38,9 @@
       <td>Take Away</td>
     </tr>
     <tr class="mediumFont">
-      <td>${{fullSales.sales.weeklySales.department.bar}}</td>
-      <td>${{fullSales.sales.weeklySales.department.tables}}</td>
-      <td>${{fullSales.sales.weeklySales.department.takeAway}}</td>
+      <td>${{fullSales.sales.lastWeekSales.department.bar}}</td>
+      <td>${{fullSales.sales.lastWeekSales.department.tables}}</td>
+      <td>${{fullSales.sales.lastWeekSales.department.takeAway}}</td>
     </tr>
   </table>
   <br>
@@ -54,9 +54,9 @@
       <td>Retail</td>
     </tr>
     <tr class="mediumFont">
-      <td>${{fullSales.sales.weeklySales.category.food}}</td>
-      <td>${{fullSales.sales.weeklySales.category.drinks}}</td>
-      <td>${{fullSales.sales.weeklySales.category.retail}}</td>
+      <td>${{fullSales.sales.lastWeekSales.category.food}}</td>
+      <td>${{fullSales.sales.lastWeekSales.category.drinks}}</td>
+      <td>${{fullSales.sales.lastWeekSales.category.retail}}</td>
     </tr>
   </table>
   <br>

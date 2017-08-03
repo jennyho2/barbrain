@@ -18,6 +18,10 @@
 .tableEmployeeStat td { 
 	width: 33%;
 	text-align: center; 
+	padding-bottom: 5px;
+	padding-top: 5px;
+	padding-right: 5px;
+	padding-left: 5px;
 }
 
 .tableEmployeeStat td, .tableEmployeeStat th{
@@ -174,7 +178,9 @@ body {
 .noBreak {
 	display: inline;
 }
-
+.smallDoughnut {
+	width: 45%;
+}
 .padding {
 	padding: 0px 10px;
 	width: 100%;

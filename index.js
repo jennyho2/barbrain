@@ -93,7 +93,7 @@ app.get("/tactics", function(req, res) {
   });
 });
 
-app.put("/updateTactics", function(req, res)  {
+app.post("/updateTactics", function(req, res)  {
 	var newTactics = req.body;
 	newTactics.createDate = new Date();
 
