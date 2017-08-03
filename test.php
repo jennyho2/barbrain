@@ -32,7 +32,8 @@
 
         //echo "starting file upload";
 
-        file_put_contents("latterRows.xml", display_api_response($contents));
+        var_dump($contents);
+        //file_put_contents("latterRows.xml", display_api_response($contents));
 
         echo "donezo";
         //echo ;
