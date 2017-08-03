@@ -259,11 +259,18 @@ $scope.updateWeek = function(section)  {
   		return $scope.$storage.weeklySales.monday;
 
 	}
-		
 
-	
-
-	//$scope.data = [$scope.$storage.currentDayProgress, ($scope.$storage.goal.dailyGoal - $scope.$storage.currentDayProgress)];
+  $scope.onCallOmnivore = function () {
+    $http.post("/webhookUpdate/1", 
+    {
+      'location': '1'
+    })
+    .then(function(data,status,headers,config)  {
+      console.log(data);
+    }, function(data,status,headers,config)  {
+      console.log("failing over here");
+    });
+  }
 });
 
 function Goal($http)  {

@@ -55,8 +55,10 @@
               $tax = $totals->tax;
               $tips = $totals->tips;
               $total = $totals->total;
+              $discounts = $totals->discounts;
+              $void = $decoded->void;
               $ticket_items = $line->_embedded->items;
-              $newLine .= $guest_count . "," . $closed_at . "," . $ticket_number . "," . $employeeName . "," . $order_type . "," . $revenue_center . "," . $paid . "," . $tax . "," . $tips . "," . $total;
+              $newLine .= $guest_count . "," . $closed_at . "," . $ticket_number . "," . $employeeName . "," . $order_type . "," . $revenue_center . "," . $paid . "," . $tax . "," . $tips . "," . $total . "," . $discounts . "," . $void;
               foreach ($ticket_items as $item)  {
                 $itemName = $item->name;
                 $itemPrice = $item->price;

@@ -1,4 +1,5 @@
 var express = require('express');
+var request = require('request');
 var app = express();
 
 app.set('port', (process.env.PORT || 5000));
@@ -167,25 +168,67 @@ app.get("/staff/:location", function(req, res)  {
 });
 
 app.post("/webhookUpdate/:location", function(req, res)  {
-  var location = req.params.location;
+  var now = new Date();
+  now.setMinutes(now.getMinutes() - 5);
 
-  var dailySales = 90;
-  var weeklySales = 200;
-  db.collection(GOALS_COLLECTION).updateOne({
-    location: 1
-  },
-  {
-    $set: {
-      dailyProgress : dailySales,
-      weeklyProgress: weeklySales
+  var options = {
+    url: 'https://api.omnivore.io/1.0/locations/jcyazEnc/tickets',
+    headers: {
+      'Api-Key': '5864a33ba65e4f0390b5994c13b15fe4'
     }
-  }, function(err, doc)  {
-    if (err)  {
-      handleError(res, err.message, "Failed to update sales.");
-    } else {
-      res.status(200).end();
+  };
+
+
+
+
+
+  console.log("Hooked: " + req);
+  var location = req.params.location;
+  var day = new Date();
+  day.setHours(0,0,0,0);
+
+  var options = {
+    url: 'https://api.omnivore.io/1.0/locations/jcyazEnc/tickets',
+    headers: {
+      'Api-Key': '5864a33ba65e4f0390b5994c13b15fe4'
     }
-  });
+  };
+
+  function callback(error, response, body)  {
+    console.log("Here");
+    if (!error && response.statusCode == 200) {
+      var info = JSON.parse(body);
+      response = info;
+      var tickets = response._embedded.tickets;
+      //var total = 0;
+      // for (var i = 0, len = tickets.length; i < len; i++)  {
+
+      // }
+      console.log(response._embedded.tickets[0]._embedded.totals.total);
+    }
+  }
+
+  request(options, callback);
+
+  res.status(200).end();
+
+  // var dailySales = 90;
+  // var weeklySales = 200;
+  // db.collection(GOALS_COLLECTION).updateOne({
+  //   location: 1
+  // },
+  // {
+  //   $set: {
+  //     dailyProgress : dailySales,
+  //     weeklyProgress: weeklySales
+  //   }
+  // }, function(err, doc)  {
+  //   if (err)  {
+  //     handleError(res, err.message, "Failed to update sales.");
+  //   } else {
+  //     res.status(200).end();
+  //   }
+  // });
   // poll Omnivore API to grab all tickets for today & accumulate total sales
   // poll Omnivore API to grab all tickets for week & accumulate total sales
   // store daily sales and then just add for week

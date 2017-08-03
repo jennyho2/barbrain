@@ -13,6 +13,7 @@
     "express": "^4.15.3",
     "mongodb": "^2.2.30",
     "mysql": "^2.13.0",
+    "request": "^2.81.0",
     "uniq": "^1.0.1"
   },
   "devDependencies": {},
