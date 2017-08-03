@@ -84,6 +84,17 @@ $( "tacticsButton" ).click(function() {
 
 <div class="tactics">
 <br>
+  <span class="smallFont"><b>Tactical goal</b></span>
+  <br>
+  <input class="smallFont tacticalGoalsInput" type="text" ng-model="$storage.dailyTactic" ng-change="callUpdateTactic(0)" disabled ng-if="section == 0" />
+  <input class="smallFont tacticalGoalsInput" type="text" ng-model="$storage.weeklyTactic" ng-change="callUpdateTactic(1)" ng-if="section == 1" disabled />
+  <div class="boxed ">
+      <span class="smallFont">Offer a free bottle of wine to the staffer with the highest amount of sales today to boost the wine category.</span>
+    </div>
+  <input class="smallFont tacticalGoalsInput" type="text" ng-model="$storage.tactic" ng-change="callUpdateTactic()" disabled />
+  <!-- <span class="smallFont">Earn $750 in dessert sales</span>   -->
+  <br>
+  <a onclick="enableInput()"><span class="smallFont" style="color:deepskyblue"><div id="editGoal">Edit Goal</div></span></a>
   <div class="center">
     <span class="smallFont"><b>Incentives</b></span>
     <br>
@@ -96,7 +107,7 @@ $( "tacticsButton" ).click(function() {
   <br>
 </div>
 
-
+<button ng-click="onCallOmnivore()">Stuff</button>
 
 
 <div ng-include src="'partials/staffTable.html'"></div>

@@ -5,11 +5,13 @@
     <span class="mediumFont">Last Week's Performance</span>
   </h3>
   <br>
-  <span class="xlargeFont"><span style="color:deepskyblue">$6,841</span>/ $12,000</span>
+  <span class="xlargeFont"><span style="color:deepskyblue">${{ $storage.goal.currentWeekProgress }}</span>/ ${{ $storage.goal.weeklyGoal }}</span>
   <br>
-  <span class="smallFont">56% of goal achieved</span>
-
+  
+ £<span ng-bind="$storage.weeklySales.monday"></span>
 </header>
+
+
 
 <div class="chartHolder padding">
   <canvas id="line" class="chart chart-line" chart-data="lastweekData" 
@@ -65,6 +67,12 @@
 <div class="tactics">
 <br>
   <div class="center">
+    <span class="smallFont"><b>Weekly Insights</b></span>
+    <div class="boxed ">
+      <span class="smallFont">{{ $storage.weeklyTactic }}</span>
+    </div>
+  </div> <!-- End Insights -->
+<br>
     <span class="smallFont"><b>Weekly Incentives</b></span>
     <br>
       <textarea class="smallFont boxed center" ng-bind="$storage.fullTactics.tactics.weeklyTactics" id="tacticalGoalsInput">{{$storage.fullTactics.tactics.weeklyTactics}}</textarea> 

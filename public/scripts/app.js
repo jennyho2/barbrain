@@ -13,6 +13,16 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   	$scope.labels = ["Current Sales", "Distance From Goal"];
   	$scope.data = [$scope.$storage.goal.dailyProgress, $scope.$storage.goal.dailyGoal];
   	$scope.lastWeekData = [[547.60,1931.64],[500,700,3000,6000,4000,1400,900]];
+  $scope.$storage = $localStorage;
+  $scope.$storage.goal = new Goal($http);
+  $scope.date = new Date();
+  //SET THE FUCKING LOCATION
+  $scope.location = 1;
+    $scope.options = { responsive: true };
+
+    $scope.labels = ["Current Sales", "Distance From Goal"];
+    $scope.data = [$scope.$storage.goal.dailyProgress, $scope.$storage.goal.dailyGoal];
+    $scope.lastweekData = [547.60,1931.64,0,0,0,0,0];
     $scope.weeklyData = [500,700,
                     3000,
                     6000,4000,
@@ -79,149 +89,213 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 					"location": "10 Barrel Boise",
 					"dailyGoal": $scope.$storage.goal.dailyGoal,
 					"weeklyGoal": newGoal
+
+  //$scope.$storage.dailyGoal = new DailyGoal($http);
+  //$scope.storage.staff = '';
+  $scope.openStaff = function(staffName,day) {
+    $scope.$storage.staffName = staffName;
+    var array = staffName.split(' ');
+    var index = -1;
+    count = 0;
+    while(count < $scope.fullStaff.staff.length){
+      if($scope.fullStaff.staff[count].lastName == array[1]){
+        index = count;
+        $scope.$storage.staff = $scope.fullStaff.staff[count];
+        break;
+      }
+      count++;
+    }
+    // set data
+    if(day==0){
+      location.href = '#!staff';
+    }
+    else if(day==1){
+      location.href = '#!staffYesterday';
+    }
+    else{
+      location.href = '#!staffWeekly';
+      console.log("hi");
+    }
+  };
+  
+  $scope.callUpdateGoals = function(section)  {
+    var newGoal = $('#weeklyGoalInput').val();
+    //console.log("Section: " + section);
+    if (section == 0)  {
+      $http.post("/updateGoals", 
+        {
+          "location": "10 Barrel Boise",
+          "dailyGoal": newGoal,
+          "weeklyGoal": $scope.$storage.goal.weeklyGoal
+      })
+      .then(function(data,status,headers,config)  {
+        $scope.$storage.goal.dailyGoal = parseInt(newGoal);
+        $scope.data = [$scope.$storage.goal.dailyProgress, Math.abs($scope.$storage.goal.dailyProgress-parseInt(newGoal))];
+        //$scope.dailyGoal = $storage.dailyGoal;
+      }, function(data,status,headers,config)  {
+        console.log("failure");
+      });
+    } else {
+      $http.post("/updateGoals", 
+        {
+          "location": "10 Barrel Boise",
+          "dailyGoal": $scope.$storage.goal.dailyGoal,
+          "weeklyGoal": newGoal
     
-			})
-			.then(function(data,status,headers,config)  {
-				$scope.$storage.goal.weeklyGoal = parseInt(newGoal);
-				$scope.data = [$scope.$storage.goal.weeklyProgress, Math.abs($scope.$storage.goal.weeklyProgress-parseInt(newGoal))];
-				//$scope.dailyGoal = $storage.dailyGoal;
+      })
+      .then(function(data,status,headers,config)  {
+        $scope.$storage.goal.weeklyGoal = parseInt(newGoal);
+        $scope.data = [$scope.$storage.goal.weeklyProgress, Math.abs($scope.$storage.goal.weeklyProgress-parseInt(newGoal))];
+        //$scope.dailyGoal = $storage.dailyGoal;
         
-			}, function(data,status,headers,config)  {
-				console.log("failure");
-			});
-     		 $scope.weeklyData =[parseInt(newGoal)*.05,.1*parseInt(newGoal),.2*parseInt(newGoal),
+      }, function(data,status,headers,config)  {
+        console.log("failure");
+      });
+         $scope.weeklyData =[parseInt(newGoal)*.05,.1*parseInt(newGoal),.2*parseInt(newGoal),
                         parseInt(newGoal)*.25,parseInt(newGoal)*.4,parseInt(newGoal)*.3,parseInt(newGoal)*.1];
-		}
+    }
     
 
-	}
+  }
 
-	$scope.callGetGoals = function()  {
-		$http.get("/goals")
-		.then(function(data,status,headers,config) {
-			$scope.$storage.goal.dailyGoal = parseInt(data.data[0].dailyGoal);	
-			$scope.$storage.goal.dailyProgress = parseInt(data.data[0].dailyProgress);
-			$scope.$storage.goal.dailyProjected = parseInt(data.data[0].dailyProjected);
-			$scope.$storage.goal.weeklyGoal = parseInt(data.data[0].weeklyGoal);	
-			$scope.$storage.goal.weeklyProgress = parseInt(data.data[0].weeklyProgress);
-			$scope.$storage.goal.weeklyProjected = parseInt(data.data[0].weeklyProjected);
-		},function(data, status, headers, config)  {
-			console.log('fail here');
-		});
-	}
+  $scope.callGetGoals = function()  {
+    $http.get("/goals")
+    .then(function(data,status,headers,config) {
+      $scope.$storage.goal.dailyGoal = parseInt(data.data[0].dailyGoal);  
+      $scope.$storage.goal.dailyProgress = parseInt(data.data[0].dailyProgress);
+      $scope.$storage.goal.dailyProjected = parseInt(data.data[0].dailyProjected);
+      $scope.$storage.goal.weeklyGoal = parseInt(data.data[0].weeklyGoal);  
+      $scope.$storage.goal.weeklyProgress = parseInt(data.data[0].weeklyProgress);
+      $scope.$storage.goal.weeklyProjected = parseInt(data.data[0].weeklyProjected);
+    },function(data, status, headers, config)  {
+      console.log('fail here');
+    });
+  }
 
-	$scope.callGetTactics = function()  {
-		$http.get("/tactics")
-		.then(function(data,status,headers,config) {
-			$scope.$storage.tactic = data.data[0].tactic;
-		}, function(data, status, headers, config)  {
-			console.log("fail getting tactics");
-		});
-	}
+  $scope.callGetTactics = function()  {
+    $http.get("/tactics")
+    .then(function(data,status,headers,config) {
+      $scope.$storage.tactic = data.data[0].tactic;
+    }, function(data, status, headers, config)  {
+      console.log("fail getting tactics");
+    });
+  }
 
-	$scope.callUpdateTactic = function(section)  {
-		var newTactic = $('#tacticalGoalsInput').val();
-		if (section == 0)  {
-			$http.post("/updateTactics", 
-				{
-					"location": "10 Barrel Boise",
-					"dailyTactics": newTactic,
-					"weeklyTactics": $scope.$storage.fullTactics.tactics[0].dailyTactics
-			})
-			.then(function(data,status,headers,config)  {
-				//$scope.dailyGoal = $storage.dailyGoal;
-			}, function(data,status,headers,config)  {
-				console.log("failure");
-			});
-		}
-		if (section == 1)  {
-			$http.post("/updateTactics", 
-				{
-					"location": "10 Barrel Boise",
-					"dailyTactics": $scope.$storage.fullTactics.tactics[0].weeklyTactics,
-					"weeklyTactics": newTactic
-			})
-			.then(function(data,status,headers,config)  {
-				//$scope.dailyGoal = $storage.dailyGoal;
-			}, function(data,status,headers,config)  {
-				console.log("failure");
-			});
-		}
+  $scope.callUpdateTactic = function(section)  {
+    var newTactic = $('#tacticalGoalsInput').val();
+    if (section == 0)  {
+      $http.post("/updateTactics", 
+        {
+          "location": "10 Barrel Boise",
+          "dailyTactics": newTactic,
+          "weeklyTactics": $scope.$storage.fullTactics.tactics[0].dailyTactics
+      })
+      .then(function(data,status,headers,config)  {
+        //$scope.dailyGoal = $storage.dailyGoal;
+      }, function(data,status,headers,config)  {
+        console.log("failure");
+      });
+    }
+    if (section == 1)  {
+      $http.post("/updateTactics", 
+        {
+          "location": "10 Barrel Boise",
+          "dailyTactics": $scope.$storage.fullTactics.tactics[0].weeklyTactics,
+          "weeklyTactics": newTactic
+      })
+      .then(function(data,status,headers,config)  {
+        //$scope.dailyGoal = $storage.dailyGoal;
+      }, function(data,status,headers,config)  {
+        console.log("failure");
+      });
+    }
 
-	}
+  }
 
-	$scope.scheduleStaff = function(staffInfo){
-		if(staffInfo.add == "Add"){
-			staffInfo.add = "Remove";
-			$scope.staffList.push(staffInfo);
-		}
-		else{
-			staffInfo.add = "Add";
-			var index = -1;
-			count = 0;
-			while(count < $scope.staffList.length){
-				if($scope.staffList[count] == staffInfo){
-					index = count;
-					break;
-				}
-				count++;
-			}
-			if (index > -1) {
-    			$scope.staffList.splice(index, 1);
-			}
-		}
-	}
-	$scope.updateStaff = function(){
-		$http.post("/updateStaff",
-		{
-			"location" : "10 Barrel Boise",
-			"staff" : $scope.staffList
-		})
-		.then(function(data,status,headers,config)  {
-			
-		}, function(data,status,headers,config)  {
-			console.log('failure');
-		});
-	}
-	$scope.callGetGoals();
+  $scope.scheduleStaff = function(staffInfo){
+    if(staffInfo.add == "Add"){
+      staffInfo.add = "Remove";
+      $scope.staffList.push(staffInfo);
+    }
+    else{
+      staffInfo.add = "Add";
+      var index = -1;
+      count = 0;
+      while(count < $scope.staffList.length){
+        if($scope.staffList[count] == staffInfo){
+          index = count;
+          break;
+        }
+        count++;
+      }
+      if (index > -1) {
+          $scope.staffList.splice(index, 1);
+      }
+    }
+  }
+  $scope.updateStaff = function(){
+    $http.post("/updateStaff",
+    {
+      "location" : "10 Barrel Boise",
+      "staff" : $scope.staffList
+    })
+    .then(function(data,status,headers,config)  {
+      
+    }, function(data,status,headers,config)  {
+      console.log('failure');
+    });
+  }
+  $scope.callGetGoals();
 
-  	//console.log($scope.$storage.goal.dailyGoal);
-	$scope.callGetTactics();
+    //console.log($scope.$storage.goal.dailyGoal);
+  $scope.callGetTactics();
 
 
-	$scope.switch = function (num) {
-		if (num == 0)  {
-			$scope.data = [$scope.$storage.goal.dailyProgress, Math.abs($scope.$storage.goal.dailyProgress-$scope.$storage.goal.dailyGoal)];
-		} else {
-			$scope.data = [$scope.$storage.goal.weeklyProgress, Math.abs($scope.$storage.goal.weeklyProgress-$scope.$storage.goal.weeklyGoal)];
-		}
-	}
+  $scope.switch = function (num) {
+    if (num == 0)  {
+      $scope.data = [$scope.$storage.goal.dailyProgress, Math.abs($scope.$storage.goal.dailyProgress-$scope.$storage.goal.dailyGoal)];
+    } else {
+      $scope.data = [$scope.$storage.goal.weeklyProgress, Math.abs($scope.$storage.goal.weeklyProgress-$scope.$storage.goal.weeklyGoal)];
+    }
+  }
 
-	$scope.staffLocation = function(staff) {
-    	return staff.location === 1;
-	}
-	$scope.tacticsLocation = function(tactics) {
-    	return tactics.location === 1;
-	}	
+  $scope.staffLocation = function(staff) {
+      return staff.location === 1;
+  }
+  $scope.tacticsLocation = function(tactics) {
+      return tactics.location === 1;
+  } 
+
+  $scope.onCallOmnivore = function () {
+    $http.post("/webhookUpdate/1", 
+    {
+      'location': '1'
+    })
+    .then(function(data,status,headers,config)  {
+      console.log(data);
+    }, function(data,status,headers,config)  {
+      console.log("failing over here");
+    });
+  }
 });
 
 function Goal($http)  {
-	var dailyGoal = 600;
-	var weeklyGoal = 8000;
+  var dailyGoal = 600;
+  var weeklyGoal = 8000;
 
-	$http.get("/goals")
-	.then(function(data, status, headers, config)  {
-		dailyGoal = parseInt(data.data[0].dailyGoal);
-		weeklyGoal = parseInt(data.data[0].weeklyGoal);
-		//weeklyProgress = parseInt(data.data[0].weeklyProgress);
-		//dailyProgress = parseInt(data.data[0].dailyProgress);
-		//weeklyProjected = parseInt(data.data[0].weeklyProjected);
-		//dailyProjected = parseInt(data.data[0].dailyProjected);
-	},function(data,status,headers,config)  {
-		console.log('fail hur');
-	});
+  $http.get("/goals")
+  .then(function(data, status, headers, config)  {
+    dailyGoal = parseInt(data.data[0].dailyGoal);
+    weeklyGoal = parseInt(data.data[0].weeklyGoal);
+    //weeklyProgress = parseInt(data.data[0].weeklyProgress);
+    //dailyProgress = parseInt(data.data[0].dailyProgress);
+    //weeklyProjected = parseInt(data.data[0].weeklyProjected);
+    //dailyProjected = parseInt(data.data[0].dailyProjected);
+  },function(data,status,headers,config)  {
+    console.log('fail hur');
+  });
 
-	this.__defineGetter__("dailyGoal", function () {
+  this.__defineGetter__("dailyGoal", function () {
         return dailyGoal;
     });
 
@@ -240,18 +314,18 @@ function Goal($http)  {
     });
 };
 function Staff($http)  {
-	//var staff = '';
-	staff = [];
+  //var staff = '';
+  staff = [];
 
-	$http.get("/staff")
-	.then(function(data, status, headers, config)  {
-		staff = data.data;
-		//lastName = data.data[0].lastName;
-		
-	},function(data,status,headers,config)  {
-		console.log('fail hur');
-	});
-	this.__defineGetter__("staff", function () {
+  $http.get("/staff")
+  .then(function(data, status, headers, config)  {
+    staff = data.data;
+    //lastName = data.data[0].lastName;
+    
+  },function(data,status,headers,config)  {
+    console.log('fail hur');
+  });
+  this.__defineGetter__("staff", function () {
         //return {firstName,lastName};
         return staff;
     });
@@ -262,18 +336,18 @@ function Staff($http)  {
 };
 
 function Sales($http)  {
-	//var staff = '';
-	sales = [];
+  //var staff = '';
+  sales = [];
 
-	$http.get("/sales")
-	.then(function(data, status, headers, config)  {
-		sales = data.data[0];
-		//lastName = data.data[0].lastName;
-		
-	},function(data,status,headers,config)  {
-		console.log('fail sales');
-	});
-	this.__defineGetter__("sales", function () {
+  $http.get("/sales")
+  .then(function(data, status, headers, config)  {
+    sales = data.data[0];
+    //lastName = data.data[0].lastName;
+    
+  },function(data,status,headers,config)  {
+    console.log('fail sales');
+  });
+  this.__defineGetter__("sales", function () {
         //return {firstName,lastName};
         return sales;
     });
@@ -284,18 +358,18 @@ function Sales($http)  {
 };
 
 function Tactics($http)  {
-	//var staff = '';
-	tactics = [];
+  //var staff = '';
+  tactics = [];
 
-	$http.get("/tactics")
-	.then(function(data, status, headers, config)  {
-		tactics = data.data;
-		//lastName = data.data[0].lastName;
-		
-	},function(data,status,headers,config)  {
-		console.log('fail tactics');
-	});
-	this.__defineGetter__("tactics", function () {
+  $http.get("/tactics")
+  .then(function(data, status, headers, config)  {
+    tactics = data.data;
+    //lastName = data.data[0].lastName;
+    
+  },function(data,status,headers,config)  {
+    console.log('fail tactics');
+  });
+  this.__defineGetter__("tactics", function () {
         //return {firstName,lastName};
         return tactics;
     });
@@ -309,10 +383,12 @@ function Tactics($http)  {
 app.config(function($routeProvider) {
   $routeProvider
   .when("/", {
+<<<<<<< HEAD
   	templateUrl : "partials/MVP/homeMVP.html"
   })
   .when("/staff", {
   	templateUrl : "partials/MVP/staff.html"
+    templateUrl : "partials/home.html"
   })
   .when("/history", {
       templateUrl : "partials/history.html"
@@ -323,38 +399,43 @@ app.config(function($routeProvider) {
   //.when("/staff", {
   //	templateUrl : "partials/staff.html"
   //})
+  .when("/staff", {
+    templateUrl : "partials/staff.html"
+  })
   .when("/yesterdayTab", {
-  	templateUrl : "partials/yesterdayTab.html"
+    templateUrl : "partials/yesterdayTab.html"
   })
   .when("/setGoal", {
-  	templateUrl : "partials/setGoal.html"
+    templateUrl : "partials/setGoal.html"
   })
   .when("/adjustStaffGoals", {
     templateUrl : "partials/adjustStaffGoals.html"
   })
   .when("/weeklyGoals", {
-  	templateUrl : "partials/setWeeklyGoals.html"
+    templateUrl : "partials/setWeeklyGoals.html"
   })
   .when("/weeklyGoalsTab", {
-  	templateUrl : "partials/weeklyGoalsTab.html"
+    templateUrl : "partials/weeklyGoalsTab.html"
   })
   .when("/daily", {
     templateUrl : "partials/setDailyGoals.html"
   })
   .when("/tips", {
-  	templateUrl : "partials/tips.html"
+    templateUrl : "partials/tips.html"
   })
     .when("/lastWeek", {
     templateUrl : "partials/MVP/lastWeek.html"
   })
     .when("/staffYesterday", {
-  	templateUrl : "partials/staffYesterday.html"
+    templateUrl : "partials/staffYesterday.html"
   })
     .when("/staffLastWeek", {
   	templateUrl : "partials/staffLastWeek.html"
   })
     .when("/staffThisWeek", {
   	templateUrl : "partials/staffThisWeek.html"
+    .when("/staffWeekly", {
+    templateUrl : "partials/staffWeekly.html"
   });
     
 });
@@ -372,7 +453,7 @@ app.run(function ($rootScope, $location, $localStorage) {
     });
 
     $rootScope.back = function () {
-    	var prevUrl = $localStorage.history.length > 1 ? $localStorage.history.splice(-2)[0] : "/";
+      var prevUrl = $localStorage.history.length > 1 ? $localStorage.history.splice(-2)[0] : "/";
         //var prevUrl = history.length > 1 ? history.splice(-2)[0] : "/";
         $location.path(prevUrl);
     };

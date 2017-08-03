@@ -4,7 +4,6 @@
   <h3>
     <span class="mediumFont">Set Daily Goal</span>
   </h3>
-  <br>
   <span class="xlargeFont"><span style="color:deepskyblue">${{$storage.goal.dailyProgress}}</span>/${{$storage.goal.dailyGoal}}</span>
   <br>
   <span class="smallFont">{{$storage.goal.dailyProgress / $storage.goal.dailyGoal * 100| number:0 }}%</span>
@@ -20,6 +19,43 @@
         </p>
         <button type="button" class="btn btn-default" ng-click="callUpdateGoals(0)">Update</button>
 </div>
+<!--
+<div class="center tactics">
+<br>
+  <span class="smallFont">Today's Goal</span>
+  <br>
+  <span class="smallFont">{{ date | date:'dd MMMM yyyy'}}</span>
+  <br>
+
+
+
+    <input type="range" min="0" max="2000" value="0" step="1" ng-model="$storage.goal.dailyGoal" ng-change="callUpdateDailyGoal()" />
+  <span class="smallFont">{{ date|date:'dd MMMM yyyy'}}</span>
+  <br>
+    <input type="range" min="1" max="2000" id="weeklyGoalInput" ng-change="callUpdateGoals(0)" ng-model="$storage.goal.dailyGoal"/>
+        <p class="left"> 
+            Less 
+            <span style="float:right;"> More </span>
+        </p>
+    <div class="xlargeFont">
+        <span>£
+            <span id="range">{{ $storage.goal.dailyGoal }}</span>
+        </span>
+    </div>
+        <button type="button" class="btn btn-default" ng-click="callUpdateGoals(0)">Update</button>
+    <table class="dividerTable">
+        <tr>
+            <td class="smallFont">Bars</td>
+            <td class="smallFont">Table</td>
+        </tr>
+        <tr>
+            <td class="mediumFont">£{{ $storage.goal.dailyGoal * 0.3 | number:2 }}</td>
+            <td class="mediumFont">£{{ $storage.goal.dailyGoal * 0.7 | number:2 }}</td>
+        </tr>
+    </table>
+    <br>
+</div>
+-->
 
 
 <div ng-include src="'partials/addStaff.html'" class="full"></div>
