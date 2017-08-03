@@ -270,7 +270,6 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
   }
 });
-});
 
 function Goal($http)  {
   var dailyGoal = 600;
