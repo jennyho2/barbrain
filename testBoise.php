@@ -1,25 +1,10 @@
 <?php
-        $api_url = "https://api.omnivore.io/1.0/locations/jcyazEnc/tickets";
+        $api_url = "https://api.omnivore.io/1.0/locations/jcyazEnc/tickets?limit=100";
         $api_key = "5864a33ba65e4f0390b5994c13b15fe4";
+        $api_url .= $query;
+        echo $api_url;
 
         $postvars = "";
-
-        // $ch = curl_init();
-        //   curl_setopt($ch, CURLOPT_URL, $api_url);
-        //   curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        //   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-
-        //   curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-        //     'Api-Key: 5864a33ba65e4f0390b5994c13b15fe4'
-        //   ));
-        //   //curl_setopt($ch, CURLOPT_POSTFIELDS, $postvars);
-
-        //   $contents = curl_exec($ch);
-        //   curl_close ($ch);
-        //   $decoded = json_decode($contents);
-        //   var_dump($decoded);
-        //$postvars = "dataname=$api_dataname&key=$api_key&token=$api_token";
-        //$postvars .= "&table=order_contents&column=id&value_min=128815&value_max=158815&limit=15000&valid_xml=1";
 
         $file = fopen("BoiseData.csv","w");
         while (true)  {
@@ -78,6 +63,9 @@
             } else {
               break;
             }
+          } else {
+
+            var_dump($decoded);
           }
         }
 

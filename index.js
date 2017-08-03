@@ -1,6 +1,8 @@
 var express = require('express');
 var request = require('request');
+var cors = require('cors');
 var app = express();
+app.use(cors());
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -25,13 +27,10 @@ var ObjectID = mongodb.ObjectID;
 
 var GOALS_COLLECTION = "goals";
 var TACTICS_COLLECTION = "tactics";
-var STAFF_COLLECTION = "staff";
 var SALES_COLLECTION = "sales"
 
-var SALES_COLLECTION = "sales";
-
 var STAFF_COLLECTION = "staff";
-
+var TICKETS_COLLECTION = "tickets";
 app.use(bodyParser.json());
 
 // Create a database variable outside of the database connection callback to reuse the connection pool in your app.
@@ -168,44 +167,58 @@ app.get("/staff/:location", function(req, res)  {
 	});
 });
 
+Date.prototype.getUnixTime = function() { return this.getTime()/1000|0 };
+if(!Date.now) Date.now = function() { return new Date(); }
+Date.time = function() { return Date.now().getUnixTime(); }
+
 app.post("/webhookUpdate/:location", function(req, res)  {
-  var now = new Date();
-  now.setMinutes(now.getMinutes() - 5);
+  var today = new Date();
+  today.setHours(0,0,0,0);
+  today.setDate(today.getDate() - 1);
 
   var options = {
-    url: 'https://api.omnivore.io/1.0/locations/jcyazEnc/tickets',
+    url: 'https://api.omnivore.io/1.0/locations/jcyazEnc/tickets?limit=100&where=gte(opened_at,' + today.getUnixTime(),
     headers: {
       'Api-Key': '5864a33ba65e4f0390b5994c13b15fe4'
     }
   };
 
+  function callback (error, response, body)  {
+    if (!error && response.statusCode == 200)  {
+      var total = 0.0;
+        var info = JSON.parse(body);
+        var tickets = info._embedded.tickets;
+        for (var i = 0, len = tickets.length; i < len; i++)  {
+          if (tickets[i].closed_at != null)  {
+            db.collection(TICKETS_COLLECTION).updateMany(
+            {
+              id: tickets[i].id
+            },
+            {
+              $set: {
+                id: tickets[i].id,
+                total: tickets[i].totals.total / 100,
+                opened_at: tickets[i].opened_at,
+                closed_at: tickets[i].closed_at
+              }
+            },  
+            {
+              upsert: true,
+            });
+            total += tickets[i].totals.total / 100;
+            console.log(tickets[i]);
+          }
+        }
 
-
-
-
-  console.log("Hooked: " + req);
-  var location = req.params.location;
-  var day = new Date();
-  day.setHours(0,0,0,0);
-
-  var options = {
-    url: 'https://api.omnivore.io/1.0/locations/jcyazEnc/tickets',
-    headers: {
-      'Api-Key': '5864a33ba65e4f0390b5994c13b15fe4'
-    }
-  };
-
-  function callback(error, response, body)  {
-    console.log("Here");
-    if (!error && response.statusCode == 200) {
-      var info = JSON.parse(body);
-      response = info;
-      var tickets = response._embedded.tickets;
-      //var total = 0;
-      // for (var i = 0, len = tickets.length; i < len; i++)  {
-
-      // }
-      console.log(response._embedded.tickets[0]._embedded.totals.total);
+      console.log(total);
+      db.collection(GOALS_COLLECTION).updateOne({
+        location: 1
+      },
+      {
+        $set: {
+          dailyProgress: total
+        }
+      });
     }
   }
 
@@ -271,5 +284,56 @@ app.post("/updateSales", function(req, res)  {
       }
     });
 });
+
+app.get("/lookupLavu/:location", function(req, res)  {
+
+
+
+
+  var api_url = "https://api.poslavu.com/cp/reqserv/";
+    var datanameString = "cerveza_patago13";  
+    var keyString = "XCXxRHUsSuF3n3D4s6Lm";
+    var tokenString = "bsn9GpsHt8UClvnEukGa";
+    var tableString = "orders";
+
+
+    
+    //var json_obj = JSON.parse(options);
+
+    request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:tableString,valid_xml:1,limit:10000,column:"closed",value_min:"2017-08-02 00:00:00",value_max:"2017-08-03 00:00:00"}
+    },function(error, response, body){
+      res.send(body).status(200).end();
+      console.log(body)
+    });
+});
+
+Date.prototype.getUnixTime = function() { return this.getTime()/1000|0 };
+if(!Date.now) Date.now = function() { return new Date(); }
+Date.time = function() { return Date.now().getUnixTime(); }
+
+
+
+app.post("/updateYesterdaySales/:location", function(req, res)  {
+  var locationParam = req.params.location;
+  var newSales = req.body;
+  newSales.createDate = new Date();
+
+  console.log(locationParam);
+  console.log("sup: " + newSales.yesterdaySales);
+  db.collection(GOALS_COLLECTION).updateOne(
+    { },
+    {
+      $set:  {
+        yesterdaySales: newSales.yesterdaySales
+      }
+    }, function(err, doc)  {
+      if (err)  {
+        handleError(res, err.message, "Failed to update tactics.");
+      } else {
+        res.status(200).end();
+      }
+    });
+});
+
 
 

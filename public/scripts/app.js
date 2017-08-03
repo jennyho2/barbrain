@@ -210,6 +210,61 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
       console.log("failing over here");
     });
   }
+
+  $scope.onCallLavu = function () {
+    // var api_url = "https://api.poslavu.com/cp/reqserv/";
+    // var datanameString = "cerveza_patago13";  
+    // var keyString = "XCXxRHUsSuF3n3D4s6Lm";
+    // var tokenString = "bsn9GpsHt8UClvnEukGa";
+    // var tableString = "orders";
+    // var yesterday = new Date();
+    // yesterday.setDate(yesterday.getDate() - 1);
+
+    // var config = { headers : {'Content-Type': 'application/json; charset=utf-8'}};
+
+    // var data = JSON.stringify({
+    //   dataname:datanameString,
+    //   key:keyString,
+    //   token:tokenString,
+    //   table:tableString,
+    //   limit:50,
+    //   valid_xml: 1
+    // });
+    // $http.post(
+    //   api_url,
+    //   data,
+    //   config.headers
+    // ).then(function(response)  {
+    //   console.log(response);
+    //   console.log("Success");
+    // }).catch( function(error)  {
+    //   console.log("Failure");
+    // });
+    $http.get("/lookupLavu/1")
+    .then(function(response)  {
+      var total = 0;
+      $(response.data).find('row').each(function()  {
+        var $row = $(this);
+        var id = $row.find('id').text();
+        total += parseFloat($row.find('total').text());
+      });
+      console.log(total);
+      $http.post("/updateYesterdaySales/1",
+      {
+        "location": 1,
+        "yesterdaySales": total
+      })
+      .then(function(response)  {
+        console.log("Success");
+      }, function(response) {
+        console.log("failure");
+      });
+    }, function(response)  {
+      console.log("failure");
+    });
+
+  }
+});
 });
 
 function Goal($http)  {
