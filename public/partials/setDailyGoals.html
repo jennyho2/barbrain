@@ -4,10 +4,6 @@
   <h3>
     <span class="mediumFont">Set Daily Goal</span>
   </h3>
-  <br>
-  <span class="xlargeFont"><span style="color:deepskyblue">£{{ $storage.goal.currentDayProgress }} </span>/ £{{ $storage.goal.dailyGoal }}</span>
-  <br>
-  <span class="smallFont">{{ $storage.goal.currentDayProgress / $storage.goal.dailyGoal * 100 | number:2 }}% of goal achieved</span>
   <span class="xlargeFont"><span style="color:deepskyblue">${{$storage.goal.dailyProgress}}</span>/${{$storage.goal.dailyGoal}}</span>
   <br>
   <span class="smallFont">{{$storage.goal.dailyProgress / $storage.goal.dailyGoal * 100| number:0 }}%</span>
@@ -28,31 +24,25 @@
 <br>
   <span class="smallFont">Today's Goal</span>
   <br>
-<<<<<<< HEAD
   <span class="smallFont">{{ date | date:'dd MMMM yyyy'}}</span>
   <br>
 
 
 
     <input type="range" min="0" max="2000" value="0" step="1" ng-model="$storage.goal.dailyGoal" ng-change="callUpdateDailyGoal()" />
-=======
   <span class="smallFont">{{ date|date:'dd MMMM yyyy'}}</span>
   <br>
     <input type="range" min="1" max="2000" id="weeklyGoalInput" ng-change="callUpdateGoals(0)" ng-model="$storage.goal.dailyGoal"/>
->>>>>>> be63fed91be58549cec14520574d1deea1043631
         <p class="left"> 
             Less 
             <span style="float:right;"> More </span>
         </p>
-<<<<<<< HEAD
     <div class="xlargeFont">
         <span>£
             <span id="range">{{ $storage.goal.dailyGoal }}</span>
         </span>
     </div>
-=======
         <button type="button" class="btn btn-default" ng-click="callUpdateGoals(0)">Update</button>
->>>>>>> be63fed91be58549cec14520574d1deea1043631
     <table class="dividerTable">
         <tr>
             <td class="smallFont">Bars</td>

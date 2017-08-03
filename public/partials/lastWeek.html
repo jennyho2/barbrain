@@ -5,20 +5,19 @@
     <span class="mediumFont">Last Week's Performance</span>
   </h3>
   <br>
-  <span class="xlargeFont"><span style="color:deepskyblue">£{{ $storage.goal.currentWeekProgress }}</span>/ £{{ $storage.goal.weeklyGoal }}</span>
+  <span class="xlargeFont"><span style="color:deepskyblue">${{ $storage.goal.currentWeekProgress }}</span>/ ${{ $storage.goal.weeklyGoal }}</span>
   <br>
   
  £<span ng-bind="$storage.weeklySales.monday"></span>
 </header>
 
-<!-- <div class="chartHolder"> -->
-  <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
 
-  <canvas id="lineChart" class="chart chart-line"
-    chart-data="weeklyLineData" chart-labels="weeklyLineLabels" chart-options="weeklyLineOptions" chart-series="weeklyLineSeries">
+
+<div class="chartHolder padding">
+  <canvas id="line" class="chart chart-line" chart-data="lastweekData" 
+      chart-labels="weeklyLabels" chart-options="options" >
   </canvas> 
-<!-- </div> -->
-
+</div>
 
 <table class="dividerTable" ng-init="section = 0">
   <tr class="smallFont bottomLine">
@@ -29,7 +28,7 @@
 </table>
 
 <div ng-if="section==0">
-  <div ng-include src="'partials/staffTableNoTitle.html'"> </div>
+  <div ng-include src="'partials/staffTableNoTitleWeekly.html'"> </div>
 </div>
 
 <div ng-if="section==1">
@@ -38,16 +37,32 @@
     <tr >
       <td>Bar</td>
       <td>Tables</td>
+      <td>Take Away</td>
     </tr>
     <tr class="mediumFont">
-      <td>£3,000</td>
-      <td>£9,500</td>
+      <td>${{fullSales.sales.weeklySales.department.bar}}</td>
+      <td>${{fullSales.sales.weeklySales.department.tables}}</td>
+      <td>${{fullSales.sales.weeklySales.department.takeAway}}</td>
     </tr>
   </table>
   <br>
-
 </div>
-
+<div ng-if="section==2">
+<br>
+  <table class="dividerTable smallFont">
+    <tr >
+      <td>Food</td>
+      <td>Drinks</td>
+      <td>Retail</td>
+    </tr>
+    <tr class="mediumFont">
+      <td>${{fullSales.sales.weeklySales.category.food}}</td>
+      <td>${{fullSales.sales.weeklySales.category.drinks}}</td>
+      <td>${{fullSales.sales.weeklySales.category.retail}}</td>
+    </tr>
+  </table>
+  <br>
+</div>
 <!-- Insights -->
 <div class="tactics">
 <br>
@@ -58,4 +73,13 @@
     </div>
   </div> <!-- End Insights -->
 <br>
+    <span class="smallFont"><b>Weekly Incentives</b></span>
+    <br>
+      <textarea class="smallFont boxed center" ng-bind="$storage.fullTactics.tactics.weeklyTactics" id="tacticalGoalsInput">{{$storage.fullTactics.tactics.weeklyTactics}}</textarea> 
+      <br>
+      <!--<a onclick="enableInput()"><span class="smallFont" style="color:deepskyblue"><div id="editGoal">Set Tactics</div></span>-->
+      <div type="button" id="tacticsButton" class="btn btn-default" ng-click="callUpdateTactic(0)">Update</div>
+
+  </div>
+  <br>
 </div>

@@ -26,6 +26,7 @@ var ObjectID = mongodb.ObjectID;
 var GOALS_COLLECTION = "goals";
 var TACTICS_COLLECTION = "tactics";
 var STAFF_COLLECTION = "staff";
+var SALES_COLLECTION = "sales"
 
 var SALES_COLLECTION = "sales";
 
@@ -97,7 +98,7 @@ app.get("/tactics", function(req, res) {
   });
 });
 
-app.post("/updateTactics", function(req, res)  {
+app.put("/updateTactics", function(req, res)  {
 	var newTactics = req.body;
 	newTactics.createDate = new Date();
 
@@ -105,8 +106,8 @@ app.post("/updateTactics", function(req, res)  {
 		{ location: "10 Barrel Boise" },
 		{
 			$set: {
-				dailyTactic: newTactics.dailyTactic,
-				weeklyTactic: newTactics.weeklyTactic
+				dailyTactics: newTactics.tactics.dailyTactics,
+        weeklyTactics: newTactics.tactics.weeklyTactics
 			}
 		}, function(err, doc)  {
 			if (err)  {
@@ -241,6 +242,34 @@ app.get("/webhookUpdate/:location", function(req, res)  {
 });
 
 
+app.get("/sales", function(req, res) {
+  db.collection(SALES_COLLECTION).find({}).toArray(function(err, docs) {
+    if (err) {
+      handleError(res, err.message, "Failed to get sales.");
+    } else {
+      res.status(200).json(docs);
+    }
+  });
+});
 
+
+app.post("/updateSales", function(req, res)  {
+  var newSales = req.body;
+  newSales.createDate = new Date();
+
+  db.collection(SalesSALES_COLLECTION).updateOne(
+    { location: "10 Barrel Boise" },
+    {
+      $set: {
+        sales : newSales
+      }
+    }, function(err, doc)  {
+      if (err)  {
+        handleError(res, err.message, "Failed to update Staff.");
+      } else {
+        res.status(200).end();
+      }
+    });
+});
 
 

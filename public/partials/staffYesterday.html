@@ -5,7 +5,7 @@
 	<div class="center">
 		<img height="100px" src="assets/images/{{$storage.staff.firstName + $storage.staff.lastName}}.png" />
 		<h2>{{$storage.staff.firstName + " " + $storage.staff.lastName}}</h2>
-		<span class="smallFont">${{$storage.staff.currentProgress}}/${{$storage.staff.goal}}</span>
+		<span class="smallFont">${{$storage.staff.yesterday.currentProgress}}/${{$storage.staff.yesterday.goal}}</span>
 		<br>
 		<span class="smallFont">ON TRACK</span>
 	</div>
@@ -15,34 +15,34 @@
 		<table class="dividerTable">
 			<tr>
 				<td class="smallFont">Goal</td>
-				<td class="smallFont">Progress</td>
+				<td class="smallFont">Achieved</td>
 			</tr>
 			<tr class="spaceUnder">
-				<td>${{$storage.staff.goal}}</td>
-				<td>${{$storage.staff.currentProgress}}</td>
+				<td>${{$storage.staff.yesterday.goal}}</td>
+				<td>${{$storage.staff.yesterday.currentProgress}}</td>
 			</tr>
 			<tr>
 				<td class="smallFont">Ticket</td>
 				<td class="smallFont">Orders</td>
 			</tr>
 			<tr class="spaceUnder">
-				<td>${{$storage.staff.averageTicket}}</td>
-				<td>{{$storage.staff.orders}}</td>
+				<td>${{$storage.staff.yesterday.averageTicket}}</td>
+				<td>{{$storage.staff.yesterday.orders}}</td>
 			</tr>
 			<tr>
 				<td class="smallFont">Tip</td>
 				<td class="smallFont">Item / Order</td>
 			</tr>
 			<tr class="spaceUnder">
-				<td>{{$storage.staff.tipPercentage}}%</td>
-				<td>{{$storage.staff.itemsPerOrder}}</td>
+				<td>{{$storage.staff.yesterday.tipPercentage}}%</td>
+				<td>{{$storage.staff.yesterday.itemsPerOrder}}</td>
 			</tr>
 			<tr>
 				<td class="smallFont">Order Time</td>
 				<td></td>
 			</tr>
 			<tr>
-				<td>{{$storage.staff.orderTime}} min</td>
+				<td>{{$storage.staff.yesterday.orderTime}} min</td>
 				<td></td>
 			</tr>
 

@@ -1,0 +1,38 @@
+<div class="container">
+    <!-- START EDIT CONTENT -->
+
+    <div class="row">
+        <div>
+        <br>
+            <!-- START Basic Example Table -->
+            <table class="table">
+            <table class="tableEmployeeStat">
+              <thead>
+                    <tr class="tableEmployeeStat">
+                        <td class="v-a-m smallFont"><strong>Staff</strong>
+                        </td>
+                        <td class="v-a-m smallFont"><strong>Avg. Ticket</strong>
+                        </td>
+                        <td class="v-a-m smallFont"><strong>Order #</strong>
+                        </td>
+                    </tr> 
+                </thead>
+                <tbody>
+                     <tr ng-repeat="staffInfo in fullStaff.staff | filter:staffLocation" class="tableEmployeeStat"> 
+                        <td class="v-a-m">
+                            <span class="smallFont"><b>{{staffInfo.firstName + " " + staffInfo.lastName}}</b></span>
+                            <br>                          
+                            <span class="smallFont">${{staffInfo.yesterday.currentProgress}}/${{staffInfo.yesterday.goal}}</span>
+                        </td>
+                        <td class="v-a-m"> 
+                        <span class="smallFont">${{staffInfo.yesterday.averageTicket}}</span>
+                        </td>
+                        <td class="v-a-m"><span class="smallFont" style="color:deepskyblue" ng-click="openStaff(staffInfo.firstName + ' ' + staffInfo.lastName, 1)">View</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </table>
+        </div>
+    </div>
+</div>
