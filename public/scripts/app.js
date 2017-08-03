@@ -1,16 +1,19 @@
 var app = angular.module("goalsApp", ["ngRoute", "ngStorage", "filters.stringUtils", "angularModalService", "chart.js"]);
 
 app.controller('mainController', function($scope, $localStorage, $sessionStorage, $http)  {
-  $scope.$storage = $localStorage;
-  $scope.$storage.goal = new Goal($http);
-  $scope.date = new Date();
-  //SET THE FUCKING LOCATION
-  $scope.location = 1;
-    $scope.options = { responsive: true };
+	$scope.orderByField = 'firstName';
+  	$scope.reverseSort = false;
+	$scope.$storage = $localStorage;
+	$scope.$storage.goal = new Goal($http);
+	$scope.date = new Date();
+	//SET THE FUCKING LOCATION
+	$scope.location = 1;
+  	$scope.options = { responsive: true, stacked: true, pointstyle: "crossRot" };
 
-    $scope.labels = ["Current Sales", "Distance From Goal"];
-    $scope.data = [$scope.$storage.goal.dailyProgress, $scope.$storage.goal.dailyGoal];
-    $scope.lastweekData = [547.60,1931.64,0,0,0,0,0];
+  	$scope.labels = ["Current Sales", "Distance From Goal"];
+  	$scope.data = [$scope.$storage.goal.dailyProgress, $scope.$storage.goal.dailyGoal];
+  	$scope.lastWeekData = [[547.60,1931.64],[500,700,3000,6000,4000,1400,900]];
+
     $scope.weeklyData = [500,700,
                     3000,
                     6000,4000,
@@ -23,58 +26,60 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
     $scope.$storage.staff = {};
     $scope.$storage.staffName = {};
 
-  //$scope.$storage.dailyGoal = new DailyGoal($http);
-  //$scope.storage.staff = '';
-  $scope.openStaff = function(staffName,day) {
-    $scope.$storage.staffName = staffName;
-    var array = staffName.split(' ');
-    var index = -1;
-    count = 0;
-    while(count < $scope.fullStaff.staff.length){
-      if($scope.fullStaff.staff[count].lastName == array[1]){
-        index = count;
-        $scope.$storage.staff = $scope.fullStaff.staff[count];
-        break;
-      }
-      count++;
-    }
-    // set data
-    if(day==0){
-      location.href = '#!staff';
-    }
-    else if(day==1){
-      location.href = '#!staffYesterday';
-    }
-    else{
-      location.href = '#!staffWeekly';
-      console.log("hi");
-    }
-  };
-  
-  $scope.callUpdateGoals = function(section)  {
-    var newGoal = $('#weeklyGoalInput').val();
-    //console.log("Section: " + section);
-    if (section == 0)  {
-      $http.post("/updateGoals", 
-        {
-          "location": "10 Barrel Boise",
-          "dailyGoal": newGoal,
-          "weeklyGoal": $scope.$storage.goal.weeklyGoal
-      })
-      .then(function(data,status,headers,config)  {
-        $scope.$storage.goal.dailyGoal = parseInt(newGoal);
-        $scope.data = [$scope.$storage.goal.dailyProgress, Math.abs($scope.$storage.goal.dailyProgress-parseInt(newGoal))];
-        //$scope.dailyGoal = $storage.dailyGoal;
-      }, function(data,status,headers,config)  {
-        console.log("failure");
-      });
-    } else {
-      $http.post("/updateGoals", 
-        {
-          "location": "10 Barrel Boise",
-          "dailyGoal": $scope.$storage.goal.dailyGoal,
-          "weeklyGoal": newGoal
-    
+	//$scope.$storage.dailyGoal = new DailyGoal($http);
+	//$scope.storage.staff = '';
+	$scope.openStaff = function(staffName,day) {
+		$scope.$storage.staffName = staffName;
+		var array = staffName.split(' ');
+		var index = -1;
+		count = 0;
+		while(count < $scope.fullStaff.staff.length){
+			if($scope.fullStaff.staff[count].lastName == array[1]){
+				index = count;
+				$scope.$storage.staff = $scope.fullStaff.staff[count];
+				break;
+
+			}
+			count++;
+		}
+		// set data
+		if(day==0){ //daily
+			location.href = '#!staff';
+		}
+		else if(day==1){ //yesterday
+			location.href = '#!staffYesterday';
+		}
+		else if(day==2){ //
+			location.href = '#!staffThisWeek';
+		}
+		else{
+			location.href = '#!staffLastWeek';
+		}
+	};
+	
+	$scope.callUpdateGoals = function(section)  {
+		var newGoal = $('#weeklyGoalInput').val();
+		//console.log("Section: " + section);
+		if (section == 0)  {
+			$http.post("/updateGoals", 
+				{
+					"location": "10 Barrel Boise",
+					"dailyGoal": newGoal,
+					"weeklyGoal": $scope.$storage.goal.weeklyGoal
+			})
+			.then(function(data,status,headers,config)  {
+				$scope.$storage.goal.dailyGoal = parseInt(newGoal);
+				$scope.data = [$scope.$storage.goal.dailyProgress, Math.abs($scope.$storage.goal.dailyProgress-parseInt(newGoal))];
+				//$scope.dailyGoal = $storage.dailyGoal;
+			}, function(data,status,headers,config)  {
+				console.log("failure");
+			});
+		} else {
+			$http.post("/updateGoals", 
+				{
+					"location": "10 Barrel Boise",
+					"dailyGoal": $scope.$storage.goal.dailyGoal,
+					"weeklyGoal": newGoal
       })
       .then(function(data,status,headers,config)  {
         $scope.$storage.goal.weeklyGoal = parseInt(newGoal);
@@ -371,7 +376,11 @@ function Tactics($http)  {
 app.config(function($routeProvider) {
   $routeProvider
   .when("/", {
-    templateUrl : "partials/home.html"
+
+  	templateUrl : "partials/MVP/homeMVP.html"
+  })
+  .when("/staff", {
+  	templateUrl : "partials/MVP/staff.html"
   })
   .when("/history", {
       templateUrl : "partials/history.html"
@@ -379,9 +388,9 @@ app.config(function($routeProvider) {
   .when("/insights", {
       templateUrl : "partials/insights.html"
   })
-  .when("/staff", {
-    templateUrl : "partials/staff.html"
-  })
+  //.when("/staff", {
+  //	templateUrl : "partials/staff.html"
+  //})
   .when("/yesterdayTab", {
     templateUrl : "partials/yesterdayTab.html"
   })
@@ -404,13 +413,16 @@ app.config(function($routeProvider) {
     templateUrl : "partials/tips.html"
   })
     .when("/lastWeek", {
-    templateUrl : "partials/lastWeek.html"
+    templateUrl : "partials/MVP/lastWeek.html"
   })
     .when("/staffYesterday", {
     templateUrl : "partials/staffYesterday.html"
   })
-    .when("/staffWeekly", {
-    templateUrl : "partials/staffWeekly.html"
+    .when("/staffLastWeek", {
+  	templateUrl : "partials/staffLastWeek.html"
+  })
+    .when("/staffThisWeek", {
+  	templateUrl : "partials/staffThisWeek.html"
   });
     
 });

@@ -1,0 +1,19 @@
+<div ng-include src="'partials/navbar.html'"></div>
+<header class="progressHeader">
+  <h3>
+    <span class="mediumFont">Staff Performance</span>
+  </h3>
+</header>
+<table class="dividerTable" ng-init="section = 0">
+  <tr class="smallFont bottomLine">
+    <th ng-class="{'selected': section === 0}" ng-click="section = 0">Daily</th>
+    <th ng-class="{'selected': section === 1}" ng-click="section = 1">Yesterday</th>
+    <th ng-class="{'selected': section === 2}" ng-click="section = 2">Weekly</th>
+    <th ng-class="{'selected': section === 3}" ng-click="section = 3">Monthly</th>
+  </tr>
+</table>
+
+<div ng-if="section==0" ng-include src="'partials/MVP/staffDaily.html'" class="full"></div>
+<div ng-if="section==1" ng-include src="'partials/MVP/staffYesterday.html'" class="full"></div>
+<div ng-if="section==2" ng-include src="'partials/MVP/staffWeekly.html'" class="full"></div>
+<div ng-if="section==3" ng-include src="'partials/MVP/staffMonthly.html'" class="full"></div>

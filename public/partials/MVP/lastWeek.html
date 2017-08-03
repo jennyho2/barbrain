@@ -1,0 +1,51 @@
+<div ng-include src="'partials/navbar.html'"></div>
+
+<header class="progressHeader">
+  <h3>
+    <span class="mediumFont">Last Week's Performance</span>
+  </h3>
+  <br>
+  <span class="xlargeFont"><span style="color:deepskyblue">$6,841</span>/ $12,000</span>
+  <br>
+  <span class="smallFont">56% of goal achieved</span>
+
+</header>
+
+<div class="chartHolder padding">
+  <canvas id="line" class="chart chart-line" chart-data="lastWeekData" 
+      chart-labels="weeklyLabels" chart-options="options" >
+  </canvas> 
+</div>
+
+  <table class="dividerTable smallFont">  
+    <thead>
+      <tr class="tableEmployeeStat">
+        <th>Category</th>
+        <th>Sales</th>
+        <th>Tickets</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="tableEmployeeStat" ng-repeat="category in fullSales.sales.lastWeekSales.category">
+        <td>{{category.name}}</td>
+        <td>${{category.sales}}</td>
+        <td>{{category.tickets}}</td>
+      </tr>
+  
+    </tbody>
+  </table>
+  <br>
+<!-- Insights -->
+<div class="tactics">
+<br>
+  <div class="center">
+    <span class="smallFont"><b>Thought of the Day</b></span>
+    <br>
+    <br>
+    <div class="boxed ">
+      <span class="smallFont">{{$storage.fullTactics.tactics[0].tips.thoughtOfTheDay}}</span>
+    </div>
+  </div> <!-- End Insights -->
+<br>
+</div
+

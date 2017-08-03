@@ -9,7 +9,16 @@
             <table class="tableEmployeeStat">
               <thead>
                     <tr class="tableEmployeeStat">
-                        <td class="v-a-m smallFont"><strong>Staff</strong>
+                        <td class="v-a-m smallFont">
+                        <strong>
+                            <a ng-click="orderByField='firstName'; reverseSort = !reverseSort">
+                                Staff 
+                                <span ng-show="orderByField == 'firstName'">
+                                    <span ng-show="!reverseSort">^</span>
+                                    <span ng-show="reverseSort">v</span>
+                                </span>
+                            </a>
+                            </strong>
                         </td>
                         <td class="v-a-m smallFont"><strong>Avg. Ticket</strong>
                         </td>
@@ -18,17 +27,17 @@
                     </tr> 
                 </thead>
                 <tbody>
-                     <tr ng-repeat="staffInfo in fullStaff.staff | filter:staffLocation" class="tableEmployeeStat"> 
+                     <tr ng-repeat="staffInfo in fullStaff.staff | filter:staffLocation |orderBy:orderByField:reverseSort" class="tableEmployeeStat"> 
                         <td class="v-a-m">
                             <span class="smallFont"><b>{{staffInfo.firstName + " " + staffInfo.lastName}}</b></span>
                             <br>                          
-                            <span class="smallFont">${{staffInfo.weekly.currentProgress}}/${{staffInfo.weekly.goal}}</span>
+                            <span class="smallFont">${{staffInfo.lastWeek.currentProgress}}/${{staffInfo.lastWeek.goal}}</span>
                         </td>
                         <td class="v-a-m"> 
                         
-                        <span class="smallFont">${{staffInfo.weekly.averageTicket}}</span>
+                        <span class="smallFont">${{staffInfo.lastWeek.averageTicket}}</span>
                         </td>
-                        <td class="v-a-m"><span class="smallFont" style="color:deepskyblue" ng-click="openStaff(staffInfo.firstName + ' ' + staffInfo.lastName, 2)">View</span>
+                        <td class="v-a-m"><span class="smallFont" style="color:deepskyblue" ng-click="openStaff(staffInfo.firstName + ' ' + staffInfo.lastName, 3)">View</span>
                         </td>
                     </tr>
                 </tbody>
