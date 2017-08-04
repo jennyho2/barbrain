@@ -16,7 +16,7 @@
                         <td class="v-a-m smallFont">
                         <strong>
                             <a ng-click="orderByField='currentProgress'; reverseSort = !reverseSort">
-                                Total Incentive Unit Sales 
+                                {{$storage.fullTactics.tactics[0].incentive}} Unit Sales 
                                 <span ng-show="orderByField == 'currentProgress'">
                                     <span ng-show="!reverseSort">^</span>
                                     <span ng-show="reverseSort">v</span>
@@ -28,7 +28,7 @@
                         <td class="v-a-m smallFont">
                         <strong>
                             <a ng-click="orderByField='percentToAvg'; reverseSort = !reverseSort">
-                                Total Incentive $ Sales
+                                {{$storage.fullTactics.tactics[0].incentive}} $ Sales
                                 <span ng-show="orderByField == 'percentToAvg'">
                                     <span ng-show="!reverseSort">^</span>
                                     <span ng-show="reverseSort">v</span>
