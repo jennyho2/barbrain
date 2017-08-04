@@ -217,6 +217,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   }
 
   $scope.onCallLavu = function () {
+    $scope.$storage.lavuStaff = {};
     // var api_url = "https://api.poslavu.com/cp/reqserv/";
     // var datanameString = "cerveza_patago13";  
     // var keyString = "XCXxRHUsSuF3n3D4s6Lm";
@@ -253,6 +254,26 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
         var id = $row.find('id').text();
         total += parseFloat($row.find('total').text());
       });
+
+      $scope.$storage.lavuStaff.yesterday = {};
+      $scope.$storage.lavuStaff.yesterdayTotalOrders = 0;
+      $scope.$storage.lavuStaff.yesterdayTotalSales = 0.0;
+      $(response.data).find('row').each(function()  {
+        var $row = $(this);
+        var serverName = $row.find('server').text();
+        $scope.$storage.lavuStaff.yesterdayTotalOrders++;
+        $scope.$storage.lavuStaff.yesterdayTotalSales += parseFloat($row.find('total').text());
+        if ($scope.$storage.lavuStaff.yesterday.hasOwnProperty(serverName))  {
+          $scope.$storage.lavuStaff.yesterday[serverName].sales += parseFloat($row.find('total').text());
+          $scope.$storage.lavuStaff.yesterday[serverName].orders++;
+        } else {
+          $scope.$storage.lavuStaff.yesterday[serverName] = {};
+          $scope.$storage.lavuStaff.yesterday[serverName].name = serverName;
+          $scope.$storage.lavuStaff.yesterday[serverName].sales = parseFloat($row.find('total').text());
+          $scope.$storage.lavuStaff.yesterday[serverName].orders = 1;
+        }
+      })
+      $scope.$storage.lavuStaff.yesterdayAverageTicket = $scope.$storage.lavuStaff.yesterdayTotalSales / $scope.$storage.lavuStaff.yesterdayTotalOrders;
       console.log(total);
       $http.post("/updateYesterdaySales/1",
       {
@@ -275,13 +296,35 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
         var $row = $(this);
         total += parseFloat($row.find('total').text());
       });
+      $scope.$storage.lavuStaff.today = {};
+      $scope.$storage.lavuStaff.todayTotalOrders = 0;
+      $scope.$storage.lavuStaff.todayTotalSales = 0.0;
+      $(response.data).find('row').each(function()  {
+        var $row = $(this);
+        var serverName = $row.find('server').text();
+        $scope.$storage.lavuStaff.todayTotalOrders++;
+        $scope.$storage.lavuStaff.todayTotalSales += parseFloat($row.find('total').text());
+        if ($scope.$storage.lavuStaff.today.hasOwnProperty(serverName))  {
+          $scope.$storage.lavuStaff.today[serverName].sales += parseFloat($row.find('total').text());
+          $scope.$storage.lavuStaff.today[serverName].orders++;
+        } else {
+          $scope.$storage.lavuStaff.today[serverName] = {};
+          $scope.$storage.lavuStaff.today[serverName].name = serverName;
+          $scope.$storage.lavuStaff.today[serverName].sales = parseFloat($row.find('total').text());
+          $scope.$storage.lavuStaff.today[serverName].orders = 1;
+        }
+      })
+      $scope.$storage.lavuStaff.todayAverageTicket = $scope.$storage.lavuStaff.todayTotalSales / $scope.$storage.lavuStaff.todayTotalOrders;
+
+
       $http.post("/updateTodaySales/1",
       {
         "location": 1,
         "dailyProgress": total
       })
       .then(function(resposne)  {
-        console.log("Sucess");
+        console.log("Sucesss");
+        console.log($scope.lavuStaff);
       }, function(resposne)  {
         console.log("failure");
       });
