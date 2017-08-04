@@ -287,20 +287,21 @@ app.post("/updateSales", function(req, res)  {
 
 app.get("/lookupYesterdayLavu", function(req, res)  {
 
-  var api_url = "https://api.poslavu.com/cp/reqserv/";
-    var datanameString = "cerveza_patago13";  
-    var keyString = "XCXxRHUsSuF3n3D4s6Lm";
-    var tokenString = "bsn9GpsHt8UClvnEukGa";
-    var tableString = "orders";
+  // var api_url = "https://api.poslavu.com/cp/reqserv/";
+  //   var datanameString = "cerveza_patago13";  
+  //   var keyString = "XCXxRHUsSuF3n3D4s6Lm";
+  //   var tokenString = "bsn9GpsHt8UClvnEukGa";
+  //   var tableString = "orders";
 
 
     
     //var json_obj = JSON.parse(options);
     var yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
     yesterday.setHours(-4,0,0,0);
+    yesterday.setDate(yesterday.getDate() - 1);
     var today = new Date();
     today.setHours(-4,0,0,0);
+    console.log(yesterday + ". " + today);
 
     request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:tableString,valid_xml:1,limit:10000,column:"closed",value_min: yesterday.toISOString().substring(0, 19).replace('T', ' '),value_max: today.toISOString().substring(0, 19).replace('T', ' ')}
     },function(error, response, body){
@@ -309,25 +310,32 @@ app.get("/lookupYesterdayLavu", function(req, res)  {
     });
 });
 
+var api_url = "https://api.poslavu.com/cp/reqserv/";
+var datanameString = "cerveza_patago13";  
+var keyString = "XCXxRHUsSuF3n3D4s6Lm";
+var tokenString = "bsn9GpsHt8UClvnEukGa";
+var tableString = "orders";
+
 app.get("/lookupLavuToday", function(req, res)  {
 
-  var api_url = "https://api.poslavu.com/cp/reqserv/";
-    var datanameString = "cerveza_patago13";  
-    var keyString = "XCXxRHUsSuF3n3D4s6Lm";
-    var tokenString = "bsn9GpsHt8UClvnEukGa";
-    var tableString = "orders";
+
 
   var today = new Date();
     today.setHours(-4,0,0,0);
-    console.log(today);
     var tomorrow = new Date();
     tomorrow.setDate(today.getDate() + 1);
+    console.log("daily: ");
+    console.log(today + ". " + tomorrow);
 
    request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:tableString,valid_xml:1,limit:10000,column:"closed",value_min: today.toISOString().substring(0, 19).replace('T', ' '),value_max: tomorrow.toISOString().substring(0, 19).replace('T', ' ') }
     }, function(error, response, body)  {
-      console.log(body);
+      //console.log(body);
       res.send(body).status(200).end();
     });
+});
+
+app.get("/lookupLavuLastWeek", function(req, res)  {
+
 });
 
 app.post("/updateTodaySales/:location", function(req, res)  {
