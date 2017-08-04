@@ -317,9 +317,6 @@ var tokenString = "bsn9GpsHt8UClvnEukGa";
 var tableString = "orders";
 
 app.get("/lookupLavuToday", function(req, res)  {
-
-
-
   var today = new Date();
     today.setHours(0,0,0,0);
     var tomorrow = new Date();
