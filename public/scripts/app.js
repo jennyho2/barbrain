@@ -324,7 +324,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
       })
       .then(function(resposne)  {
         console.log("Sucesss");
-        console.log($scope.lavuStaff);
+        console.log($scope.$storage.lavuStaff);
       }, function(resposne)  {
         console.log("failure");
       });
