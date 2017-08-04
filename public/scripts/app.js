@@ -217,6 +217,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   }
 
   $scope.onCallLavu = function () {
+    $scope.lavuStaff = {};
     // var api_url = "https://api.poslavu.com/cp/reqserv/";
     // var datanameString = "cerveza_patago13";  
     // var keyString = "XCXxRHUsSuF3n3D4s6Lm";
@@ -253,6 +254,26 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
         var id = $row.find('id').text();
         total += parseFloat($row.find('total').text());
       });
+
+      $scope.lavuStaff.yesterday = {};
+      $scope.lavuStaff.yesterday.totalOrders = 0;
+      $scope.lavuStaff.yesterday.totalSales = 0.0;
+      $(response.data).find('row').each(function()  {
+        var $row = $(this);
+        var serverName = $row.find('server').text();
+        $scope.lavuStaff.yesterday.totalOrders++;
+        $scope.lavuStaff.yesterday.totalSales += parseFloat($row.find('total').text());
+        if ($scope.lavuStaff.yesterday.hasOwnProperty(serverName))  {
+          $scope.lavuStaff.yesterday[serverName].sales += parseFloat($row.find('total').text());
+          $scope.lavuStaff.yesterday[serverName].orders++;
+        } else {
+          $scope.lavuStaff.yesterday[serverName] = {};
+          $scope.lavuStaff.yesterday[serverName].name = serverName;
+          $scope.lavuStaff.yesterday[serverName].sales = parseFloat($row.find('total').text());
+          $scope.lavuStaff.yesterday[serverName].orders = 1;
+        }
+      })
+      $scope.lavuStaff.yesterday.averageTicket = $scope.lavuStaff.yesterday.totalSales / $scope.lavuStaff.yesterday.totalOrders;
       console.log(total);
       $http.post("/updateYesterdaySales/1",
       {
@@ -275,6 +296,27 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
         var $row = $(this);
         total += parseFloat($row.find('total').text());
       });
+      $scope.lavuStaff.today = {};
+      $scope.lavuStaff.today.totalOrders = 0;
+      $scope.lavuStaff.today.totalSales = 0.0;
+      $(response.data).find('row').each(function()  {
+        var $row = $(this);
+        var serverName = $row.find('server').text();
+        $scope.lavuStaff.today.totalOrders++;
+        $scope.lavuStaff.today.totalSales += parseFloat($row.find('total').text());
+        if ($scope.lavuStaff.today.hasOwnProperty(serverName))  {
+          $scope.lavuStaff.today[serverName].sales += parseFloat($row.find('total').text());
+          $scope.lavuStaff.today[serverName].orders++;
+        } else {
+          $scope.lavuStaff.today[serverName] = {};
+          $scope.lavuStaff.today[serverName].name = serverName;
+          $scope.lavuStaff.today[serverName].sales = parseFloat($row.find('total').text());
+          $scope.lavuStaff.today[serverName].orders = 1;
+        }
+      })
+      $scope.lavuStaff.today.averageTicket = $scope.lavuStaff.today.totalSales / $scope.lavuStaff.today.totalOrders;
+
+
       $http.post("/updateTodaySales/1",
       {
         "location": 1,
