@@ -258,6 +258,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
       $scope.$storage.lavuStaff.yesterday = {};
       $scope.$storage.lavuStaff.yesterdayTotalOrders = 0;
       $scope.$storage.lavuStaff.yesterdayTotalSales = 0.0;
+      $scope.$storage.lavuStaff.yesterday.categories = {};
       $(response.data).find('row').each(function()  {
         var $row = $(this);
         var serverName = $row.find('server').text();
@@ -272,6 +273,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
           $scope.$storage.lavuStaff.yesterday[serverName].sales = parseFloat($row.find('total').text());
           $scope.$storage.lavuStaff.yesterday[serverName].orders = 1;
         }
+        getCategoryInfo($row, $scope, $http);
       })
       $scope.$storage.lavuStaff.yesterdayAverageTicket = $scope.$storage.lavuStaff.yesterdayTotalSales / $scope.$storage.lavuStaff.yesterdayTotalOrders;
       console.log(total);
@@ -332,7 +334,52 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
       console.log("failure");
     });
   }
+
+
 });
+
+function getCategoryInfo($row, $scope, $http)  {
+    var order_id = $row.find('order_id').text();
+    $http.get("/lookupLavuOrder_Contents/" + order_id)
+    .then(function(response)  {
+      $(response.data).find('row').each(function()  {
+        var $row2 = $(this);
+        var item_id = $row2.find('item_id').text();
+        $http.get("/lookupLavuItems/" + item_id)
+        .then(function(response2)  {
+          var $row3 = $(response2.data).find('row');
+          var category_id = $row3.find('category_id').text();
+          $http.get("/lookupLavuCategory/" + category_id)
+          .then(function(response3)  {
+            var $row4 = $(response3.data).find('row');
+            var group_id = $row4.find('group_id').text();
+            $http.get("/lookupLavuGroup/" + group_id)
+            .then(function(response4)  {
+              var $row5 = $(response4.data).find('row');
+              var group_name = $row5.find('group_name').text();
+              if ($scope.$storage.lavuStaff.yesterday.categories.hasOwnProperty(group_name))  {
+                $scope.$storage.lavuStaff.yesterday.categories[group_name].sales += parseFloat($row2.find('total_with_tax').text());
+                $scope.$storage.lavuStaff.yesterday.categories[group_name].orders++;
+              } else {
+                $scope.$storage.lavuStaff.yesterday.categories[group_name] = {}; 
+                $scope.$storage.lavuStaff.yesterday.categories[group_name].name = group_name;
+                $scope.$storage.lavuStaff.yesterday.categories[group_name].sales = parseFloat($row2.find('total_with_tax').text());
+                $scope.$storage.lavuStaff.yesterday.categories[group_name].orders = 1;
+              }
+            }, function(response4)  {
+              console.log("fail4");
+            });
+          }, function(response3)  {
+            console.log("fail3");
+          });
+        }, function(response2)  {
+          console.log("fail2");
+        });
+      });
+    }, function(response)  {
+      console.log("fail");
+    });
+  }
 
 function Goal($http)  {
   var dailyGoal = 600;
