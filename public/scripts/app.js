@@ -359,12 +359,12 @@ function getCategoryInfo($row, $scope, $http)  {
               var group_name = $row5.find('group_name').text();
               if ($scope.$storage.lavuStaff.yesterday.categories.hasOwnProperty(group_name))  {
                 $scope.$storage.lavuStaff.yesterday.categories[group_name].sales += parseFloat($row2.find('total_with_tax').text());
-                $scope.$storage.lavuStaff.yesterday.categories[group_name].orders++;
+                $scope.$storage.lavuStaff.yesterday.categories[group_name].orders += parseFloat($row2.find('quantity').text());
               } else {
                 $scope.$storage.lavuStaff.yesterday.categories[group_name] = {}; 
                 $scope.$storage.lavuStaff.yesterday.categories[group_name].name = group_name;
                 $scope.$storage.lavuStaff.yesterday.categories[group_name].sales = parseFloat($row2.find('total_with_tax').text());
-                $scope.$storage.lavuStaff.yesterday.categories[group_name].orders = 1;
+                $scope.$storage.lavuStaff.yesterday.categories[group_name].orders = parseFloat($row2.find('quantity').text());
               }
             }, function(response4)  {
               console.log("fail4");
