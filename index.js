@@ -324,8 +324,8 @@ app.get("/lookupLavuToday", function(req, res)  {
     today.setHours(0,0,0,0);
     var tomorrow = new Date();
     tomorrow.setDate(today.getDate() + 1);
-    console.log("daily: ");
-    console.log(today + ". " + tomorrow);
+    //console.log("daily: ");
+    //console.log(today + ". " + tomorrow);
 
    request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:tableString,valid_xml:1,limit:10000,column:"closed",value_min: today.toISOString().substring(0, 19).replace('T', ' '),value_max: tomorrow.toISOString().substring(0, 19).replace('T', ' ') }
     }, function(error, response, body)  {
