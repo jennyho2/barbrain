@@ -118,7 +118,9 @@ textarea {
 .bottomLine{
 	border-bottom: 1px solid #dcdcdc;
 }
-
+.doughnutSize{
+	width: 50%;
+}
 
 table td:first-child, table th:first-child {
 border-left: none;

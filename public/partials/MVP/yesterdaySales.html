@@ -1,0 +1,43 @@
+<div class="chartHolder doughnutSize">
+  <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
+  <canvas id="doughnut" class="chart chart-doughnut"
+    chart-data="data" chart-labels="labels" chart-options="options">
+  </canvas> 
+</div>
+<div class="center">
+  <span class="smallFont">{{$storage.goal.dailyProgress / $storage.goal.dailyGoal * 100| number:0 }}%</span> <br>
+  <span class="smallFont">of goal achieved</span> 
+</div>
+
+  <table class="dividerTable smallFont">  
+    <thead>
+      <tr class="tableEmployeeStat">
+        <th>Category</th>
+        <th>Sales</th>
+        <th>Tickets</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="tableEmployeeStat" ng-repeat="category in fullSales.sales.lastWeekSales.category">
+        <td>{{category.name}}</td>
+        <td>${{category.sales}}</td>
+        <td>{{category.tickets}}</td>
+      </tr>
+  
+    </tbody>
+  </table>
+  <br>
+<!-- Insights -->
+<div class="tactics">
+<br>
+  <div class="center">
+    <span class="smallFont"><b>Thought of the Day</b></span>
+    <br>
+    <br>
+    <div class="boxed ">
+      <span class="smallFont">{{$storage.fullTactics.tactics[0].tips.thoughtOfTheDay}}</span>
+    </div>
+  </div> <!-- End Insights -->
+<br>
+</div
+

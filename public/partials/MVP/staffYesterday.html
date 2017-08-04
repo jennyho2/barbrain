@@ -60,7 +60,7 @@
                     </tr> 
                 </thead>
                 <tbody>
-                     <tr ng-repeat="staffInfo in fullStaff.staff | filter:staffLocation | orderBy:orderByField:true" class="tableEmployeeStat" ng-click="openStaff(staffInfo.firstName + ' ' + staffInfo.lastName, 3)">
+                     <tr ng-repeat="staffInfo in fullStaff.staff | filter:staffLocation | orderBy:orderByField:reverseSort" class="tableEmployeeStat" ng-click="openStaff(staffInfo.firstName + ' ' + staffInfo.lastName, 3)">
 
                         <td class="v-a-m">
                             <span class="smallFont"><b>{{staffInfo.firstName}}</b></span>              
@@ -81,6 +81,7 @@
                 </tbody>
             </table>
             </table>
+            <span>{{orderByField}}</span>
         </div>
     </div>
 </div>
