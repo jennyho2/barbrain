@@ -1,8 +1,8 @@
 var app = angular.module("goalsApp", ["ngRoute", "ngStorage", "filters.stringUtils", "angularModalService", "chart.js"]);
 
 app.controller('mainController', function($scope, $localStorage, $sessionStorage, $http)  {
-	$scope.orderByField = 'firstName';
-  	$scope.reverseSort = false;
+	$scope.orderByField = 'name';
+  $scope.reverseSort = false;
 	$scope.$storage = $localStorage;
 	$scope.$storage.goal = new Goal($http);
 	$scope.date = new Date();
@@ -255,7 +255,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
         total += parseFloat($row.find('total').text());
       });
 
-      $scope.$storage.lavuStaff.yesterday = {};
+      $scope.$storage.yesterday = {};
       $scope.$storage.lavuStaff.yesterdayTotalOrders = 0;
       $scope.$storage.lavuStaff.yesterdayTotalSales = 0.0;
       $scope.$storage.lavuStaff.yesterday.categories = {};
@@ -535,6 +535,29 @@ app.config(function($routeProvider) {
   });
     
 });
+app.filter('orderObjectBy', function() {
+  return function(items, field, reverse) {
+    var filtered = [];
+    angular.forEach(items, function(item) {
+      filtered.push(item);
+    });
+
+  
+
+    filtered.sort(function (a, b) {
+      if(field=="avgTicket" || field=="percentToAvg"){
+          return(a["sales"]/a["orders"] > b["sales"]/b["orders"]? 1: -1);
+      }
+      else{
+        console.log(field);
+        return (a[field] > b[field] ? 1 : -1);
+      }
+    });
+    if(reverse) filtered.reverse();
+    return filtered;
+  };
+});
+
 
 app.run(function ($rootScope, $location, $localStorage) {
 
