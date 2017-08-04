@@ -5,7 +5,7 @@
         $api_token = "bsn9GpsHt8UClvnEukGa";
 
         $postvars = "dataname=$api_dataname&key=$api_key&token=$api_token";
-        $postvars .= "&table=order_contents&column=id&value_min=128815&value_max=158815&limit=15000&valid_xml=1";
+        $postvars .= "&table=menu_groups&limit=15000&valid_xml=1";
         
         function display_api_response($str)
         {

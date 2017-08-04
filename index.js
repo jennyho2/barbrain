@@ -297,10 +297,10 @@ app.get("/lookupYesterdayLavu", function(req, res)  {
     
     //var json_obj = JSON.parse(options);
     var yesterday = new Date();
-    yesterday.setHours(0,0,0,0);
+    yesterday.setHours(3,0,0,0);
     yesterday.setDate(yesterday.getDate() - 1);
     var today = new Date();
-    today.setHours(0,0,0,0);
+    today.setHours(3,0,0,0);
     console.log(yesterday + ". " + today);
 
     request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:tableString,valid_xml:1,limit:10000,column:"closed",value_min: yesterday.toISOString().substring(0, 19).replace('T', ' '),value_max: today.toISOString().substring(0, 19).replace('T', ' ')}
@@ -318,7 +318,7 @@ var tableString = "orders";
 
 app.get("/lookupLavuToday", function(req, res)  {
   var today = new Date();
-    today.setHours(0,0,0,0);
+    today.setHours(3,0,0,0);
     var tomorrow = new Date();
     tomorrow.setDate(today.getDate() + 1);
     //console.log("daily: ");
@@ -380,6 +380,42 @@ app.post("/updateYesterdaySales/:location", function(req, res)  {
       } else {
         res.status(200).end();
       }
+    });
+});
+
+app.get("/lookupLavuOrder_Contents/:order_id", function(req, res)  {
+  var order_idParam = req.params.order_id;
+  request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:"order_contents",valid_xml:1,limit:10000,column:"order_id",value:order_idParam }
+    }, function(error, response, body)  {
+      //console.log(body);
+      res.send(body).status(200).end();
+    });
+});
+
+app.get("/lookupLavuItems/:item_id", function(req, res)  {
+  var item_idParam = req.params.item_id;
+  request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:"menu_items",valid_xml:1,limit:10000,column:"id",value:item_idParam }
+    }, function(error, response, body)  {
+      //console.log(body);
+      res.send(body).status(200).end();
+    });
+});
+
+app.get("/lookupLavuCategory/:category_id", function(req, res)  {
+  var category_idParam = req.params.category_id;
+  request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:"menu_categories",valid_xml:1,limit:10000,column:"id",value:category_idParam }
+    }, function(error, response, body)  {
+      //console.log(body);
+      res.send(body).status(200).end();
+    });
+});
+
+app.get("/lookupLavuGroup/:group_id", function(req, res)  {
+  var group_idParam = req.params.group_id;
+  request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:"menu_groups",valid_xml:1,limit:10000,column:"id",value:group_idParam }
+    }, function(error, response, body)  {
+      //console.log(body);
+      res.send(body).status(200).end();
     });
 });
 
