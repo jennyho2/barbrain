@@ -14,34 +14,22 @@
                         </td>
                         <td class="v-a-m smallFont">
                         <strong>
-                            <a ng-click="orderByField='currentProgress'; reverseSort = !reverseSort">
+                            <a ng-click="orderByField='sales'; reverseSort = !reverseSort">
                                 Total Sales 
-                                <span ng-show="orderByField == 'currentProgress'">
-                                    <span ng-show="!reverseSort">^</span>
-                                    <span ng-show="reverseSort">v</span>
-                                </span>
                             </a>
                         </strong>
                         </td>
                         <td class="v-a-m smallFont">
                         <strong>
-                            <a ng-click="orderByField='checks'; reverseSort = !reverseSort">
+                            <a ng-click="orderByField='orders'; reverseSort = !reverseSort">
                                 Total Checks 
-                                <span ng-show="orderByField == 'checks'">
-                                    <span ng-show="!reverseSort">^</span>
-                                    <span ng-show="reverseSort">v</span>
-                                </span>
                             </a>
                         </strong>
                         </td>
                         <td class="v-a-m smallFont">
                         <strong>
-                            <a ng-click="orderByField='averageTicket'; reverseSort = !reverseSort">
+                            <a ng-click="orderByField='avgTicket'; reverseSort = !reverseSort">
                                 Avg. Ticket 
-                                <span ng-show="orderByField == 'averageTicket'">
-                                    <span ng-show="!reverseSort">^</span>
-                                    <span ng-show="reverseSort">v</span>
-                                </span>
                             </a>
                         </strong>
                         </td>
@@ -49,17 +37,13 @@
                         <strong>
                             <a ng-click="orderByField='percentToAvg'; reverseSort = !reverseSort">
                                 % Above/Below 
-                                <span ng-show="orderByField == 'percentToAvg'">
-                                    <span ng-show="!reverseSort">^</span>
-                                    <span ng-show="reverseSort">v</span>
-                                </span>
                             </a>
                         </strong>
                         </td>
                     </tr> 
                 </thead>
                 <tbody>
-                    <tr ng-repeat="staffInfo in $storage.lavuStaff.today" class="tableEmployeeStat" >
+                    <tr ng-repeat="staffInfo in $storage.lavuStaff.today | orderObjectBy:orderByField:true " class="tableEmployeeStat" >
                      <!-- <tr ng-repeat="staffInfo in fullStaff.staff | filter:staffLocation |orderBy:orderByField:reverseSort" class="tableEmployeeStat" ng-click="openStaff(staffInfo.firstName + ' ' + staffInfo.lastName, 3)"> -->
 
                          <td class="v-a-m">
@@ -75,25 +59,12 @@
                             <span class="smallFont">${{staffInfo.sales / staffInfo.orders | number:2}}</span>
                         </td>
                         <td class="v-a-m"> 
-                            <span class="smallFont">{{  (((staffInfo.sales / staffInfo.orders) / $storage.lavuStaff.yesterdayAverageTicket) * 100) - 100 | number:2}}%</span>
+                            <span class="smallFont">{{(((staffInfo.sales / staffInfo.orders) / $storage.lavuStaff.yesterdayAverageTicket) * 100) - 100 | number:2}}%</span>
                         </td>
-                       <!--  <td class="v-a-m">
-                            <span class="smallFont"><b>{{staffInfo.firstName}}</b></span>              
-                        </td>
-                        <td class="v-a-m"> 
-                            <span class="smallFont">${{staffInfo.currentProgress}}</span>
-                        </td>
-                        <td class="v-a-m"> 
-                            <span class="smallFont">{{staffInfo.checks}}</span>
-                        </td>
-                        <td class="v-a-m"> 
-                            <span class="smallFont">{{staffInfo.averageTicket}}</span>
-                        </td>
-                        <td class="v-a-m"> 
-                            <span class="smallFont">{{staffInfo.percentToAvg}}%</span>
-                        </td> -->
+                        
                     </tr>
                 </tbody>
+                <span></span>
             </table>
             </table>
         </div>
