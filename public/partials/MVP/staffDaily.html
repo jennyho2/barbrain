@@ -75,7 +75,7 @@
                             <span class="smallFont">${{staffInfo.sales / staffInfo.orders | number:2}}</span>
                         </td>
                         <td class="v-a-m"> 
-                            <span class="smallFont">{{  (((staffInfo.sales / staffInfo.orders) / $storage.lavuStaff.yesterday.averageTicket) * 100) - 100 | number:2}}%</span>
+                            <span class="smallFont">{{  (((staffInfo.sales / staffInfo.orders) / $storage.lavuStaff.yesterdayAverageTicket) * 100) - 100 | number:2}}%</span>
                         </td>
                        <!--  <td class="v-a-m">
                             <span class="smallFont"><b>{{staffInfo.firstName}}</b></span>              

@@ -256,13 +256,13 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
       });
 
       $scope.$storage.lavuStaff.yesterday = {};
-      $scope.$storage.lavuStaff.yesterday.totalOrders = 0;
-      $scope.$storage.lavuStaff.yesterday.totalSales = 0.0;
+      $scope.$storage.lavuStaff.yesterdayTotalOrders = 0;
+      $scope.$storage.lavuStaff.yesterdayTotalSales = 0.0;
       $(response.data).find('row').each(function()  {
         var $row = $(this);
         var serverName = $row.find('server').text();
-        $scope.$storage.lavuStaff.yesterday.totalOrders++;
-        $scope.$storage.lavuStaff.yesterday.totalSales += parseFloat($row.find('total').text());
+        $scope.$storage.lavuStaff.yesterdayTotalOrders++;
+        $scope.$storage.lavuStaff.yesterdayTotalSales += parseFloat($row.find('total').text());
         if ($scope.$storage.lavuStaff.yesterday.hasOwnProperty(serverName))  {
           $scope.$storage.lavuStaff.yesterday[serverName].sales += parseFloat($row.find('total').text());
           $scope.$storage.lavuStaff.yesterday[serverName].orders++;
@@ -273,7 +273,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
           $scope.$storage.lavuStaff.yesterday[serverName].orders = 1;
         }
       })
-      $scope.$storage.lavuStaff.yesterday.averageTicket = $scope.$storage.lavuStaff.yesterday.totalSales / $scope.$storage.lavuStaff.yesterday.totalOrders;
+      $scope.$storage.lavuStaff.yesterdayAverageTicket = $scope.$storage.lavuStaff.yesterdayTotalSales / $scope.$storage.lavuStaff.yesterdayTotalOrders;
       console.log(total);
       $http.post("/updateYesterdaySales/1",
       {
@@ -297,13 +297,13 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
         total += parseFloat($row.find('total').text());
       });
       $scope.$storage.lavuStaff.today = {};
-      $scope.$storage.lavuStaff.today.totalOrders = 0;
-      $scope.$storage.lavuStaff.today.totalSales = 0.0;
+      $scope.$storage.lavuStaff.todayTotalOrders = 0;
+      $scope.$storage.lavuStaff.todayTotalSales = 0.0;
       $(response.data).find('row').each(function()  {
         var $row = $(this);
         var serverName = $row.find('server').text();
-        $scope.$storage.lavuStaff.today.totalOrders++;
-        $scope.$storage.lavuStaff.today.totalSales += parseFloat($row.find('total').text());
+        $scope.$storage.lavuStaff.todayTotalOrders++;
+        $scope.$storage.lavuStaff.todayTotalSales += parseFloat($row.find('total').text());
         if ($scope.$storage.lavuStaff.today.hasOwnProperty(serverName))  {
           $scope.$storage.lavuStaff.today[serverName].sales += parseFloat($row.find('total').text());
           $scope.$storage.lavuStaff.today[serverName].orders++;
@@ -314,7 +314,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
           $scope.$storage.lavuStaff.today[serverName].orders = 1;
         }
       })
-      $scope.$storage.lavuStaff.today.averageTicket = $scope.$storage.lavuStaff.today.totalSales / $scope.$storage.lavuStaff.today.totalOrders;
+      $scope.$storage.lavuStaff.todayAverageTicket = $scope.$storage.lavuStaff.todayTotalSales / $scope.$storage.lavuStaff.todayTotalOrders;
 
 
       $http.post("/updateTodaySales/1",
