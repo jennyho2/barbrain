@@ -251,13 +251,6 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   $scope.onCallLavu = function () {
     if( !hasOneDayPassed ) return false;
     $scope.$storage.incentiveId = 0;
-    
-    
-    
-    
-    
-    
-
     $http.get("/lookupLavuItems")
     .then(function(response)  {
       $scope.$storage.items = [];
@@ -272,12 +265,11 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
           console.log("Found incentive: " + $scope.$storage.incentiveId);
         }
       });
+      $scope.onCallLavuToday();
     }, function(response)  {
       console.log("failure grabbing incentive Id");
     });
 
-    $scope.onCallLavuToday();
-    $scope.onCallLavuYesterday();
 
     //$scope.onCallLavuMonthly();
 
@@ -334,6 +326,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
       }, function(resposne)  {
         console.log("failure");
       });
+      $scope.onCallLavuYesterday();
     }, function(response)  {
       console.log("failure");
     });
@@ -648,10 +641,10 @@ app.config(function($routeProvider) {
   $routeProvider
   .when("/", {
 
-  	templateUrl : "partials/MVP/homeMVP.html"
-  })
-  .when("/staff", {
   	templateUrl : "partials/MVP/staff.html"
+  })
+  .when("/home", {
+  	templateUrl : "partials/MVP/homeMVP.html"
   })
   .when("/history", {
       templateUrl : "partials/history.html"
