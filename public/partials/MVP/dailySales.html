@@ -1,7 +1,7 @@
 <div class="chartHolder doughnutSize">
   <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
   <canvas id="doughnut" class="chart chart-doughnut"
-    chart-data="data" chart-labels="labels" chart-options="options">
+    chart-data="todayData" chart-labels="labels" chart-options="options">
   </canvas> 
 </div>
 
@@ -21,10 +21,10 @@
       </tr>
     </thead>
     <tbody>
-      <tr class="tableEmployeeStat" ng-repeat="category in fullSales.sales.lastWeekSales.category">
+      <tr class="tableEmployeeStat" ng-repeat="category in $storage.lavuStaff.today.categories">
         <td>{{category.name}}</td>
         <td>${{category.sales}}</td>
-        <td>{{category.tickets}}</td>
+        <td>{{category.orders}}</td>
       </tr>
   
     </tbody>

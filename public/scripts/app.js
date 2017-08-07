@@ -6,12 +6,15 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.$storage = $localStorage;
 	$scope.$storage.goal = new Goal($http);
 	$scope.date = new Date();
+  $scope.data = {};
 	//SET THE FUCKING LOCATION
 	$scope.location = 1;
   	$scope.options = { responsive: true, stacked: true, pointstyle: "crossRot" };
 
   	$scope.labels = ["Current Sales", "Distance From Goal"];
-  	$scope.data = [$scope.$storage.goal.dailyProgress, $scope.$storage.goal.dailyGoal];
+    $scope.yesterdayData = [$scope.$storage.lavuStaff.yesterdayTotalSales, $scope.$storage.goal.dailyGoal];
+    $scope.todayData = [$scope.$storage.lavuStaff.todayTotalSales, $scope.$storage.goal.dailyGoal];
+  	//$scope.data = [$scope.$storage.goal.dailyProgress, $scope.$storage.goal.dailyGoal];
   	$scope.lastWeekData = [[547.60,1931.64],[500,700,3000,6000,4000,1400,900]];
 
     $scope.weeklyData = [500,700,
@@ -217,35 +220,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   }
 
   $scope.onCallLavu = function () {
+    if( !hasOneDayPassed ) return false;
     $scope.$storage.lavuStaff = {};
-    // var api_url = "https://api.poslavu.com/cp/reqserv/";
-    // var datanameString = "cerveza_patago13";  
-    // var keyString = "XCXxRHUsSuF3n3D4s6Lm";
-    // var tokenString = "bsn9GpsHt8UClvnEukGa";
-    // var tableString = "orders";
-    // var yesterday = new Date();
-    // yesterday.setDate(yesterday.getDate() - 1);
-
-    // var config = { headers : {'Content-Type': 'application/json; charset=utf-8'}};
-
-    // var data = JSON.stringify({
-    //   dataname:datanameString,
-    //   key:keyString,
-    //   token:tokenString,
-    //   table:tableString,
-    //   limit:50,
-    //   valid_xml: 1
-    // });
-    // $http.post(
-    //   api_url,
-    //   data,
-    //   config.headers
-    // ).then(function(response)  {
-    //   console.log(response);
-    //   console.log("Success");
-    // }).catch( function(error)  {
-    //   console.log("Failure");
-    // });
     $http.get("/lookupYesterdayLavu")
     .then(function(response)  {
       var total = 0;
@@ -255,7 +231,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
         total += parseFloat($row.find('total').text());
       });
 
-      $scope.$storage.yesterday = {};
+      $scope.$storage.lavuStaff.yesterday = {};
       $scope.$storage.lavuStaff.yesterdayTotalOrders = 0;
       $scope.$storage.lavuStaff.yesterdayTotalSales = 0.0;
       $scope.$storage.lavuStaff.yesterday.categories = {};
@@ -273,8 +249,9 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
           $scope.$storage.lavuStaff.yesterday[serverName].sales = parseFloat($row.find('total').text());
           $scope.$storage.lavuStaff.yesterday[serverName].orders = 1;
         }
-        getCategoryInfo($row, $scope, $http);
+        getCategoryInfo($row, $scope, $http, "yesterday");
       })
+      $scope.data.yesterday = [$scope.$storage.lavuStaff.yesterdayTotalSales, $scope.$storage.goal.dailyGoal];
       $scope.$storage.lavuStaff.yesterdayAverageTicket = $scope.$storage.lavuStaff.yesterdayTotalSales / $scope.$storage.lavuStaff.yesterdayTotalOrders;
       console.log(total);
       $http.post("/updateYesterdaySales/1",
@@ -301,6 +278,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
       $scope.$storage.lavuStaff.today = {};
       $scope.$storage.lavuStaff.todayTotalOrders = 0;
       $scope.$storage.lavuStaff.todayTotalSales = 0.0;
+      $scope.$storage.lavuStaff.today.categories = {};
       $(response.data).find('row').each(function()  {
         var $row = $(this);
         var serverName = $row.find('server').text();
@@ -315,10 +293,12 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
           $scope.$storage.lavuStaff.today[serverName].sales = parseFloat($row.find('total').text());
           $scope.$storage.lavuStaff.today[serverName].orders = 1;
         }
-      })
+        getCategoryInfo($row, $scope, $http, "today");
+      });
       $scope.$storage.lavuStaff.todayAverageTicket = $scope.$storage.lavuStaff.todayTotalSales / $scope.$storage.lavuStaff.todayTotalOrders;
 
-
+      $scope.yesterdayData = [$scope.$storage.lavuStaff.yesterdayTotalSales, $scope.$storage.goal.dailyGoal];
+      $scope.todayData = [$scope.$storage.lavuStaff.todayTotalSales, $scope.$storage.goal.dailyGoal];
       $http.post("/updateTodaySales/1",
       {
         "location": 1,
@@ -333,12 +313,13 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
     }, function(response)  {
       console.log("failure");
     });
+    localStorage.yourapp_date = $scope.$storage.newDate;
   }
 
-
+  $scope.onCallLavu();
 });
 
-function getCategoryInfo($row, $scope, $http)  {
+function getCategoryInfo($row, $scope, $http, period)  {
     var order_id = $row.find('order_id').text();
     $http.get("/lookupLavuOrder_Contents/" + order_id)
     .then(function(response)  {
@@ -357,14 +338,14 @@ function getCategoryInfo($row, $scope, $http)  {
             .then(function(response4)  {
               var $row5 = $(response4.data).find('row');
               var group_name = $row5.find('group_name').text();
-              if ($scope.$storage.lavuStaff.yesterday.categories.hasOwnProperty(group_name))  {
-                $scope.$storage.lavuStaff.yesterday.categories[group_name].sales += parseFloat($row2.find('total_with_tax').text());
-                $scope.$storage.lavuStaff.yesterday.categories[group_name].orders += parseFloat($row2.find('quantity').text());
+              if ($scope.$storage.lavuStaff[period].categories.hasOwnProperty(group_name))  {
+                $scope.$storage.lavuStaff[period].categories[group_name].sales += parseFloat($row2.find('total_with_tax').text());
+                $scope.$storage.lavuStaff[period].categories[group_name].orders += parseFloat($row2.find('quantity').text());
               } else {
-                $scope.$storage.lavuStaff.yesterday.categories[group_name] = {}; 
-                $scope.$storage.lavuStaff.yesterday.categories[group_name].name = group_name;
-                $scope.$storage.lavuStaff.yesterday.categories[group_name].sales = parseFloat($row2.find('total_with_tax').text());
-                $scope.$storage.lavuStaff.yesterday.categories[group_name].orders = parseFloat($row2.find('quantity').text());
+                $scope.$storage.lavuStaff[period].categories[group_name] = {}; 
+                $scope.$storage.lavuStaff[period].categories[group_name].name = group_name;
+                $scope.$storage.lavuStaff[period].categories[group_name].sales = parseFloat($row2.find('total_with_tax').text());
+                $scope.$storage.lavuStaff[period].categories[group_name].orders = parseFloat($row2.find('quantity').text());
               }
             }, function(response4)  {
               console.log("fail4");
@@ -595,6 +576,17 @@ $(app).ready(function(){
         $(this).hide();
     });
 });
+
+// checks if one day has passed. return "true" is so
+function hasOneDayPassed(){
+  $scope.$storage.newDate = new Date().toLocaleDateString();
+
+  if( localStorage.yourapp_date == $scope.$storage.newDate ) 
+      return false;
+
+  // localStorage.yourapp_date = date;
+  return true;
+}
 
 
 
