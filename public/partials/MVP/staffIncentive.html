@@ -16,7 +16,8 @@
                         <td class="v-a-m smallFont">
                         <strong>
                             <a ng-click="orderByField='currentProgress'; reverseSort = !reverseSort">
-                                {{$storage.fullTactics.tactics[0].incentive}} Unit Sales 
+                                <!-- {{$storage.fullTactics.tactics[0].incentive}} Unit Sales  -->
+                                {{$storage.INCENTIVE}} Unit Sales
                                 <span ng-show="orderByField == 'currentProgress'">
                                     <span ng-show="!reverseSort">^</span>
                                     <span ng-show="reverseSort">v</span>
@@ -28,7 +29,8 @@
                         <td class="v-a-m smallFont">
                         <strong>
                             <a ng-click="orderByField='percentToAvg'; reverseSort = !reverseSort">
-                                {{$storage.fullTactics.tactics[0].incentive}} $ Sales
+                                <!-- {{$storage.fullTactics.tactics[0].incentive}} $ Sales -->
+                                {{ $storage.INCENTIVE }} $ Sales
                                 <span ng-show="orderByField == 'percentToAvg'">
                                     <span ng-show="!reverseSort">^</span>
                                     <span ng-show="reverseSort">v</span>
@@ -39,9 +41,20 @@
                     </tr> 
                 </thead>
                 <tbody>
-                     <tr ng-repeat="staffInfo in fullStaff.staff | filter:staffLocation |orderBy:orderByField:reverseSort" class="tableEmployeeStat" ng-click="openStaff(staffInfo.firstName + ' ' + staffInfo.lastName, 3)">
-
+                    <tr ng-repeat="staffInfo in $storage.lavuStaff.yesterday.incentiveSales" 
+                    class="tableEmployeeStat">
+                    <!--  <tr ng-repeat="staffInfo in fullStaff.staff | filter:staffLocation |orderBy:orderByField:reverseSort" class="tableEmployeeStat" ng-click="openStaff(staffInfo.firstName + ' ' + staffInfo.lastName, 3)"> -->
                         <td class="v-a-m">
+                            <span class="smallFont"><b>{{staffInfo.name}}</b></span>
+                        </td>
+                        <td class="v-a-m">
+                            <span class="smallFont"><b>{{staffInfo.orders}}</b></span>
+                        </td>
+                        <td class="v-a-m">
+                            <span class="smallFont"><b>{{staffInfo.sales}}</b></span>
+                        </td>
+
+                        <!-- <td class="v-a-m">
                             <span class="smallFont"><b>{{staffInfo.firstName}}</b></span>              
                         </td>
                         <td class="v-a-m"> 
@@ -49,7 +62,7 @@
                         </td>
                         <td class="v-a-m"> 
                             <span class="smallFont">{{staffInfo.lastWeek.percentToAvg}}%</span>
-                        </td>
+                        </td> -->
                     </tr>
                 </tbody>
             </table>

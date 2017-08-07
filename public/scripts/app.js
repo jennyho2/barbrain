@@ -7,6 +7,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.$storage.goal = new Goal($http);
 	$scope.date = new Date();
   $scope.data = {};
+  $scope.$storage.INCENTIVE = INCENTIVE;
 	//SET THE FUCKING LOCATION
 	$scope.location = 1;
   	$scope.options = { responsive: true, stacked: true, pointstyle: "crossRot" };
@@ -222,6 +223,26 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   $scope.onCallLavu = function () {
     if( !hasOneDayPassed ) return false;
     $scope.$storage.lavuStaff = {};
+    $scope.$storage.incentiveId = 0;
+    $scope.$storage.lavuStaff.yesterday = {};
+    $scope.$storage.lavuStaff.today = {};
+    $scope.$storage.lavuStaff.yesterday.incentiveSales = {};
+    $scope.$storage.lavuStaff.today.incentiveSales = {};
+    $http.get("/lookupLavuItems")
+    .then(function(response)  {
+      $(response.data).find('row').each(function()  {
+        var $row = $(this);
+        var itemName = $row.find('name').text();
+        //console.log("Item: " + itemName + " id: " + parseInt($row.find('id').text()));
+        //console.log(INCENTIVE);
+        if (itemName == INCENTIVE)  {
+          $scope.$storage.incentiveId = parseInt($row.find('id').text());
+          console.log("Found incentive: " + $scope.$storage.incentiveId);
+        }
+      });
+    }, function(response)  {
+      console.log("failure grabbing incentive Id");
+    });
     $http.get("/lookupYesterdayLavu")
     .then(function(response)  {
       var total = 0;
@@ -231,7 +252,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
         total += parseFloat($row.find('total').text());
       });
 
-      $scope.$storage.lavuStaff.yesterday = {};
+      //$scope.$storage.lavuStaff.yesterday = {};
       $scope.$storage.lavuStaff.yesterdayTotalOrders = 0;
       $scope.$storage.lavuStaff.yesterdayTotalSales = 0.0;
       $scope.$storage.lavuStaff.yesterday.categories = {};
@@ -275,7 +296,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
         var $row = $(this);
         total += parseFloat($row.find('total').text());
       });
-      $scope.$storage.lavuStaff.today = {};
+      //$scope.$storage.lavuStaff.today = {};
       $scope.$storage.lavuStaff.todayTotalOrders = 0;
       $scope.$storage.lavuStaff.todayTotalSales = 0.0;
       $scope.$storage.lavuStaff.today.categories = {};
@@ -313,7 +334,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
     }, function(response)  {
       console.log("failure");
     });
-    localStorage.yourapp_date = $scope.$storage.newDate;
+    //localStorage.yourapp_date = $scope.$storage.newDate;
   }
 
   $scope.onCallLavu();
@@ -346,6 +367,18 @@ function getCategoryInfo($row, $scope, $http, period)  {
                 $scope.$storage.lavuStaff[period].categories[group_name].name = group_name;
                 $scope.$storage.lavuStaff[period].categories[group_name].sales = parseFloat($row2.find('total_with_tax').text());
                 $scope.$storage.lavuStaff[period].categories[group_name].orders = parseFloat($row2.find('quantity').text());
+              }
+              if (item_id == $scope.$storage.incentiveId)  {
+                var server = $row.find('server').text();
+                if ($scope.$storage.lavuStaff[period].incentiveSales.hasOwnProperty(server))  {
+                  $scope.$storage.lavuStaff[period].incentiveSales[server].sales += parseFloat($row2.find('total_with_tax').text());
+                  $scope.$storage.lavuStaff[period].incentiveSales[server].orders += parseFloat($row2.find('quantity').text());
+                } else {
+                  $scope.$storage.lavuStaff[period].incentiveSales[server] = {};
+                  $scope.$storage.lavuStaff[period].incentiveSales[server].name = server;
+                  $scope.$storage.lavuStaff[period].incentiveSales[server].sales = parseFloat($row2.find('total_with_tax').text());
+                  $scope.$storage.lavuStaff[period].incentiveSales[server].orders = parseFloat($row2.find('quantity').text());
+                }
               }
             }, function(response4)  {
               console.log("fail4");
@@ -530,7 +563,7 @@ app.filter('orderObjectBy', function() {
           return(a["sales"]/a["orders"] > b["sales"]/b["orders"]? 1: -1);
       }
       else{
-        console.log(field);
+        //console.log(field);
         return (a[field] > b[field] ? 1 : -1);
       }
     });
@@ -561,7 +594,6 @@ app.run(function ($rootScope, $location, $localStorage) {
 });
 
 angular.module('filters.stringUtils', [])
-
 .filter('removeSpaces', [function() {
     return function(string) {
         if (!angular.isString(string)) {
@@ -579,14 +611,16 @@ $(app).ready(function(){
 
 // checks if one day has passed. return "true" is so
 function hasOneDayPassed(){
-  $scope.$storage.newDate = new Date().toLocaleDateString();
+  var date = new Date().toLocaleDateString();
 
-  if( localStorage.yourapp_date == $scope.$storage.newDate ) 
+  if( localStorage.yourapp_date == date ) 
       return false;
 
-  // localStorage.yourapp_date = date;
+  localStorage.yourapp_date = date;
   return true;
-}
+};
+
+var INCENTIVE = "TOUR CERVECERO4";
 
 
 

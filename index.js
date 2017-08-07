@@ -419,5 +419,12 @@ app.get("/lookupLavuGroup/:group_id", function(req, res)  {
     });
 });
 
+app.get("/lookupLavuItems", function(req, res)  {
+  request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:"menu_items",valid_xml:1,limit:10000 }
+    }, function(error, resposne, body)  {
+      res.send(body).status(200).end();
+    });
+});
+
 
 
