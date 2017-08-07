@@ -28,6 +28,19 @@
               //var_dump($line);
               $guest_count = $line->guest_count;
               $closed_at = $line->closed_at;
+              //$timestamp=1333699439;
+              date_default_timezone_set ('America/Boise'); // somewhere on bootstrapping time
+              $dt = new DateTime();
+              $dt->setTimestamp($closed_at);
+              
+              $dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+
+              // set timezone to convert time to the other timezone
+              $dt->setTimeZone(new DateTimeZone('America/Boise'));
+
+              $closed_at = $dt->format('Y-m-d\TH:i:s\Z');
+              
+              //$closed_at = date("Y-m-d\TH:i:s\Z", $closed_at);
               $ticket_number = $line->ticket_number;
               
               $employeeName = $line->_embedded->employee->check_name;

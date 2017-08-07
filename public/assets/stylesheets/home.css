@@ -167,6 +167,10 @@ body {
 	flex-direction: column;
 }
 
+.colCenter {
+	margin: auto;
+}
+
 .footer {
 	padding-bottom: 10px;
 }

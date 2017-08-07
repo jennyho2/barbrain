@@ -311,10 +311,14 @@ app.get("/lookupYesterdayLavu", function(req, res)  {
 });
 
 var api_url = "https://api.poslavu.com/cp/reqserv/";
-var datanameString = "cerveza_patago13";  
-var keyString = "XCXxRHUsSuF3n3D4s6Lm";
-var tokenString = "bsn9GpsHt8UClvnEukGa";
+var datanameString = "";//"cerveza_patago13";  // cerveza_patago9
+var keyString = "";//"XCXxRHUsSuF3n3D4s6Lm"; // Wut9Y3BigxgEgChgzvNB
+var tokenString = "";//"bsn9GpsHt8UClvnEukGa"; // YjVS0nEgBXI9gSh5dmuC
 var tableString = "orders";
+
+// Bariloche cerveza_patago13 XCXxRHUsSuF3n3D4s6Lm bsn9GpsHt8UClvnEukGa
+// Tejeda cerveza_patago9 Wut9Y3BigxgEgChgzvNB YjVS0nEgBXI9gSh5dmuC
+// Goose Island goose_island_p fUOEUo4DToNuuTLuda04 R65QzAE6RnctGY8Dta2n
 
 app.get("/lookupLavuToday", function(req, res)  {
   var today = new Date();
@@ -331,8 +335,24 @@ app.get("/lookupLavuToday", function(req, res)  {
     });
 });
 
-app.get("/lookupLavuLastWeek", function(req, res)  {
+app.get("/lookupLastWeekLavu", function(req, res)  {
+  //var today = new Date();
+  var d = new Date();
+  var day = d.getDay(),
+      diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
+  var lastMonday = new Date(d.setDate(diff));
+  lastMonday.setHours(3,0,0,0);
+  console.log("Last Monday: " + lastMonday);
+  var today = new Date();
+    today.setHours(3,0,0,0);
+    var tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + 1);
 
+  request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:tableString,valid_xml:1,limit:10000,column:"closed",value_min: lastMonday.toISOString().substring(0, 19).replace('T', ' '),value_max: tomorrow.toISOString().substring(0, 19).replace('T', ' ') }
+  }, function(error, response, body)  {
+    //console.log(body);
+    res.send(body).status(200).end();
+  });
 });
 
 app.post("/updateTodaySales/:location", function(req, res)  {
@@ -426,5 +446,29 @@ app.get("/lookupLavuItems", function(req, res)  {
     });
 });
 
+app.get("/resolveLocation/:location_id", function(req, res)  {
+  var location_idParam = req.params.location_id;
+  if (location_idParam == 0)  { // bariloche
+    console.log("Choosing Bariloche");
+    datanameString = "cerveza_patago13";
+    keyString = "XCXxRHUsSuF3n3D4s6Lm";
+    tokenString = "bsn9GpsHt8UClvnEukGa";
+  } else if (location_idParam == 1)  { // tejeda
+    console.log("Choosing Tejeda");
+    datanameString = "cerveza_patago9";
+    keyString = "Wut9Y3BigxgEgChgzvNB";
+    tokenString = "YjVS0nEgBXI9gSh5dmuC";
+  } else if (location_idParam == 2)  { // goose island
+    console.log("Choosing Goose Island");
+    datanameString = "goose_island_p";
+    keyString = "fUOEUo4DToNuuTLuda04";
+    tokenString = "R65QzAE6RnctGY8Dta2n";
+  }
+  res.status(200).end();
+});
+
+// Bariloche cerveza_patago13 XCXxRHUsSuF3n3D4s6Lm bsn9GpsHt8UClvnEukGa
+// Tejeda cerveza_patago9 Wut9Y3BigxgEgChgzvNB YjVS0nEgBXI9gSh5dmuC
+// Goose Island goose_island_p fUOEUo4DToNuuTLuda04 R65QzAE6RnctGY8Dta2n
 
 

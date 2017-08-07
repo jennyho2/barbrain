@@ -1,4 +1,4 @@
-var app = angular.module("goalsApp", ["ngRoute", "ngStorage", "filters.stringUtils", "angularModalService", "chart.js"]);
+var app = angular.module("goalsApp", ["ngRoute", "ngStorage", "filters.stringUtils", "filters.mathAbs", "angularModalService", "chart.js"]);
 
 app.controller('mainController', function($scope, $localStorage, $sessionStorage, $http)  {
 	$scope.orderByField = 'name';
@@ -7,14 +7,20 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.$storage.goal = new Goal($http);
 	$scope.date = new Date();
   $scope.data = {};
-  $scope.$storage.INCENTIVE = INCENTIVE;
+  // $scope.$storage.INCENTIVE = INCENTIVE;
+  $scope.$storage.dailyHardGoal = 200000;
+  $scope.$storage.dailyHardIncentiveGoal = 45;
+  $scope.$storage.dailyHardIncentiveProjection = 45;
+  $scope.$storage.yesterdayHardGoal = 199000;
+  $scope.$storage.yesterdayHardIncentiveGoal = 43;
+  $scope.$storage.yesterdayHardIncentiveProjection = 49;
 	//SET THE FUCKING LOCATION
 	$scope.location = 1;
   	$scope.options = { responsive: true, stacked: true, pointstyle: "crossRot" };
 
   	$scope.labels = ["Current Sales", "Distance From Goal"];
-    $scope.yesterdayData = [$scope.$storage.lavuStaff.yesterdayTotalSales, $scope.$storage.goal.dailyGoal];
-    $scope.todayData = [$scope.$storage.lavuStaff.todayTotalSales, $scope.$storage.goal.dailyGoal];
+    // $scope.yesterdayData = [$scope.$storage.lavuStaff.yesterdayTotalSales, 200000];
+    // $scope.todayData = [$scope.$storage.lavuStaff.todayTotalSales, 200000];
   	//$scope.data = [$scope.$storage.goal.dailyProgress, $scope.$storage.goal.dailyGoal];
   	$scope.lastWeekData = [[547.60,1931.64],[500,700,3000,6000,4000,1400,900]];
 
@@ -32,6 +38,20 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
 	//$scope.$storage.dailyGoal = new DailyGoal($http);
 	//$scope.storage.staff = '';
+  $scope.gateLocation = function()  {
+    return (typeof $scope.$storage.location === 'undefined');
+  };
+
+  $scope.updateLocation = function(num)  {
+    $http.get("/resolveLocation/" + num)
+    .then(function(response)  {
+      $scope.$storage.location = num;
+      $scope.onCallLavu();
+    }, function(response)  {
+      console.log("Failure gating");
+    });
+  };
+
 	$scope.openStaff = function(staffName,day) {
 		$scope.$storage.staffName = staffName;
 		var array = staffName.split(' ');
@@ -208,6 +228,10 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
       return tactics.location === 1;
   } 
 
+  $scope.onReloadLocation = function()  {
+    delete $localStorage.location;
+  }
+
   $scope.onCallOmnivore = function () {
     $http.post("/webhookUpdate/1", 
     {
@@ -225,17 +249,31 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
     $scope.$storage.lavuStaff = {};
     $scope.$storage.incentiveId = 0;
     $scope.$storage.lavuStaff.yesterday = {};
+    $scope.$storage.lavuStaff.yesterday.staff = {};
     $scope.$storage.lavuStaff.today = {};
+    $scope.$storage.lavuStaff.today.staff = {};
+    $scope.$storage.lavuStaff.lastWeek = {};
+    $scope.$storage.lavuStaff.lastWeek.staff = {};
     $scope.$storage.lavuStaff.yesterday.incentiveSales = {};
     $scope.$storage.lavuStaff.today.incentiveSales = {};
+    $scope.$storage.lavuStaff.lastWeek.incentiveSales = {};
+    $scope.$storage.lavuStaff.today.totalIncentiveSales = 0.0;
+    $scope.$storage.lavuStaff.yesterday.totalIncentiveSales = 0.0;
+    $scope.$storage.lavuStaff.lastWeek.totalIncentiveSales = 0.0;
+    $scope.$storage.lavuStaff.today.totalIncentiveOrders = 0;
+    $scope.$storage.lavuStaff.yesterday.totalIncentiveOrders = 0;
+    $scope.$storage.lavuStaff.lastWeek.totalIncentiveOrders = 0;
+
     $http.get("/lookupLavuItems")
     .then(function(response)  {
+      $scope.$storage.items = [];
       $(response.data).find('row').each(function()  {
         var $row = $(this);
         var itemName = $row.find('name').text();
+        $scope.$storage.items.push(itemName);
         //console.log("Item: " + itemName + " id: " + parseInt($row.find('id').text()));
         //console.log(INCENTIVE);
-        if (itemName == INCENTIVE)  {
+        if (itemName == $scope.$storage.INCENTIVE)  {
           $scope.$storage.incentiveId = parseInt($row.find('id').text());
           console.log("Found incentive: " + $scope.$storage.incentiveId);
         }
@@ -261,17 +299,17 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
         var serverName = $row.find('server').text();
         $scope.$storage.lavuStaff.yesterdayTotalOrders++;
         $scope.$storage.lavuStaff.yesterdayTotalSales += parseFloat($row.find('total').text());
-        if ($scope.$storage.lavuStaff.yesterday.hasOwnProperty(serverName))  {
-          $scope.$storage.lavuStaff.yesterday[serverName].sales += parseFloat($row.find('total').text());
-          $scope.$storage.lavuStaff.yesterday[serverName].orders++;
+        if ($scope.$storage.lavuStaff.yesterday.staff.hasOwnProperty(serverName))  {
+          $scope.$storage.lavuStaff.yesterday.staff[serverName].sales += parseFloat($row.find('total').text());
+          $scope.$storage.lavuStaff.yesterday.staff[serverName].orders++;
         } else {
-          $scope.$storage.lavuStaff.yesterday[serverName] = {};
-          $scope.$storage.lavuStaff.yesterday[serverName].name = serverName;
-          $scope.$storage.lavuStaff.yesterday[serverName].sales = parseFloat($row.find('total').text());
-          $scope.$storage.lavuStaff.yesterday[serverName].orders = 1;
+          $scope.$storage.lavuStaff.yesterday.staff[serverName] = {};
+          $scope.$storage.lavuStaff.yesterday.staff[serverName].name = serverName;
+          $scope.$storage.lavuStaff.yesterday.staff[serverName].sales = parseFloat($row.find('total').text());
+          $scope.$storage.lavuStaff.yesterday.staff[serverName].orders = 1;
         }
         getCategoryInfo($row, $scope, $http, "yesterday");
-      })
+      });
       $scope.data.yesterday = [$scope.$storage.lavuStaff.yesterdayTotalSales, $scope.$storage.goal.dailyGoal];
       $scope.$storage.lavuStaff.yesterdayAverageTicket = $scope.$storage.lavuStaff.yesterdayTotalSales / $scope.$storage.lavuStaff.yesterdayTotalOrders;
       console.log(total);
@@ -305,21 +343,21 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
         var serverName = $row.find('server').text();
         $scope.$storage.lavuStaff.todayTotalOrders++;
         $scope.$storage.lavuStaff.todayTotalSales += parseFloat($row.find('total').text());
-        if ($scope.$storage.lavuStaff.today.hasOwnProperty(serverName))  {
-          $scope.$storage.lavuStaff.today[serverName].sales += parseFloat($row.find('total').text());
-          $scope.$storage.lavuStaff.today[serverName].orders++;
+        if ($scope.$storage.lavuStaff.today.staff.hasOwnProperty(serverName))  {
+          $scope.$storage.lavuStaff.today.staff[serverName].sales += parseFloat($row.find('total').text());
+          $scope.$storage.lavuStaff.today.staff[serverName].orders++;
         } else {
-          $scope.$storage.lavuStaff.today[serverName] = {};
-          $scope.$storage.lavuStaff.today[serverName].name = serverName;
-          $scope.$storage.lavuStaff.today[serverName].sales = parseFloat($row.find('total').text());
-          $scope.$storage.lavuStaff.today[serverName].orders = 1;
+          $scope.$storage.lavuStaff.today.staff[serverName] = {};
+          $scope.$storage.lavuStaff.today.staff[serverName].name = serverName;
+          $scope.$storage.lavuStaff.today.staff[serverName].sales = parseFloat($row.find('total').text());
+          $scope.$storage.lavuStaff.today.staff[serverName].orders = 1;
         }
         getCategoryInfo($row, $scope, $http, "today");
       });
       $scope.$storage.lavuStaff.todayAverageTicket = $scope.$storage.lavuStaff.todayTotalSales / $scope.$storage.lavuStaff.todayTotalOrders;
 
-      $scope.yesterdayData = [$scope.$storage.lavuStaff.yesterdayTotalSales, $scope.$storage.goal.dailyGoal];
-      $scope.todayData = [$scope.$storage.lavuStaff.todayTotalSales, $scope.$storage.goal.dailyGoal];
+      $scope.yesterdayData = [$scope.$storage.lavuStaff.yesterdayTotalSales, 200000];
+      $scope.todayData = [$scope.$storage.lavuStaff.todayTotalSales, 200000];
       $http.post("/updateTodaySales/1",
       {
         "location": 1,
@@ -334,10 +372,48 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
     }, function(response)  {
       console.log("failure");
     });
+    $scope.onCallLavuLastWeek();
     //localStorage.yourapp_date = $scope.$storage.newDate;
   }
 
-  $scope.onCallLavu();
+
+  $scope.onCallLavuLastWeek = function ()  {
+    $http.get("/lookupLastWeekLavu")
+    .then(function(response)  {
+      var total = 0;
+      $(response.data).find('row').each(function()  {
+        var $row = $(this);
+        var id = $row.find('id').text();
+        total += parseFloat($row.find('total').text());
+      });
+
+      //$scope.$storage.lavuStaff.yesterday = {};
+      $scope.$storage.lavuStaff.lastWeekTotalOrders = 0;
+      $scope.$storage.lavuStaff.lastWeekTotalSales = 0.0;
+      $scope.$storage.lavuStaff.lastWeek.categories = {};
+      $(response.data).find('row').each(function()  {
+        var $row = $(this);
+        var serverName = $row.find('server').text();
+        $scope.$storage.lavuStaff.lastWeekTotalOrders++;
+        $scope.$storage.lavuStaff.lastWeekTotalSales += parseFloat($row.find('total').text());
+        if ($scope.$storage.lavuStaff.lastWeek.staff.hasOwnProperty(serverName))  {
+          $scope.$storage.lavuStaff.lastWeek.staff[serverName].sales += parseFloat($row.find('total').text());
+          $scope.$storage.lavuStaff.lastWeek.staff[serverName].orders++;
+        } else {
+          $scope.$storage.lavuStaff.lastWeek.staff[serverName] = {};
+          $scope.$storage.lavuStaff.lastWeek.staff[serverName].name = serverName;
+          $scope.$storage.lavuStaff.lastWeek.staff[serverName].sales = parseFloat($row.find('total').text());
+          $scope.$storage.lavuStaff.lastWeek.staff[serverName].orders = 1;
+        }
+        getCategoryInfo($row, $scope, $http, "lastWeek");
+      })
+      $scope.data.lastWeek = [$scope.$storage.lavuStaff.lastWeekTotalSales, $scope.$storage.goal.dailyGoal];
+      $scope.$storage.lavuStaff.lastWeekAverageTicket = $scope.$storage.lavuStaff.lastWeekTotalSales / $scope.$storage.lavuStaff.lastWeekTotalOrders;
+      
+    }, function(response)  {
+      console.log("failure");
+    });
+  }
 });
 
 function getCategoryInfo($row, $scope, $http, period)  {
@@ -378,6 +454,13 @@ function getCategoryInfo($row, $scope, $http, period)  {
                   $scope.$storage.lavuStaff[period].incentiveSales[server].name = server;
                   $scope.$storage.lavuStaff[period].incentiveSales[server].sales = parseFloat($row2.find('total_with_tax').text());
                   $scope.$storage.lavuStaff[period].incentiveSales[server].orders = parseFloat($row2.find('quantity').text());
+                }
+                if ($scope.$storage.lavuStaff[period].hasOwnProperty('totalIncentiveSales'))  {
+                  $scope.$storage.lavuStaff[period].totalIncentiveSales += parseFloat($row2.find('total_with_tax').text());
+                  $scope.$storage.lavuStaff[period].totalIncentiveOrders += parseFloat($row2.find('quantity').text());
+                } else {
+                  $scope.$storage.lavuStaff[period].totalIncentiveSales = parseFloat($row2.find('total_with_tax').text());
+                  $scope.$storage.lavuStaff[period].totalIncentiveOrders = parseFloat($row2.find('quantity').text());
                 }
               }
             }, function(response4)  {
@@ -602,6 +685,13 @@ angular.module('filters.stringUtils', [])
         return string.replace(/[\s]/g, '');
     };
 }]);
+
+angular.module('filters.mathAbs',[])
+.filter('makePositive', function() {
+    return function(num) { 
+      return Math.abs(num);
+   }
+});
 
 $(app).ready(function(){
     $("pp").click(function(){

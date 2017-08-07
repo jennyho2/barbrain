@@ -1,12 +1,15 @@
 <div class="chartHolder doughnutSize">
   <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
-  <canvas id="doughnut" class="chart chart-doughnut"
-    chart-data="todayData" chart-labels="labels" chart-options="options">
+  <canvas ng-if="$storage.hardDailyGoal - $storage.lavuStaff.todayTotalSales > 0" id="doughnut" class="chart chart-doughnut"
+    chart-data="[$storage.lavuStaff.todayTotalSales, $storage.hardDailyGoal - $storage.lavuStaff.todayTotalSales]"  chart-labels="['Today Total Sales', 'Difference From Goal']" chart-options="options">
+  </canvas> 
+  <canvas ng-if="$storage.hardDailyGoal - $storage.lavuStaff.todayTotalSales <= 0" id="doughnut" class="chart chart-doughnut"
+    chart-data="[$storage.lavuStaff.todayTotalSales, $storage.lavuStaff.todayTotalSales - $storage.hardDailyGoal]"  chart-labels="['Today Total Sales', 'Amount Exceeding Goal']" chart-options="options">
   </canvas> 
 </div>
 
 <div class="center">
-  <span class="smallFont">{{$storage.goal.dailyProgress / $storage.goal.dailyGoal * 100| number:0 }}%</span> <br>
+  <span class="smallFont">{{$storage.lavuStaff.todayTotalSales / $storage.dailyHardGoal * 100| number:2 }}%</span> <br>
   <span class="smallFont">of goal achieved</span> 
   <br>
   <a data-toggle="modal" data-target="#myModal"><span class="smallFont" style="color:deepskyblue">Adjust goal</span></a>

@@ -43,7 +43,7 @@
                     </tr> 
                 </thead>
                 <tbody>
-                    <tr ng-repeat="staffInfo in $storage.lavuStaff.yesterday | orderObjectBy:orderByField:true " class="tableEmployeeStat" >
+                    <tr ng-repeat="staffInfo in $storage.lavuStaff.yesterday.staff | orderObjectBy:orderByField:true " class="tableEmployeeStat" >
                      <!-- <tr ng-repeat="staffInfo in fullStaff.staff | filter:staffLocation |orderBy:orderByField:reverseSort" class="tableEmployeeStat" ng-click="openStaff(staffInfo.firstName + ' ' + staffInfo.lastName, 3)"> -->
 
                          <td class="v-a-m">

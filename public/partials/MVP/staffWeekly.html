@@ -43,7 +43,8 @@
                     </tr> 
                 </thead>
                 <tbody>
-                    <tr ng-repeat="staffInfo in $storage.lavuStaff.today | orderObjectBy:orderByField:true " class="tableEmployeeStat" >
+                    <tr ng-repeat="staffInfo in $storage.lavuStaff.lastWeek.staff" class="tableEmployeeStat">
+                    <!-- <tr ng-repeat="staffInfo in $storage.lavuStaff.today | orderObjectBy:orderByField:true " class="tableEmployeeStat" > -->
                      <!-- <tr ng-repeat="staffInfo in fullStaff.staff | filter:staffLocation |orderBy:orderByField:reverseSort" class="tableEmployeeStat" ng-click="openStaff(staffInfo.firstName + ' ' + staffInfo.lastName, 3)"> -->
 
                          <td class="v-a-m">
@@ -59,7 +60,7 @@
                             <span class="smallFont">${{staffInfo.sales / staffInfo.orders | number:2}}</span>
                         </td>
                         <td class="v-a-m"> 
-                            <span class="smallFont">{{(((staffInfo.sales / staffInfo.orders) / $storage.lavuStaff.yesterdayAverageTicket) * 100) - 100 | number:2}}%</span>
+                            <span class="smallFont">{{(((staffInfo.sales / staffInfo.orders) / $storage.lavuStaff.lastWeekAverageTicket) * 100) - 100 | number:2}}%</span>
                         </td>
                         
                     </tr>

@@ -1,11 +1,11 @@
 
 <div class="chartHolder padding">
-  <canvas id="line" class="chart chart-line" chart-data="lastWeekData" 
+  <canvas id="line" class="chart chart-line" chart-data="[$storage.lavuStaff.lastWeekTotalSales, $storage.lavuStaff.lastWeekTotalSales - $storage.hardDailyGoal]" 
       chart-labels="weeklyLabels" chart-options="options" >
   </canvas> 
 </div>
 <div class="center">
-  <span class="smallFont">{{$storage.goal.dailyProgress / $storage.goal.dailyGoal * 100| number:0 }}%</span> <br>
+  <span class="smallFont">{{$storage.lavuStaff.lastWeekTotalSales / $storage.hardDailyGoal * 100| number:2 }}%</span> <br>
   <span class="smallFont">of goal achieved</span> 
 </div>
 
@@ -14,14 +14,14 @@
       <tr class="tableEmployeeStat">
         <th>Category</th>
         <th>Sales</th>
-        <th>Tickets</th>
+        <th>Item Count</th>
       </tr>
     </thead>
     <tbody>
-      <tr class="tableEmployeeStat" ng-repeat="category in fullSales.sales.lastWeekSales.category">
+      <tr class="tableEmployeeStat" ng-repeat="category in $storage.lavuStaff.lastWeek.categories">
         <td>{{category.name}}</td>
         <td>${{category.sales}}</td>
-        <td>{{category.tickets}}</td>
+        <td>{{category.orders}}</td>
       </tr>
   
     </tbody>
