@@ -355,6 +355,20 @@ app.get("/lookupLastWeekLavu", function(req, res)  {
   });
 });
 
+app.get("/lookupLastMonthLavu", function(req, res)  {
+  var date = new Date();
+  var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+  firstDay.setHours(3,0,0,0);
+  var tomorrow = new Date();
+  tomorrow.setDate(date.getDate() + 1);
+  console.log(firstDay);
+  request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:tableString,valid_xml:1,limit:10000,column:"closed",value_min: firstDay.toISOString().substring(0, 19).replace('T', ' '),value_max: tomorrow.toISOString().substring(0, 19).replace('T', ' ') }
+  }, function(error, response, body)  {
+    //console.log(body);
+    res.send(body).status(200).end();
+  });
+});
+
 app.post("/updateTodaySales/:location", function(req, res)  {
   var locationParam = req.params.location;
   var newSales = req.body;

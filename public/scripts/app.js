@@ -46,7 +46,11 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
     $http.get("/resolveLocation/" + num)
     .then(function(response)  {
       $scope.$storage.location = num;
+      $scope.$storage.lavuStaff = {};
       $scope.onCallLavu();
+      //$scope.onCallLavuToday();
+      $scope.onCallLavuYesterday();
+      $scope.onCallLavuLastWeek();
     }, function(response)  {
       console.log("Failure gating");
     });
@@ -246,23 +250,13 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
   $scope.onCallLavu = function () {
     if( !hasOneDayPassed ) return false;
-    $scope.$storage.lavuStaff = {};
     $scope.$storage.incentiveId = 0;
-    $scope.$storage.lavuStaff.yesterday = {};
-    $scope.$storage.lavuStaff.yesterday.staff = {};
-    $scope.$storage.lavuStaff.today = {};
-    $scope.$storage.lavuStaff.today.staff = {};
-    $scope.$storage.lavuStaff.lastWeek = {};
-    $scope.$storage.lavuStaff.lastWeek.staff = {};
-    $scope.$storage.lavuStaff.yesterday.incentiveSales = {};
-    $scope.$storage.lavuStaff.today.incentiveSales = {};
-    $scope.$storage.lavuStaff.lastWeek.incentiveSales = {};
-    $scope.$storage.lavuStaff.today.totalIncentiveSales = 0.0;
-    $scope.$storage.lavuStaff.yesterday.totalIncentiveSales = 0.0;
-    $scope.$storage.lavuStaff.lastWeek.totalIncentiveSales = 0.0;
-    $scope.$storage.lavuStaff.today.totalIncentiveOrders = 0;
-    $scope.$storage.lavuStaff.yesterday.totalIncentiveOrders = 0;
-    $scope.$storage.lavuStaff.lastWeek.totalIncentiveOrders = 0;
+    
+    
+    
+    
+    
+    
 
     $http.get("/lookupLavuItems")
     .then(function(response)  {
@@ -281,52 +275,23 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
     }, function(response)  {
       console.log("failure grabbing incentive Id");
     });
-    $http.get("/lookupYesterdayLavu")
-    .then(function(response)  {
-      var total = 0;
-      $(response.data).find('row').each(function()  {
-        var $row = $(this);
-        var id = $row.find('id').text();
-        total += parseFloat($row.find('total').text());
-      });
 
-      //$scope.$storage.lavuStaff.yesterday = {};
-      $scope.$storage.lavuStaff.yesterdayTotalOrders = 0;
-      $scope.$storage.lavuStaff.yesterdayTotalSales = 0.0;
-      $scope.$storage.lavuStaff.yesterday.categories = {};
-      $(response.data).find('row').each(function()  {
-        var $row = $(this);
-        var serverName = $row.find('server').text();
-        $scope.$storage.lavuStaff.yesterdayTotalOrders++;
-        $scope.$storage.lavuStaff.yesterdayTotalSales += parseFloat($row.find('total').text());
-        if ($scope.$storage.lavuStaff.yesterday.staff.hasOwnProperty(serverName))  {
-          $scope.$storage.lavuStaff.yesterday.staff[serverName].sales += parseFloat($row.find('total').text());
-          $scope.$storage.lavuStaff.yesterday.staff[serverName].orders++;
-        } else {
-          $scope.$storage.lavuStaff.yesterday.staff[serverName] = {};
-          $scope.$storage.lavuStaff.yesterday.staff[serverName].name = serverName;
-          $scope.$storage.lavuStaff.yesterday.staff[serverName].sales = parseFloat($row.find('total').text());
-          $scope.$storage.lavuStaff.yesterday.staff[serverName].orders = 1;
-        }
-        getCategoryInfo($row, $scope, $http, "yesterday");
-      });
-      $scope.data.yesterday = [$scope.$storage.lavuStaff.yesterdayTotalSales, $scope.$storage.goal.dailyGoal];
-      $scope.$storage.lavuStaff.yesterdayAverageTicket = $scope.$storage.lavuStaff.yesterdayTotalSales / $scope.$storage.lavuStaff.yesterdayTotalOrders;
-      console.log(total);
-      $http.post("/updateYesterdaySales/1",
-      {
-        "location": 1,
-        "yesterdaySales": total
-      })
-      .then(function(response)  {
-        console.log("Success");
-      }, function(response) {
-        console.log("failure");
-      });
-    }, function(response)  {
-      console.log("failure");
-    });
+    $scope.onCallLavuToday();
+    $scope.onCallLavuYesterday();
 
+    //$scope.onCallLavuMonthly();
+
+    
+    // $scope.onCallLavuLastWeek();
+    //localStorage.yourapp_date = $scope.$storage.newDate;
+  }
+
+  $scope.onCallLavuToday = function ()  {
+    $scope.$storage.lavuStaff.today = {};
+    $scope.$storage.lavuStaff.today.staff = {};
+    $scope.$storage.lavuStaff.today.incentiveSales = {};
+    $scope.$storage.lavuStaff.today.totalIncentiveSales = 0.0;
+    $scope.$storage.lavuStaff.today.totalIncentiveOrders = 0;
     $http.get("/lookupLavuToday")
     .then(function(response)  {
       var total = 0;
@@ -372,12 +337,68 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
     }, function(response)  {
       console.log("failure");
     });
-    $scope.onCallLavuLastWeek();
-    //localStorage.yourapp_date = $scope.$storage.newDate;
+  }
+
+  $scope.onCallLavuYesterday = function ()  {
+    $scope.$storage.lavuStaff.yesterday = {};
+    $scope.$storage.lavuStaff.yesterday.staff = {};
+    $scope.$storage.lavuStaff.yesterday.incentiveSales = {};
+    $scope.$storage.lavuStaff.yesterday.totalIncentiveSales = 0.0;
+    $scope.$storage.lavuStaff.yesterday.totalIncentiveOrders = 0;
+    $http.get("/lookupYesterdayLavu")
+    .then(function(response)  {
+      var total = 0;
+      $(response.data).find('row').each(function()  {
+        var $row = $(this);
+        var id = $row.find('id').text();
+        total += parseFloat($row.find('total').text());
+      });
+
+      //$scope.$storage.lavuStaff.yesterday = {};
+      $scope.$storage.lavuStaff.yesterdayTotalOrders = 0;
+      $scope.$storage.lavuStaff.yesterdayTotalSales = 0.0;
+      $scope.$storage.lavuStaff.yesterday.categories = {};
+      $(response.data).find('row').each(function()  {
+        var $row = $(this);
+        var serverName = $row.find('server').text();
+        $scope.$storage.lavuStaff.yesterdayTotalOrders++;
+        $scope.$storage.lavuStaff.yesterdayTotalSales += parseFloat($row.find('total').text());
+        if ($scope.$storage.lavuStaff.yesterday.staff.hasOwnProperty(serverName))  {
+          $scope.$storage.lavuStaff.yesterday.staff[serverName].sales += parseFloat($row.find('total').text());
+          $scope.$storage.lavuStaff.yesterday.staff[serverName].orders++;
+        } else {
+          $scope.$storage.lavuStaff.yesterday.staff[serverName] = {};
+          $scope.$storage.lavuStaff.yesterday.staff[serverName].name = serverName;
+          $scope.$storage.lavuStaff.yesterday.staff[serverName].sales = parseFloat($row.find('total').text());
+          $scope.$storage.lavuStaff.yesterday.staff[serverName].orders = 1;
+        }
+        getCategoryInfo($row, $scope, $http, "yesterday");
+      });
+      $scope.data.yesterday = [$scope.$storage.lavuStaff.yesterdayTotalSales, $scope.$storage.goal.dailyGoal];
+      $scope.$storage.lavuStaff.yesterdayAverageTicket = $scope.$storage.lavuStaff.yesterdayTotalSales / $scope.$storage.lavuStaff.yesterdayTotalOrders;
+      console.log(total);
+      $http.post("/updateYesterdaySales/1",
+      {
+        "location": 1,
+        "yesterdaySales": total
+      })
+      .then(function(response)  {
+        console.log("Success");
+      }, function(response) {
+        console.log("failure");
+      });
+    }, function(response)  {
+      console.log("failure");
+    });
   }
 
 
   $scope.onCallLavuLastWeek = function ()  {
+    $scope.$storage.lavuStaff.lastWeek = {};
+    $scope.$storage.lavuStaff.lastWeek.staff = {};
+    $scope.$storage.lavuStaff.lastWeek.incentiveSales = {};
+    $scope.$storage.lavuStaff.lastWeek.totalIncentiveSales = 0.0;    
+    $scope.$storage.lavuStaff.lastWeek.totalIncentiveOrders = 0;
     $http.get("/lookupLastWeekLavu")
     .then(function(response)  {
       var total = 0;
@@ -413,7 +434,51 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
     }, function(response)  {
       console.log("failure");
     });
-  }
+  };
+
+  $scope.onCallLavuMonthly = function ()  {
+    $scope.$storage.lavuStaff.monthly = {};
+    $scope.$storage.lavuStaff.monthly.staff = {};
+    $scope.$storage.lavuStaff.monthly.incentiveSales = {};
+    $scope.$storage.lavuStaff.monthly.totalIncentiveSales = 0.0;    
+    $scope.$storage.lavuStaff.monthly.totalIncentiveOrders = 0;
+    $http.get("/lookupLastMonthLavu")
+    .then(function(response)  {
+      var total = 0;
+      $(response.data).find('row').each(function()  {
+        var $row = $(this);
+        var id = $row.find('id').text();
+        total += parseFloat($row.find('total').text());
+      });
+
+      //$scope.$storage.lavuStaff.yesterday = {};
+      $scope.$storage.lavuStaff.monthlyTotalOrders = 0;
+      $scope.$storage.lavuStaff.monthlyTotalSales = 0.0;
+      $scope.$storage.lavuStaff.monthly.categories = {};
+      $(response.data).find('row').each(function()  {
+        var $row = $(this);
+        var serverName = $row.find('server').text();
+        $scope.$storage.lavuStaff.monthlyTotalOrders++;
+        $scope.$storage.lavuStaff.monthlyTotalSales += parseFloat($row.find('total').text());
+        if ($scope.$storage.lavuStaff.monthly.staff.hasOwnProperty(serverName))  {
+          $scope.$storage.lavuStaff.monthly.staff[serverName].sales += parseFloat($row.find('total').text());
+          $scope.$storage.lavuStaff.monthly.staff[serverName].orders++;
+        } else {
+          $scope.$storage.lavuStaff.monthly.staff[serverName] = {};
+          $scope.$storage.lavuStaff.monthly.staff[serverName].name = serverName;
+          $scope.$storage.lavuStaff.monthly.staff[serverName].sales = parseFloat($row.find('total').text());
+          $scope.$storage.lavuStaff.monthly.staff[serverName].orders = 1;
+        }
+        getCategoryInfo($row, $scope, $http, "monthly");
+      })
+      $scope.data.monthly = [$scope.$storage.lavuStaff.monthlyTotalSales, $scope.$storage.goal.dailyGoal];
+      $scope.$storage.lavuStaff.monthlyAverageTicket = $scope.$storage.lavuStaff.monthlyTotalSales / $scope.$storage.lavuStaff.monthlyTotalOrders;
+      
+    }, function(response)  {
+      console.log("failure");
+    });
+  };
+
 });
 
 function getCategoryInfo($row, $scope, $http, period)  {
