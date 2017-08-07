@@ -7,7 +7,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.$storage.goal = new Goal($http);
 	$scope.date = new Date();
   $scope.data = {};
-  // $scope.$storage.INCENTIVE = INCENTIVE;
+  $scope.$storage.INCENTIVE = INCENTIVE;
   $scope.$storage.dailyHardGoal = 200000;
   $scope.$storage.dailyHardIncentiveGoal = 45;
   $scope.$storage.dailyHardIncentiveProjection = 45;
