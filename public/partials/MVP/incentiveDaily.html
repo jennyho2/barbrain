@@ -47,8 +47,8 @@
         <h4 class="modal-title">Adjust Today's Goal</h4>
       </div>
       <div class="modal-body">
-        <input type="range" min="{{$storage.dailyHardIncentiveGoal-300}}" max="{{$storage.dailyHardIncentiveGoal+300}}" id="weeklyGoalRange" ng-model="$storage.dailyHardIncentiveGoal" />
-        <input type="number" id="weeklyGoalInput" ng-if="section == 0" ng-model="$storage.dailyHardIncentiveGoal" />
+        <!-- <input type="range" min="{{$storage.dailyHardIncentiveGoal-300}}" max="{{$storage.dailyHardIncentiveGoal+300}}" id="weeklyGoalRange" ng-model="$storage.dailyHardIncentiveGoal" /> -->
+        <input type="number" id="weeklyGoalInput" ng-model="$storage.dailyHardIncentiveGoal" />
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" ng-click="callUpdateGoals(0)">Update</button>
