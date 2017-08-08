@@ -21,6 +21,7 @@
         <th>Category</th>
         <th>Sales</th>
         <th>Tickets</th>
+        <th>% of Total Sales</th>
       </tr>
     </thead>
     <tbody>
@@ -28,6 +29,7 @@
         <td>{{category.name}}</td>
         <td>${{category.sales}}</td>
         <td>{{category.orders}}</td>
+        <td>{{ (category.sales / $storage.lavuStaff.todayTotalSales) * 100 | number:2}}
       </tr>
   
     </tbody>
