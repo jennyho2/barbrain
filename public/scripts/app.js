@@ -472,6 +472,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
     });
   };
 
+  $scope.onCallLavu();
+
 });
 
 function getCategoryInfo($row, $scope, $http, period)  {
