@@ -340,14 +340,6 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
     $scope.$storage.lavuStaff.yesterday.totalIncentiveOrders = 0;
     $http.get("/lookupYesterdayLavu")
     .then(function(response)  {
-      var total = 0;
-      $(response.data).find('row').each(function()  {
-        var $row = $(this);
-        var id = $row.find('id').text();
-        total += parseFloat($row.find('total').text());
-      });
-
-      //$scope.$storage.lavuStaff.yesterday = {};
       $scope.$storage.lavuStaff.yesterdayTotalOrders = 0;
       $scope.$storage.lavuStaff.yesterdayTotalSales = 0.0;
       $scope.$storage.lavuStaff.yesterday.categories = {};
@@ -367,21 +359,29 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
         }
         getCategoryInfo($row, $scope, $http, "yesterday");
       });
-      $scope.data.yesterday = [$scope.$storage.lavuStaff.yesterdayTotalSales, $scope.$storage.goal.dailyGoal];
       $scope.$storage.lavuStaff.yesterdayAverageTicket = $scope.$storage.lavuStaff.yesterdayTotalSales / $scope.$storage.lavuStaff.yesterdayTotalOrders;
-      console.log(total);
-      $http.post("/updateYesterdaySales/1",
-      {
-        "location": 1,
-        "yesterdaySales": total
-      })
-      .then(function(response)  {
-        console.log("Success");
-      }, function(response) {
-        console.log("failure");
-      });
+
+      console.log("THIs");
+      console.log(response);
+      // //$scope.$storage.lavuStaff.yesterday = {};
+        // // $scope.$storage.lavuStaff.yesterdayTotalOrders = 0;
+        // // $scope.$storage.lavuStaff.yesterdayTotalSales = 0.0;
+        // // $scope.$storage.lavuStaff.yesterday.categories = {};
+
+        //   // $scope.$storage.lavuStaff.yesterdayTotalOrders++;
+        //   // $scope.$storage.lavuStaff.yesterdayTotalSales += parseFloat($row.find('total').text());
+      // $http.post("/updateYesterdaySales/1",
+      // {
+      //   "location": 1,
+      //   "yesterdaySales": total
+      // })
+      // .then(function(response)  {
+      //   console.log("Success");
+      // }, function(response) {
+      //   console.log("I am failing here");
+      // });
     }, function(response)  {
-      console.log("failure");
+      console.log("Or Here");
     });
   }
 
@@ -642,8 +642,7 @@ function Tactics($http)  {
 app.config(function($routeProvider) {
   $routeProvider
   .when("/", {
-
-  	templateUrl : "partials/MVP/staff.html"
+  	templateUrl : "partials/MVP/lastWeek.html"
   })
   .when("/home", {
   	templateUrl : "partials/MVP/homeMVP.html"
@@ -654,9 +653,9 @@ app.config(function($routeProvider) {
   .when("/insights", {
       templateUrl : "partials/insights.html"
   })
-  //.when("/staff", {
-  //	templateUrl : "partials/staff.html"
-  //})
+  .when("/staff", {
+  	templateUrl : "partials/MVP/staff.html"
+  })
   .when("/yesterdayTab", {
     templateUrl : "partials/yesterdayTab.html"
   })
