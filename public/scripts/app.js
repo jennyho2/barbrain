@@ -1,6 +1,6 @@
 var app = angular.module("goalsApp", ["ngRoute", "ngStorage", "filters.stringUtils", "filters.mathAbs", "angularModalService", "chart.js"]);
 
-app.controller('mainController', function($scope, $localStorage, $sessionStorage, $http)  {
+app.controller('mainController', function($scope, $localStorage, $sessionStorage, $http, $location)  {
 	$scope.orderByField = 'name';
   $scope.reverseSort = false;
 	$scope.$storage = $localStorage;
@@ -15,7 +15,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   $scope.$storage.yesterdayHardIncentiveGoal = 43;
   $scope.$storage.yesterdayHardIncentiveProjection = 49;
 	//SET THE FUCKING LOCATION
-	$scope.location = 1;
+	$scope.location = null;
+	
   	$scope.options = { responsive: true, stacked: true, pointstyle: "crossRot" };
 
   	$scope.labels = ["Current Sales", "Distance From Goal"];
@@ -42,7 +43,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
     return (typeof $scope.$storage.location === 'undefined');
   };
 
-  $scope.updateLocation = function(num)  {
+  $scope.updateLocation = function(num, goHome)  {
     $http.get("/resolveLocation/" + num)
     .then(function(response)  {
       $scope.$storage.location = num;
@@ -51,6 +52,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
       //$scope.onCallLavuToday();
       //$scope.onCallLavuYesterday();
       //$scope.onCallLavuLastWeek();
+      $location.path('home');
     }, function(response)  {
       console.log("Failure gating");
     });
@@ -251,7 +253,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   $scope.onCallLavu = function () {
     //if( !hasOneDayPassed ) return false;
     $scope.$storage.incentiveId = 0;
-    $http.get("/lookupYesterdayLavu/2")
+    $http.get("/lookupYesterdayLavu/" + $scope.$storage.location + "/2")
     .then(function(response)  {
       $scope.$storage.lavuStaff.today = {};
       $scope.$storage.lavuStaff.today.staff = {};
@@ -485,8 +487,6 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
     });
   };
 
-  $scope.updateLocation(1);
-
 });
 
 function getCategoryInfo($row, $scope, $http, period)  {
@@ -690,17 +690,20 @@ app.config(function($routeProvider) {
   .when("/tips", {
     templateUrl : "partials/tips.html"
   })
-    .when("/lastWeek", {
+  .when("/lastWeek", {
     templateUrl : "partials/MVP/lastWeek.html"
   })
-    .when("/staffYesterday", {
+  .when("/staffYesterday", {
     templateUrl : "partials/staffYesterday.html"
   })
-    .when("/staffLastWeek", {
+  .when("/staffLastWeek", {
   	templateUrl : "partials/staffLastWeek.html"
   })
-    .when("/staffThisWeek", {
+  .when("/staffThisWeek", {
   	templateUrl : "partials/staffThisWeek.html"
+  })
+  .when("/locations", {
+    templateUrl: "partials/locations.html"
   });
     
 });
