@@ -49,8 +49,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
       $scope.$storage.lavuStaff = {};
       $scope.onCallLavu();
       //$scope.onCallLavuToday();
-      $scope.onCallLavuYesterday();
-      $scope.onCallLavuLastWeek();
+      //$scope.onCallLavuYesterday();
+      //$scope.onCallLavuLastWeek();
     }, function(response)  {
       console.log("Failure gating");
     });
@@ -249,23 +249,35 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   }
 
   $scope.onCallLavu = function () {
-    if( !hasOneDayPassed ) return false;
+    //if( !hasOneDayPassed ) return false;
     $scope.$storage.incentiveId = 0;
-    $http.get("/lookupLavuItems")
+    $http.get("/lookupYesterdayLavu/2")
     .then(function(response)  {
-      $scope.$storage.items = [];
-      $(response.data).find('row').each(function()  {
-        var $row = $(this);
-        var itemName = $row.find('name').text();
-        $scope.$storage.items.push(itemName);
-        //console.log("Item: " + itemName + " id: " + parseInt($row.find('id').text()));
-        //console.log(INCENTIVE);
-        if (itemName == $scope.$storage.INCENTIVE)  {
-          $scope.$storage.incentiveId = parseInt($row.find('id').text());
-          console.log("Found incentive: " + $scope.$storage.incentiveId);
-        }
-      });
-      $scope.onCallLavuToday();
+      $scope.$storage.lavuStaff.today = {};
+      $scope.$storage.lavuStaff.today.staff = {};
+      $scope.$storage.lavuStaff.today.incentiveSales = {};
+      $scope.$storage.lavuStaff.today.totalIncentiveSales = 0.0;
+      $scope.$storage.lavuStaff.today.totalIncentiveOrders = 0;
+      $scope.$storage.lavuStaff.yesterday = {};
+      $scope.$storage.lavuStaff.yesterday.categories = response.data.yesterday.categories;
+      $scope.$storage.lavuStaff.yesterday.staff = {};
+      $scope.$storage.lavuStaff.yesterday.incentiveSales = {};
+      $scope.$storage.lavuStaff.yesterday.totalIncentiveSales = 0.0;
+      $scope.$storage.lavuStaff.yesterday.totalIncentiveOrders = 0;
+      console.log(response);
+      // $scope.$storage.items = [];
+      // $(response.data).find('row').each(function()  {
+      //   var $row = $(this);
+      //   var itemName = $row.find('name').text();
+      //   $scope.$storage.items.push(itemName);
+      //   //console.log("Item: " + itemName + " id: " + parseInt($row.find('id').text()));
+      //   //console.log(INCENTIVE);
+      //   if (itemName == $scope.$storage.INCENTIVE)  {
+      //     $scope.$storage.incentiveId = parseInt($row.find('id').text());
+      //     console.log("Found incentive: " + $scope.$storage.incentiveId);
+      //   }
+      // });
+      // $scope.onCallLavuToday();
     }, function(response)  {
       console.log("failure grabbing incentive Id");
     });
@@ -473,7 +485,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
     });
   };
 
-  $scope.onCallLavu();
+  $scope.updateLocation(1);
 
 });
 

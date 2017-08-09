@@ -299,83 +299,217 @@ app.post("/updateSales", function(req, res)  {
 
 var categories = {};
 var groups = {};
+var items = {};
 
-
-app.get("/lookupYesterdayLavu", function(req, res)  {
+app.get("/lookupYesterdayLavu/:param_id", function(req, res)  {
+  var param = req.params.param_id;
+  console.log(param);
+  var responding = {};
   request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:"menu_items",valid_xml:1,limit:10000 }
-      }, function(error, response, body)  {
-    var items = util.inspect($(body).find('row'));
-    console.log(items[0]);
-    //res.send(items).status(200).end();
-    //console.log(items);
-  });
+  }, function(error, response, body)  {
+    $(body).find('row').each(function()  {
+      var $row = $(this);
+      items[parseInt($row.find('id').text())] = parseInt($row.find('category_id').text());
+    });
+    request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:"menu_categories",valid_xml:1,limit:10000 }
+    }, function(error2, response2, body2)  {
+      $(body2).find('row').each(function()  {
+        var $row = $(this);
+        categories[parseInt($row.find('id').text())] = parseInt($row.find('group_id').text());
+      });
+      request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:"menu_groups",valid_xml:1,limit:10000 }
+      }, function(error3, response3, body3)  {
+        $(body3).find('row').each(function()  {
+          var $row = $(this);
+          groups[parseInt($row.find('id').text())] = $row.find('group_name').text();
+        });
+        responding.staff = {};
+        responding.categories = {};
+        responding.yesterdayOrders = {};
+        if (param >= 1)  {
+          callLavuDaily(responding, function(responding)  {
+            if (param >= 2)  {
+              callLavuYesterday(responding, function(responding) {
+                if (param >= 3)  {
+                  callLavuWeekly(responding, function(responding)  {
+                    if (param >= 4)  {
+                      callLavuMonthly(responding, function(responding)  {
+                        res.send(responding).status(200).end();
+                      }); // callLavuMonthly callback
 
+                    } else {
+                      res.send(responding).status(200).end();
+                    }
+                  }); // callLavuWeekly callback
 
+                } else {
+                  res.send(responding).status(200).end();
+                }
+              }); // callLavuYesterday callback
 
+            } else {
+              res.send(responding).status(200).end();
+            }
 
-    // var yesterday = new Date();
-    // yesterday.setHours(3,0,0,0);
-    // yesterday.setDate(yesterday.getDate() - 1);
-    // var today = new Date();
-    // today.setHours(3,0,0,0);
-    // console.log(yesterday + ". " + today);
-    // request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:tableString,valid_xml:1,limit:10000,column:"closed",value_min: yesterday.toISOString().substring(0, 19).replace('T', ' '),value_max: today.toISOString().substring(0, 19).replace('T', ' ')}
-    // },function(error, response, body) {
-    //   res.send(body).status(200).end();
-    // });
+          }); // callLavuDaily Callback 
 
-    // var $sender = {};
-    // var num = 0;
-    // request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:tableString,valid_xml:1,limit:10000,column:"closed",value_min: yesterday.toISOString().substring(0, 19).replace('T', ' '),value_max: today.toISOString().substring(0, 19).replace('T', ' ')}
-    //   },function(error, response, body) {
-    //     var total = 0;
-    //     $sender.staff = {};
-    //     $sender.incentiveSales = {};
-    //     $sender.totalIncentiveSales = 0.0;
-    //     $sender.totalIncentiveOrders = 0;
-    //     $sender.yesterdayTotalSales = 0.0;
-    //     $sender.yesterdayTotalOrders = 0;
-    //     $sender.categories = {};
-    //     $(body).find('row').each(function()  {
-    //       var $row = $(this);
-    //       var id = $row.find('id').text();
-    //       total += parseFloat($row.find('total').text());
-    //       console.log("Here: " + $row.find('total').text());
+        } // param >= 0
 
-        
-    //       var serverName = $row.find('server').text();
-    //       $sender.yesterdayTotalOrders++;
-    //       $sender.yesterdayTotalSales += parseFloat($row.find('total').text());
-    //       if ($sender.staff.hasOwnProperty(serverName))  {
-    //         $sender.staff[serverName].sales += parseFloat($row.find('total').text());
-    //         $sender.staff[serverName].order++;
-    //       } else {
-    //         $sender.staff[serverName] = {};
-    //         $sender.staff[serverName].name = serverName;
-    //         $sender.staff[serverName].sales = parseFloat($row.find('total').text());
-    //         $sender.staff[serverName].orders = 1;
-    //       }
-    //       // console.log($sender);
-    //       $sender.yesterdayAverageTicket = $sender.yesterdayTotalSales / $sender.yesterdayTotalOrders;
-    //        if (num == 10)  {
-    //         return getCategoryInfo($sender, $row, "yesterday", res);
-    //       } else {
-    //         getCategoryInfo($sender, $row, "yesterday", res);
-    //       }
-    //        num++;
-    //       // console.log($sender);
-    //     });
-    //     //$scope.data.yesterday = [$scope.$storage.lavuStaff.yesterdayTotalSales, $scope.$storage.goal.dailyGoal];
-        
-    //     //$scope.$storage.lavuStaff.yesterdayAverageTicket = $scope.$storage.lavuStaff.yesterdayTotalSales / $scope.$storage.lavuStaff.yesterdayTotalOrders;
-    //     console.log(total);
-    //     //return res.send($sender).status(200).end();
-    //     //console.log(body);
-        
-    //     //console.log(body)
-        
-    //   });
+      }); // request menu_groups
+
+    }); // request menu_categories
+
+  }); // request menu_items
+
 });
+
+function callLavuDaily(responding, callback) {
+  var today = new Date();
+  today.setHours(3,0,0,0);
+  var tomorrow = new Date();
+  tomorrow.setDate(today.getDate() + 1);
+  console.log("Between: " + today + "and : " + tomorrow);
+  request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:"orders",valid_xml:1,limit:10000,column:"closed",value_min: today.toISOString().substring(0, 19).replace('T', ' '),value_max: tomorrow.toISOString().substring(0, 19).replace('T', ' ') }
+  }, function(error, response, body)  {
+    var total = 0;
+    responding.incentiveSales = {};
+    responding.totalIncentiveSales = 0.0;
+    responding.totalIncentiveOrders = 0;
+    responding.todayTotalSales = 0.0;
+    responding.todayTotalOrders = 0;
+    //request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:"orders",valid_xml:1,limit:10000,column:"closed",value_min: today.toISOString().substring(0, 19).replace('T', ' '),value_max: tomorrow.toISOString().substring(0, 19).replace('T', ' ') }
+    // /console.log("Body: " + body);
+    // response.data.querySelectorAll('row');
+
+    responding.todayAverageTicket = responding.todayTotalSales / responding.todayTotalOrders;
+    console.log(total);
+    callback(responding);
+  });
+}
+
+function callLavuYesterday(responding, callback)  {
+  var yesterday = new Date();
+  yesterday.setHours(3,0,0,0);
+  yesterday.setDate(yesterday.getDate() - 1);
+  var today = new Date();
+  today.setHours(3,0,0,0);
+  request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:"orders",valid_xml:1,limit:10000,column:"closed",value_min:yesterday.toISOString().substring(0, 19).replace('T', ' '),value_max: today.toISOString().substring(0, 19).replace('T', ' ') }
+  }, function(error, response, body)  {
+    var total = 0;
+    // responding.incentiveSales = {};
+    // responding.totalIncentiveSales = 0.0;
+    // responding.totalIncentiveOrders = 0;
+    responding.yesterdayTotalSales = 0.0;
+    responding.yesterdayTotalOrders = 0;
+    responding.yesterday = {};
+    responding.yesterday.categories = {};
+    var orders = $(body).find('row');
+    var finished_contents = 1;
+    var started_content = 0;
+    $(body).find('row').each(function()  {
+    //  console.log($(this).find('id').text());
+      var $row = $(this);
+      var id = $row.find('id').text();
+      total += parseFloat($row.find('total').text());
+      var order_id = $row.find('order_id').text();
+      request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:"order_contents",valid_xml:1,limit:10000,column:"order_id",value:order_id }
+      }, function(error2, response2, body2)  {
+        $(body2).find('row').each(function()  {
+          var $row2 = $(this);
+          var item_id = $row2.find('item_id').text();
+          var category_id = items[item_id];
+          var group_id = categories[category_id];
+          var group_name = groups[group_id];
+          if (responding.yesterday.categories.hasOwnProperty(group_name))  {
+            responding.yesterday.categories[group_name].sales += parseFloat($row2.find('total_with_tax').text());
+            responding.yesterday.categories[group_name].orders += parseFloat($row2.find('quantity').text());
+            //console.log($sender.categories);
+          } else {
+            responding.yesterday.categories[group_name] = {};
+            responding.yesterday.categories[group_name].name = group_name;
+            responding.yesterday.categories[group_name].sales = parseFloat($row2.find('total_with_tax').text());
+            responding.yesterday.categories[group_name].orders = parseFloat($row2.find('quantity').text());
+            //console.log(responding.categories);
+          }
+        });
+        console.log("starting: " + started_content + " Order length: " + orders.length + " finished content: " + finished_contents);
+        if (started_content == orders.length && finished_contents == orders.length)  {
+          responding.yesterdayAverageTicket = responding.yesterdayTotalSales / responding.yesterdayTotalOrders;
+          callback(responding);
+        }
+        finished_contents++;
+      });
+      started_content++;
+    });
+    
+    //callback(responding);
+  });
+}
+
+function callLavuWeekly(responding, callback)  {
+  var d = new Date();
+  var day = d.getDay(),
+      diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
+  var lastMonday = new Date(d.setDate(diff));
+  lastMonday.setHours(3,0,0,0);
+  var ending = new Date();
+  ending.setDate(lastMonday.getDate());
+  ending.setHours(2,59,59,999);
+  lastMonday.setDate(lastMonday.getDate() - 7);
+  request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:tableString,valid_xml:1,limit:10000,column:"closed",value_min: lastMonday.toISOString().substring(0, 19).replace('T', ' '),value_max: ending.toISOString().substring(0, 19).replace('T', ' ') }
+  }, function(error, response, body)  {
+    var total = 0;
+    responding.incentiveSales = {};
+    responding.totalIncentiveSales = 0.0;
+    responding.totalIncentiveOrders = 0;
+    responding.weeklyTotalSales = 0.0;
+    responding.weeklyTotalOrders = 0;
+    responding.categories = {};
+    console.log("Body: " + body.data);
+    // response.data.querySelectorAll('row');
+    $(body.data).find('row').each(function()  {
+    //  console.log($(this).find('id').text());
+      var $row = $(this);
+      var id = $row.find('id').text();
+      total += parseFloat($row.find('total').text());
+      console.log("Here: " + $row.find('total').text());
+    });
+    responding.weeklyAverageTicket = responding.weeklyTotalSales / responding.weeklyTotalOrders;
+    console.log(total);
+    callback(responding);
+  });
+}
+
+function callLavuMonthly(responding, callback)  {
+  var date = new Date();
+  var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+  firstDay.setHours(3,0,0,0);
+  var tomorrow = new Date();
+  tomorrow.setDate(date.getDate() + 1);
+  console.log(firstDay);
+  request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:tableString,valid_xml:1,limit:10000,column:"closed",value_min: firstDay.toISOString().substring(0, 19).replace('T', ' '),value_max: tomorrow.toISOString().substring(0, 19).replace('T', ' ') }
+  }, function(error, response, body)  {
+    var total = 0;
+    responding.incentiveSales = {};
+    responding.totalIncentiveSales = 0.0;
+    responding.totalIncentiveOrders = 0;
+    responding.monthlyTotalSales = 0.0;
+    responding.monthlyTotalOrders = 0;
+    responding.categories = {};
+    console.log("Body: " + body.data);
+    // response.data.querySelectorAll('row');
+    $(body.data).find('row').each(function()  {
+    //  console.log($(this).find('id').text());
+      var $row = $(this);
+      var id = $row.find('id').text();
+      total += parseFloat($row.find('total').text());
+      console.log("Here: " + $row.find('total').text());
+    });
+    responding.monthlyAverageTicket = responding.monthlyTotalSales / responding.monthlyTotalOrders;
+    console.log(total);
+    callback(responding);
+  });
+}
 
 function getCategoryInfo($sender, $row, period, res)  {
   var order_id = $row.find('order_id').text();
