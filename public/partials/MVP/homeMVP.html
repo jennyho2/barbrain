@@ -37,11 +37,13 @@ $( "Goal" ).click(function() {
     <tr class="smallFont bottomLine">
       <th ng-class="{'selected': section === 0}" ng-click="section = 0">Today</th>
       <th ng-class="{'selected': section === 1}" ng-click="section = 1">Yesterday</th>
+      <th ng-class="{'selected': section === 2}" ng-click="section = 2">Last Week</th>
     </tr>
   </table>
 
   <div ng-if="section==0" ng-include src="'partials/MVP/incentiveDaily.html'" class="full"></div>
   <div ng-if="section==1" ng-include src="'partials/MVP/incentiveYesterday.html'" class="full"></div>
+  <div ng-if="section==2" ng-include src="'partials/MVP/incentiveWeekly.html'" class="full"></div>
   <div class="center">
     <input type="button" class="center" ng-click="onReloadLocation()" value="Update location" />
   </div>

@@ -340,6 +340,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
     $scope.$storage.lavuStaff.yesterday.totalIncentiveOrders = 0;
     $http.get("/lookupYesterdayLavu")
     .then(function(response)  {
+      console.log(response);
       $scope.$storage.lavuStaff.yesterdayTotalOrders = 0;
       $scope.$storage.lavuStaff.yesterdayTotalSales = 0.0;
       $scope.$storage.lavuStaff.yesterday.categories = {};
@@ -357,7 +358,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
           $scope.$storage.lavuStaff.yesterday.staff[serverName].sales = parseFloat($row.find('total').text());
           $scope.$storage.lavuStaff.yesterday.staff[serverName].orders = 1;
         }
-        getCategoryInfo($row, $scope, $http, "yesterday");
+        //getCategoryInfo($row, $scope, $http, "yesterday");
       });
       $scope.$storage.lavuStaff.yesterdayAverageTicket = $scope.$storage.lavuStaff.yesterdayTotalSales / $scope.$storage.lavuStaff.yesterdayTotalOrders;
 

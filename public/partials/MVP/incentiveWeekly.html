@@ -1,0 +1,34 @@
+<!--set different graphs to display-->
+<div class="chartHolder smallDoughnut">
+  <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
+  <canvas id="doughnut" class="chart chart-doughnut"
+    chart-data="[$storage.lavuStaff.lastWeek.totalIncentiveOrders, $storage.dailyHardIncentiveGoal - $storage.lavuStaff.lastWeek.totalIncentiveOrders]" chart-labels="labels" chart-options="options">
+  </canvas> 
+</div>
+
+<div class="center">
+<span>{{$storage.lavuStaff.lastWeek.totalIncentiveOrders / $storage.dailyHardIncentiveGoal * 100| number:2 }}%</span>
+<br>
+<span class="smallFont">of {{$storage.INCENTIVE}} goal achieved</span>
+<br>
+</div>
+<br>
+
+<table class="dividerTable">
+  <tr class="center">
+    <th class="smallFont">Goal</th>
+    <th class="smallFont">Sales</th>
+    <th class="smallFont">Projected End</th>
+  </tr>
+  <tr class="center">
+    <td class="mediumFont" ng-init="callGetGoals()">{{$storage.dailyHardIncentiveGoal}}</td>
+    <td class="mediumFont">${{ $storage.lavuStaff.lastWeek.totalIncentiveSales }}</td>
+    <td class="mediumFont">{{ $storage.dailyHardIncentiveProjection }}</td>
+  </tr>
+</table>
+
+<select ng-model="$storage.INCENTIVE" ng-options="x for x in $storage.items | orderBy:'toString()'">
+</select>
+
+<button ng-click="onCallLavu()">Refresh Data</button>
+<div ng-include src="'partials/MVP/dailyStaffIncentive.html'"></div>

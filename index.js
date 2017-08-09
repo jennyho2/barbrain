@@ -2,6 +2,17 @@ var express = require('express');
 var request = require('request');
 var cors = require('cors');
 var app = express();
+var async = require('async');
+const util = require('util');
+var $ = require('jquery')(require("jsdom").jsdom().parentWindow);
+// var $ = require('jquery');
+// var http = require('http');
+// var options = {
+//     host: 'jquery.com',
+//     port: 80,
+//     path: '/'
+// };
+
 app.use(cors());
 
 app.set('port', (process.env.PORT || 5000));
@@ -285,30 +296,167 @@ app.post("/updateSales", function(req, res)  {
     });
 });
 
+
+var categories = {};
+var groups = {};
+
+
 app.get("/lookupYesterdayLavu", function(req, res)  {
+  request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:"menu_items",valid_xml:1,limit:10000 }
+      }, function(error, response, body)  {
+    var items = util.inspect($(body).find('row'));
+    console.log(items[0]);
+    //res.send(items).status(200).end();
+    //console.log(items);
+  });
 
-  // var api_url = "https://api.poslavu.com/cp/reqserv/";
-  //   var datanameString = "cerveza_patago13";  
-  //   var keyString = "XCXxRHUsSuF3n3D4s6Lm";
-  //   var tokenString = "bsn9GpsHt8UClvnEukGa";
-  //   var tableString = "orders";
 
 
-    
-    //var json_obj = JSON.parse(options);
-    var yesterday = new Date();
-    yesterday.setHours(3,0,0,0);
-    yesterday.setDate(yesterday.getDate() - 1);
-    var today = new Date();
-    today.setHours(3,0,0,0);
-    console.log(yesterday + ". " + today);
 
-    request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:tableString,valid_xml:1,limit:10000,column:"closed",value_min: yesterday.toISOString().substring(0, 19).replace('T', ' '),value_max: today.toISOString().substring(0, 19).replace('T', ' ')}
-    },function(error, response, body){
-      res.send(body).status(200).end();
-      //console.log(body)
-    });
+    // var yesterday = new Date();
+    // yesterday.setHours(3,0,0,0);
+    // yesterday.setDate(yesterday.getDate() - 1);
+    // var today = new Date();
+    // today.setHours(3,0,0,0);
+    // console.log(yesterday + ". " + today);
+    // request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:tableString,valid_xml:1,limit:10000,column:"closed",value_min: yesterday.toISOString().substring(0, 19).replace('T', ' '),value_max: today.toISOString().substring(0, 19).replace('T', ' ')}
+    // },function(error, response, body) {
+    //   res.send(body).status(200).end();
+    // });
+
+    // var $sender = {};
+    // var num = 0;
+    // request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:tableString,valid_xml:1,limit:10000,column:"closed",value_min: yesterday.toISOString().substring(0, 19).replace('T', ' '),value_max: today.toISOString().substring(0, 19).replace('T', ' ')}
+    //   },function(error, response, body) {
+    //     var total = 0;
+    //     $sender.staff = {};
+    //     $sender.incentiveSales = {};
+    //     $sender.totalIncentiveSales = 0.0;
+    //     $sender.totalIncentiveOrders = 0;
+    //     $sender.yesterdayTotalSales = 0.0;
+    //     $sender.yesterdayTotalOrders = 0;
+    //     $sender.categories = {};
+    //     $(body).find('row').each(function()  {
+    //       var $row = $(this);
+    //       var id = $row.find('id').text();
+    //       total += parseFloat($row.find('total').text());
+    //       console.log("Here: " + $row.find('total').text());
+
+        
+    //       var serverName = $row.find('server').text();
+    //       $sender.yesterdayTotalOrders++;
+    //       $sender.yesterdayTotalSales += parseFloat($row.find('total').text());
+    //       if ($sender.staff.hasOwnProperty(serverName))  {
+    //         $sender.staff[serverName].sales += parseFloat($row.find('total').text());
+    //         $sender.staff[serverName].order++;
+    //       } else {
+    //         $sender.staff[serverName] = {};
+    //         $sender.staff[serverName].name = serverName;
+    //         $sender.staff[serverName].sales = parseFloat($row.find('total').text());
+    //         $sender.staff[serverName].orders = 1;
+    //       }
+    //       // console.log($sender);
+    //       $sender.yesterdayAverageTicket = $sender.yesterdayTotalSales / $sender.yesterdayTotalOrders;
+    //        if (num == 10)  {
+    //         return getCategoryInfo($sender, $row, "yesterday", res);
+    //       } else {
+    //         getCategoryInfo($sender, $row, "yesterday", res);
+    //       }
+    //        num++;
+    //       // console.log($sender);
+    //     });
+    //     //$scope.data.yesterday = [$scope.$storage.lavuStaff.yesterdayTotalSales, $scope.$storage.goal.dailyGoal];
+        
+    //     //$scope.$storage.lavuStaff.yesterdayAverageTicket = $scope.$storage.lavuStaff.yesterdayTotalSales / $scope.$storage.lavuStaff.yesterdayTotalOrders;
+    //     console.log(total);
+    //     //return res.send($sender).status(200).end();
+    //     //console.log(body);
+        
+    //     //console.log(body)
+        
+    //   });
 });
+
+function getCategoryInfo($sender, $row, period, res)  {
+  var order_id = $row.find('order_id').text();
+  request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:"order_contents",valid_xml:1,limit:10000,column:"order_id",value:order_id }
+  }, function(error, response, body2)  { 
+    $(body2).find('row').each(function()  {
+      var $row2 = $(this);
+      var item_id = $row2.find('item_id').text();
+      
+      request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:"menu_items",valid_xml:1,limit:10000,column:"id",value:item_id }
+      }, function(error, response, body3)  {
+        var $row3 = $(body3).find('row');
+        var category_id = $row3.find('category_id').text();
+        request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:"menu_categories",valid_xml:1,limit:10000,column:"id",value:category_id }
+        }, function(error, response, body4)  {
+          var $row4 = $(body4).find('row');
+          var group_id = $row4.find('group_id').text();
+          request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:"menu_groups",valid_xml:1,limit:10000,column:"id",value:group_id }
+          }, function(error, response, body5)  {
+              var $row5 = $(body5).find('row');
+              var group_name = $row5.find('group_name').text();
+              
+              if ($sender.categories.hasOwnProperty(group_name))  {
+                
+                $sender.categories[group_name].sales += parseFloat($row2.find('total_with_tax').text());
+                $sender.categories[group_name].orders += parseFloat($row2.find('quantity').text());
+                console.log($sender.categories);
+              } else {
+                
+                $sender.categories[group_name] = {};
+                $sender.categories[group_name].name = group_name;
+                $sender.categories[group_name].sales = parseFloat($row2.find('total_with_tax').text());
+                $sender.categories[group_name].orders = parseFloat($row2.find('quantity').text());
+                console.log($sender.categories);
+              }
+              return res.send($sender).status(200).end();
+            }, function(response5)  {
+              console.log("fail5");
+            }); // request post groups
+          }, function(response4)  {
+            console.log("fail4");
+          }); // request post categories
+        }, function(response3)  {
+          console.log("fail3");
+        }); // request post items
+      }, function(response2)  { // each succes/failure
+        console.log("fail2");
+      }); // each
+    }); // request post
+};
+
+// if ($scope.$storage.lavuStaff[period].categories.hasOwnProperty(group_name))  {
+              //   $scope.$storage.lavuStaff[period].categories[group_name].sales += parseFloat($row2.find('total_with_tax').text());
+              //   $scope.$storage.lavuStaff[period].categories[group_name].orders += parseFloat($row2.find('quantity').text());
+              // } else {
+              //   $scope.$storage.lavuStaff[period].categories[group_name] = {}; 
+              //   $scope.$storage.lavuStaff[period].categories[group_name].name = group_name;
+              //   $scope.$storage.lavuStaff[period].categories[group_name].sales = parseFloat($row2.find('total_with_tax').text());
+              //   $scope.$storage.lavuStaff[period].categories[group_name].orders = parseFloat($row2.find('quantity').text());
+              // }
+              // if (item_id == $scope.$storage.incentiveId)  {
+              //   var server = $row.find('server').text();
+              //   if ($scope.$storage.lavuStaff[period].incentiveSales.hasOwnProperty(server))  {
+              //     $scope.$storage.lavuStaff[period].incentiveSales[server].sales += parseFloat($row2.find('total_with_tax').text());
+              //     $scope.$storage.lavuStaff[period].incentiveSales[server].orders += parseFloat($row2.find('quantity').text());
+              //   } else {
+              //     $scope.$storage.lavuStaff[period].incentiveSales[server] = {};
+              //     $scope.$storage.lavuStaff[period].incentiveSales[server].name = server;
+              //     $scope.$storage.lavuStaff[period].incentiveSales[server].sales = parseFloat($row2.find('total_with_tax').text());
+              //     $scope.$storage.lavuStaff[period].incentiveSales[server].orders = parseFloat($row2.find('quantity').text());
+              //   }
+              //   if ($scope.$storage.lavuStaff[period].hasOwnProperty('totalIncentiveSales'))  {
+              //     $scope.$storage.lavuStaff[period].totalIncentiveSales += parseFloat($row2.find('total_with_tax').text());
+              //     $scope.$storage.lavuStaff[period].totalIncentiveOrders += parseFloat($row2.find('quantity').text());
+              //   } else {
+              //     $scope.$storage.lavuStaff[period].totalIncentiveSales = parseFloat($row2.find('total_with_tax').text());
+              //     $scope.$storage.lavuStaff[period].totalIncentiveOrders = parseFloat($row2.find('quantity').text());
+              //   }
+              // }
+
+
 
 var api_url = "https://api.poslavu.com/cp/reqserv/";
 var datanameString = "";//"cerveza_patago13";  // cerveza_patago9
@@ -330,6 +478,59 @@ app.get("/lookupLavuToday", function(req, res)  {
 
    request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:tableString,valid_xml:1,limit:10000,column:"closed",value_min: today.toISOString().substring(0, 19).replace('T', ' '),value_max: tomorrow.toISOString().substring(0, 19).replace('T', ' ') }
     }, function(error, response, body)  {
+      var sender = {};
+      var total = 0;
+      sender.staff = {};
+      sender.incentiveSales = {};
+      sender.totalIncentiveSales = 0.0;
+      sender.totalIncentiveOrders = 0;
+      sender.yesterdayTotalSales = 0.0;
+      sender.yesterdayTotalOrders = 0;
+      sender.categories = {};
+      console.log("Body: " + body.data);
+      // response.data.querySelectorAll('row');
+      $(body.data).find('row').each(function()  {
+      //  console.log($(this).find('id').text());
+        var $row = $(this);
+        var id = $row.find('id').text();
+        total += parseFloat($row.find('total').text());
+        console.log("Here: " + $row.find('total').text());
+
+      // //$scope.$storage.lavuStaff.yesterday = {};
+      
+      // // $scope.$storage.lavuStaff.yesterdayTotalOrders = 0;
+      // // $scope.$storage.lavuStaff.yesterdayTotalSales = 0.0;
+      // // $scope.$storage.lavuStaff.yesterday.categories = {};
+      //   var serverName = $row.find('server').text();
+      //   sender.yesterdayTotalOrders++;
+      //   sender.yesterdayTotalSales += parseFloat($row.find('total').text());
+      //   // $scope.$storage.lavuStaff.yesterdayTotalOrders++;
+      //   // $scope.$storage.lavuStaff.yesterdayTotalSales += parseFloat($row.find('total').text());
+      //   if (sender.staff.hasOwnProperty(serverName))  {
+      //     sender.staff[serverName].sales += parseFloat($row.find('total').text());
+      //     sender.staff[serverName].order++;
+      //   } else {
+      //     sender.staff[serverName] = {};
+      //     sender.staff[serverName].name = serverName;
+      //     sender.staff[serverName].sales = parseFloat($row.find('total').text());
+      //     sender.staff[serverName].orders = 1;
+      //   }
+
+        // if ($scope.$storage.lavuStaff.yesterday.staff.hasOwnProperty(serverName))  {
+        //   $scope.$storage.lavuStaff.yesterday.staff[serverName].sales += parseFloat($row.find('total').text());
+        //   $scope.$storage.lavuStaff.yesterday.staff[serverName].orders++;
+        // } else {
+        //   $scope.$storage.lavuStaff.yesterday.staff[serverName] = {};
+        //   $scope.$storage.lavuStaff.yesterday.staff[serverName].name = serverName;
+        //   $scope.$storage.lavuStaff.yesterday.staff[serverName].sales = parseFloat($row.find('total').text());
+        //   $scope.$storage.lavuStaff.yesterday.staff[serverName].orders = 1;
+        // }
+        //getCategoryInfo($row, $scope, $http, "yesterday");
+      });
+      //$scope.data.yesterday = [$scope.$storage.lavuStaff.yesterdayTotalSales, $scope.$storage.goal.dailyGoal];
+      sender.yesterdayAverageTicket = sender.yesterdayTotalSales / sender.yesterdayTotalOrders;
+      //$scope.$storage.lavuStaff.yesterdayAverageTicket = $scope.$storage.lavuStaff.yesterdayTotalSales / $scope.$storage.lavuStaff.yesterdayTotalOrders;
+      console.log(total);
       //console.log(body);
       res.send(body).status(200).end();
     });
@@ -342,13 +543,14 @@ app.get("/lookupLastWeekLavu", function(req, res)  {
       diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
   var lastMonday = new Date(d.setDate(diff));
   lastMonday.setHours(3,0,0,0);
-  console.log("Last Monday: " + lastMonday);
-  var today = new Date();
-    today.setHours(3,0,0,0);
-    var tomorrow = new Date();
-    tomorrow.setDate(today.getDate() + 1);
+  var ending = new Date();
+  ending.setDate(lastMonday.getDate());
+  ending.setHours(2,59,59,999);
+  lastMonday.setDate(lastMonday.getDate() - 7);
 
-  request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:tableString,valid_xml:1,limit:10000,column:"closed",value_min: lastMonday.toISOString().substring(0, 19).replace('T', ' '),value_max: tomorrow.toISOString().substring(0, 19).replace('T', ' ') }
+  // console.log("Last Monday: " + lastMonday);
+  // console.log("Ending: " + ending);
+  request.post(api_url, {form:{dataname:datanameString,key:keyString,token:tokenString,table:tableString,valid_xml:1,limit:10000,column:"closed",value_min: lastMonday.toISOString().substring(0, 19).replace('T', ' '),value_max: ending.toISOString().substring(0, 19).replace('T', ' ') }
   }, function(error, response, body)  {
     //console.log(body);
     res.send(body).status(200).end();

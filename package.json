@@ -6,16 +6,23 @@
   "dependencies": {
     "angular-chart.js": "^1.1.1",
     "angular-modal-service": "^0.12.1",
+    "async": "^2.5.0",
     "blockspring": "^0.0.6",
     "body-parser": "^1.17.2",
     "chart.js": "^2.6.0",
     "cors": "^2.8.4",
     "ejs": "^2.5.6",
     "express": "^4.15.3",
+    "io.js": "0.0.0",
+    "jquery": "^3.2.1",
+    "jsdom": "^3.1.2",
     "mongodb": "^2.2.30",
     "mysql": "^2.13.0",
+    "nodeQuery": "0.0.9-1",
     "request": "^2.81.0",
-    "uniq": "^1.0.1"
+    "uniq": "^1.0.1",
+    "util": "^0.10.3",
+    "zepto": "^1.2.0"
   },
   "devDependencies": {},
   "scripts": {
