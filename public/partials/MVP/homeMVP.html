@@ -8,30 +8,13 @@ $( "Goal" ).click(function() {
     })
 });
 </script>
-<div ng-if="gateLocation()" class="center">
-  <div class="colCenter">
-    <header>
-      Choose your Location
-    </header>
-    <button ng-click="updateLocation(0)">
-    Bariloche
-    </button> <br />
-    <button ng-click="updateLocation(1)">
-    Tejeda
-    </button> <br />
-    <button ng-click="updateLocation(2)">
-    Goose island
-    </button>
-  </div>
-</div>
+
 <div ng-if="gateLocation() === false">
   <div class="noHeight" ng-include src="'partials/navbar.html'"></div>
 
   <header class="progressHeader">
-    <h3>
-      <span class="mediumFont">Current Incentive</span>
-    </h3>
-    <br />
+    <h5 class="location-name">{{ $storage.locationData.name }}</h5>
+    <h3 class="screen-heading">Current Incentive</h3>
   </header>
 
   <table class="dividerTable" ng-init="section = 0">
@@ -45,8 +28,6 @@ $( "Goal" ).click(function() {
   <div ng-if="section==0" ng-include src="'partials/MVP/incentiveDaily.html'" class="full"></div>
   <div ng-if="section==1" ng-include src="'partials/MVP/incentiveYesterday.html'" class="full"></div>
   <div ng-if="section==2" ng-include src="'partials/MVP/incentiveWeekly.html'" class="full"></div>
-  <div class="center">
-    <input type="button" class="smallRoundButton cyanBKG" ng-click="onReloadLocation()" value="Update location" />
-  </div>
+
 </div>
     <!-- END EDIT CONTENT -->

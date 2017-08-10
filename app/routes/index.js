@@ -302,17 +302,16 @@ router.post("/updateSales", function(req, res) {
 router.get("/salessummary/:location_id/:date", function(req, res) {
 	var location = req.params.location_id,
 		date = moment(req.params.date, 'YYYYMMDD');
-		
-	const { datanameString, keyString, tokenString, locationId } = new LocationService().resolve(location);
-	
-	var minDate = moment(date).hour(3).minute(0).second(0).toDate();
-	var maxDate = moment(minDate).add(1, 'day');
 
-	new LavuService()
-	.configure(datanameString, keyString, tokenString, locationId)
+	var minDate = moment(date).hour(3).minute(0).second(0).toDate();
+	var maxDate = moment(minDate).add(1, 'day').toDate();
+		
+	new LocationService().resolve(location)
+	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
 	.then(service => service.getSalesSummary(minDate, maxDate))
 	.then(data => res.json({ success: true, data }))
 	.catch(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
+	
 });
 
 /*
@@ -603,27 +602,17 @@ router.get("/lookupLavuItems", function(req, res) {
 	});
 });
 
+router.get('/locations', (req, res) => {
+	new LocationService().all()
+	.then(locations => res.json(locations))
+	.catch(error => res.status(500).json({ success: false, error }));
+})
+
 router.get("/resolveLocation/:location_id", function(req, res) {
 	var location_idParam = req.params.location_id;
-	if (location_idParam == 0) { // bariloche
-		console.log("Choosing Bariloche");
-		datanameString = "cerveza_patago13";
-		keyString = "XCXxRHUsSuF3n3D4s6Lm";
-		tokenString = "bsn9GpsHt8UClvnEukGa";
-	}
-	else if (location_idParam == 1) { // tejeda
-		console.log("Choosing Tejeda");
-		datanameString = "cerveza_patago9";
-		keyString = "Wut9Y3BigxgEgChgzvNB";
-		tokenString = "YjVS0nEgBXI9gSh5dmuC";
-	}
-	else if (location_idParam == 2) { // goose island
-		console.log("Choosing Goose Island");
-		datanameString = "goose_island_p";
-		keyString = "fUOEUo4DToNuuTLuda04";
-		tokenString = "R65QzAE6RnctGY8Dta2n";
-	}
-	res.status(200).end();
+	
+	new LocationService().resolve(location_idParam)
+	.then(location => res.json(location));
 });
 
 module.exports = router;

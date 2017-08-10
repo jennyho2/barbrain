@@ -1,3 +1,5 @@
+<div ng-if="loading" ng-include="'partials/loading.html'"></div>
+
 <div class="chartHolder doughnutSize">
   <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
   <canvas ng-if="$storage.dailyHardGoal - $storage.lavuStaff.todayTotalSales > 0" id="doughnut" class="chart chart-doughnut"
@@ -10,8 +12,7 @@
 
 <div class="center">
   <h4>Total Sales: {{ $storage.sales[getSalesDate()].totalSales | currency }}</h4>
-  <span class="smallFont">{{$storage.sales[getSalesDate()].totalSales / $storage.dailyHardGoal * 100| number:2 }}%</span> <br>
-  <span class="smallFont">of goal achieved</span> 
+  <span class="smallFont">{{$storage.sales[getSalesDate()].totalSales / $storage.dailyHardGoal * 100| number:2 }}% of goal achieved</span> <br>
   <br>
   <a data-toggle="modal" data-target="#myModal"><span class="smallFont" style="color:deepskyblue">Adjust goal</span></a>
 </div>
@@ -36,6 +37,11 @@
     </tbody>
   </table>
   <br>
+  
+  
+<button class="smallRoundButton grayBKG" ng-click="onCallLavu()">Refresh Data</button>
+
+
 <!-- Insights -->
 <div class="tactics">
 <br>

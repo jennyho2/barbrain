@@ -4,8 +4,28 @@
 	background-color: #4acde2;
 	color: #ffffff;
 	border-width: 2px;
-	border-bottom: 2px #9b9b9b solid;
-	padding-top: 1px;
+	border-bottom: 1px #9b9b9b solid;
+	
+	padding-top: 10px;
+	padding-bottom: 30px;
+}
+
+.progressHeader .location-name {
+	margin-bottom: 0;
+	font-weight: normal;
+	text-transform: uppercase;
+	opacity: 0.8;
+}
+.progressHeader .screen-heading {
+	margin-top: 0;
+}
+
+.loading {
+	text-align: center;
+}
+.loading img {
+	height: 75px;
+	width: 75px;
 }
 
 .noHeight  {
@@ -15,6 +35,8 @@
 .chartHolder {
 	text-align: center;
 	margin: auto;
+	padding-top: 20px;
+	padding-bottom: 20px;
 }
 .tableEmployeeStat {
 	width: 100%;
@@ -104,6 +126,7 @@ textarea {
 	table-layout: fixed;
 	border: none;
 	border-collapse: collapse;
+	background-color: #f4f4f4;
 }
 
 .smallRoundButton {
@@ -124,6 +147,8 @@ textarea {
 	text-align: center; 
 	border-left: 1px solid #dcdcdc;
 	border-right: 1px solid #dcdcdc;
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 .subTable { 
 	width: 100%;

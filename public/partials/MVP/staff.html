@@ -1,10 +1,10 @@
 <div class="noHeight" ng-include src="'partials/navbar.html'"></div>
-<header class="progressHeader">
-  <h3>
-    <span class="mediumFont">Staff Performance</span>
-  </h3>
-  <br />
-</header>
+
+  <header class="progressHeader">
+    <h5 class="location-name">{{ $storage.locationData.name }}</h5>
+    <h3 class="screen-heading">Staff Performance</h3>
+  </header>
+
 <table class="dividerTable" ng-init="section = 1">
   <tr class="smallFont bottomLine">
     <th ng-class="{'selected': section === 0}" ng-click="section = 0">Today</th>

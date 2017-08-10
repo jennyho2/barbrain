@@ -3,16 +3,10 @@
 <div class="center">
   <div class="colCenter">
     <header>
-      Change your Location
+      Choose a location
     </header>
-    <button ng-click="updateLocation(0, true)">
-    Bariloche
-    </button> <br />
-    <button ng-click="updateLocation(1, true)">
-    Tejeda
-    </button> <br />
-    <button ng-click="updateLocation(2, true)">
-    Goose island
-    </button>
+    <div ng-repeat="location in $storage.allLocations">
+      <div><button ng-click="updateLocation(location.datanameString, true)">{{location.name}}</button></div>
+    </div>
   </div>
 </div>

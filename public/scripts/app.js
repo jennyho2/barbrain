@@ -18,6 +18,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   $scope.$storage.yesterdayHardIncentiveGoal = 43;
   $scope.$storage.yesterdayHardIncentiveProjection = 49;
   
+  $scope.loading = false;
+  
 
 	$scope.location = null;
 	
@@ -40,6 +42,14 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
     $scope.$storage.fullTactics = new Tactics($http);
     $scope.$storage.staff = {};
     $scope.$storage.staffName = {};
+    
+    $scope.init = function(){
+      if(!$scope.$storage.allLocations){
+        $http.get('/locations').then(function(response){
+          $scope.$storage.allLocations = response.data;
+        });
+      }
+    };
 
 	//$scope.$storage.dailyGoal = new DailyGoal($http);
 	//$scope.storage.staff = '';
@@ -47,16 +57,19 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
     return (typeof $scope.$storage.location === 'undefined');
   };
 
-  $scope.updateLocation = function(num, goHome)  {
-    $http.get("/resolveLocation/" + num)
+  $scope.updateLocation = function(id, goHome)  {
+    $http.get("/resolveLocation/" + id)
     .then(function(response)  {
-      $scope.$storage.location = num;
+      $scope.$storage.location = id;
+      $scope.$storage.locationData = response.data;
       $scope.$storage.lavuStaff = {};
+      $scope.$storage.sales = {};
+      
       $scope.onCallLavu();
       //$scope.onCallLavuToday();
       //$scope.onCallLavuYesterday();
       //$scope.onCallLavuLastWeek();
-      $location.path('home');
+      $location.path('');
     }, function(response)  {
       console.log("Failure gating");
     });
@@ -263,11 +276,13 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
     $scope.$storage.incentiveId = 0;
     
     var date = moment();
+    $scope.loading = true;
     
     $http.get("/salessummary/" + $scope.$storage.location + "/" + date.format('YYYYMMDD'))
     .then(function(response)  {
       if(!$scope.$storage.sales) $scope.$storage.sales = {};
       $scope.$storage.sales[date.format('YYYYMMDD')] = response.data.data;
+      $scope.loading = false;
 
 /*
       $scope.$storage.lavuStaff.today = {};
@@ -502,6 +517,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
       console.log("failure");
     });
   };
+  
+  $scope.init();
 
 });
 

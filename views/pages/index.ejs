@@ -39,8 +39,10 @@
 </head>
 
 <body ng-controller="mainController">
+  
+  <div ng-if="gateLocation()" class="center" ng-include="'partials/locations.html'"></div>
 
-<div ng-view class="full"></div>
+<div ng-if="!gateLocation()" ng-view class="full"></div>
 
 </body>
 

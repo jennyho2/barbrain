@@ -1,10 +1,8 @@
 <div class="noHeight" ng-include src="'partials/navbar.html'"></div>
-<header class="progressHeader">
-  <h3>
-    <span class="mediumFont">Performance</span>
-  </h3>
-  <br>
-</header>
+  <header class="progressHeader">
+    <h5 class="location-name">{{ $storage.locationData.name }}</h5>
+    <h3 class="screen-heading">Performance</h3>
+  </header>
 
 <table class="dividerTable" ng-init="section = 0">
   <tr class="smallFont bottomLine">
@@ -20,4 +18,4 @@
 <div ng-if="section==2" ng-include src="'partials/MVP/weeklySales.html'" class="full"></div>
 <div ng-if="section==3" ng-include src="'partials/MVP/monthlySales.html'" class="full"></div>
 
-<button ng-click="onCallLavu()">Refresh Data</button>
+<button class="smallRoundButton grayBKG" ng-click="onCallLavu()">Refresh Data</button>

@@ -1,5 +1,6 @@
 const request = require('request'),
 	  { filter, find } = require('lodash'),
+	  
 	  moment = require('moment');
 	  
 var $ = require('jquery')(require("jsdom").jsdom().parentWindow);
@@ -19,15 +20,16 @@ module.exports = class LavuService {
 		if(!this.datanameString) return Promise.reject('No dataname');
 		if(!this.keyString) return Promise.reject('No key');
 		if(!this.tokenString) return Promise.reject('No token');
+		if(!this.locationId) return Promise.reject('No location ID');
 
 		return Promise.resolve(this); // for chaining
 	}
 	
 	post(data){
 		return new Promise((resolve, reject) => {
-			console.log('Performing API request with payload', data);
+			console.log('Performing API request', data.form.table, this.locationId);
 			request.post(this.api_url, data, (error, response, body) => {
-				if(error) reject(error);
+				if(error) return reject(error);
 				resolve(body);
 			});
 
@@ -184,7 +186,8 @@ module.exports = class LavuService {
 					var _id = $row.find('id').text();
 					var total = parseFloat($row.find('total').text());
 					var order_id = $row.find('order_id').text();
-					var location_id = parseInt($row.find('location_id').text());
+					//var location_id = parseInt($row.find('location_id').text());
+					var location_id = this.locationId;
 					var closed = moment($row.find('closed').text()).toDate();
 					
 					let details = filter(allDetails, d => d.order_id == order_id);
@@ -199,17 +202,22 @@ module.exports = class LavuService {
 	
 	loadOrders(minDate, maxDate){
 		return database.connect().then(db => {
-			return db.collection('lavu_orders').find({ location_id: this.locationId, closed: { $gte: minDate, $lte: maxDate } }).toArray().then(rows => {
+			let query = { location_id: this.locationId, closed: { $gte: minDate, $lte: maxDate } };
+			console.log('Finding orders...', query);
+			return db.collection('lavu_orders').find(query).toArray().then(rows => {
 				if(!rows || rows.length == 0){
-					console.log('No Lavu orders found.  Loading from Lavu...');
+					console.log(`No Lavu orders found.  Loading from Lavu... ${minDate} - ${maxDate}`);
 					return this.getOrdersFromApi(minDate, maxDate)
 					.then(orders => {
-						let bulk = db.collection('lavu_orders').initializeUnorderedBulkOp();
-						orders.forEach(order => {
-							bulk.find({ _id: order._id }).upsert().updateOne(order);
-						});
-						return bulk.execute()
-							.then(() => orders);
+						if(orders.length > 0){
+							let bulk = db.collection('lavu_orders').initializeUnorderedBulkOp();
+							orders.forEach(order => {
+								bulk.find({ _id: order._id }).upsert().updateOne(order);
+							});
+							return bulk.execute()
+								.then(() => orders);
+						}
+						return orders;
 					});
 				}
 				return rows;
