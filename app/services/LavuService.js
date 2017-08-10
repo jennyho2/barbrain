@@ -1,5 +1,5 @@
 const request = require('request'),
-	  { filter } = require('lodash'),
+	  { filter, find } = require('lodash'),
 	  moment = require('moment');
 	  
 var $ = require('jquery')(require("jsdom").jsdom().parentWindow);
@@ -47,10 +47,15 @@ module.exports = class LavuService {
 	getMenuItemsFromApi(){
 		return this.post(this.buildApiData('menu_items'))
 		.then(body => {
-			let items = [];
-			$(body).find('row').each(function() {
-				var $row = $(this);
-				items.push({ id: parseInt($row.find('id').text()), categoryId: parseInt($row.find('category_id').text()) });
+			let items = $(body).find('row').toArray().map(item => {
+				let $row = $(item);
+				
+				return { 
+					id: parseInt($row.find('id').text()), 
+					category_id: parseInt($row.find('category_id').text()),
+					name: $row.find('name').text(),
+					location_id: this.locationId
+				}
 			});
 			return items;
 		});
@@ -58,7 +63,7 @@ module.exports = class LavuService {
 	
 	loadMenuItems(){
 		return database.connect().then(db => {
-			return db.collection('lavu_menu_items').find({}).toArray().then(rows => {
+			return db.collection('lavu_menu_items').find({ location_id: this.locationId }).toArray().then(rows => {
 				if(!rows || rows.length == 0){
 					console.log('No Lavu menu items found.  Loading from Lavu...');
 					return this.getMenuItemsFromApi()
@@ -76,18 +81,21 @@ module.exports = class LavuService {
 	getMenuCategoriesFromApi(){
 		return this.post(this.buildApiData('menu_categories'))
 		.then(body => {
-			let categories = {};
-			$(body).find('row').each(function() {
-				var $row = $(this);
-				categories[parseInt($row.find('id').text())] = parseInt($row.find('group_id').text());
+			return $(body).find('row').toArray().map(category => {
+				let $row = $(category);
+				return {
+					id: parseInt($row.find('id').text()),
+					group_id: parseInt($row.find('group_id').text()),
+					name: $row.find('name').text(),
+					location_id: this.locationId
+				};
 			});
-			return categories;
 		});
 	}
 	
 	loadMenuCategories(){
 		return database.connect().then(db => {
-			return db.collection('lavu_menu_categories').find({}).toArray().then(rows => {
+			return db.collection('lavu_menu_categories').find({ location_id: this.locationId }).toArray().then(rows => {
 				if(!rows || rows.length == 0){
 					console.log('No Lavu menu categories found.  Loading from Lavu...');
 					return this.getMenuCategoriesFromApi()
@@ -105,19 +113,21 @@ module.exports = class LavuService {
 	getMenuGroupsFromApi(){
 		return this.post(this.buildApiData('menu_groups'))
 		.then(body => {
-			let groups = {};
-			$(body).find('row').each(function() {
-				var $row = $(this);
-				groups[parseInt($row.find('id').text())] = $row.find('group_name').text();
+			return $(body).find('row').toArray().map(category => {
+				let $row = $(category);
+				return {
+					id: parseInt($row.find('id').text()),
+					name: $row.find('group_name').text(),
+					location_id: this.locationId
+				};
 			});
-			return groups;
 		});
 	}
 
 	
 	loadMenuGroups(){
 		return database.connect().then(db => {
-			return db.collection('lavu_menu_groups').find({}).toArray().then(rows => {
+			return db.collection('lavu_menu_groups').find({ location_id: this.locationId }).toArray().then(rows => {
 				if(!rows || rows.length == 0){
 					console.log('No Lavu menu groups found.  Loading from Lavu...');
 					return this.getMenuCategoriesFromApi()
@@ -156,11 +166,13 @@ module.exports = class LavuService {
 				
 				return $(results).find('row').toArray().map(detail => {
 					
-					var _id = $(detail).find('id').text();
-					var order_id = $(detail).find('order_id').text();
-					var item_id = $(detail).find('item_id').text();
-					var total = parseFloat($(detail).find('total_with_tax').text());
-					var quantity = parseFloat($(detail).find('quantity').text());
+					let $detail = $(detail);
+					
+					var _id = $detail.find('id').text();
+					var order_id = $detail.find('order_id').text();
+					var item_id = $detail.find('item_id').text();
+					var total = parseFloat($detail.find('total_with_tax').text());
+					var quantity = parseFloat($detail.find('quantity').text());
 					
 					return { _id, order_id, item_id, total, quantity };
 				});
@@ -191,10 +203,13 @@ module.exports = class LavuService {
 				if(!rows || rows.length == 0){
 					console.log('No Lavu orders found.  Loading from Lavu...');
 					return this.getOrdersFromApi(minDate, maxDate)
-					.then(groups => {
-						return db.collection('lavu_orders')
-							.insertMany(groups)
-							.then(() => groups);
+					.then(orders => {
+						let bulk = db.collection('lavu_orders').initializeUnorderedBulkOp();
+						orders.forEach(order => {
+							bulk.find({ _id: order._id }).upsert().updateOne(order);
+						});
+						return bulk.execute()
+							.then(() => orders);
 					});
 				}
 				return rows;
@@ -203,64 +218,49 @@ module.exports = class LavuService {
 
 	}
 	
-	load(param){
-		var categories = {};
-		var groups = {};
-		var items = {};
+	
+	getSalesSummary(minDate, maxDate){
+		return this.loadOrders(minDate, maxDate)
+		.then(orders => this.loadMenuItems().then(menuItems => { return { orders, menuItems }; }))
+		.then(({orders, menuItems}) => this.loadMenuCategories().then(categories => { return { orders, menuItems, categories }; }))
+		.then(({orders, menuItems, categories}) => {
+			
+			console.log(orders.length, menuItems.length, categories.length);
+			
+			let summary = {
+				totalSales: 0,
+				categories: []
+			};
+			
+			orders.forEach(order => {
+				summary.totalSales += order.total;
+				
+				order.details.forEach(detail => {
+					let menuItem = find(menuItems, item => item.id == detail.item_id);
+					if(!menuItem){
+						console.log('Could not find menu item', detail.item_iod);
+					}
+					else {
+						let menuCategory = find(categories, cat => cat.id == menuItem.category_id);
+						if(!menuCategory){
+							console.log('Could not find category', menuItem.category_id);
+						}
+						else {
+							let category = find(summary.categories, cat => cat.id == menuCategory.id);
+							if(!category){
+								category = { id: menuCategory.id, name: menuCategory.name, count: 0, sales: 0 };
+								summary.categories.push(category);
+							}
 
-		var responding = {};
-		
-		return this.loadMenuItems()
-		.then(result => items = result)
-		.then(() => this.loadMenuCategories())
-		.then(result => categories = result)
-		.then(() => this.loadMenuGroups())
-		.then(result => groups = result);
-		
-		/*
-					
-					
-					responding.staff = {};
-					responding.categories = {};
-					responding.yesterdayOrders = {};
-					if (param >= 1) {
-						this.callLavuDaily(responding, function(responding) {
-							if (param >= 2) {
-								this.callLavuYesterday(responding, function(responding) {
-									if (param >= 3) {
-										this.callLavuWeekly(responding, function(responding) {
-											if (param >= 4) {
-												this.callLavuMonthly(responding, function(responding) {
-													res.send(responding).status(200).end();
-												}); // callLavuMonthly callback
-	
-											}
-											else {
-												res.send(responding).status(200).end();
-											}
-										}); // callLavuWeekly callback
-	
-									}
-									else {
-										res.send(responding).status(200).end();
-									}
-								}); // callLavuYesterday callback
-	
-							}
-							else {
-								res.send(responding).status(200).end();
-							}
-	
-						}); // callLavuDaily Callback 
-	
-					} // param >= 0
-	
-				}); // request menu_groups
-	
-			}); // request menu_categories
-	
-		}); // request menu_items
-	*/
+							category.count += detail.quantity;
+							category.sales += detail.total;
+						}
+					}
+				});
+			});
+			
+			return summary;
+		})
 	}
 
 	callLavuDaily(responding, callback) {
@@ -288,9 +288,6 @@ module.exports = class LavuService {
 		});
 	}
 	
-	calculateSalesData(date){
-		
-	}
 
 	callLavuYesterday(responding, callback) {
 		var yesterday = new Date();

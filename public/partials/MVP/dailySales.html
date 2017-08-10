@@ -9,8 +9,8 @@
 </div>
 
 <div class="center">
-  <h4>Total Sales: {{ $storage.lavuStaff.todayTotalSales }}</h4>
-  <span class="smallFont">{{$storage.lavuStaff.todayTotalSales / $storage.dailyHardGoal * 100| number:2 }}%</span> <br>
+  <h4>Total Sales: {{ $storage.sales[getSalesDate()].totalSales | currency }}</h4>
+  <span class="smallFont">{{$storage.sales[getSalesDate()].totalSales / $storage.dailyHardGoal * 100| number:2 }}%</span> <br>
   <span class="smallFont">of goal achieved</span> 
   <br>
   <a data-toggle="modal" data-target="#myModal"><span class="smallFont" style="color:deepskyblue">Adjust goal</span></a>
@@ -26,11 +26,11 @@
       </tr>
     </thead>
     <tbody>
-      <tr class="tableEmployeeStat" ng-repeat="category in $storage.lavuStaff.today.categories">
+      <tr class="tableEmployeeStat" ng-repeat="category in $storage.sales[getSalesDate()].categories">
         <td>{{category.name}}</td>
         <td>${{category.sales}}</td>
-        <td>{{category.orders}}</td>
-        <td>{{ (category.sales / $storage.lavuStaff.todayTotalSales) * 100 | number:2}}
+        <td>{{category.count}}</td>
+        <td>{{ (category.sales / $storage.sales[getSalesDate()].totalSales) * 100 | number:2}}%</td>
       </tr>
   
     </tbody>

@@ -1,3 +1,6 @@
+/* global angular */
+/* global moment */
+
 var app = angular.module("goalsApp", ["ngRoute", "ngStorage", "filters.stringUtils", "filters.mathAbs", "angularModalService", "chart.js"]);
 
 app.controller('mainController', function($scope, $localStorage, $sessionStorage, $http, $location)  {
@@ -14,7 +17,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   $scope.$storage.yesterdayHardGoal = 199000;
   $scope.$storage.yesterdayHardIncentiveGoal = 43;
   $scope.$storage.yesterdayHardIncentiveProjection = 49;
-	//SET THE FUCKING LOCATION
+  
+
 	$scope.location = null;
 	
   	$scope.options = { responsive: true, stacked: true, pointstyle: "crossRot" };
@@ -249,12 +253,23 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
       console.log("failing over here");
     });
   }
+  
+  $scope.getSalesDate = function(){
+    return moment().format('YYYYMMDD');
+  }
 
   $scope.onCallLavu = function () {
     //if( !hasOneDayPassed ) return false;
     $scope.$storage.incentiveId = 0;
-    $http.get("/lookupYesterdayLavu/" + $scope.$storage.location + "/2")
+    
+    var date = moment();
+    
+    $http.get("/salessummary/" + $scope.$storage.location + "/" + date.format('YYYYMMDD'))
     .then(function(response)  {
+      if(!$scope.$storage.sales) $scope.$storage.sales = {};
+      $scope.$storage.sales[date.format('YYYYMMDD')] = response.data.data;
+
+/*
       $scope.$storage.lavuStaff.today = {};
       $scope.$storage.lavuStaff.today.staff = {};
       $scope.$storage.lavuStaff.today.incentiveSales = {};
@@ -267,6 +282,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
       $scope.$storage.lavuStaff.yesterday.totalIncentiveSales = 0.0;
       $scope.$storage.lavuStaff.yesterday.totalIncentiveOrders = 0;
       console.log(response);
+      */
       // $scope.$storage.items = [];
       // $(response.data).find('row').each(function()  {
       //   var $row = $(this);
@@ -281,7 +297,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
       // });
       // $scope.onCallLavuToday();
     }, function(response)  {
-      console.log("failure grabbing incentive Id");
+      console.log("failure grabbing sales data");
     });
 
 

@@ -1,6 +1,8 @@
-const router = require('express').Router();
+const router = require('express').Router(),
+	  moment = require('moment'),
+	  request = require('request');
+	  
 const database = require('../db');
-const request = require('request');
 var $ = require('jquery')(require("jsdom").jsdom().parentWindow);
 const LavuService = require('../services/LavuService'),
 	  LocationService = require('../services/Locations');
@@ -297,24 +299,19 @@ router.post("/updateSales", function(req, res) {
 });
 
 
-router.get("/lookupYesterdayLavu/:location_id/:param_id", function(req, res) {
-	var param = req.params.param_id,
-		location = req.params.location_id;
+router.get("/salessummary/:location_id/:date", function(req, res) {
+	var location = req.params.location_id,
+		date = moment(req.params.date, 'YYYYMMDD');
 		
 	const { datanameString, keyString, tokenString, locationId } = new LocationService().resolve(location);
 	
-	var yesterday = new Date();
-	yesterday.setHours(3, 0, 0, 0);
-	yesterday.setDate(yesterday.getDate() - 1);
-	
-	var today = new Date();
-	today.setHours(3, 0, 0, 0);
+	var minDate = moment(date).hour(3).minute(0).second(0).toDate();
+	var maxDate = moment(minDate).add(1, 'day');
 
-	
 	new LavuService()
 	.configure(datanameString, keyString, tokenString, locationId)
-	.then(service => service.loadOrders(yesterday, today))
-	.then(data => res.json({ yesterday: { categories: data } }))
+	.then(service => service.getSalesSummary(minDate, maxDate))
+	.then(data => res.json({ success: true, data }))
 	.catch(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
 });
 
