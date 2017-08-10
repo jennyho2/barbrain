@@ -32,6 +32,17 @@
 	height: 0px;
 }
 
+.location {
+	cursor: pointer;
+	padding: 5px;
+	margin-left: 20px;
+	margin-right: 20px;
+	margin-top: 2px;
+	background: #ececec;
+	border: 1px solid mediumgray;
+	text-align: left;
+}
+
 .chartHolder {
 	text-align: center;
 	margin: auto;
