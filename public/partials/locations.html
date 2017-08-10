@@ -5,7 +5,7 @@
     <header>
       <h4>Choose a location</h4>
     </header>
-    <div ng-repeat="location in $storage.allLocations" class="location"  ng-click="updateLocation(location.datanameString, true)">
+    <div ng-repeat="location in $storage.allLocations | orderBy:'name'" class="location"  ng-click="updateLocation(location.datanameString, true)">
       {{location.name}}
     </div>
   </div>

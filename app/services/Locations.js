@@ -39,7 +39,7 @@ const locations = [
       tokenString:"sdxyd3efTICAGwgRrVZh"
    },
    {  
-      name:" BBC Bodega Calle 140",
+      name:"BBC Bodega Calle 140",
       datanameString:"bogota_beer_co",
       keyString:"vsdJQPt88xtAREH6qMwG",
       tokenString:"1TL7fb4pPOHrZHNcfS8g"
