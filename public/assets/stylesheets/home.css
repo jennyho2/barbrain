@@ -106,6 +106,14 @@ textarea {
 	border-collapse: collapse;
 }
 
+.smallRoundButton {
+	border-radius: 10px;
+    padding: 5px;
+    width: 30%;
+    margin: 5px auto;
+    border-width: 0px;
+}
+
 .dividerTable td, .dividerTable th{
 	width: 33%;
 	text-align: center; 
