@@ -14,7 +14,7 @@
 </div>
 <br>
 
-<table class="dividerTable">
+<table class="dividerTable grayBKG">
   <tr class="center">
     <th class="smallFont">Goal</th>
     <th class="smallFont">Sales</th>
@@ -27,8 +27,8 @@
   </tr>
 </table>
 
-<select ng-model="$storage.INCENTIVE" ng-options="x for x in $storage.items | orderBy:'toString()'">
+<select class="smallRoundButton" ng-model="$storage.INCENTIVE" ng-options="x for x in $storage.items | orderBy:'toString()'">
 </select>
 
-<button ng-click="onCallLavu()">Refresh Data</button>
+<button class="smallRoundButton grayBKG" ng-click="onCallLavu()">Refresh Data</button>
 <div ng-include src="'partials/MVP/dailyStaffIncentive.html'"></div>

@@ -1,6 +1,15 @@
 .progressHeader {
 	text-align: center;
-	margin-top: -25px;
+	/*margin-top: -25px;*/
+	background-color: #4acde2;
+	color: #ffffff;
+	border-width: 2px;
+	border-bottom: 2px #9b9b9b solid;
+	padding-top: 1px;
+}
+
+.noHeight  {
+	height: 0px;
 }
 
 .chartHolder {
@@ -95,6 +104,19 @@ textarea {
 	table-layout: fixed;
 	border: none;
 	border-collapse: collapse;
+}
+
+.smallRoundButton {
+	border-radius: 10px;
+    padding: 5px;
+    width: 30%;
+    margin: 5px auto;
+    border-width: 0px;
+}
+
+.centeredPaddedCell {
+	padding: 5px;
+	margin: 5px auto;
 }
 
 .dividerTable td, .dividerTable th{
