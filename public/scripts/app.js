@@ -271,18 +271,27 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
     return moment().format('YYYYMMDD');
   }
 
+  $scope.getSalesDate = function(offset) {
+    return moment().add(offset, 'days').format('YYYYMMDD');
+  }
+
   $scope.onCallLavu = function () {
     //if( !hasOneDayPassed ) return false;
     $scope.$storage.incentiveId = 0;
-    
-    var date = moment();
+    //$scope.$storage.salesDate = "20170809";
+    //var date = moment("20170809");
+    //var date = moment();
+    var date = $scope.$storage.salesDate;
     $scope.loading = true;
     
-    $http.get("/salessummary/" + $scope.$storage.location + "/" + date.format('YYYYMMDD'))
+    $http.get("/salessummary/" + $scope.$storage.location + "/" + date)//.format('YYYYMMDD'))
     .then(function(response)  {
       if(!$scope.$storage.sales) $scope.$storage.sales = {};
-      $scope.$storage.sales[date.format('YYYYMMDD')] = response.data.data;
+      // $scope.$storage.sales[date.format('YYYYMMDD')] = response.data.data;
+      $scope.$storage.sales[date] = response.data.data;
       $scope.loading = false;
+      console.log($scope.$storage.sales);
+      console.log($scope.$storage.salesDate);
 
 /*
       $scope.$storage.lavuStaff.today = {};

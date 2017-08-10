@@ -11,8 +11,10 @@
 </div>
 
 <div class="center">
-  <h4>Total Sales: {{ $storage.sales[getSalesDate()].totalSales | currency }}</h4>
-  <span class="smallFont">{{$storage.sales[getSalesDate()].totalSales / $storage.dailyHardGoal * 100| number:2 }}% of goal achieved</span> <br>
+  <!-- <h4>Total Sales: {{ $storage.sales[getSalesDate()].totalSales | currency }}</h4> -->
+  <h4>Total Sales: {{ $storage.sales[$storage.salesDate].totalSales | currency }}</h4>
+  <!-- <span class="smallFont">{{$storage.sales[getSalesDate()].totalSales / $storage.dailyHardGoal * 100| number:2 }}% of goal achieved</span> <br> -->
+  <span class="smallFont">{{$storage.sales[$storage.salesDate].totalSales / $storage.dailyHardGoal * 100| number:2 }}% of goal achieved</span> <br>
   <br>
   <a data-toggle="modal" data-target="#myModal"><span class="smallFont" style="color:deepskyblue">Adjust goal</span></a>
 </div>
@@ -27,7 +29,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr class="tableEmployeeStat" ng-repeat="category in $storage.sales[getSalesDate()].categories">
+      <tr class="tableEmployeeStat" ng-repeat="category in $storage.sales[$storage.salesDate].categories">
         <td>{{category.name}}</td>
         <td>${{category.sales}}</td>
         <td>{{category.count}}</td>

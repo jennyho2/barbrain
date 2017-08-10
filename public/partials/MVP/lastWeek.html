@@ -4,18 +4,20 @@
     <h3 class="screen-heading">Performance</h3>
   </header>
 
-<table class="dividerTable" ng-init="section = 0">
+<table class="dividerTable" ng-init="$storage.salesDate = getSalesDate(); section = 0">
   <tr class="smallFont bottomLine">
-    <th ng-class="{'selected': section === 0}" ng-click="section = 0">Today</th>
-    <th ng-class="{'selected': section === 1}" ng-click="section = 1">Yesterday</th>
+    <th ng-class="{'selected': section === 0}" ng-click="$storage.salesDate = getSalesDate(); section = 0">Today</th>
+    <!-- <th ng-class="{'selected': section === 0}" ng-click="section = 0">Today</th> -->
+    <th ng-class="{'selected': section === 1}" ng-click="$storage.salesDate = getSalesDate(-1); section = 1">Yesterday</th>
     <th ng-class="{'selected': section === 2}" ng-click="section = 2">Last Week</th>
     <th ng-class="{'selected': section === 3}" ng-click="section = 3">Monthly</th>
   </tr>
 </table>
 
-<div ng-if="section==0" ng-include src="'partials/MVP/dailySales.html'" class="full"></div>
+<div ng-include src="'partials/MVP/dailySales.html'" class="full"></div>
+<!-- <div ng-if="section==0" ng-include src="'partials/MVP/dailySales.html'" class="full"></div>
 <div ng-if="section==1" ng-include src="'partials/MVP/yesterdaySales.html'" class="full"></div>
 <div ng-if="section==2" ng-include src="'partials/MVP/weeklySales.html'" class="full"></div>
-<div ng-if="section==3" ng-include src="'partials/MVP/monthlySales.html'" class="full"></div>
+<div ng-if="section==3" ng-include src="'partials/MVP/monthlySales.html'" class="full"></div> -->
 
 <button class="smallRoundButton grayBKG" ng-click="onCallLavu()">Refresh Data</button>
