@@ -114,6 +114,11 @@ textarea {
     border-width: 0px;
 }
 
+.centeredPaddedCell {
+	padding: 5px;
+	margin: 5px auto;
+}
+
 .dividerTable td, .dividerTable th{
 	width: 33%;
 	text-align: center; 

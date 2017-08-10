@@ -27,7 +27,7 @@
   </tr>
 </table>
 
-<select ng-model="$storage.INCENTIVE" ng-options="x for x in $storage.items | orderBy:'toString()'">
+<select class="smallRoundButton" ng-model="$storage.INCENTIVE" ng-options="x for x in $storage.items | orderBy:'toString()'">
 </select>
 
 <button class="smallRoundButton grayBKG" ng-click="onCallLavu()">Refresh Data</button>
