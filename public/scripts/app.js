@@ -29,7 +29,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		else if(date === 'YESTERDAY') $scope.$storage.salesDate = moment().subtract(1, 'day').format('YYYYMMDD');
 		else if(date === 'LASTWEEK') $scope.$storage.salesDate = moment().subtract(7, 'day').startOf('week').format('YYYYMMDD');
 		else if(date === 'MONTHLY') $scope.$storage.salesDate = moment().startOf('month').format('YYYYMMDD');
-		$scope.onCallLavu();
+		$scope.loadSalesData();
 	};
 
 	$scope.location = null;
@@ -59,6 +59,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.$storage.staffName = {};
 
 	$scope.init = function() {
+		$scope.$storage.salesDate = moment().format('YYYYMMDD');
+		$scope.loadSalesData();
 		if (!$scope.$storage.allLocations) {
 			$http.get('/locations').then(function(response) {
 				$scope.$storage.allLocations = response.data;
@@ -82,7 +84,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 				$scope.$storage.staffSales = {};
 				$scope.$storage.salesDate = moment().format('YYYYMMDD');
 
-				$scope.onCallLavu();
+				$scope.loadSalesData();
 				//$scope.onCallLavuToday();
 				//$scope.onCallLavuYesterday();
 				//$scope.onCallLavuLastWeek();
@@ -289,7 +291,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		return moment().add(offset, 'days').format('YYYYMMDD');
 	}
 
-	$scope.onCallLavu = function() {
+	$scope.loadSalesData = function() {
 		//if( !hasOneDayPassed ) return false;
 		$scope.$storage.incentiveId = 0;
 
