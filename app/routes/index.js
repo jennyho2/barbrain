@@ -299,7 +299,7 @@ router.post("/updateSales", function(req, res) {
 });
 
 
-router.get("/salessummary/:location_id/:date", function(req, res) {
+router.get("/locations/:location_id/salessummary/:date", function(req, res) {
 	var location = req.params.location_id,
 		date = moment(req.params.date, 'YYYYMMDD');
 
@@ -311,7 +311,20 @@ router.get("/salessummary/:location_id/:date", function(req, res) {
 	.then(service => service.getSalesSummary(minDate, maxDate))
 	.then(data => res.json({ success: true, data }))
 	.catch(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
-	
+});
+
+router.get("/locations/:location_id/staffsales/:date", (req, res) => {
+	var location = req.params.location_id,
+		date = moment(req.params.date, 'YYYYMMDD');
+
+	var minDate = moment(date).hour(3).minute(0).second(0).toDate();
+	var maxDate = moment(minDate).add(1, 'day').toDate();
+		
+	new LocationService().resolve(location)
+	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
+	.then(service => service.getStaffSalesSummary(minDate, maxDate))
+	.then(data => res.json({ success: true, data }))
+	.catch(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
 });
 
 /*

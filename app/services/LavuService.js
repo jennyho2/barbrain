@@ -80,6 +80,42 @@ module.exports = class LavuService {
 		});
 	}
 	
+
+	getUsersFromApi(){
+		return this.post(this.buildApiData('users'))
+		.then(body => {
+			let items = $(body).find('row').toArray().map(item => {
+				let $row = $(item);
+				
+				return { 
+					id: parseInt($row.find('id').text()), 
+					firstName: $row.find('f_name').text(),
+					lastName: $row.find('l_name').text(),
+					email: $row.find('email').text(),
+					location_id: this.locationId
+				};
+			});
+			return items;
+		});
+	}
+	
+	loadUsers(){
+		return database.connect().then(db => {
+			return db.collection('lavu_users').find({ location_id: this.locationId }).toArray().then(rows => {
+				if(!rows || rows.length == 0){
+					console.log('No Lavu users found.  Loading from Lavu...');
+					return this.getUsersFromApi()
+					.then(users => {
+						return db.collection('lavu_users')
+							.insertMany(users)
+							.then(() => users);
+					});
+				}
+				return rows;
+			});
+		});
+	}
+	
 	getMenuCategoriesFromApi(){
 		return this.post(this.buildApiData('menu_categories'))
 		.then(body => {
@@ -189,10 +225,11 @@ module.exports = class LavuService {
 					//var location_id = parseInt($row.find('location_id').text());
 					var location_id = this.locationId;
 					var closed = moment($row.find('closed').text()).toDate();
+					var user_id = parseInt($row.find('server_id').text());
 					
 					let details = filter(allDetails, d => d.order_id == order_id);
 					
-					return { _id, orderId: order_id, location_id, closed, total: total, details: details };
+					return { _id, orderId: order_id, location_id, closed, total: total, details: details, user_id };
 					
 				});
 			});
@@ -237,11 +274,13 @@ module.exports = class LavuService {
 			
 			let summary = {
 				totalSales: 0,
+				totalOrders: 0,
 				categories: []
 			};
 			
 			orders.forEach(order => {
 				summary.totalSales += order.total;
+				summary.totalOrders++;
 				
 				order.details.forEach(detail => {
 					let menuItem = find(menuItems, item => item.id == detail.item_id);
@@ -268,167 +307,30 @@ module.exports = class LavuService {
 			});
 			
 			return summary;
-		})
-	}
-
-	callLavuDaily(responding, callback) {
-		var today = new Date();
-		today.setHours(3, 0, 0, 0);
-		var tomorrow = new Date();
-		tomorrow.setDate(today.getDate() + 1);
-		console.log("Between: " + today + "and : " + tomorrow);
-		request.post(this.api_url, {
-			form: { dataname: this.datanameString, key: this.keyString, token: this.tokenString, table: "orders", valid_xml: 1, limit: 10000, column: "closed", value_min: today.toISOString().substring(0, 19).replace('T', ' '), value_max: tomorrow.toISOString().substring(0, 19).replace('T', ' ') }
-		}, function(error, response, body) {
-			var total = 0;
-			responding.incentiveSales = {};
-			responding.totalIncentiveSales = 0.0;
-			responding.totalIncentiveOrders = 0;
-			responding.todayTotalSales = 0.0;
-			responding.todayTotalOrders = 0;
-			//request.post(this.api_url, {form:{dataname:this.datanameString,key:this.keyString,token:this.tokenString,table:"orders",valid_xml:1,limit:10000,column:"closed",value_min: today.toISOString().substring(0, 19).replace('T', ' '),value_max: tomorrow.toISOString().substring(0, 19).replace('T', ' ') }
-			// /console.log("Body: " + body);
-			// response.data.querySelectorAll('row');
-
-			responding.todayAverageTicket = responding.todayTotalSales / responding.todayTotalOrders;
-			console.log(total);
-			callback(responding);
 		});
 	}
-	
 
-	callLavuYesterday(responding, callback) {
-		var yesterday = new Date();
-		yesterday.setHours(3, 0, 0, 0);
-		yesterday.setDate(yesterday.getDate() - 1);
-		var today = new Date();
-		today.setHours(3, 0, 0, 0);
-		
-		
-		request.post(this.api_url, {
-			form: { dataname: this.datanameString, key: this.keyString, token: this.tokenString, table: "orders", valid_xml: 1, limit: 10000, column: "closed", value_min: yesterday.toISOString().substring(0, 19).replace('T', ' '), value_max: today.toISOString().substring(0, 19).replace('T', ' ') }
-		}, function(error, response, body) {
-			
-			
-			var total = 0;
-			// responding.incentiveSales = {};
-			// responding.totalIncentiveSales = 0.0;
-			// responding.totalIncentiveOrders = 0;
-			responding.yesterdayTotalSales = 0.0;
-			responding.yesterdayTotalOrders = 0;
-			responding.yesterday = {};
-			responding.yesterday.categories = {};
-			var orders = $(body).find('row');
-			var finished_contents = 1;
-			var started_content = 0;
-			$(body).find('row').each(function() {
-				//  console.log($(this).find('id').text());
-				var $row = $(this);
-				var id = $row.find('id').text();
-				total += parseFloat($row.find('total').text());
-				var order_id = $row.find('order_id').text();
+	getStaffSalesSummary(minDate, maxDate){
+		return this.loadUsers()
+		.then(users => this.loadOrders(minDate, maxDate).then(orders => ({users, orders})))
+		.then(({users, orders}) => this.loadMenuItems().then(menuItems => ({ users, orders, menuItems })))
+		.then(({users, orders, menuItems}) => this.loadMenuCategories().then(categories => ({ users, orders, menuItems, categories })))
+		.then(({ users, orders, menuItems, categories }) => {
+			let staff = [];
+			orders.forEach(order => {
+				let user = find(users, u => u.id == order.user_id);
+				if(!user) return console.log('User not found:', order.user_id);
 				
-				
-				request.post(this.api_url, {
-					form: { dataname: this.datanameString, key: this.keyString, token: this.tokenString, table: "order_contents", valid_xml: 1, limit: 10000, column: "order_id", value: order_id }
-				}, function(error2, response2, body2) {
-					$(body2).find('row').each(function() {
-						var $row2 = $(this);
-						var item_id = $row2.find('item_id').text();
-						var category_id = items[item_id];
-						var group_id = categories[category_id];
-						var group_name = groups[group_id];
-						if (responding.yesterday.categories.hasOwnProperty(group_name)) {
-							responding.yesterday.categories[group_name].sales += parseFloat($row2.find('total_with_tax').text());
-							responding.yesterday.categories[group_name].orders += parseFloat($row2.find('quantity').text());
-							//console.log($sender.categories);
-						}
-						else {
-							responding.yesterday.categories[group_name] = {};
-							responding.yesterday.categories[group_name].name = group_name;
-							responding.yesterday.categories[group_name].sales = parseFloat($row2.find('total_with_tax').text());
-							responding.yesterday.categories[group_name].orders = parseFloat($row2.find('quantity').text());
-							//console.log(responding.categories);
-						}
-					});
-					console.log("starting: " + started_content + " Order length: " + orders.length + " finished content: " + finished_contents);
-					if (started_content == orders.length && finished_contents == orders.length) {
-						responding.yesterdayAverageTicket = responding.yesterdayTotalSales / responding.yesterdayTotalOrders;
-						callback(responding);
-					}
-					finished_contents++;
-				});
-				started_content++;
+				let s = find(staff, s => s.id == user.id);
+				if(!s) { 
+					s = { id: user.id, firstName: user.firstName, lastName: user.lastName, totalSales: 0, totalOrders: 0 }; 
+					staff.push(s); 
+				}
+				s.totalSales += order.total;
+				s.totalOrders++;
 			});
-
-			//callback(responding);
+			return staff;
 		});
-	}
 
-	callLavuWeekly(responding, callback) {
-		var d = new Date();
-		var day = d.getDay(),
-			diff = d.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
-		var lastMonday = new Date(d.setDate(diff));
-		lastMonday.setHours(3, 0, 0, 0);
-		var ending = new Date();
-		ending.setDate(lastMonday.getDate());
-		ending.setHours(2, 59, 59, 999);
-		lastMonday.setDate(lastMonday.getDate() - 7);
-		request.post(this.api_url, {
-			form: { dataname: this.datanameString, key: this.keyString, token: this.tokenString, table: tableString, valid_xml: 1, limit: 10000, column: "closed", value_min: lastMonday.toISOString().substring(0, 19).replace('T', ' '), value_max: ending.toISOString().substring(0, 19).replace('T', ' ') }
-		}, function(error, response, body) {
-			var total = 0;
-			responding.incentiveSales = {};
-			responding.totalIncentiveSales = 0.0;
-			responding.totalIncentiveOrders = 0;
-			responding.weeklyTotalSales = 0.0;
-			responding.weeklyTotalOrders = 0;
-			responding.categories = {};
-			console.log("Body: " + body.data);
-			// response.data.querySelectorAll('row');
-			$(body.data).find('row').each(function() {
-				//  console.log($(this).find('id').text());
-				var $row = $(this);
-				var id = $row.find('id').text();
-				total += parseFloat($row.find('total').text());
-				console.log("Here: " + $row.find('total').text());
-			});
-			responding.weeklyAverageTicket = responding.weeklyTotalSales / responding.weeklyTotalOrders;
-			console.log(total);
-			callback(responding);
-		});
-	}
-
-	callLavuMonthly(responding, callback) {
-		var date = new Date();
-		var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-		firstDay.setHours(3, 0, 0, 0);
-		var tomorrow = new Date();
-		tomorrow.setDate(date.getDate() + 1);
-		console.log(firstDay);
-		request.post(this.api_url, {
-			form: { dataname: this.datanameString, key: this.keyString, token: this.tokenString, table: tableString, valid_xml: 1, limit: 10000, column: "closed", value_min: firstDay.toISOString().substring(0, 19).replace('T', ' '), value_max: tomorrow.toISOString().substring(0, 19).replace('T', ' ') }
-		}, function(error, response, body) {
-			var total = 0;
-			responding.incentiveSales = {};
-			responding.totalIncentiveSales = 0.0;
-			responding.totalIncentiveOrders = 0;
-			responding.monthlyTotalSales = 0.0;
-			responding.monthlyTotalOrders = 0;
-			responding.categories = {};
-			console.log("Body: " + body.data);
-			// response.data.querySelectorAll('row');
-			$(body.data).find('row').each(function() {
-				//  console.log($(this).find('id').text());
-				var $row = $(this);
-				var id = $row.find('id').text();
-				total += parseFloat($row.find('total').text());
-				console.log("Here: " + $row.find('total').text());
-			});
-			responding.monthlyAverageTicket = responding.monthlyTotalSales / responding.monthlyTotalOrders;
-			console.log(total);
-			callback(responding);
-		});
 	}
 };
