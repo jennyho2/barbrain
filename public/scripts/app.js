@@ -60,7 +60,10 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
 	$scope.init = function() {
 		$scope.$storage.salesDate = moment().format('YYYYMMDD');
-		$scope.loadSalesData();
+		if($scope.$storage.location){
+			// Preload data if we've got a saved location
+			$scope.loadSalesData();
+		}
 		if (!$scope.$storage.allLocations) {
 			$http.get('/locations').then(function(response) {
 				$scope.$storage.allLocations = response.data;
