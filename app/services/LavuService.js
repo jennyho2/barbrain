@@ -237,25 +237,33 @@ module.exports = class LavuService {
 		});
 	}
 	
-	loadOrders(minDate, maxDate){
+	loadOrders(minDate, maxDate, refresh){
+		
 		return database.connect().then(db => {
+
+			const reload = () => {
+				return this.getOrdersFromApi(minDate, maxDate)
+				.then(orders => {
+					if(orders.length > 0){
+						let bulk = db.collection('lavu_orders').initializeUnorderedBulkOp();
+						orders.forEach(order => {
+							bulk.find({ _id: order._id }).upsert().updateOne(order);
+						});
+						return bulk.execute()
+							.then(() => orders);
+					}
+					return orders;
+				});
+			};
+			
+			if(refresh) return reload();
+
 			let query = { location_id: this.locationId, closed: { $gte: minDate, $lte: maxDate } };
 			console.log('Finding orders...', query);
 			return db.collection('lavu_orders').find(query).toArray().then(rows => {
 				if(!rows || rows.length == 0){
 					console.log(`No Lavu orders found.  Loading from Lavu... ${minDate} - ${maxDate}`);
-					return this.getOrdersFromApi(minDate, maxDate)
-					.then(orders => {
-						if(orders.length > 0){
-							let bulk = db.collection('lavu_orders').initializeUnorderedBulkOp();
-							orders.forEach(order => {
-								bulk.find({ _id: order._id }).upsert().updateOne(order);
-							});
-							return bulk.execute()
-								.then(() => orders);
-						}
-						return orders;
-					});
+					return reload();
 				}
 				return rows;
 			});
@@ -264,10 +272,10 @@ module.exports = class LavuService {
 	}
 	
 	
-	getSalesSummary(minDate, maxDate){
-		return this.loadOrders(minDate, maxDate)
-		.then(orders => this.loadMenuItems().then(menuItems => { return { orders, menuItems }; }))
-		.then(({orders, menuItems}) => this.loadMenuCategories().then(categories => { return { orders, menuItems, categories }; }))
+	getSalesSummary(minDate, maxDate, refresh){
+		return this.loadOrders(minDate, maxDate, refresh)
+		.then(orders => this.loadMenuItems(refresh).then(menuItems => { return { orders, menuItems }; }))
+		.then(({orders, menuItems}) => this.loadMenuCategories(refresh).then(categories => { return { orders, menuItems, categories }; }))
 		.then(({orders, menuItems, categories}) => {
 			
 			console.log(orders.length, menuItems.length, categories.length);
