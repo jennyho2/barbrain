@@ -80,6 +80,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 				$scope.$storage.lavuStaff = {};
 				$scope.$storage.sales = {};
 				$scope.$storage.staffSales = {};
+				$scope.$storage.salesDate = moment().format('YYYYMMDD');
 
 				$scope.onCallLavu();
 				//$scope.onCallLavuToday();
