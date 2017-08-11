@@ -299,12 +299,13 @@ router.post("/updateSales", function(req, res) {
 });
 
 
-router.get("/locations/:location_id/salessummary/:date", function(req, res) {
+router.get("/locations/:location_id/salessummary/:from_date/:to_date?", (req, res) => {
 	var location = req.params.location_id,
-		date = moment(req.params.date, 'YYYYMMDD');
+		fromDate = moment(req.params.from_date, 'YYYYMMDD'),
+		toDate = req.params.to_date ? moment(req.params.to_date, 'YYYYMMDD') : null;
 
-	var minDate = moment(date).hour(3).minute(0).second(0).toDate();
-	var maxDate = moment(minDate).add(1, 'day').toDate();
+	var minDate = moment(fromDate).hour(3).minute(0).second(0).toDate();
+	var maxDate = toDate ? moment(toDate).hour(3).minute(0).second(0).toDate() : moment(minDate).add(1, 'day').toDate();
 		
 	new LocationService().resolve(location)
 	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
@@ -313,12 +314,13 @@ router.get("/locations/:location_id/salessummary/:date", function(req, res) {
 	.catch(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
 });
 
-router.get("/locations/:location_id/staffsales/:date", (req, res) => {
+router.get("/locations/:location_id/staffsales/:from_date/:to_date?", (req, res) => {
 	var location = req.params.location_id,
-		date = moment(req.params.date, 'YYYYMMDD');
+		fromDate = moment(req.params.from_date, 'YYYYMMDD'),
+		toDate = req.params.to_date ? moment(req.params.to_date, 'YYYYMMDD') : null;
 
-	var minDate = moment(date).hour(3).minute(0).second(0).toDate();
-	var maxDate = moment(minDate).add(1, 'day').toDate();
+	var minDate = moment(fromDate).hour(3).minute(0).second(0).toDate();
+	var maxDate = toDate ? moment(toDate).hour(3).minute(0).second(0).toDate() : moment(minDate).add(1, 'day').toDate();
 		
 	new LocationService().resolve(location)
 	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))

@@ -12,6 +12,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.data = {};
 
 	$scope.$storage.salesDate = moment().toDate();
+	$scope.$storage.salesDateMax = null;
 
 
 	$scope.$storage.INCENTIVE = INCENTIVE;
@@ -25,10 +26,22 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.loading = false;
 
 	$scope.setSalesDate = function(date) {
-		if(date === 'TODAY') $scope.$storage.salesDate = moment().format('YYYYMMDD');
-		else if(date === 'YESTERDAY') $scope.$storage.salesDate = moment().subtract(1, 'day').format('YYYYMMDD');
-		else if(date === 'LASTWEEK') $scope.$storage.salesDate = moment().subtract(7, 'day').startOf('week').format('YYYYMMDD');
-		else if(date === 'MONTHLY') $scope.$storage.salesDate = moment().startOf('month').format('YYYYMMDD');
+		if(date === 'TODAY') {
+			$scope.$storage.salesDate = moment().format('YYYYMMDD');
+			$scope.$storage.salesDateMax = null;
+		}
+		else if(date === 'YESTERDAY') {
+			$scope.$storage.salesDate = moment().subtract(1, 'day').format('YYYYMMDD');
+			$scope.$storage.salesDateMax = null;
+		}
+		else if(date === 'LASTWEEK') {
+			$scope.$storage.salesDate = moment().subtract(7, 'day').startOf('week').format('YYYYMMDD');
+			$scope.$storage.salesDateMax = moment().subtract(7, 'day').endOf('week').format('YYYYMMDD');
+		}
+		else if(date === 'MONTHLY') {
+			$scope.$storage.salesDate = moment().startOf('month').format('YYYYMMDD');
+			$scope.$storage.salesDateMax = moment().endOf('month').format('YYYYMMDD');
+		}
 		$scope.loadSalesData();
 	};
 
@@ -303,7 +316,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		var date = $scope.$storage.salesDate;
 		$scope.loading = true;
 
-		$http.get("/locations/" + $scope.$storage.location + "/salessummary/" + date) //.format('YYYYMMDD'))
+		$http.get("/locations/" + $scope.$storage.location + "/salessummary/" + date + ($scope.$storage.salesDateMax ? '/' + $scope.$storage.salesDateMax : ''))
 			.then(function(response) {
 				if (!$scope.$storage.sales) $scope.$storage.sales = {};
 				// $scope.$storage.sales[date.format('YYYYMMDD')] = response.data.data;
@@ -312,7 +325,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
 				console.log($scope.$storage.sales);
 
-				$http.get('/locations/' + $scope.$storage.location + '/staffsales/' + date)
+				$http.get('/locations/' + $scope.$storage.location + '/staffsales/' + date + ($scope.$storage.salesDateMax ? '/' + $scope.$storage.salesDateMax : ''))
 					.then(function(response) {
 						if (!$scope.$storage.staffSales) $scope.$storage.staffSales = {};
 						$scope.$storage.staffSales[date] = response.data.data;
