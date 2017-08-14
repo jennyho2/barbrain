@@ -318,7 +318,8 @@ module.exports = class LavuService {
 		return this.loadOrders(minDate, maxDate, refresh)
 		.then(orders => this.loadMenuItems(refresh).then(menuItems => { return { orders, menuItems }; }))
 		.then(({orders, menuItems}) => this.loadMenuCategories(refresh).then(categories => { return { orders, menuItems, categories }; }))
-		.then(({orders, menuItems, categories}) => {
+		.then(({orders, menuItems, categories}) => this.loadUsers().then(users => { return { orders, menuItems, categories, users }; }))
+		.then(({orders, menuItems, categories, users}) => {
 			
 			console.log(orders.length, menuItems.length, categories.length);
 			
@@ -326,12 +327,15 @@ module.exports = class LavuService {
 				totalSales: 0,
 				totalOrders: 0,
 				categories: [],
-				groups: []
+				groups: [],
+				staffGroups: []
 			};
 			
 			orders.forEach(order => {
 				summary.totalSales += order.total;
 				summary.totalOrders++;
+				let user = find(users, u => u.id == order.user_id);
+				if(!user) return console.log('User not found:', order.user_id);
 				
 				order.details.forEach(detail => {
 					let menuItem = find(menuItems, item => item.id == detail.item_id);
@@ -360,6 +364,23 @@ module.exports = class LavuService {
 								summary.groups[category.group_id] = {};
 								summary.groups[category.group_id].count = detail.quantity;
 								summary.groups[category.group_id].sales = detail.total;
+							}
+							if (summary.staffGroups[category.group_id])  {
+								if (summary.staffGroups[category.group_id][user.id] )  {
+									summary.staffGroups[category.group_id][user.id].count += detail.quantity;
+									summary.staffGroups[category.group_id][user.id].sales += detail.total;
+								} else {
+									summary.staffGroups[category.group_id][user.id] = {};
+									summary.staffGroups[category.group_id][user.id].name = user.firstName;
+									summary.staffGroups[category.group_id][user.id].count = detail.quantity;
+									summary.staffGroups[category.group_id][user.id].sales = detail.total;
+								}
+							} else {
+								summary.staffGroups[category.group_id] = {};
+								summary.staffGroups[category.group_id][user.id] = {};
+								summary.staffGroups[category.group_id][user.id].name = user.firstName;
+								summary.staffGroups[category.group_id][user.id].count = detail.quantity;
+								summary.staffGroups[category.group_id][user.id].sales = detail.total;
 							}
 						}
 					}
