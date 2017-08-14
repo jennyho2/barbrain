@@ -56,7 +56,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			$scope.$storage.salesDateMax = moment().endOf('month').format('YYYYMMDD');
 		}
 		$scope.loadSalesData();
-    $scope.loadIncentiveData();
+    
 	};
 
 	$scope.location = null;
@@ -89,6 +89,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		$scope.$storage.salesDate = moment().format('YYYYMMDD');
 		if($scope.$storage.location){
 			// Preload data if we've got a saved location
+      $scope.loadIncentiveData();
 			$scope.loadSalesData();
 		}
 		if (!$scope.$storage.allLocations) {
@@ -118,6 +119,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 				$scope.$storage.staffSales = {};
 				$scope.$storage.salesDate = moment().format('YYYYMMDD');
 
+        $scope.loadIncentiveData();
 				$scope.loadSalesData();
 				//$scope.onCallLavuToday();
 				//$scope.onCallLavuYesterday();
@@ -349,7 +351,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
 		var date = $scope.$storage.salesDate;
 		$scope.loading = true;
-		$http.get("/locations/" + $scope.$storage.location + "/salessummary/" + date + ($scope.$storage.salesDateMax ? '/' + $scope.$storage.salesDateMax : '') +  (refresh ? '?refresh=true' : ''))
+		$http.get("/locations/" + $scope.$storage.location + "/salessummary/" + date + ($scope.$storage.salesDateMax ? '/' + $scope.$storage.salesDateMax : '') + (refresh ? '?refresh=true' : ''))
 			.then(function(response) {
 				if (!$scope.$storage.sales) $scope.$storage.sales = {};
 				// $scope.$storage.sales[date.format('YYYYMMDD')] = response.data.data;
@@ -623,8 +625,6 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   }
 
   $scope.updateIncentive = function()  {
-    console.log("INcentive");
-    console.log($scope.$storage.incentive);
     $http.post('/locations/' + $scope.$storage.location + '/incentives/weekly', {
       "incentive": $scope.$storage.incentive,
       "goal": $scope.$storage.weeklyIncentiveGoal

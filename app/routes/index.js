@@ -302,8 +302,7 @@ router.get("/locations/:location_id/salessummary/:from_date/:to_date?", (req, re
 	var location = req.params.location_id,
 		fromDate = moment(req.params.from_date, 'YYYYMMDD'),
 		toDate = req.params.to_date ? moment(req.params.to_date, 'YYYYMMDD') : null,
-		refresh = req.query.refresh == 'true';//,
-		//group_id = req.params.group_id;
+		refresh = req.query.refresh == 'true';
 
 
 	var minDate = moment(fromDate).hour(3).minute(0).second(0).toDate();
@@ -363,6 +362,15 @@ router.post('/locations/:location_id/incentives/weekly', (req, res) => {
 	new LocationService().resolve(location)
 	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
 	.then(service => service.setWeeklyIncentive( req.body.incentive, req.body.goal ))
+	.then(data => res.json({ success:true, data }))
+	.then(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
+});
+
+router.get('/locations/:location_id/incentives/weekly', (req, res) => {
+	var location = req.params.location_id;
+	new LocationService().resolve(location)
+	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
+	.then(service => service.getWeeklyIncentive())
 	.then(data => res.json({ success:true, data }))
 	.then(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
 });

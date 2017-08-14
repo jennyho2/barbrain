@@ -284,8 +284,7 @@ module.exports = class LavuService {
 				totalSales: 0,
 				totalOrders: 0,
 				categories: [],
-				incentiveSales : 0,
-				incentiveOrders: 0
+				groups: []
 			};
 			
 			orders.forEach(order => {
@@ -308,16 +307,18 @@ module.exports = class LavuService {
 								category = { id: menuCategory.id, name: menuCategory.name, count: 0, sales: 0, group_id: menuCategory.group_id };
 								summary.categories.push(category);
 							}
-							console.log("Category ");
-							console.log(category);
 
 							category.count += detail.quantity;
 							category.sales += detail.total;
 
-							// if (category.group_id == group_id)  {
-							// 	summary.incentiveSales += detail.total;
-							// 	summary.incentiveOrders += detail.quantity;
-							// }
+							if (summary.groups[category.group_id])  {
+								summary.groups[category.group_id].count += detail.quantity;
+								summary.groups[category.group_id].sales += detail.total;
+							} else {
+								summary.groups[category.group_id] = {};
+								summary.groups[category.group_id].count = detail.quantity;
+								summary.groups[category.group_id].sales = detail.total;
+							}
 						}
 					}
 				});
@@ -371,7 +372,7 @@ module.exports = class LavuService {
 
     setWeeklyIncentive(incentive, goal)  {
     	return database.connect().then(db => {
-    		return db.collection('incentives').insert({ location_id: this.locationId, type: 'weekly', name: incentive.name, goal: goal, created_at: new Date() });
+    		return db.collection('incentives').insert({ location_id: this.locationId, type: 'weekly', id: incentive.id, name: incentive.name, goal: goal, created_at: new Date() });
     	});
     }
 };
