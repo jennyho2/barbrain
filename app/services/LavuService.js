@@ -272,7 +272,7 @@ module.exports = class LavuService {
 	}
 	
 	
-	getSalesSummary(minDate, maxDate, refresh, group_id){
+	getSalesSummary(minDate, maxDate, refresh){
 		return this.loadOrders(minDate, maxDate, refresh)
 		.then(orders => this.loadMenuItems(refresh).then(menuItems => { return { orders, menuItems }; }))
 		.then(({orders, menuItems}) => this.loadMenuCategories(refresh).then(categories => { return { orders, menuItems, categories }; }))
@@ -314,10 +314,10 @@ module.exports = class LavuService {
 							category.count += detail.quantity;
 							category.sales += detail.total;
 
-							if (category.group_id == group_id)  {
-								summary.incentiveSales += detail.total;
-								summary.incentiveOrders += detail.quantity;
-							}
+							// if (category.group_id == group_id)  {
+							// 	summary.incentiveSales += detail.total;
+							// 	summary.incentiveOrders += detail.quantity;
+							// }
 						}
 					}
 				});
