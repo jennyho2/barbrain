@@ -43,6 +43,11 @@
 	text-align: left;
 }
 
+.search {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
 .chartHolder {
 	text-align: center;
 	margin: auto;

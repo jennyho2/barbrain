@@ -1,5 +1,6 @@
 /* global angular */
 /* global moment */
+/* glboal _ */
 
 var app = angular.module("goalsApp", ["ngRoute", "ngStorage", "filters.stringUtils", "filters.mathAbs", "angularModalService", "chart.js"]);
 
@@ -24,6 +25,17 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.$storage.yesterdayHardIncentiveProjection = 49;
 
 	$scope.loading = false;
+	$scope.filteredLocations = [];
+	$scope.locationSearchText = null;
+	
+	$scope.$watch('locationSearchText', (n,o) => {
+		console.log(n);
+		var query = (n||'').toLowerCase();
+		if(query)
+			$scope.filteredLocations = _.filter($scope.$storage.allLocations, function(l) { return l.name.toLowerCase().indexOf(query) >= 0; });
+		else
+			$scope.filteredLocations = $scope.$storage.allLocations;
+	});
 
 	$scope.setSalesDate = function(date) {
 		if(date === 'TODAY') {
@@ -80,6 +92,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		if (!$scope.$storage.allLocations) {
 			$http.get('/locations').then(function(response) {
 				$scope.$storage.allLocations = response.data;
+				$scope.filteredLocations = $scope.$storage.allLocations;
+				$scope.locationSearchText = null;
 			});
 		}
 	};
@@ -91,6 +105,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	};
 
 	$scope.updateLocation = function(id, goHome) {
+		$scope.locationSearchText = null;
+		
 		$http.get("/resolveLocation/" + id)
 			.then(function(response) {
 				$scope.$storage.location = id;
