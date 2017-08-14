@@ -9,13 +9,30 @@ $( "Goal" ).click(function() {
 });
 </script>
 
-<div ng-if="gateLocation() === false">
+<div>
   <div class="noHeight" ng-include src="'partials/navbar.html'"></div>
 
   <header class="progressHeader">
     <h5 class="location-name">{{ $storage.locationData.name }}</h5>
     <h3 class="screen-heading">Current Incentive</h3>
   </header>
+
+  <!--set different graphs to display-->
+  <div class="chartHolder smallDoughnut">
+    <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
+    <canvas id="doughnut" class="chart chart-doughnut"
+      chart-data="[$storage.lavuStaff.today.totalIncentiveOrders, $storage.dailyHardIncentiveGoal - $storage.lavuStaff.today.totalIncentiveOrders]" chart-labels="labels" chart-options="options">
+    </canvas> 
+  </div>
+
+  <div class="center">
+  <span>{{$storage.lavuStaff.today.totalIncentiveOrders / $storage.dailyHardIncentiveGoal * 100| number:2 }}%</span>
+  <br>
+  <span class="smallFont">of {{$storage.incentive.name}} goal achieved</span>
+  <br>
+  <a data-toggle="modal" data-target="#myModal"><span class="smallFont" style="color:deepskyblue">Adjust goal</span></a>
+  </div>
+  <br>
 
   <table class="dividerTable" ng-init="section = 0">
     <tr class="smallFont bottomLine">
@@ -25,9 +42,48 @@ $( "Goal" ).click(function() {
     </tr>
   </table>
 
-  <div ng-if="section==0" ng-include src="'partials/MVP/incentiveDaily.html'" class="full"></div>
-  <div ng-if="section==1" ng-include src="'partials/MVP/incentiveYesterday.html'" class="full"></div>
-  <div ng-if="section==2" ng-include src="'partials/MVP/incentiveWeekly.html'" class="full"></div>
+  <div>
+    <table class="dividerTable grayBKG centeredPaddedCell">
+    <tr class="center">
+      <th class="smallFont">Units Sold</th>
+      <th class="smallFont">Sales</th>
+    </tr>
+    <tr class="center">
+      <td class="mediumFont" ng-init="callGetGoals()">{{ $storage.dailyHardIncentiveGoal}}</td>
+      <td class="mediumFont">${{ $storage.lavuStaff.today.totalIncentiveSales }}</td>
+    </tr>
+  </table>
 
+  </div>
+
+  <!-- <div ng-if="section==0" ng-include src="'partials/MVP/incentiveDaily.html'" class="full"></div>
+  <div ng-if="section==1" ng-include src="'partials/MVP/incentiveYesterday.html'" class="full"></div>
+  <div ng-if="section==2" ng-include src="'partials/MVP/incentiveWeekly.html'" class="full"></div> -->
+
+</div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Adjust This Week's Goal</h4>
+      </div>
+      <div class="modal-body">
+        <!-- <input type="range" min="{{$storage.dailyHardIncentiveGoal-300}}" max="{{$storage.dailyHardIncentiveGoal+300}}" id="weeklyGoalRange" ng-model="$storage.dailyHardIncentiveGoal" /> -->
+        <input type="number" id="weeklyGoalInput" ng-model="$storage.dailyHardIncentiveGoal" />
+        <select class="smallRoundButton" ng-model="$storage.incentive" ng-options="x.name for x in $storage.menugroups | orderBy:'toString()'" ng-change="updateIncentive()">
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="callUpdateGoals(0)">Update</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
 </div>
     <!-- END EDIT CONTENT -->

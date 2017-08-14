@@ -168,7 +168,7 @@ module.exports = class LavuService {
 			return db.collection('lavu_menu_groups').find({ location_id: this.locationId }).toArray().then(rows => {
 				if(!rows || rows.length == 0){
 					console.log('No Lavu menu groups found.  Loading from Lavu...');
-					return this.getMenuCategoriesFromApi()
+					return this.getMenuGroupsFromApi() // this.getMenuCategoriesFromApi()
 					.then(groups => {
 						return db.collection('lavu_menu_groups')
 							.insertMany(groups)
@@ -272,7 +272,7 @@ module.exports = class LavuService {
 	}
 	
 	
-	getSalesSummary(minDate, maxDate, refresh){
+	getSalesSummary(minDate, maxDate, refresh, group_id){
 		return this.loadOrders(minDate, maxDate, refresh)
 		.then(orders => this.loadMenuItems(refresh).then(menuItems => { return { orders, menuItems }; }))
 		.then(({orders, menuItems}) => this.loadMenuCategories(refresh).then(categories => { return { orders, menuItems, categories }; }))
@@ -283,7 +283,9 @@ module.exports = class LavuService {
 			let summary = {
 				totalSales: 0,
 				totalOrders: 0,
-				categories: []
+				categories: [],
+				incentiveSales : 0,
+				incentiveOrders: 0
 			};
 			
 			orders.forEach(order => {
@@ -303,12 +305,19 @@ module.exports = class LavuService {
 						else {
 							let category = find(summary.categories, cat => cat.id == menuCategory.id);
 							if(!category){
-								category = { id: menuCategory.id, name: menuCategory.name, count: 0, sales: 0 };
+								category = { id: menuCategory.id, name: menuCategory.name, count: 0, sales: 0, group_id: menuCategory.group_id };
 								summary.categories.push(category);
 							}
+							console.log("Category ");
+							console.log(category);
 
 							category.count += detail.quantity;
 							category.sales += detail.total;
+
+							if (category.group_id == group_id)  {
+								summary.incentiveSales += detail.total;
+								summary.incentiveOrders += detail.quantity;
+							}
 						}
 					}
 				});
@@ -341,4 +350,28 @@ module.exports = class LavuService {
 		});
 
 	}
+
+	getWeeklyGoal(){
+        return database.connect().then(db => {
+        	return db.collection('goals').find({ location_id: this.locationId, type: 'weekly' }).sort({ created_at: -1 }).limit(1).toArray().then(result => result);
+        });
+    }
+    
+    setWeeklyGoal(amount){
+        return database.connect().then(db => {
+            return db.collection('goals').insert({ location_id: this.locationId, type: 'weekly', value: amount, created_at: new Date() });
+        });
+    }
+
+    getWeeklyIncentive()  {
+    	return database.connect().then(db => {
+        	return db.collection('incentives').find({ location_id: this.locationId, type: 'weekly' }).sort({ created_at: -1 }).limit(1).toArray().then(result => result);
+        });
+    }
+
+    setWeeklyIncentive(incentive, goal)  {
+    	return database.connect().then(db => {
+    		return db.collection('incentives').insert({ location_id: this.locationId, type: 'weekly', name: incentive.name, goal: goal, created_at: new Date() });
+    	});
+    }
 };

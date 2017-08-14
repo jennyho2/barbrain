@@ -33,7 +33,7 @@
         <td>{{category.name}}</td>
         <td>${{category.sales}}</td>
         <td>{{category.count}}</td>
-        <td>{{ (category.sales / $storage.sales[getSalesDate()].totalSales) * 100 | number:2}}%</td>
+        <td>{{ (category.sales / $storage.sales[$storage.salesDate].totalSales) * 100 | number:2}}%</td>
       </tr>
   
     </tbody>

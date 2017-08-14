@@ -7,9 +7,9 @@
 </div>
 
 <div class="center">
-<span>{{$storage.lavuStaff.lastWeek.totalIncentiveOrders / $storage.dailyHardIncentiveGoal * 100| number:2 }}%</span>
+<span>{{$storage.lavuStaff.lastWeek.totalIncentiveOrders / $storage.weeklyIncentiveGoal * 100| number:2 }}%</span>
 <br>
-<span class="smallFont">of {{$storage.INCENTIVE}} goal achieved</span>
+<span class="smallFont">of {{$storage.incentive.name}} goal achieved</span>
 <br>
 </div>
 <br>
@@ -21,14 +21,13 @@
     <th class="smallFont">Projected End</th>
   </tr>
   <tr class="center">
-    <td class="mediumFont" ng-init="callGetGoals()">{{$storage.dailyHardIncentiveGoal}}</td>
+    <td class="mediumFont" ng-init="callGetGoals()">{{$storage.weeklyIncentiveGoal}}</td>
     <td class="mediumFont">${{ $storage.lavuStaff.lastWeek.totalIncentiveSales }}</td>
     <td class="mediumFont">{{ $storage.dailyHardIncentiveProjection }}</td>
   </tr>
 </table>
 
-<select class="smallRoundButton" ng-model="$storage.INCENTIVE" ng-options="x for x in $storage.items | orderBy:'toString()'">
-</select>
+<select class="smallRoundButton" ng-model="$storage.incentive" ng-options="x.name for x in $storage.menugroups | orderBy:'toString()'" ng-change="updateIncentive()">
 
 <button class="smallRoundButton grayBKG" ng-click="loadSalesData()">Refresh Data</button>
 <div ng-include src="'partials/MVP/dailyStaffIncentive.html'"></div>

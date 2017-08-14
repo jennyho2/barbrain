@@ -15,7 +15,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.$storage.salesDateMax = null;
 
 
-	$scope.$storage.INCENTIVE = INCENTIVE;
+	// $scope.$storage.INCENTIVE = INCENTIVE;
+  $scope.$storage.weeklyIncentiveGoal = 20;
 	$scope.$storage.dailyHardGoal = 200000;
 	$scope.$storage.dailyHardIncentiveGoal = 45;
 	$scope.$storage.dailyHardIncentiveProjection = 45;
@@ -43,6 +44,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			$scope.$storage.salesDateMax = moment().endOf('month').format('YYYYMMDD');
 		}
 		$scope.loadSalesData();
+    $scope.loadIncentiveData();
 	};
 
 	$scope.location = null;
@@ -307,6 +309,24 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		return moment().add(offset, 'days').format('YYYYMMDD');
 	}
 
+  $scope.loadIncentiveData = function()  {
+    var date = $scope.$storage.salesDate;
+    $scope.loading = true;
+
+    $http.get('/locations/' + $scope.$storage.location + '/menugroups')
+    .then(function(response)  {
+      if (!$scope.$storage.menugroups) $scope.$storage.menugroups = {};
+      $scope.$storage.menugroups = response.data.data;
+      $http.get('/locations/' + $scope.$storage.location + '/incentives/weekly')
+      .then(function(response)  {
+        if (!$scope.$storage.incentive) $scope.$storage.incentive = {};
+        $scope.$storage.incentive = response.data.data.incentive;
+        console.log(response);
+        $scope.$storage.weeklyIncentiveGoal = response.data.data.goal;
+      });
+    });
+  }
+
 	$scope.loadSalesData = function() {
 		//if( !hasOneDayPassed ) return false;
 		$scope.$storage.incentiveId = 0;
@@ -316,7 +336,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		var date = $scope.$storage.salesDate;
 		$scope.loading = true;
 
-		$http.get("/locations/" + $scope.$storage.location + "/salessummary/" + date + ($scope.$storage.salesDateMax ? '/' + $scope.$storage.salesDateMax : ''))
+		$http.get("/locations/" + $scope.$storage.location + "/salessummary/" + date + ($scope.$storage.salesDateMax ? '/' + $scope.$storage.salesDateMax : '') + '/' + $scope.$storage.incentive.id)
 			.then(function(response) {
 				if (!$scope.$storage.sales) $scope.$storage.sales = {};
 				// $scope.$storage.sales[date.format('YYYYMMDD')] = response.data.data;
@@ -329,8 +349,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 					.then(function(response) {
 						if (!$scope.$storage.staffSales) $scope.$storage.staffSales = {};
 						$scope.$storage.staffSales[date] = response.data.data;
-
-						$scope.loading = false;
+            $scope.loading = false;  
 					});
 
 				/*
@@ -569,6 +588,42 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 				console.log("failure");
 			});
 	};
+
+  $scope.updateGoals = function() {
+    $http.post('/locations/' + $scope.$storage.location + '/goals/weekly', {
+      "value": 200
+    })
+    .then(function(response)  {
+      console.log("Succeess updating");
+    }, function(response)  {
+      console.log("Failing");
+    });
+  }
+
+  $scope.getWeekGoalsLavu = function()  {
+    $http.get('/locations/' + $scope.$storage.location + '/goals/weekly')
+    .then(function(response)  {
+      console.log(response);
+    }, function(response)  {
+      console.log(response);
+    });
+  }
+
+  $scope.updateIncentive = function()  {
+    console.log("INcentive");
+    console.log($scope.$storage.incentive);
+    $http.post('/locations/' + $scope.$storage.location + '/incentives/weekly', {
+      "incentive": $scope.$storage.incentive,
+      "goal": $scope.$storage.weeklyIncentiveGoal
+    })
+    .then(function(response)  {
+      console.log("Updating incentive");
+    }, function(response)  {
+      console.log("Failing in incentive on change");
+    });
+  }
+
+  $scope.getWeekGoalsLavu();
 
 	$scope.init();
 

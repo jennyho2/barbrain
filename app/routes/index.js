@@ -298,19 +298,20 @@ router.post("/updateSales", function(req, res) {
 		.catch(err => handleError(res, err));
 });
 
-
-router.get("/locations/:location_id/salessummary/:from_date/:to_date?", (req, res) => {
+router.get("/locations/:location_id/salessummary/:from_date/:to_date?/:group_id", (req, res) => {
 	var location = req.params.location_id,
 		fromDate = moment(req.params.from_date, 'YYYYMMDD'),
 		toDate = req.params.to_date ? moment(req.params.to_date, 'YYYYMMDD') : null,
-		refresh = req.query.refresh == 'true';
+		refresh = req.query.refresh == 'true',
+		group_id = req.params.group_id;
+		
 
 	var minDate = moment(fromDate).hour(3).minute(0).second(0).toDate();
 	var maxDate = toDate ? moment(toDate).hour(3).minute(0).second(0).toDate() : moment(minDate).add(1, 'day').toDate();
 		
 	new LocationService().resolve(location)
 	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
-	.then(service => service.getSalesSummary(minDate, maxDate, refresh))
+	.then(service => service.getSalesSummary(minDate, maxDate, refresh, group_id))
 	.then(data => res.json({ success: true, data }))
 	.catch(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
 });
@@ -328,6 +329,42 @@ router.get("/locations/:location_id/staffsales/:from_date/:to_date?", (req, res)
 	.then(service => service.getStaffSalesSummary(minDate, maxDate))
 	.then(data => res.json({ success: true, data }))
 	.catch(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
+});
+
+router.post('/locations/:location_id/goals/weekly', (req, res) => {
+	var location = req.params.location_id;
+	new LocationService().resolve(location)
+	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
+	.then(service => service.setWeeklyGoal(req.body.value))
+	.then(data => res.json({ success:true, data }))
+	.catch(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
+});
+
+router.get('/locations/:location_id/goals/weekly', (req, res) => {
+	var location = req.params.location_id;
+	new LocationService().resolve(location)
+	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
+	.then(service => service.getWeeklyGoal())
+	.then(data => res.json({ success:true, data }))
+	.then(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
+});
+
+router.get('/locations/:location_id/menugroups', (req, res) => {
+	var location = req.params.location_id;
+	new LocationService().resolve(location)
+	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
+	.then(service => service.loadMenuGroups())
+	.then(data => res.json({ success:true, data }))
+	.then(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
+});
+
+router.post('/locations/:location_id/incentives/weekly', (req, res) => {
+	var location = req.params.location_id;
+	new LocationService().resolve(location)
+	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
+	.then(service => service.setWeeklyIncentive( req.body.incentive, req.body.goal ))
+	.then(data => res.json({ success:true, data }))
+	.then(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
 });
 
 /*
@@ -632,3 +669,8 @@ router.get("/resolveLocation/:location_id", function(req, res) {
 });
 
 module.exports = router;
+
+
+
+
+
