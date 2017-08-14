@@ -59,23 +59,21 @@
                     </tr> 
                 </thead>
                 <tbody>
-                    <tr ng-repeat="staffInfo in $storage.lavuStaff.monthly.staff | orderObjectBy:orderByField:true " class="tableEmployeeStat">
-                     <!-- tr ng-repeat="staffInfo in fullStaff.staff | filter:staffLocation |orderBy:orderByField:reverseSort" class="tableEmployeeStat" ng-click="openStaff(staffInfo.firstName + ' ' + staffInfo.lastName, 3)"> -->
-
-                        <td class="v-a-m">
-                            <span class="smallFont"><b>{{staffInfo.name}}</b></span>              
+                    <tr ng-repeat="staffInfo in $storage.staffSales[$storage.salesDate]" class="tableEmployeeStat" >
+                         <td class="v-a-m">
+                            <span class="smallFont"><b>{{staffInfo.firstName}} {{staffInfo.lastName}}</b></span>              
                         </td>
                         <td class="v-a-m"> 
-                            <span class="smallFont">${{staffInfo.sales}}</span>
+                            <span class="smallFont">{{staffInfo.totalSales | currency}}</span>
                         </td>
                         <td class="v-a-m"> 
-                            <span class="smallFont">{{staffInfo.orders}}</span>
+                            <span class="smallFont">{{staffInfo.totalOrders}}</span>
                         </td>
                         <td class="v-a-m"> 
-                            <span class="smallFont">{{staffInfo.sales / staffInfo.orders | number:2}}</span>
+                            <span class="smallFont">${{staffInfo.totalSales / staffInfo.totalOrders | number:2}}</span>
                         </td>
                         <td class="v-a-m"> 
-                            <span class="smallFont">{{(((staffInfo.sales / staffInfo.orders) / $storage.lavuStaff.monthlyAverageTicket) * 100) - 100 | number:2}}%</span>
+                            <span class="smallFont">{{(((staffInfo.totalSales / staffInfo.totalOrders) / $storage.sales[$storage.salesDate].averageOrderPrice) * 100) - 100 | number:2}}%</span>
                         </td>
                     </tr>
                 </tbody>

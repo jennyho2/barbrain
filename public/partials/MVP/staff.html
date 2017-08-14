@@ -7,10 +7,10 @@
 
 <table class="dividerTable" ng-init="section = 1">
   <tr class="smallFont bottomLine">
-    <th ng-class="{'selected': section === 0}" ng-click="section = 0">Today</th>
-    <th ng-class="{'selected': section === 1}" ng-click="section = 1">Yesterday</th>
-    <th ng-class="{'selected': section === 2}" ng-click="section = 2">Last Week</th>
-    <th ng-class="{'selected': section === 3}" ng-click="section = 3">Monthly</th>
+    <th ng-class="{'selected': section === 0}" ng-click="setSalesDate('TODAY'); section = 0">Today</th>
+    <th ng-class="{'selected': section === 1}" ng-click="setSalesDate('YESTERDAY'); section = 1">Yesterday</th>
+    <th ng-class="{'selected': section === 2}" ng-click="setSalesDate('LASTWEEK'); section = 2">Last Week</th>
+    <th ng-class="{'selected': section === 3}" ng-click="setSalesDate('MONTHLY'); section = 3">Monthly</th>
   </tr>
 </table>
 
