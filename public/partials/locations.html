@@ -5,7 +5,10 @@
     <header>
       <h4>Choose a location</h4>
     </header>
-    <div ng-repeat="location in $storage.allLocations | orderBy:'name'" class="location"  ng-click="updateLocation(location.datanameString, true)">
+    <div class="search">
+      <input type="text" placeholder="search" class="form-control" ng-model="$parent.locationSearchText" />
+    </div>
+    <div ng-repeat="location in filteredLocations | orderBy:'name'" class="location"  ng-click="updateLocation(location.datanameString, true)">
       {{location.name}}
     </div>
   </div>
