@@ -307,16 +307,14 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		return moment().add(offset, 'days').format('YYYYMMDD');
 	}
 
-	$scope.loadSalesData = function() {
+	$scope.loadSalesData = function(refresh) {
 		//if( !hasOneDayPassed ) return false;
 		$scope.$storage.incentiveId = 0;
 
-		//var date = moment("20170809");
-		//var date = moment();
 		var date = $scope.$storage.salesDate;
 		$scope.loading = true;
 
-		$http.get("/locations/" + $scope.$storage.location + "/salessummary/" + date + ($scope.$storage.salesDateMax ? '/' + $scope.$storage.salesDateMax : ''))
+		$http.get("/locations/" + $scope.$storage.location + "/salessummary/" + date + ($scope.$storage.salesDateMax ? '/' + $scope.$storage.salesDateMax : '') + (refresh ? '?refresh=true' : ''))
 			.then(function(response) {
 				if (!$scope.$storage.sales) $scope.$storage.sales = {};
 				// $scope.$storage.sales[date.format('YYYYMMDD')] = response.data.data;
@@ -325,7 +323,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
 				console.log($scope.$storage.sales);
 
-				$http.get('/locations/' + $scope.$storage.location + '/staffsales/' + date + ($scope.$storage.salesDateMax ? '/' + $scope.$storage.salesDateMax : ''))
+				$http.get('/locations/' + $scope.$storage.location + '/staffsales/' + date + ($scope.$storage.salesDateMax ? '/' + $scope.$storage.salesDateMax : '') + (refresh ? '?refresh=true' : ''))
 					.then(function(response) {
 						if (!$scope.$storage.staffSales) $scope.$storage.staffSales = {};
 						$scope.$storage.staffSales[date] = response.data.data;
