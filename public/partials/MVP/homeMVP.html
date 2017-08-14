@@ -21,12 +21,13 @@ $( "Goal" ).click(function() {
   <div class="chartHolder smallDoughnut">
     <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
     <canvas id="doughnut" class="chart chart-doughnut"
-      chart-data="[$storage.lavuStaff.today.totalIncentiveOrders, $storage.dailyHardIncentiveGoal - $storage.lavuStaff.today.totalIncentiveOrders]" chart-labels="labels" chart-options="options">
+      chart-data="[$storage.weekToDate.groups[$storage.incentive.id].count, $storage.weeklyIncentiveGoal - $storage.weekToDate.groups[$storage.incentive.id].count]" chart-labels="labels" chart-options="options">
     </canvas> 
   </div>
+  
 
   <div class="center">
-  <span>{{$storage.lavuStaff.today.totalIncentiveOrders / $storage.dailyHardIncentiveGoal * 100| number:2 }}%</span>
+  <span>{{ $storage.weekToDate.groups[$storage.incentive.id].count / $storage.weeklyIncentiveGoal * 100 | number:2 }}%</span>
   <br>
   <span class="smallFont">of {{$storage.incentive.name}} goal achieved</span>
   <br>
@@ -77,12 +78,12 @@ $( "Goal" ).click(function() {
       </div>
       <div class="modal-body">
         <!-- <input type="range" min="{{$storage.dailyHardIncentiveGoal-300}}" max="{{$storage.dailyHardIncentiveGoal+300}}" id="weeklyGoalRange" ng-model="$storage.dailyHardIncentiveGoal" /> -->
-        <input type="number" id="weeklyGoalInput" ng-model="$storage.incen" />
-        <select class="smallRoundButton" ng-model="$storage.incentive" ng-options="x.name for x in $storage.menugroups | orderBy:'toString()'" ng-change="updateIncentive()">
+        <input type="number" id="weeklyGoalInput" ng-model="$storage.weeklyIncentiveGoal" />
+        <select class="smallRoundButton" ng-model="$storage.incentive" ng-options="x.name for x in $storage.menugroups | orderBy:'toString()'">
         </select>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" ng-click="callUpdateGoals(0)">Update</button>
+        <button type="button" class="btn btn-default" ng-click="updateIncentive()">Update</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>

@@ -375,6 +375,17 @@ router.get('/locations/:location_id/incentives/weekly', (req, res) => {
 	.then(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
 });
 
+router.get('/locations/:location_id/sales/weektodate/:from_date/:to_date', (req, res) => {
+	var location = req.params.location_id,
+		from_date = moment(req.params.from_date, 'YYYYMMDD'),
+		to_date = moment(req.params.to_date, 'YYYYMMDD');
+	new LocationService().resolve(location)
+	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
+	.then(service => service.getSalesSection(from_date, to_date))
+	.then(data => res.json({ success:true, data }))
+	.then(err => { console.log(err); res.status(500).json({ success:false, error: err }); });
+});
+
 /*
 function getCategoryInfo($sender, $row, period, res)  {
   var order_id = $row.find('order_id').text();

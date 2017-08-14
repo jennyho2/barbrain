@@ -268,7 +268,49 @@ module.exports = class LavuService {
 				return rows;
 			});
 		});
+	}
 
+	getSalesSection(minDate, maxDate)  {
+		return this.loadOrders(minDate, maxDate, true)
+		.then(orders => this.loadMenuItems(true).then(menuItems => { return { orders, menuItems }; }))
+		.then(({orders, menuItems}) => this.loadMenuCategories(true).then(categories => { return { orders, menuItems, categories }; }))
+		.then(({orders, menuItems, categories}) => {
+
+			let summary = {
+				groups: []
+			};
+			orders.forEach(order => {
+				order.details.forEach(detail => {
+					let menuItem = find(menuItems, item => item.id == detail.item_id);
+					if (!menuItem){
+						console.log('Could not find menu item', detail.item_iod);
+					} 
+					else {
+						let menuCategory = find(categories, cat => cat.id == menuItem.category_id);
+						if(!menuCategory){
+							console.log('Could not find category', menuItem.category_id);
+						}
+						else {
+							let category = find(categories, cat => cat.id == menuCategory.id);
+							if(!category){
+								category = { id: menuCategory.id, name: menuCategory.name, count: 0, sales: 0, group_id: menuCategory.group_id };
+							}
+
+							if (summary.groups[category.group_id])  {
+								summary.groups[category.group_id].count += detail.quantity;
+								summary.groups[category.group_id].sales += detail.total;
+							} else {
+								summary.groups[category.group_id] = {};
+								summary.groups[category.group_id].count = detail.quantity;
+								summary.groups[category.group_id].sales = detail.total;
+							}
+						}
+					}
+				});
+			});
+			return summary;
+		});
+			
 	}
 	
 	

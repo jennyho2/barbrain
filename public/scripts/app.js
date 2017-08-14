@@ -338,9 +338,10 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
       $http.get('/locations/' + $scope.$storage.location + '/incentives/weekly')
       .then(function(response)  {
         if (!$scope.$storage.incentive) $scope.$storage.incentive = {};
-        $scope.$storage.incentive = response.data.data.incentive;
-        console.log(response);
-        $scope.$storage.weeklyIncentiveGoal = response.data.data.goal;
+        $scope.$storage.incentive = response.data.data[0];
+        $scope.$storage.weeklyIncentiveGoal = response.data.data[0].goal;
+      }, function(response)  {
+        console.log("fail");
       });
     });
   }
@@ -364,7 +365,15 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 					.then(function(response) {
 						if (!$scope.$storage.staffSales) $scope.$storage.staffSales = {};
 						$scope.$storage.staffSales[date] = response.data.data;
-            $scope.loading = false;  
+            var from_date = moment().startOf('week').format('YYYYMMDD');
+            var to_date = moment().endOf('week').format('YYYYMMDD');
+            $http.get('/locations/' + $scope.$storage.location + '/sales/weektodate/' + from_date + '/' + to_date)
+            .then(function(response) {
+              $scope.$storage.weekToDate = response.data.data;
+              //$scope.$storage.weekToDate =
+              $scope.loading = false;  
+            });
+            
 					});
 
 				/*
