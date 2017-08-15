@@ -421,12 +421,10 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 						if (!$scope.$storage.staffSales) $scope.$storage.staffSales = {};
 						$scope.$storage.staffSales[date] = responseStaff.data.data;
             var from_date = moment().startOf('week').format('YYYYMMDD');
-            var to_date = moment().endOf('week').format('YYYYMMDD');
+            // var to_date = moment().endOf('week').format('YYYYMMDD');
             console.log("from:");
             console.log(from_date);
-            console.log("to:");
-            console.log(to_date);
-            $http.get('/locations/' + $scope.$storage.location + '/salessummary/' + from_date + '/' + to_date + (refresh ? '?refresh=true' : ''))
+            $http.get('/locations/' + $scope.$storage.location + '/salessummary/' + from_date + '/' + (refresh ? '?refresh=true' : ''))
             .then(function(response)  {
               console.log(response);
               $scope.$storage.weektodate = response.data.data;
