@@ -103,6 +103,9 @@
 .xlargeFont {
 	font-size: x-large;
 }
+.largeFont {
+	font-size: large;
+}
 .mediumFont {
 	font-size: medium;
 }
@@ -210,6 +213,12 @@ border-right: none;
 	background-color: deepskyblue;
 }
 
+.lightblueBKG {
+	background-color: #C2DFFF;
+}
+.headerBKG {
+	background-color: #4acde2;
+}
 .whiteBKG {
 	background-color: #ffffff;
 }
