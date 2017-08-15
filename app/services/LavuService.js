@@ -470,7 +470,7 @@ module.exports = class LavuService {
 
     setWeeklyIncentive(incentive, goal)  {
     	return database.connect().then(db => {
-    		return db.collection('incentives').insert({ location_id: this.locationId, type: 'weekly', id: incentive.id, name: incentive.name, goal: goal, created_at: new Date() });
+    		return db.collection('incentives').insert({ location_id: this.locationId, type: 'weekly', id: incentive.id, name: incentive.name, goal: parseInt(goal), created_at: new Date() });
     	});
     }
 

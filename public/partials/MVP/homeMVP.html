@@ -19,8 +19,12 @@ $( "Goal" ).click(function() {
   </header>
 
   <div ng-if="loading" ng-include="'partials/loading.html'"></div>
+  <div ng-if="error" class="center">
+    <div ng-include="'partials/error.html'"></div>
+    API call timed out. Try again.
+  </div>
 
-  <h4 class="center">{{ $storage.weekToDate.groups[$storage.incentive.id].count | number:0 }} / {{ $storage.weeklyIncentiveGoal | number:0 }}</h4>
+  <h4 class="center">{{ $storage.weekToDate.groups[$storage.incentive.id].count }} / {{ $storage.weeklyIncentiveGoal }}</h4>
 
   <!--set different graphs to display-->
   <div class="chartHolder smallDoughnut">
@@ -38,7 +42,7 @@ $( "Goal" ).click(function() {
   <div class="center">
   <span>{{ $storage.weekToDate.groups[$storage.incentive.id].count / $storage.weeklyIncentiveGoal * 100 | number:0 }}%</span>
   <br>
-  <span class="smallFont">of {{$storage.incentive.name}} goal achieved</span>
+  <span class="smallFont">of this week's {{$storage.incentive.name}} goal achieved</span>
   <br>
   <a data-toggle="modal" data-target="#myModal"><span class="smallFont" style="color:deepskyblue">Adjust goal</span></a>
   </div>
@@ -75,7 +79,9 @@ $( "Goal" ).click(function() {
 
 </div>
 
-<div ng-include src="'partials/MVP/incentive/dailyStaffIncentive.html'"></div>
+<button class="smallRoundButton grayBKG" ng-click="loadSalesData(true)">Refresh Data</button>
+
+<div ng-include src="'partials/MVP/dailyStaffIncentive.html'"></div>
 
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
@@ -86,6 +92,7 @@ $( "Goal" ).click(function() {
       <div class="modal-header headerBKG">
         <h4 class="modal-title center xlargeFont" style="color:white">Current Goal: {{$storage.weeklyIncentiveGoal}}</h4>
       </div>
+
       <br>
       <div class="modal-body center tactics">
       <span class="largeFont center">New Goal</span>

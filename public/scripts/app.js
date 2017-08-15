@@ -403,6 +403,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   }
 
 	$scope.loadSalesData = function(refresh) {
+    $scope.error = false;
 		//if( !hasOneDayPassed ) return false;
 		$scope.$storage.incentiveId = 0;
 
@@ -423,15 +424,15 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 						$scope.$storage.staffSales[date] = responseStaff.data.data;
             var from_date = moment().startOf('week').format('YYYYMMDD');
             var to_date = moment().endOf('week').format('YYYYMMDD');
-            // $http.get('/locations/' + $scope.$storage.location + '/sales/weektodate/' + from_date + '/' + to_date)
-            // .then(function(responseDate) {
-            //   console.log(responseDate);
-            //   $scope.$storage.weekToDate = responseDate.data.data;
-            console.log(date);
+            $http.get('/locations/' + $scope.$storage.location + '/salessummary/' + from_date + '/' + to_date + (refresh ? '?refresh=true' : ''))
+            .then(function(response)  {
+              console.log("Week to date");
+              console.log(response);
+              $scope.$storage.weektodate = response.data.data;
+
               $http.get('/locations/' + $scope.$storage.location + '/goals/' + date + ($scope.$storage.salesDateMax ? '/' + $scope.$storage.salesDateMax : '') + (refresh ? '?refresh=true' : ''))
               .then(function (response)  {
                 if (!$scope.$storage.goals) $scope.$storage.goals = {};
-                console.log(response);
                 if (response.data.data.length == 0)  { //empty response
                   $scope.$storage.goals[date] = {};
                   $scope.$storage.goals[date].value = 0;
@@ -484,6 +485,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
                 }
                 $scope.loading = false;  
               });
+            });
 					});
 
 				/*
@@ -514,6 +516,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 				// });
 				// $scope.onCallLavuToday();
 			}, function(response) {
+        $scope.loading = false;
+        $scope.error = true;
 				console.log("failure grabbing sales data");
 			});
 
@@ -748,7 +752,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   	$scope.$storage.weeklyIncentiveGoal = $('#weeklyGoalInput').val();
     $http.post('/locations/' + $scope.$storage.location + '/incentives/weekly', {
       "incentive": $scope.$storage.incentive,
-      "goal": $scope.$storage.weeklyIncentiveGoal
+      "goal": parseInt($scope.$storage.weeklyIncentiveGoal)
     })
     .then(function(response)  {
       console.log("Updating incentive");
