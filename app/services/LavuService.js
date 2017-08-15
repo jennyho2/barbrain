@@ -426,7 +426,7 @@ module.exports = class LavuService {
 				return db.collection('goals').find({ location_id: this.locationId, type: 'daily', date: minDate }).sort({ created_at: -1 }).limit(1).toArray()
 				.then(result => {
 					if (result.length == 0)  {
-						return db.collection('goals').find({ location_id: locId, type: 'weekly', date: minDate}).sort({ created_at: -1 }).limit(1).toArray()
+						return db.collection('goals').find({ location_id: locId, type: 'weekly'}).sort({ created_at: -1 }).limit(1).toArray()
 						.then(result => result);
 					} else {
 						return result;
