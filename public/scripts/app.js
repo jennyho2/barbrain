@@ -389,42 +389,54 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
               .then(function (response)  {
                 if (!$scope.$storage.goals) $scope.$storage.goals = {};
                 console.log(response);
-                $scope.$storage.goals[date] = response.data.data[0];
-                if (!$scope.$storage.salesDateMax)  { // not weekly/monthly
-                  if (response.data.data[0].type == 'weekly')  { // no daily goal set yet
+                if (response.data.data.length == 0)  { //empty response
+                  $scope.$storage.goals[date] = {};
+                  $scope.$storage.goals[date].value = 0;
+                  if ($scope.$storage.salesDateMax) {
+                    $scope.$storage.goals[date].type = 'weekly';
+                  } else {
                     $scope.$storage.goals[date].type = 'daily';
-                    switch(moment(date).day())  {
-                      case 0:
-                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.10;
-                        break;
-                      case 1:
-                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.04;
-                        break;
-                      case 2:
-                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.04;
-                        break;
-                      case 3:
-                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.07;
-                        break;
-                      case 4:
-                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.10;
-                        break;
-                      case 5:
-                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.30;
-                        break;
-                      case 6:
-                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.35;
-                        break;
+                  }
+                } 
+                else {
+                  $scope.$storage.goals[date] = response.data.data[0];
+
+                  if (!$scope.$storage.salesDateMax)  { // not weekly/monthly
+                    if (response.data.data[0].type == 'weekly')  { // no daily goal set yet
+                      $scope.$storage.goals[date].type = 'daily';
+                      switch(moment(date).day())  {
+                        case 0:
+                          $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.10;
+                          break;
+                        case 1:
+                          $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.04;
+                          break;
+                        case 2:
+                          $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.04;
+                          break;
+                        case 3:
+                          $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.07;
+                          break;
+                        case 4:
+                          $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.10;
+                          break;
+                        case 5:
+                          $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.30;
+                          break;
+                        case 6:
+                          $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.35;
+                          break;
+                      }
+                      $http.post('/locations/' + $scope.$storage.location + '/goals/daily/' + date, {
+                        "value" : $scope.$storage.goals[date].value
+                      })
+                      .then(function (response)  {
+                        console.log("Succcess");
+                      }, function(resposne)  {
+                        console.log("Failure");
+                      });
+                      console.log($scope.$storage.goals);
                     }
-                    $http.post('/locations/' + $scope.$storage.location + '/goals/daily/' + date, {
-                      "value" : $scope.$storage.goals[date].value
-                    })
-                    .then(function (response)  {
-                      console.log("Succcess");
-                    }, function(resposne)  {
-                      console.log("Failure");
-                    });
-                    console.log($scope.$storage.goals);
                   }
                 }
                 $scope.loading = false;  
