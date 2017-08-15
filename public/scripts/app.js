@@ -11,7 +11,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.$storage.goal = new Goal($http);
 	$scope.date = new Date();
 	$scope.data = {};
-
+	$scope.dateRange = $scope.date.getMonth()+1+'/'+
+	$scope.date.getDate(); //default is weekToDate
 	$scope.$storage.salesDate = moment().toDate();
 	$scope.$storage.salesDateMax = null;
 
@@ -29,6 +30,47 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.filteredLocations = [];
 	$scope.locationSearchText = null;
 	
+
+	$scope.getYesterdayDate = function(){
+    	var date = new Date();
+    	return date.setDate(date.getDate() - 1);
+  	};
+ 	$scope.getDateRange = function(section){
+    	if(section == 0){ //today's date
+    		var date = new Date();
+    		$scope.dateRange = date.getMonth()+1+'/'+date.getDate();
+    	}
+    	else if(section == 1){ //yesterday's date
+    	    var date = new Date($scope.getYesterdayDate());
+        	$scope.dateRange = date.getMonth()+1+'/'+date.getDate();
+    	}
+	    else if(section == 2){ // last week dates
+	    	var start = new Date();
+	    	while(start.getDay()>1){
+	    		start.setDate(start.getDate()-1);
+	    	}
+	    	var end = new Date();
+	    	while(end.getDay()>0){
+	    		end.setDate(end.getDate()+1);
+	    	}
+	    	start.setDate(start.getDate()-7);
+	    	end.setDate(end.getDate()-7);
+	    	$scope.dateRange = (start.getMonth()+1)+'/'+start.getDate()+'-'+ (end.getMonth()+1) + '/' + end.getDate();;;
+	    }
+	    else if(section == 3){ // month to date
+	    	var date = new Date();
+	        $scope.dateRange = date.getMonth()+1+'/1-'+(date.getMonth()+1)+'/'+date.getDate();
+	    }
+	    else if(section == 4){ // week to date
+			var start = new Date();
+	    	while(start.getDay()>1){
+	    		start.setDate(start.getDate()-1);
+	    	}
+	    	var end = new Date();
+	        $scope.dateRange = (start.getMonth()+1) + '/' + start.getDate()  +'-'+ (end.getMonth()+1) + '/' + end.getDate();;
+	    }
+	};
+
 	$scope.$watch('locationSearchText', (n,o) => {
 		console.log(n);
 		var query = (n||'').toLowerCase();
@@ -832,7 +874,7 @@ function Tactics($http) {
 app.config(function($routeProvider) {
 	$routeProvider
 		.when("/", {
-			templateUrl: "partials/MVP/lastWeek.html"
+			templateUrl: "partials/MVP/sales.html"
 		})
 		.when("/home", {
 			templateUrl: "partials/MVP/homeMVP.html"

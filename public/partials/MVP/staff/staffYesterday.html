@@ -36,7 +36,7 @@
                         <td class="v-a-m smallFont">
                         <strong>
                             <a ng-click="orderByField='percentToAvg'; reverseSort = !reverseSort">
-                                % Above/Below 
+                                % to Avg. 
                             </a>
                         </strong>
                         </td>
@@ -45,10 +45,10 @@
                 <tbody>
                     <tr ng-repeat="staffInfo in $storage.staffSales[$storage.salesDate]" class="tableEmployeeStat" >
                          <td class="v-a-m">
-                            <span class="smallFont"><b>{{staffInfo.firstName}} {{staffInfo.lastName}}</b></span>              
+                            <span class="smallFont"><b>{{staffInfo.firstName}}</b></span>              
                         </td>
                         <td class="v-a-m"> 
-                            <span class="smallFont">{{staffInfo.totalSales | currency}}</span>
+                            <span class="smallFont">{{staffInfo.totalSales | currency }}</span>
                         </td>
                         <td class="v-a-m"> 
                             <span class="smallFont">{{staffInfo.totalOrders}}</span>
