@@ -307,6 +307,10 @@ router.get("/locations/:location_id/salessummary/:from_date/:to_date?", (req, re
 
 	var minDate = moment(fromDate).hour(3).minute(0).second(0).toDate();
 	var maxDate = toDate ? moment(toDate).hour(3).minute(0).second(0).toDate() : moment(minDate).add(1, 'day').toDate();
+	console.log("min");
+	console.log(minDate)
+	console.log("max");
+	console.log(maxDate);
 		
 	new LocationService().resolve(location)
 	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
