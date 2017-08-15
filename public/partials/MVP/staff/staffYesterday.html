@@ -48,16 +48,16 @@
                             <span class="smallFont"><b>{{staffInfo.firstName}}</b></span>              
                         </td>
                         <td class="v-a-m"> 
-                            <span class="smallFont">{{staffInfo.totalSales | currency }}</span>
+                            <span class="smallFont">{{staffInfo.totalSales | currency:undefined:0}}</span>
                         </td>
                         <td class="v-a-m"> 
                             <span class="smallFont">{{staffInfo.totalOrders}}</span>
                         </td>
                         <td class="v-a-m"> 
-                            <span class="smallFont">${{staffInfo.totalSales / staffInfo.totalOrders | number:2}}</span>
+                            <span class="smallFont">${{staffInfo.totalSales / staffInfo.totalOrders | number:0}}</span>
                         </td>
                         <td class="v-a-m"> 
-                            <span class="smallFont">{{(((staffInfo.totalSales / staffInfo.totalOrders) / $storage.sales[$storage.salesDate].averageOrderPrice) * 100) - 100 | number:2}}%</span>
+                            <span class="smallFont">{{(((staffInfo.totalSales / staffInfo.totalOrders) / $storage.sales[$storage.salesDate].averageOrderPrice) * 100) - 100 | number:0}}%</span>
                         </td>
                     </tr>
 
