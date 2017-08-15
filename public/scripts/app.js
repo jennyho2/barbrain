@@ -206,6 +206,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	};
 
 	$scope.callUpdateGoals = function() {
+		$scope.$storage.goals[$scope.$storage.salesDate].value=$('#salesGoalInput').val();
     $http.post("/locations/" + $scope.$storage.location + "/goals/" + $scope.$storage.goals[$scope.$storage.salesDate].type + "/" + $scope.$storage.salesDate, {
       "value": $scope.$storage.goals[$scope.$storage.salesDate].value
     })
@@ -743,6 +744,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   }
 
   $scope.updateIncentive = function()  {
+  	
   	$scope.$storage.weeklyIncentiveGoal = $('#weeklyGoalInput').val();
     $http.post('/locations/' + $scope.$storage.location + '/incentives/weekly', {
       "incentive": $scope.$storage.incentive,

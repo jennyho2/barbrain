@@ -59,8 +59,6 @@
 	table-layout: fixed;
 	border: none;
 	border-collapse: collapse;
-	border-bottom: 1px solid #dcdcdc;
-
 }
 .tableEmployeeStat td { 
 	width: 33%;
@@ -69,10 +67,20 @@
 	padding-top: 5px;
 	padding-right: 5px;
 	padding-left: 5px;
+	border: none;
 }
 
 .tableEmployeeStat td, .tableEmployeeStat th{
 	border: none;
+}
+
+.tableEmployeeStat tr:nth-child(even) {
+    background-color: #F0F8FF;
+    border-bottom: none;
+    height: 60px;
+}
+.tableEmployeeStat tr:nth-child(odd) {
+    height: 60px;
 }
 .topRight{
 	vertical-align: text-top;
@@ -161,6 +169,8 @@ textarea {
 	margin: 5px auto;
 }
 
+
+
 .dividerTable td, .dividerTable th{
 	width: 33%;
 	text-align: center; 
@@ -226,6 +236,7 @@ border-right: none;
 tr.spaceUnder>td {
   padding-bottom: 1em;
 }
+
 
 html,
 body {

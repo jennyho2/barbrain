@@ -1,69 +1,60 @@
-<div class="container">
-    <!-- START EDIT CONTENT -->
-    <div class="row">
-        <div>
-            <!-- START Basic Example Table -->
-            <table class="table">
-            <table class="tableEmployeeStat">
-              <thead>
-                    <tr class="tableEmployeeStat">
-                        <td class="v-a-m smallFont">
-                        <strong>
-                            Staff Name
-                        </strong>
-                        </td>
-                        <td class="v-a-m smallFont">
-                        <strong>
-                            <a ng-click="orderByField='sales'; reverseSort = !reverseSort">
-                                Total Sales 
-                            </a>
-                        </strong>
-                        </td>
-                        <td class="v-a-m smallFont">
-                        <strong>
-                            <a ng-click="orderByField='orders'; reverseSort = !reverseSort">
-                                Total Checks 
-                            </a>
-                        </strong>
-                        </td>
-                        <td class="v-a-m smallFont">
-                        <strong>
-                            <a ng-click="orderByField='avgTicket'; reverseSort = !reverseSort">
-                                Avg. Ticket 
-                            </a>
-                        </strong>
-                        </td>
-                        <td class="v-a-m smallFont">
-                        <strong>
-                            <a ng-click="orderByField='percentToAvg'; reverseSort = !reverseSort">
-                                % to Avg.
-                            </a>
-                        </strong>
-                        </td>
-                    </tr> 
-                </thead>
-                <tbody>
-                    <tr ng-repeat="staffInfo in $storage.staffSales[$storage.salesDate]" class="tableEmployeeStat" >
-                         <td class="v-a-m">
-                            <span class="smallFont"><b>{{staffInfo.firstName}} {{staffInfo.lastName}}</b></span>              
-                        </td>
-                        <td class="v-a-m"> 
-                            <span class="smallFont">{{staffInfo.totalSales | currency:undefined:0}}</span>
-                        </td>
-                        <td class="v-a-m"> 
-                            <span class="smallFont">{{staffInfo.totalOrders}}</span>
-                        </td>
-                        <td class="v-a-m"> 
-                            <span class="smallFont">${{staffInfo.totalSales / staffInfo.totalOrders | number:0}}</span>
-                        </td>
-                        <td class="v-a-m"> 
-                            <span class="smallFont">{{(((staffInfo.totalSales / staffInfo.totalOrders) / $storage.sales[$storage.salesDate].averageOrderPrice) * 100) - 100 | number:0}}%</span>
-                        </td>
-                    </tr>
-                </tbody>
-                <span></span>
-            </table>
-            </table>
-        </div>
-    </div>
-</div>
+
+<!-- START Basic Example Table -->
+<table class="tableEmployeeStat">
+    <thead style="border-bottom: 1px solid lightgrey">
+        <tr>
+            <td class="v-a-m smallFont" >
+            <strong>
+                Staff Name
+            </strong>
+            </td>
+            <td class="v-a-m smallFont">
+            <strong>
+                <a ng-click="orderByField='sales'; reverseSort = !reverseSort">
+                    Total Sales 
+                </a>
+            </strong>
+            </td>
+            <td class="v-a-m smallFont">
+            <strong>
+                <a ng-click="orderByField='orders'; reverseSort = !reverseSort">
+                    Total Checks 
+                </a>
+            </strong>
+            </td>
+            <td class="v-a-m smallFont">
+            <strong>
+                <a ng-click="orderByField='avgTicket'; reverseSort = !reverseSort">
+                    Avg. Ticket 
+                </a>
+            </strong>
+            </td>
+            <td class="v-a-m smallFont">
+            <strong>
+                <a ng-click="orderByField='percentToAvg'; reverseSort = !reverseSort">
+                    % to Avg.
+                </a>
+            </strong>
+            </td>
+        </tr> 
+    </thead>
+    <tbody>
+        <tr ng-repeat="staffInfo in $storage.staffSales[$storage.salesDate]" >
+             <td class="v-a-m">
+                <span class="smallFont">{{staffInfo.firstName}} {{staffInfo.lastName}}</span>              
+            </td>
+            <td class="v-a-m"> 
+                <span class="smallFont">{{staffInfo.totalSales | currency:undefined:0}}</span>
+            </td>
+            <td class="v-a-m"> 
+                <span class="smallFont">{{staffInfo.totalOrders}}</span>
+            </td>
+            <td class="v-a-m"> 
+                <span class="smallFont">${{staffInfo.totalSales / staffInfo.totalOrders | number:0}}</span>
+            </td>
+            <td class="v-a-m"> 
+                <span class="smallFont">{{(((staffInfo.totalSales / staffInfo.totalOrders) / $storage.sales[$storage.salesDate].averageOrderPrice) * 100) - 100 | number:0}}%</span>
+            </td>
+        </tr>
+    </tbody>
+</table>
