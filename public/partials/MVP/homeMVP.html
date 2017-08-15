@@ -15,6 +15,7 @@ $( "Goal" ).click(function() {
   <header class="progressHeader">
     <h5 class="location-name">{{ $storage.locationData.name }}</h5>
     <h3 class="screen-heading">Current Incentive</h3>
+    <span class="xlargeFont screen-heading">{{dateRange}}</span>
   </header>
 
   <div ng-if="loading" ng-include="'partials/loading.html'"></div>
@@ -43,11 +44,11 @@ $( "Goal" ).click(function() {
   </div>
   <br>
 
-  <table class="dividerTable" ng-init="section = 0">
+  <table class="dividerTable" ng-init="section = 0;getDateRange(0)">
     <tr class="smallFont bottomLine">
-    <th ng-class="{'selected': section === 0}" ng-click="setSalesDate('TODAY'); section = 0">Today</th>
-    <th ng-class="{'selected': section === 1}" ng-click="setSalesDate('YESTERDAY'); section = 1">Yesterday</th>
-    <th ng-class="{'selected': section === 2}" ng-click="setSalesDate('LASTWEEK'); section = 2">Last Week</th>
+    <th ng-class="{'selected': section === 0}" ng-click="setSalesDate('TODAY'); getDateRange(0); section = 0">Today</th>
+    <th ng-class="{'selected': section === 1}" ng-click="setSalesDate('YESTERDAY'); getDateRange(1); section = 1">Yesterday</th>
+    <th ng-class="{'selected': section === 2}" ng-click="setSalesDate('LASTWEEK'); getDateRange(2); section = 2">Last Week</th>
      <!--  <th class="centeredPaddedCell" ng-class="{'selected': section === 0}" ng-click="section = 0">Today</th>
       <th class="centeredPaddedCell" ng-class="{'selected': section === 1}" ng-click="section = 1">Yesterday</th>
       <th class="centeredPaddedCell" ng-class="{'selected': section === 2}" ng-click="section = 2">Last Week</th> -->

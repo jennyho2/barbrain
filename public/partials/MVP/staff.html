@@ -3,22 +3,30 @@
   <header class="progressHeader">
     <h5 class="location-name">{{ $storage.locationData.name }}</h5>
     <h3 class="screen-heading">Staff Performance</h3>
+    <span class="xlargeFont screen-heading">{{dateRange}}</span>
   </header>
 
-<table class="dividerTable" ng-init="section = 1">
+<table class="dividerTable" ng-init="section = 0; getDateRange(0)">
   <tr class="smallFont bottomLine">
-    <th ng-class="{'selected': section === 0}" ng-click="setSalesDate('TODAY'); section = 0">Today</th>
-    <th ng-class="{'selected': section === 1}" ng-click="setSalesDate('YESTERDAY'); section = 1">Yesterday</th>
-    <th ng-class="{'selected': section === 2}" ng-click="setSalesDate('LASTWEEK'); section = 2">Last Week</th>
-    <th ng-class="{'selected': section === 3}" ng-click="setSalesDate('MONTHLY'); section = 3">Monthly</th>
+    <th ng-class="{'selected': section === 0}" ng-click="setSalesDate('TODAY'); getDateRange(0); section = 0">Today</th>
+    <th ng-class="{'selected': section === 1}" ng-click="setSalesDate('YESTERDAY'); getDateRange(1); section = 1">Yesterday</th>
+    <th ng-class="{'selected': section === 2}" ng-click="setSalesDate('LASTWEEK'); getDateRange(2); section = 2">Last Week</th>
+    <th ng-class="{'selected': section === 3}" ng-click="setSalesDate('MONTHLY'); getDateRange(3); section = 3">Month to Date</th>
   </tr>
 </table>
 
+<<<<<<< HEAD
+<div ng-if="section==0" ng-include src="'partials/MVP/staff/staffDaily.html'" class="full"></div>
+<div ng-if="section==1" ng-include src="'partials/MVP/staff/staffYesterday.html'" class="full"></div>
+<div ng-if="section==2" ng-include src="'partials/MVP/staff/staffWeekly.html'" class="full"></div>
+<div ng-if="section==3" ng-include src="'partials/MVP/staff/staffMonthly.html'" class="full"></div>
+=======
 <div ng-if="loading" ng-include="'partials/loading.html'"></div>
 
 <div ng-if="section==0" ng-include src="'partials/MVP/staffDaily.html'" class="full"></div>
 <div ng-if="section==1" ng-include src="'partials/MVP/staffYesterday.html'" class="full"></div>
 <div ng-if="section==2" ng-include src="'partials/MVP/staffWeekly.html'" class="full"></div>
 <div ng-if="section==3" ng-include src="'partials/MVP/staffMonthly.html'" class="full"></div>
+>>>>>>> ae46b1005bf7777d696665a720c7a2a8e3b8914c
 
 <button ng-click="loadSalesData(true)">Refresh Data</button>

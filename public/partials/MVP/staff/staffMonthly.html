@@ -14,29 +14,45 @@
                         </td>
                         <td class="v-a-m smallFont">
                         <strong>
-                            <a ng-click="orderByField='sales'; reverseSort = !reverseSort">
+                            <a ng-click="orderByField='monthly.currentProgress'; reverseSort = !reverseSort">
                                 Total Sales 
+                                <span ng-show="orderByField == 'currentProgress'">
+                                    <span ng-show="!reverseSort">^</span>
+                                    <span ng-show="reverseSort">v</span>
+                                </span>
                             </a>
                         </strong>
                         </td>
                         <td class="v-a-m smallFont">
                         <strong>
-                            <a ng-click="orderByField='orders'; reverseSort = !reverseSort">
+                            <a ng-click="orderByField='monthly.checks'; reverseSort = !reverseSort">
                                 Total Checks 
+                                <span ng-show="orderByField == 'checks'">
+                                    <span ng-show="!reverseSort">^</span>
+                                    <span ng-show="reverseSort">v</span>
+                                </span>
                             </a>
                         </strong>
                         </td>
                         <td class="v-a-m smallFont">
                         <strong>
-                            <a ng-click="orderByField='avgTicket'; reverseSort = !reverseSort">
+                            <a ng-click="orderByField='monthly.averageTicket'; reverseSort = !reverseSort">
                                 Avg. Ticket 
+                                <span ng-show="orderByField == 'averageTicket'">
+                                    <span ng-show="!reverseSort">^</span>
+                                    <span ng-show="reverseSort">v</span>
+                                </span>
                             </a>
                         </strong>
                         </td>
                         <td class="v-a-m smallFont">
                         <strong>
-                            <a ng-click="orderByField='percentToAvg'; reverseSort = !reverseSort">
-                                % Above/Below 
+                            <a ng-click="orderByField='monthly.percentToAvg'; reverseSort = !reverseSort">
+                                % to Avg.
+                                <span ng-show="orderByField == 'percentToAvg'">
+                                    <span ng-show="!reverseSort">^</span>
+                                    <span ng-show="reverseSort">v</span>
+                                </span>
                             </a>
                         </strong>
                         </td>
@@ -61,7 +77,6 @@
                         </td>
                     </tr>
                 </tbody>
-                <span></span>
             </table>
             </table>
         </div>

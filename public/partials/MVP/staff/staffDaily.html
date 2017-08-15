@@ -36,7 +36,7 @@
                         <td class="v-a-m smallFont">
                         <strong>
                             <a ng-click="orderByField='percentToAvg'; reverseSort = !reverseSort">
-                                % Above/Below 
+                                % to Avg.
                             </a>
                         </strong>
                         </td>
@@ -60,28 +60,6 @@
                             <span class="smallFont">{{(((staffInfo.totalSales / staffInfo.totalOrders) / $storage.sales[$storage.salesDate].averageOrderPrice) * 100) - 100 | number:0}}%</span>
                         </td>
                     </tr>
-
-                <!-- 
-                    <tr ng-repeat="staffInfo in $storage.lavuStaff.yesterday.staff | orderObjectBy:orderByField:true " class="tableEmployeeStat" > -->
-                     <!-- <tr ng-repeat="staffInfo in fullStaff.staff | filter:staffLocation |orderBy:orderByField:reverseSort" class="tableEmployeeStat" ng-click="openStaff(staffInfo.firstName + ' ' + staffInfo.lastName, 3)"> -->
-<!-- 
-                         <td class="v-a-m">
-                            <span class="smallFont"><b>{{staffInfo.name}}</b></span>              
-                        </td>
-                        <td class="v-a-m"> 
-                            <span class="smallFont">${{staffInfo.sales}}</span>
-                        </td>
-                        <td class="v-a-m"> 
-                            <span class="smallFont">{{staffInfo.orders}}</span>
-                        </td>
-                        <td class="v-a-m"> 
-                            <span class="smallFont">${{staffInfo.sales / staffInfo.orders | number:2}}</span>
-                        </td>
-                        <td class="v-a-m"> 
-                            <span class="smallFont">{{(((staffInfo.sales / staffInfo.orders) / $storage.lavuStaff.yesterdayAverageTicket) * 100) - 100 | number:2}}%</span>
-                        </td>
-                        
-                    </tr> -->
                 </tbody>
                 <span></span>
             </table>
