@@ -1,6 +1,6 @@
 /* global angular */
 /* global moment */
-/* glboal _ */
+/* global _ */
 
 var app = angular.module("goalsApp", ["ngRoute", "ngStorage", "filters.stringUtils", "filters.mathAbs", "angularModalService", "chart.js"]);
 
@@ -104,13 +104,13 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			$scope.$storage.salesDate = moment().subtract(1, 'day').format('YYYYMMDD');
 			$scope.$storage.salesDateMax = null;
 		}
-    else if(date === 'WEEKTODATE')  {
-      $scope.$storage.salesDate = moment().startOf('week').format('YYYYMMDD');
-      $scope.$storage.salesDateMax = moment().endOf('week').format('YYYYMMDD');
-    }
+	    else if(date === 'WEEKTODATE')  {
+	      $scope.$storage.salesDate = moment().startOf('isoWeek').format('YYYYMMDD');
+	      $scope.$storage.salesDateMax = moment().endOf('isoWeek').format('YYYYMMDD');
+	    }
 		else if(date === 'LASTWEEK') {
-			$scope.$storage.salesDate = moment().subtract(7, 'day').startOf('week').format('YYYYMMDD');
-			$scope.$storage.salesDateMax = moment().subtract(7, 'day').endOf('week').format('YYYYMMDD');
+			$scope.$storage.salesDate = moment().subtract(7, 'day').startOf('isoWeek').format('YYYYMMDD');
+			$scope.$storage.salesDateMax = moment().subtract(7, 'day').endOf('isoWeek').format('YYYYMMDD');
 		}
 		else if(date === 'MONTHLY') {
 			$scope.$storage.salesDate = moment().startOf('month').format('YYYYMMDD');
@@ -221,6 +221,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	};
 
 	$scope.callUpdateGoals = function() {
+		$scope.$storage.goals[$scope.$storage.salesDate].value=$('#salesGoalInput').val();
     $http.post("/locations/" + $scope.$storage.location + "/goals/" + $scope.$storage.goals[$scope.$storage.salesDate].type + "/" + $scope.$storage.salesDate, {
       "value": $scope.$storage.goals[$scope.$storage.salesDate].value
     })
@@ -413,7 +414,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
         $http.get('/locations/' + $scope.$storage.location + '/incentives/weekly')
         .then(function(response)  {
           if (!$scope.$storage.incentive) $scope.$storage.incentive = {};
-          
+          console.log("Weekly incentive");
+          console.log(response);
           $scope.$storage.incentiveCategory = response.data.data[0];
           $scope.$storage.weeklyIncentiveGoal = response.data.data[0].goal;
         }, function(response)  {
@@ -442,8 +444,10 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 				.then(function(responseStaff) {
 					if (!$scope.$storage.staffSales) $scope.$storage.staffSales = {};
 					$scope.$storage.staffSales[date] = responseStaff.data.data;
-          var from_date = moment().startOf('week').format('YYYYMMDD');
-          var to_date = moment().endOf('week').format('YYYYMMDD');
+          // var from_date = moment().startOf('week').format('YYYYMMDD');
+          // var to_date = moment().endOf('week').format('YYYYMMDD');
+          var from_date = moment().startOf('isoWeek').format('YYYYMMDD');
+            var to_date = moment().endOf('isoWeek').format('YYYYMMDD');
           $http.get('/locations/' + $scope.$storage.location + '/salessummary/' + from_date + '/' + to_date + (refresh ? '?refresh=true' : ''))
           .then(function(response)  {
             console.log("Week to date");
@@ -467,7 +471,6 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
                 if (!$scope.$storage.salesDateMax)  { // not weekly/monthly
                   if (response.data.data[0].type == 'weekly')  { // no daily goal set yet
-                    $scope.$storage.goals[date].type = 'daily';
                     switch(moment(date).day())  {
                       case 0:
                         $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.10;
@@ -734,6 +737,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   }
 
   $scope.updateIncentive = function()  {
+  	
     $http.post('/locations/' + $scope.$storage.location + '/incentives/weekly', {
       "incentive": $scope.$storage.incentiveItem,
       "goal": parseInt($scope.$storage.weeklyIncentiveGoal)
