@@ -20,7 +20,7 @@ $( "Goal" ).click(function() {
 
   <div ng-if="loading" ng-include="'partials/loading.html'"></div>
 
-  <h4 class="center">{{ $storage.weekToDate.groups[$storage.incentive.id].count | number:0 }} / {{ $storage.weeklyIncentiveGoal | number:0 }}</h4>
+  <h4 class="center">{{ $storage.weekToDate.groups[$storage.incentive.id].count }} / {{ $storage.weeklyIncentiveGoal }}</h4>
 
   <!--set different graphs to display-->
   <div class="chartHolder smallDoughnut">
@@ -89,7 +89,7 @@ $( "Goal" ).click(function() {
       </div>
       <div class="modal-body center">
         <!-- <input type="range" min="{{$storage.dailyHardIncentiveGoal-300}}" max="{{$storage.dailyHardIncentiveGoal+300}}" id="weeklyGoalRange" ng-model="$storage.dailyHardIncentiveGoal" /> -->
-        <input type="number" id="weeklyGoalInput" ng-model="$storage.weeklyIncentiveGoal" />
+        <input type="number" ng-model="$storage.weeklyIncentiveGoal" />
         <select class="smallRoundButton" ng-model="$storage.incentive" ng-options="x.name for x in $storage.menugroups | orderBy:'toString()'">
         </select>
       </div>

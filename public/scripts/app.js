@@ -746,7 +746,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   $scope.updateIncentive = function()  {
     $http.post('/locations/' + $scope.$storage.location + '/incentives/weekly', {
       "incentive": $scope.$storage.incentive,
-      "goal": $scope.$storage.weeklyIncentiveGoal
+      "goal": parseInt($scope.$storage.weeklyIncentiveGoal)
     })
     .then(function(response)  {
       console.log("Updating incentive");
