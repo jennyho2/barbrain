@@ -163,41 +163,50 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		}
 	};
 
-	$scope.callUpdateGoals = function(section) {
-		var newGoal = $('#weeklyGoalInput').val();
-		//console.log("Section: " + section);
-		if (section == 0) {
-			$http.post("/updateGoals", {
-					"location": "10 Barrel Boise",
-					"dailyGoal": newGoal,
-					"weeklyGoal": $scope.$storage.goal.weeklyGoal
-				})
-				.then(function(data, status, headers, config) {
-					$scope.$storage.goal.dailyGoal = parseInt(newGoal);
-					$scope.data = [$scope.$storage.goal.dailyProgress, Math.abs($scope.$storage.goal.dailyProgress - parseInt(newGoal))];
-					//$scope.dailyGoal = $storage.dailyGoal;
-				}, function(data, status, headers, config) {
-					console.log("failure");
-				});
-		}
-		else {
-			$http.post("/updateGoals", {
-					"location": "10 Barrel Boise",
-					"dailyGoal": $scope.$storage.goal.dailyGoal,
-					"weeklyGoal": newGoal
-				})
-				.then(function(data, status, headers, config) {
-					$scope.$storage.goal.weeklyGoal = parseInt(newGoal);
-					$scope.data = [$scope.$storage.goal.weeklyProgress, Math.abs($scope.$storage.goal.weeklyProgress - parseInt(newGoal))];
-					//$scope.dailyGoal = $storage.dailyGoal;
+	$scope.callUpdateGoals = function() {
+    $http.post("/locations/" + $scope.$storage.location + "/goals/" + $scope.$storage.goals[$scope.$storage.salesDate].type + "/" + $scope.$storage.salesDate, {
+      "value": $scope.$storage.goals[$scope.$storage.salesDate].value
+    })
+    .then(function(response)  {
+      console.log($scope.$storage.goals);
+    }, function(resposne)  {
+      console.log("Failing here");
+    });
 
-				}, function(data, status, headers, config) {
-					console.log("failure");
-				});
-			$scope.weeklyData = [parseInt(newGoal) * .05, .1 * parseInt(newGoal), .2 * parseInt(newGoal),
-				parseInt(newGoal) * .25, parseInt(newGoal) * .4, parseInt(newGoal) * .3, parseInt(newGoal) * .1
-			];
-		}
+		// var newGoal = $('#weeklyGoalInput').val();
+		// //console.log("Section: " + section);
+		// if (section == 0) {
+		// 	$http.post("/updateGoals", {
+		// 			"location": "10 Barrel Boise",
+		// 			"dailyGoal": newGoal,
+		// 			"weeklyGoal": $scope.$storage.goal.weeklyGoal
+		// 		})
+		// 		.then(function(data, status, headers, config) {
+		// 			$scope.$storage.goal.dailyGoal = parseInt(newGoal);
+		// 			$scope.data = [$scope.$storage.goal.dailyProgress, Math.abs($scope.$storage.goal.dailyProgress - parseInt(newGoal))];
+		// 			//$scope.dailyGoal = $storage.dailyGoal;
+		// 		}, function(data, status, headers, config) {
+		// 			console.log("failure");
+		// 		});
+		// }
+		// else {
+		// 	$http.post("/updateGoals", {
+		// 			"location": "10 Barrel Boise",
+		// 			"dailyGoal": $scope.$storage.goal.dailyGoal,
+		// 			"weeklyGoal": newGoal
+		// 		})
+		// 		.then(function(data, status, headers, config) {
+		// 			$scope.$storage.goal.weeklyGoal = parseInt(newGoal);
+		// 			$scope.data = [$scope.$storage.goal.weeklyProgress, Math.abs($scope.$storage.goal.weeklyProgress - parseInt(newGoal))];
+		// 			//$scope.dailyGoal = $storage.dailyGoal;
+
+		// 		}, function(data, status, headers, config) {
+		// 			console.log("failure");
+		// 		});
+		// 	$scope.weeklyData = [parseInt(newGoal) * .05, .1 * parseInt(newGoal), .2 * parseInt(newGoal),
+		// 		parseInt(newGoal) * .25, parseInt(newGoal) * .4, parseInt(newGoal) * .3, parseInt(newGoal) * .1
+		// 	];
+		// }
 
 
 	}
@@ -353,7 +362,6 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.loadSalesData = function(refresh) {
 		//if( !hasOneDayPassed ) return false;
 		$scope.$storage.incentiveId = 0;
-    $scope.$storage.goals = {};
 
 		var date = $scope.$storage.salesDate;
 		$scope.loading = true;
@@ -372,19 +380,55 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 						$scope.$storage.staffSales[date] = responseStaff.data.data;
             var from_date = moment().startOf('week').format('YYYYMMDD');
             var to_date = moment().endOf('week').format('YYYYMMDD');
-            $scope.loading = false;
             // $http.get('/locations/' + $scope.$storage.location + '/sales/weektodate/' + from_date + '/' + to_date)
             // .then(function(responseDate) {
             //   console.log(responseDate);
             //   $scope.$storage.weekToDate = responseDate.data.data;
-            //   $http.get('/locations/' + $scope.$storage.location + '/goals/' + date + ($scope.$storage.salesDateMax ? '/' + $scope.$storage.salesDateMax : '') + (refresh ? '?refresh=true' : ''))
-            //   .then(function (response)  {
-            //     console.log(response);
-            //     $scope.$storage.goals[date] = response.data.data;
-            //     $scope.loading = false;  
-            //   });
-            // });
-            
+            console.log(date);
+              $http.get('/locations/' + $scope.$storage.location + '/goals/' + date + ($scope.$storage.salesDateMax ? '/' + $scope.$storage.salesDateMax : '') + (refresh ? '?refresh=true' : ''))
+              .then(function (response)  {
+                if (!$scope.$storage.goals) $scope.$storage.goals = {};
+                console.log(response);
+                $scope.$storage.goals[date] = response.data.data[0];
+                if (!$scope.$storage.salesDateMax)  { // not weekly/monthly
+                  if (response.data.data[0].type == 'weekly')  { // no daily goal set yet
+                    $scope.$storage.goals[date].type = 'daily';
+                    switch(moment(date).day())  {
+                      case 0:
+                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.10;
+                        break;
+                      case 1:
+                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.04;
+                        break;
+                      case 2:
+                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.04;
+                        break;
+                      case 3:
+                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.07;
+                        break;
+                      case 4:
+                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.10;
+                        break;
+                      case 5:
+                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.30;
+                        break;
+                      case 6:
+                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.35;
+                        break;
+                    }
+                    $http.post('/locations/' + $scope.$storage.location + '/goals/daily/' + date, {
+                      "value" : $scope.$storage.goals[date].value
+                    })
+                    .then(function (response)  {
+                      console.log("Succcess");
+                    }, function(resposne)  {
+                      console.log("Failure");
+                    });
+                    console.log($scope.$storage.goals);
+                  }
+                }
+                $scope.loading = false;  
+              });
 					});
 
 				/*

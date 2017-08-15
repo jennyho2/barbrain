@@ -14,6 +14,8 @@
   </tr>
 </table>
 
+<div ng-if="loading" ng-include="'partials/loading.html'"></div>
+
 <div ng-if="section==0" ng-include src="'partials/MVP/staffDaily.html'" class="full"></div>
 <div ng-if="section==1" ng-include src="'partials/MVP/staffYesterday.html'" class="full"></div>
 <div ng-if="section==2" ng-include src="'partials/MVP/staffWeekly.html'" class="full"></div>

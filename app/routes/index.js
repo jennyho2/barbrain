@@ -354,10 +354,17 @@ router.get('/locations/:location_id/goals/:from_date/:to_date?', (req, res) => {
 		toDate = req.params.to_date ? moment(req.params.to_date, 'YYYYMMDD') : null;
 	var minDate = moment(fromDate).hour(3).minute(0).second(0).toDate();
 	var maxDate = toDate ? moment(toDate).hour(3).minute(0).second(0).toDate() : moment(minDate).add(1, 'day').toDate();
+	var weekly;
+	if (toDate) {
+		weekly = true;
+	}
+	else {
+		weekly = false;
+	}
 
 	new LocationService().resolve(location)
 	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
-	.then(service => service.getGoalsSummary(minDate, maxDate))
+	.then(service => service.getGoalsSummary(minDate, maxDate, weekly))
 	.then(data => res.json({ success: true, data }))
 	.catch(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
 });
@@ -393,6 +400,8 @@ router.get('/locations/:location_id/sales/weektodate/:from_date/:to_date', (req,
 	var location = req.params.location_id,
 		from_date = moment(req.params.from_date, 'YYYYMMDD'),
 		to_date = moment(req.params.to_date, 'YYYYMMDD');
+	var newFromDate = moment(from_date).hour(3).minute(0).second(0).toDate();
+	var newToDate = moment(to_date).hour(3).minute(0).second(0).toDate();
 	new LocationService().resolve(location)
 	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
 	.then(service => service.getSalesSection(from_date, to_date))
@@ -400,12 +409,14 @@ router.get('/locations/:location_id/sales/weektodate/:from_date/:to_date', (req,
 	.then(err => { console.log(err); res.status(500).json({ success:false, error: err }); });
 });
 
+
 router.post('/locations/:location_id/goals/daily/:date', (req, res) => {
 	var location = req.params.location_id,
 		date = moment(req.params.date, 'YYYYMMDD');
+	var newDate = moment(date).hour(3).minute(0).second(0).toDate();
 	new LocationService().resolve(location)
 	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
-	.then(service => service.setDailyGoal(date, req.body.value))
+	.then(service => service.setDailyGoal(newDate, req.body.value))
 	.then(data => res.json({ success:true, data }))
 	.then(err => { console.log(err); res.status(500).json({ success:false, error: err }); });
 });
@@ -413,11 +424,23 @@ router.post('/locations/:location_id/goals/daily/:date', (req, res) => {
 router.get('/locations/:location_id/goals/daily/:date', (req, res) => {
 	var location = req.params.location_id,
 		date = moment(req.params.date, 'YYYYMMDD');
+	var newDate = moment(date).hour(3).minute(0).second(0).toDate();
 	new LocationService().resolve(location)
 	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
-	.then(service => service.getDailyGoal(date))
+	.then(service => service.getDailyGoal(newDate))
 	.then(data => res.json({ success:true, data }))
 	.then(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
+});
+
+router.post('/locations/:location_id/goals/weekly/:date', (req, res) => {
+	var location = req.params.location_id,
+		date = moment(req.params.date, 'YYYYMMDD');
+	var newDate = moment(date).hour(3).minute(0).second(0).toDate();
+	new LocationService().resolve(location)
+	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
+	.then(service => service.setWeeklyGoal(newDate, req.body.value))
+	.then(data => res.json({ success:true, data }))
+	.catch(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
 });
 
 /*
