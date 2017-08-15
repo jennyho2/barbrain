@@ -379,6 +379,24 @@ router.get('/locations/:location_id/menugroups', (req, res) => {
 	.then(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
 });
 
+router.get('/locations/:location_id/menucategories', (req, res) => {
+	var location = req.params.location_id;
+	new LocationService().resolve(location)
+	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
+	.then(service => service.loadMenuCategories())
+	.then(data => res.json({ success:true, data }))
+	.then(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
+});
+
+router.get('/locations/:location_id/menuitems', (req, res) => {
+	var location = req.params.location_id;
+	new LocationService().resolve(location)
+	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
+	.then(service => service.loadMenuItems())
+	.then(data => res.json({ success:true, data }))
+	.then(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
+});
+
 router.post('/locations/:location_id/incentives/weekly', (req, res) => {
 	var location = req.params.location_id;
 	new LocationService().resolve(location)

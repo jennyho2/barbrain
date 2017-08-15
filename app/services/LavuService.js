@@ -357,31 +357,57 @@ module.exports = class LavuService {
 							category.count += detail.quantity;
 							category.sales += detail.total;
 
-							if (summary.groups[category.group_id])  {
-								summary.groups[category.group_id].count += detail.quantity;
-								summary.groups[category.group_id].sales += detail.total;
+							if (summary.groups[menuItem.id])  {
+								summary.groups[menuItem.id].count += detail.quantity;
+								summary.groups[menuItem.id].sales += detail.total;
 							} else {
-								summary.groups[category.group_id] = {};
-								summary.groups[category.group_id].count = detail.quantity;
-								summary.groups[category.group_id].sales = detail.total;
+								summary.groups[menuItem.id] = {};
+								summary.groups[menuItem.id].count = detail.quantity;
+								summary.groups[menuItem.id].sales = detail.total;
 							}
-							if (summary.staffGroups[category.group_id])  {
-								if (summary.staffGroups[category.group_id][user.id] )  {
-									summary.staffGroups[category.group_id][user.id].count += detail.quantity;
-									summary.staffGroups[category.group_id][user.id].sales += detail.total;
+							if (summary.staffGroups[menuItem.id])  {
+								if (summary.staffGroups[menuItem.id][user.id] )  {
+									summary.staffGroups[menuItem.id][user.id].count += detail.quantity;
+									summary.staffGroups[menuItem.id][user.id].sales += detail.total;
 								} else {
-									summary.staffGroups[category.group_id][user.id] = {};
-									summary.staffGroups[category.group_id][user.id].name = user.firstName;
-									summary.staffGroups[category.group_id][user.id].count = detail.quantity;
-									summary.staffGroups[category.group_id][user.id].sales = detail.total;
+									summary.staffGroups[menuItem.id][user.id] = {};
+									summary.staffGroups[menuItem.id][user.id].name = user.firstName;
+									summary.staffGroups[menuItem.id][user.id].count = detail.quantity;
+									summary.staffGroups[menuItem.id][user.id].sales = detail.total;
 								}
 							} else {
-								summary.staffGroups[category.group_id] = {};
-								summary.staffGroups[category.group_id][user.id] = {};
-								summary.staffGroups[category.group_id][user.id].name = user.firstName;
-								summary.staffGroups[category.group_id][user.id].count = detail.quantity;
-								summary.staffGroups[category.group_id][user.id].sales = detail.total;
+								summary.staffGroups[menuItem.id] = {};
+								summary.staffGroups[menuItem.id][user.id] = {};
+								summary.staffGroups[menuItem.id][user.id].name = user.firstName;
+								summary.staffGroups[menuItem.id][user.id].count = detail.quantity;
+								summary.staffGroups[menuItem.id][user.id].sales = detail.total;
 							}
+
+							// if (summary.groups[category.group_id])  {
+							// 	summary.groups[category.group_id].count += detail.quantity;
+							// 	summary.groups[category.group_id].sales += detail.total;
+							// } else {
+							// 	summary.groups[category.group_id] = {};
+							// 	summary.groups[category.group_id].count = detail.quantity;
+							// 	summary.groups[category.group_id].sales = detail.total;
+							// }
+							// if (summary.staffGroups[category.group_id])  {
+							// 	if (summary.staffGroups[category.group_id][user.id] )  {
+							// 		summary.staffGroups[category.group_id][user.id].count += detail.quantity;
+							// 		summary.staffGroups[category.group_id][user.id].sales += detail.total;
+							// 	} else {
+							// 		summary.staffGroups[category.group_id][user.id] = {};
+							// 		summary.staffGroups[category.group_id][user.id].name = user.firstName;
+							// 		summary.staffGroups[category.group_id][user.id].count = detail.quantity;
+							// 		summary.staffGroups[category.group_id][user.id].sales = detail.total;
+							// 	}
+							// } else {
+							// 	summary.staffGroups[category.group_id] = {};
+							// 	summary.staffGroups[category.group_id][user.id] = {};
+							// 	summary.staffGroups[category.group_id][user.id].name = user.firstName;
+							// 	summary.staffGroups[category.group_id][user.id].count = detail.quantity;
+							// 	summary.staffGroups[category.group_id][user.id].sales = detail.total;
+							// }
 						}
 					}
 				});

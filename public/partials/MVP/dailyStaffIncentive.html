@@ -17,7 +17,7 @@
                         <strong>
                             <a ng-click="orderByField='currentProgress'; reverseSort = !reverseSort">
                                 <!-- {{$storage.fullTactics.tactics[0].incentive}} Unit Sales  -->
-                                {{$storage.incentive.name}} Unit Sales
+                                {{$storage.incentiveItem.name}} Unit Sales
                                 <span ng-show="orderByField == 'currentProgress'">
                                     <span ng-show="!reverseSort">^</span>
                                     <span ng-show="reverseSort">v</span>
@@ -30,7 +30,7 @@
                         <strong>
                             <a ng-click="orderByField='percentToAvg'; reverseSort = !reverseSort">
                                 <!-- {{$storage.fullTactics.tactics[0].incentive}} $ Sales -->
-                                {{ $storage.incentive.name }} $ Sales
+                                {{ $storage.incentiveItem.name }} $ Sales
                                 <span ng-show="orderByField == 'percentToAvg'">
                                     <span ng-show="!reverseSort">^</span>
                                     <span ng-show="reverseSort">v</span>
@@ -41,7 +41,7 @@
                     </tr> 
                 </thead>
                 <tbody>
-                    <tr ng-repeat="staffInfo in $storage.sales[$storage.salesDate].staffGroups[$storage.incentive.id]" class="tableEmployeeStat">
+                    <tr ng-repeat="staffInfo in $storage.sales[$storage.salesDate].staffGroups[$storage.incentiveItem.id]" class="tableEmployeeStat">
                     <!-- <tr ng-repeat="staffInfo in $storage.lavuStaff.today.incentiveSales" 
                     class="tableEmployeeStat"> -->
                     <!--  <tr ng-repeat="staffInfo in fullStaff.staff | filter:staffLocation |orderBy:orderByField:reverseSort" class="tableEmployeeStat" ng-click="openStaff(staffInfo.firstName + ' ' + staffInfo.lastName, 3)"> -->

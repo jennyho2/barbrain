@@ -24,25 +24,25 @@ $( "Goal" ).click(function() {
     API call timed out. Try again.
   </div>
 
-  <h4 class="center">{{ $storage.weekToDate.groups[$storage.incentive.id].count }} / {{ $storage.weeklyIncentiveGoal }}</h4>
+  <h4 class="center">{{ $storage.weekToDate.groups[$storage.incentiveItem.id].count }} / {{ $storage.weeklyIncentiveGoal }}</h4>
 
   <!--set different graphs to display-->
   <div class="chartHolder smallDoughnut">
   <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
-  <canvas ng-if="$storage.weeklyIncentiveGoal - $storage.weekToDate.groups[$storage.incentive.id].count > 0" id="doughnut" class="chart chart-doughnut"
-    chart-data="[$storage.weekToDate.groups[$storage.incentive.id].count, $storage.weeklyIncentiveGoal - $storage.weekToDate.groups[$storage.incentive.id].count]"  chart-labels="['Period Total Sales', 'Difference From Goal']" chart-options="options">
+  <canvas ng-if="$storage.weeklyIncentiveGoal - $storage.weekToDate.groups[$storage.incentiveItem.id].count > 0" id="doughnut" class="chart chart-doughnut"
+    chart-data="[$storage.weekToDate.groups[$storage.incentiveItem.id].count, $storage.weeklyIncentiveGoal - $storage.weekToDate.groups[$storage.incentiveItem.id].count]"  chart-labels="['Period Total Sales', 'Difference From Goal']" chart-options="options">
   </canvas> 
-  <canvas ng-if="$storage.weeklyIncentiveGoal - $storage.weekToDate.groups[$storage.incentive.id].count <= 0" id="doughnut" class="chart chart-doughnut"
-    chart-data="[$storage.weekToDate.groups[$storage.incentive.id].count, $storage.weekToDate.groups[$storage.incentive.id].count - $storage.weeklyIncentiveGoal ]"  chart-labels="['Period Total Sales', 'Amount Exceeding Goal']" chart-options="options">
+  <canvas ng-if="$storage.weeklyIncentiveGoal - $storage.weekToDate.groups[$storage.incentiveItem.id].count <= 0" id="doughnut" class="chart chart-doughnut"
+    chart-data="[$storage.weekToDate.groups[$storage.incentiveItem.id].count, $storage.weekToDate.groups[$storage.incentiveItem.id].count - $storage.weeklyIncentiveGoal ]"  chart-labels="['Period Total Sales', 'Amount Exceeding Goal']" chart-options="options">
   </canvas> 
 </div>
   
   
 
   <div class="center">
-  <span>{{ $storage.weekToDate.groups[$storage.incentive.id].count / $storage.weeklyIncentiveGoal * 100 | number:0 }}%</span>
+  <span>{{ $storage.weekToDate.groups[$storage.incentiveItem.id].count / $storage.weeklyIncentiveGoal * 100 | number:0 }}%</span>
   <br>
-  <span class="smallFont">of this week's {{$storage.incentive.name}} goal achieved</span>
+  <span class="smallFont">of this week's {{$storage.incentiveItem.name}} goal achieved</span>
   <br>
   <a data-toggle="modal" data-target="#myModal"><span class="smallFont" style="color:deepskyblue">Adjust goal</span></a>
   </div>
@@ -66,8 +66,8 @@ $( "Goal" ).click(function() {
       <th class="smallFont">Sales</th>
     </tr>
     <tr class="center">
-      <td class="mediumFont" ng-init="callGetGoals()">{{ $storage.sales[$storage.salesDate].groups[$storage.incentive.id].count}}</td>
-      <td class="mediumFont">{{ $storage.sales[$storage.salesDate].groups[$storage.incentive.id].sales | currency:undefined:0 }}</td>
+      <td class="mediumFont" ng-init="callGetGoals()">{{ $storage.sales[$storage.salesDate].groups[$storage.incentiveItem.id].count}}</td>
+      <td class="mediumFont">{{ $storage.sales[$storage.salesDate].groups[$storage.incentiveItem.id].sales | currency:undefined:0 }}</td>
     </tr>
   </table>
 
@@ -96,7 +96,9 @@ $( "Goal" ).click(function() {
       <div class="modal-body center">
         <!-- <input type="range" min="{{$storage.dailyHardIncentiveGoal-300}}" max="{{$storage.dailyHardIncentiveGoal+300}}" id="weeklyGoalRange" ng-model="$storage.dailyHardIncentiveGoal" /> -->
         <input type="number" ng-model="$storage.weeklyIncentiveGoal" />
-        <select class="smallRoundButton" ng-model="$storage.incentive" ng-options="x.name for x in $storage.menugroups | orderBy:'toString()'">
+        <select class="smallRoundButton" ng-model="$storage.incentiveCategory" ng-options="x.name for x in $storage.menucategories | orderBy:'toString()'">
+        </select>
+        <select class="smallRoundButton" ng-model="$storage.incentiveItem" ng-options="x.name for x in $storage.incentiveItems | orderBy:'toString()'">
         </select>
       </div>
       <div class="modal-footer">
