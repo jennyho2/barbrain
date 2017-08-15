@@ -1,6 +1,6 @@
 /* global angular */
 /* global moment */
-/* glboal _ */
+/* global _ */
 
 var app = angular.module("goalsApp", ["ngRoute", "ngStorage", "filters.stringUtils", "filters.mathAbs", "angularModalService", "chart.js"]);
 
@@ -89,13 +89,13 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			$scope.$storage.salesDate = moment().subtract(1, 'day').format('YYYYMMDD');
 			$scope.$storage.salesDateMax = null;
 		}
-    else if(date === 'WEEKTODATE')  {
-      $scope.$storage.salesDate = moment().startOf('week').format('YYYYMMDD');
-      $scope.$storage.salesDateMax = moment().endOf('week').format('YYYYMMDD');
-    }
+	    else if(date === 'WEEKTODATE')  {
+	      $scope.$storage.salesDate = moment().startOf('isoWeek').format('YYYYMMDD');
+	      $scope.$storage.salesDateMax = moment().endOf('isoWeek').format('YYYYMMDD');
+	    }
 		else if(date === 'LASTWEEK') {
-			$scope.$storage.salesDate = moment().subtract(7, 'day').startOf('week').format('YYYYMMDD');
-			$scope.$storage.salesDateMax = moment().subtract(7, 'day').endOf('week').format('YYYYMMDD');
+			$scope.$storage.salesDate = moment().subtract(7, 'day').startOf('isoWeek').format('YYYYMMDD');
+			$scope.$storage.salesDateMax = moment().subtract(7, 'day').endOf('isoWeek').format('YYYYMMDD');
 		}
 		else if(date === 'MONTHLY') {
 			$scope.$storage.salesDate = moment().startOf('month').format('YYYYMMDD');
@@ -422,8 +422,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 					.then(function(responseStaff) {
 						if (!$scope.$storage.staffSales) $scope.$storage.staffSales = {};
 						$scope.$storage.staffSales[date] = responseStaff.data.data;
-            var from_date = moment().startOf('week').format('YYYYMMDD');
-            var to_date = moment().endOf('week').format('YYYYMMDD');
+            var from_date = moment().startOf('isoWeek').format('YYYYMMDD');
+            var to_date = moment().endOf('isoWeek').format('YYYYMMDD');
             $http.get('/locations/' + $scope.$storage.location + '/salessummary/' + from_date + '/' + to_date + (refresh ? '?refresh=true' : ''))
             .then(function(response)  {
               console.log("Week to date");
