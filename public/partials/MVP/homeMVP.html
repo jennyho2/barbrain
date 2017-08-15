@@ -37,7 +37,7 @@ $( "Goal" ).click(function() {
   <div class="center">
   <span>{{ $storage.weekToDate.groups[$storage.incentive.id].count / $storage.weeklyIncentiveGoal * 100 | number:0 }}%</span>
   <br>
-  <span class="smallFont">of {{$storage.incentive.name}} goal achieved</span>
+  <span class="smallFont">of this week's {{$storage.incentive.name}} goal achieved</span>
   <br>
   <a data-toggle="modal" data-target="#myModal"><span class="smallFont" style="color:deepskyblue">Adjust goal</span></a>
   </div>
@@ -86,7 +86,7 @@ $( "Goal" ).click(function() {
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Adjust This Week's Goal</h4>
       </div>
-      <div class="modal-body">
+      <div class="modal-body center">
         <!-- <input type="range" min="{{$storage.dailyHardIncentiveGoal-300}}" max="{{$storage.dailyHardIncentiveGoal+300}}" id="weeklyGoalRange" ng-model="$storage.dailyHardIncentiveGoal" /> -->
         <input type="number" id="weeklyGoalInput" ng-model="$storage.weeklyIncentiveGoal" />
         <select class="smallRoundButton" ng-model="$storage.incentive" ng-options="x.name for x in $storage.menugroups | orderBy:'toString()'">
