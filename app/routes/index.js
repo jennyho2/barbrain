@@ -348,6 +348,20 @@ router.get('/locations/:location_id/goals/weekly', (req, res) => {
 	.then(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
 });
 
+router.get('/locations/:location_id/goals/:from_date/:to_date?', (req, res) => {
+	var location = req.params.location_id,
+		fromDate = moment(req.params.from_date, 'YYYYMMDD'),
+		toDate = req.params.to_date ? moment(req.params.to_date, 'YYYYMMDD') : null;
+	var minDate = moment(fromDate).hour(3).minute(0).second(0).toDate();
+	var maxDate = toDate ? moment(toDate).hour(3).minute(0).second(0).toDate() : moment(minDate).add(1, 'day').toDate();
+
+	new LocationService().resolve(location)
+	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
+	.then(service => service.getGoalsSummary(minDate, maxDate))
+	.then(data => res.json({ success: true, data }))
+	.catch(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
+});
+
 router.get('/locations/:location_id/menugroups', (req, res) => {
 	var location = req.params.location_id;
 	new LocationService().resolve(location)
@@ -384,6 +398,26 @@ router.get('/locations/:location_id/sales/weektodate/:from_date/:to_date', (req,
 	.then(service => service.getSalesSection(from_date, to_date))
 	.then(data => res.json({ success:true, data }))
 	.then(err => { console.log(err); res.status(500).json({ success:false, error: err }); });
+});
+
+router.post('/locations/:location_id/goals/daily/:date', (req, res) => {
+	var location = req.params.location_id,
+		date = moment(req.params.date, 'YYYYMMDD');
+	new LocationService().resolve(location)
+	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
+	.then(service => service.setDailyGoal(date, req.body.value))
+	.then(data => res.json({ success:true, data }))
+	.then(err => { console.log(err); res.status(500).json({ success:false, error: err }); });
+});
+
+router.get('/locations/:location_id/goals/daily/:date', (req, res) => {
+	var location = req.params.location_id,
+		date = moment(req.params.date, 'YYYYMMDD');
+	new LocationService().resolve(location)
+	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
+	.then(service => service.getDailyGoal(date))
+	.then(data => res.json({ success:true, data }))
+	.then(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
 });
 
 /*
@@ -492,7 +526,7 @@ router.get("/lookupLavuToday", function(req, res) {
 		sender.yesterdayTotalSales = 0.0;
 		sender.yesterdayTotalOrders = 0;
 		sender.categories = {};
-		console.log("Body: " + body.data);
+		//console.log("Body: " + body.data);
 		// response.data.querySelectorAll('row');
 		$(body.data).find('row').each(function() {
 			//  console.log($(this).find('id').text());

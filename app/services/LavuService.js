@@ -415,6 +415,29 @@ module.exports = class LavuService {
 
 	}
 
+	getGoalsSummary(minDate, maxDate)  {
+		return database.connect().then(db => {
+			return db.collection('goals').find({ location_id: this.location_id, type:'weekly' }).sort({created_at: -1}).limit(1).toArray().then(result => result);
+		});
+
+		// return database.connect().then(db => {
+		// 	if (maxDate)  { // if pulling a weekly or monthly request & ignore dailies
+		// 		return db.collection('goals').find({ location_id: this.location_id, type: 'weekly' }).sort({ created_at: -1 }).limit(1).toArray().then(result => result);
+		// 	}
+		// 	else {
+		// 		return db.collection('goals').find({ location_id: this.location_id, type: 'daily', date: minDate }).sort({ created_at: -1 }).limit(1).toArray()
+		// 		.then(function (result1)  {
+		// 			if (result1.length == 0)  {
+		// 				return db.collection('goals').find({ location_id: this.location_id, type: 'weekly'}).sort({ created_at: -1 }).limit(1).toArray()
+		// 				.then(result => result);
+		// 			} else {
+		// 				return result1;
+		// 			}
+		// 		})
+		// 	}
+		// });
+	}
+
 	getWeeklyGoal(){
         return database.connect().then(db => {
         	return db.collection('goals').find({ location_id: this.locationId, type: 'weekly' }).sort({ created_at: -1 }).limit(1).toArray().then(result => result);
@@ -437,5 +460,19 @@ module.exports = class LavuService {
     	return database.connect().then(db => {
     		return db.collection('incentives').insert({ location_id: this.locationId, type: 'weekly', id: incentive.id, name: incentive.name, goal: goal, created_at: new Date() });
     	});
+    }
+
+    setDailyGoal(dateValue, amount)  {
+    	return database.connect().then(db => {
+    		return db.collection('goals').insert({ location_id: this.location_id, type: 'daily', value: amount, date: dateValue, created_at: new Date() });
+    	});
+    }
+
+    getDailyGoal(dateValue)  {
+    	return database.connect().then(db => {
+    		// check for daily
+    		// if null then get weekly & divide
+    		return db.collection()
+    	})
     }
 };

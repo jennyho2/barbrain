@@ -47,6 +47,10 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			$scope.$storage.salesDate = moment().subtract(1, 'day').format('YYYYMMDD');
 			$scope.$storage.salesDateMax = null;
 		}
+    else if(date === 'WEEKTODATE')  {
+      $scope.$storage.salesDate = moment().startOf('week').format('YYYYMMDD');
+      $scope.$storage.salesDateMax = moment().endOf('week').format('YYYYMMDD');
+    }
 		else if(date === 'LASTWEEK') {
 			$scope.$storage.salesDate = moment().subtract(7, 'day').startOf('week').format('YYYYMMDD');
 			$scope.$storage.salesDateMax = moment().subtract(7, 'day').endOf('week').format('YYYYMMDD');
@@ -349,30 +353,37 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.loadSalesData = function(refresh) {
 		//if( !hasOneDayPassed ) return false;
 		$scope.$storage.incentiveId = 0;
+    $scope.$storage.goals = {};
 
 		var date = $scope.$storage.salesDate;
 		$scope.loading = true;
 		$http.get("/locations/" + $scope.$storage.location + "/salessummary/" + date + ($scope.$storage.salesDateMax ? '/' + $scope.$storage.salesDateMax : '') + (refresh ? '?refresh=true' : ''))
-			.then(function(response) {
+			.then(function(responseSummary) {
 				if (!$scope.$storage.sales) $scope.$storage.sales = {};
 				// $scope.$storage.sales[date.format('YYYYMMDD')] = response.data.data;
-				let salesData = $scope.$storage.sales[date] = response.data.data;
+				let salesData = $scope.$storage.sales[date] = responseSummary.data.data;
 				salesData.averageOrderPrice = salesData.totalSales / salesData.totalOrders;
 
 				console.log($scope.$storage.sales);
 
 				$http.get('/locations/' + $scope.$storage.location + '/staffsales/' + date + ($scope.$storage.salesDateMax ? '/' + $scope.$storage.salesDateMax : '') + (refresh ? '?refresh=true' : ''))
-					.then(function(response) {
+					.then(function(responseStaff) {
 						if (!$scope.$storage.staffSales) $scope.$storage.staffSales = {};
-						$scope.$storage.staffSales[date] = response.data.data;
+						$scope.$storage.staffSales[date] = responseStaff.data.data;
             var from_date = moment().startOf('week').format('YYYYMMDD');
             var to_date = moment().endOf('week').format('YYYYMMDD');
-            $http.get('/locations/' + $scope.$storage.location + '/sales/weektodate/' + from_date + '/' + to_date)
-            .then(function(response) {
-              $scope.$storage.weekToDate = response.data.data;
-              //$scope.$storage.weekToDate =
-              $scope.loading = false;  
-            });
+            $scope.loading = false;
+            // $http.get('/locations/' + $scope.$storage.location + '/sales/weektodate/' + from_date + '/' + to_date)
+            // .then(function(responseDate) {
+            //   console.log(responseDate);
+            //   $scope.$storage.weekToDate = responseDate.data.data;
+            //   $http.get('/locations/' + $scope.$storage.location + '/goals/' + date + ($scope.$storage.salesDateMax ? '/' + $scope.$storage.salesDateMax : '') + (refresh ? '?refresh=true' : ''))
+            //   .then(function (response)  {
+            //     console.log(response);
+            //     $scope.$storage.goals[date] = response.data.data;
+            //     $scope.loading = false;  
+            //   });
+            // });
             
 					});
 
