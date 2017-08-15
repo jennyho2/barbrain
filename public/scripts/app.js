@@ -402,6 +402,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   }
 
 	$scope.loadSalesData = function(refresh) {
+    $scope.error = false;
 		//if( !hasOneDayPassed ) return false;
 		$scope.$storage.incentiveId = 0;
 
@@ -514,6 +515,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 				// });
 				// $scope.onCallLavuToday();
 			}, function(response) {
+        $scope.loading = false;
+        $scope.error = true;
 				console.log("failure grabbing sales data");
 			});
 

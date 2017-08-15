@@ -19,6 +19,10 @@ $( "Goal" ).click(function() {
   </header>
 
   <div ng-if="loading" ng-include="'partials/loading.html'"></div>
+  <div ng-if="error" class="center">
+    <div ng-include="'partials/error.html'"></div>
+    API call timed out. Try again.
+  </div>
 
   <h4 class="center">{{ $storage.weekToDate.groups[$storage.incentive.id].count }} / {{ $storage.weeklyIncentiveGoal }}</h4>
 
