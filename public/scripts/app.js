@@ -457,11 +457,14 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	                $scope.$storage.goals[date].value = 0;
 	                if ($scope.$storage.salesDate == moment().startOf('month').format('YYYYMMDD'))  {
 	                	$scope.$storage.goals[date].type = 'monthly';
+	                	$scope.$storage.goals[date].value = 100000;
 	                } 
 	                else if ($scope.$storage.salesDateMax) {
 	                  $scope.$storage.goals[date].type = 'weekly';
+	                  $scope.$storage.goals[date].value = 50000;
 	                } else {
 	                  $scope.$storage.goals[date].type = 'daily';
+	                  $scope.$storage.goals[date].value = 10000;
 	                }
 	              } 
 	              else {
@@ -746,12 +749,13 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   }
 
   $scope.updateIncentive = function()  {
-  	
+  	var goal = $('#incentiveGoalInput').val();
     $http.post('/locations/' + $scope.$storage.location + '/incentives/weekly', {
       "incentive": $scope.$storage.incentiveItem,
-      "goal": parseInt($scope.$storage.weeklyIncentiveGoal)
+      "goal": parseInt(goal)
     })
     .then(function(response)  {
+    	$scope.$storage.weeklyIncentiveGoal = goal;
       console.log("Updating incentive");
     }, function(response)  {
       console.log("Failing in incentive on change");
