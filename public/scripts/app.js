@@ -5,6 +5,7 @@
 var app = angular.module("goalsApp", ["ngRoute", "ngStorage", "filters.stringUtils", "filters.mathAbs", "angularModalService", "chart.js"]);
 
 app.controller('mainController', function($scope, $localStorage, $sessionStorage, $http, $location) {
+	$scope.randomNumber = 1;
 	$scope.orderByField = 'name';
 	$scope.reverseSort = false;
 	$scope.$storage = $localStorage;
@@ -15,7 +16,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.date.getDate(); //default is weekToDate
 	$scope.$storage.salesDate = moment().toDate();
 	$scope.$storage.salesDateMax = null;
-
+	$scope.$storage.staffInfo = null;
 
 	// $scope.$storage.INCENTIVE = INCENTIVE;
   $scope.$storage.weeklyIncentiveGoal = 20;
@@ -70,7 +71,13 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	        $scope.dateRange = (start.getMonth()+1) + '/' + start.getDate()  +'-'+ (end.getMonth()+1) + '/' + end.getDate();;
 	    }
 	};
-
+	var counter = 0;
+	$scope.getRandomAvatar = function(){
+		//$scope.randomNumber = 
+		var n = Math.floor((Math.random() * 100) + 1)%4;
+		var avatars = ['assets/images/staffPic1.png','assets/images/staffPic2.png','assets/images/staffPic3.png','assets/images/staffPic4.png'];
+		return avatars[0];
+	}
 	$scope.$watch('locationSearchText', (n,o) => {
 		console.log(n);
 		var query = (n||'').toLowerCase();
@@ -191,33 +198,10 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			});
 	};
 
-	$scope.openStaff = function(staffName, day) {
-		$scope.$storage.staffName = staffName;
-		var array = staffName.split(' ');
-		var index = -1;
-		count = 0;
-		while (count < $scope.fullStaff.staff.length) {
-			if ($scope.fullStaff.staff[count].lastName == array[1]) {
-				index = count;
-				$scope.$storage.staff = $scope.fullStaff.staff[count];
-				break;
-
-			}
-			count++;
-		}
-		// set data
-		if (day == 0) { //daily
-			location.href = '#!staff';
-		}
-		else if (day == 1) { //yesterday
-			location.href = '#!staffYesterday';
-		}
-		else if (day == 2) { //
-			location.href = '#!staffThisWeek';
-		}
-		else {
-			location.href = '#!staffLastWeek';
-		}
+	$scope.openStaff = function(staffInfo) {
+		$scope.$storage.staffInfo = staffInfo;
+		location.href = "#!individualStaff"
+		console.log(staffInfo);
 	};
 
 	$scope.callUpdateGoals = function() {
@@ -978,6 +962,9 @@ app.config(function($routeProvider) {
 		.when("/tips", {
 			templateUrl: "partials/tips.html"
 		})
+		.when("/individualStaff", {
+			templateUrl: "partials/MVP/staff/individualStaff.html"
+		})
 		.when("/lastWeek", {
 			templateUrl: "partials/MVP/lastWeek.html"
 		})
@@ -1031,10 +1018,11 @@ app.run(function($rootScope, $location, $localStorage) {
 
 	});
 
-	$rootScope.back = function() {
+	$rootScope.back = function(sec) {
 		var prevUrl = $localStorage.history.length > 1 ? $localStorage.history.splice(-2)[0] : "/";
 		//var prevUrl = history.length > 1 ? history.splice(-2)[0] : "/";
 		$location.path(prevUrl);
+		return section=sec;
 	};
 
 });
