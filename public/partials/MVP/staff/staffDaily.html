@@ -1,49 +1,50 @@
-
-<!-- START Basic Example Table -->
+<div class="tactics">
+<br>
+  <div class="center">
+    <span class="smallFont"><b>Avg. Check Overall</b></span>
+    <div class="boxed ">
+      <span class="smallFont">{{$storage.sales[$storage.salesDate].averageOrderPrice|currency:undefined:0}}</span>
+    </div>
+  </div> <!-- End Insights -->
+<br>
+</div>
 <table class="tableEmployeeStat">
-    <thead style="border-bottom: 1px solid lightgrey">
-        <tr>
-            <td class="v-a-m smallFont" >
-            <strong>
-                Staff Name
-            </strong>
-            </td>
-            <td class="v-a-m smallFont">
-            <strong>
-                <a ng-click="orderByField='sales'; reverseSort = !reverseSort">
-                    Total Sales 
-                </a>
-            </strong>
-            </td>
-            <td class="v-a-m smallFont">
-            <strong>
-                <a ng-click="orderByField='orders'; reverseSort = !reverseSort">
-                    Total Checks 
-                </a>
-            </strong>
-            </td>
-            <td class="v-a-m smallFont">
-            <strong>
-                <a ng-click="orderByField='avgTicket'; reverseSort = !reverseSort">
-                    Avg. Ticket 
-                </a>
-            </strong>
-            </td>
-            <td class="v-a-m smallFont">
-            <strong>
-                <a ng-click="orderByField='percentToAvg'; reverseSort = !reverseSort">
-                    % to Avg.
-                </a>
-            </strong>
-            </td>
-        </tr> 
-    </thead>
     <tbody>
-        <tr ng-repeat="staffInfo in $storage.staffSales[$storage.salesDate]" >
-             <td class="v-a-m">
-                <span class="smallFont">{{staffInfo.firstName}} {{staffInfo.lastName}}</span>              
+        <tr ng-repeat="staffInfo in $storage.staffSales[$storage.salesDate]" class="alternateBlocks"  ng-click="openStaff(staffInfo)">
+            <td class="v-a-m">
+                <img height='70px' ng-src="assets/images/marianethiel.png" hspace='20'/>
             </td>
-            <td class="v-a-m"> 
+            <td colspan="3">
+                <table>
+                    <tr>
+                        <td class="mediumFont">{{staffInfo.firstName}} {{staffInfo.lastName}}</td>
+                    </tr>
+                    <tr>
+                        <table class="noPaddingTable">
+                            <tr>
+                                <td class="alignLeft" style="color:grey; font-size: small;">Sales</td>
+                                <td></td>
+                                <td class="alignLeft" style="color:grey; font-size: small">Rev / Guest</td>
+                            </tr>
+                            <tr>
+                                <td class="alignLeft" style="font-size: small;">{{staffInfo.totalSales | currency:undefined:0}}</td>
+                                <td></td>
+                                <td class="alignLeft" style="font-size: small;">{{(((staffInfo.totalSales / staffInfo.totalOrders) / $storage.sales[$storage.salesDate].averageOrderPrice) * 100) - 100 | number:0}}%</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td class="alignLeft" style="color:grey;font-size: small;">to Avg.</td>
+                            </tr>
+                        </table
+                    </tr>
+                </table>
+            
+            </td>
+        </tr>
+    </tbody>
+</table>
+            <!--<td class="v-a-m"> 
                 <span class="smallFont">{{staffInfo.totalSales | currency:undefined:0}}</span>
             </td>
             <td class="v-a-m"> 
@@ -55,6 +56,16 @@
             <td class="v-a-m"> 
                 <span class="smallFont">{{(((staffInfo.totalSales / staffInfo.totalOrders) / $storage.sales[$storage.salesDate].averageOrderPrice) * 100) - 100 | number:0}}%</span>
             </td>
-        </tr>
-    </tbody>
-</table>
+
+            <tr><td>Sales</td></tr>
+                    <tr><td>{{staffInfo.totalSales|currency:undefined:0}}</td></tr>
+                </table>
+            </td>
+                <table>
+                    <tr><td></td></tr>
+                    <tr><td>Rev/Guest</td></tr>
+                    <tr><td>{{(((staffInfo.totalSales / staffInfo.totalOrders) / $storage.sales[$storage.salesDate].averageOrderPrice) * 100) - 100 | number:0}}%</td></tr> 
+                </table>
+
+            -->
+       

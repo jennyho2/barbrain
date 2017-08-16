@@ -1,0 +1,43 @@
+<div class="full">
+	<a ng-click="back()">
+		<img src="assets/images/backArrow.png" height="20px" width="20px" />
+	</a>
+	<br>
+	<div class="center">
+		<img height="25%" src="assets/images/marianethiel.png" />
+		<h2>{{$storage.staffInfo.firstName + " " + $storage.staffInfo.lastName}}</h2>
+	</div>
+	<br>
+	<div class="grayBKG">
+	<br>
+		<table class="tableEmployeeStat">
+			<tr style="color:darkgrey">
+				<td>Total Sales</td>
+				<td>Total Checks</td>
+			</tr>
+			<tr class="spaceUnder">
+				<td>{{$storage.staffInfo.totalSales|currency:undefined:0}}</td>
+				<td>{{$storage.staffInfo.totalOrders}}</td>
+			</tr>
+
+			<tr style="color:darkgrey">
+				<td>Avg. Rev. / Guest</td>
+				<td>Tip %</td>
+			</tr>
+			<tr class="spaceUnder">
+				<td>${{$storage.staffInfo.totalSales / $storage.staffInfo.totalOrders | number:0}}</td>
+				<td></td>
+			</tr>
+			<tr style="color:darkgrey">
+				<td>% to Avg.</td>
+				<td>Order Time</td>
+				
+			</tr>
+			<tr>
+				<td>Items/Order</td>
+			</tr>
+		</table>
+		<br>
+	</div>
+
+</div>
