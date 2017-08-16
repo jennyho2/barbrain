@@ -12,8 +12,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.$storage.goal = new Goal($http);
 	$scope.date = new Date();
 	$scope.data = {};
-	$scope.dateRange = $scope.date.getMonth()+1+'/'+
-	$scope.date.getDate(); //default is weekToDate
+	$scope.dateRange = $scope.date.getMonth()+1+'/'+ $scope.date.getDate(); //default is weekToDate
+	$scope.dateRangeNum = 0;
 	$scope.$storage.salesDate = moment().toDate();
 	$scope.$storage.salesDateMax = null;
 	$scope.$storage.staffInfo = null;
@@ -37,6 +37,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
     	return date.setDate(date.getDate() - 1);
   	};
  	$scope.getDateRange = function(section){
+ 		$scope.dateRangeNum = section;
     	if(section == 0){ //today's date
     		var date = new Date();
     		$scope.dateRange = date.getMonth()+1+'/'+date.getDate();
@@ -71,12 +72,10 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	        $scope.dateRange = (start.getMonth()+1) + '/' + start.getDate()  +'-'+ (end.getMonth()+1) + '/' + end.getDate();;
 	    }
 	};
-	var counter = 0;
-	$scope.getRandomAvatar = function(){
-		//$scope.randomNumber = 
-		var n = Math.floor((Math.random() * 100) + 1)%4;
-		var avatars = ['assets/images/staffPic1.png','assets/images/staffPic2.png','assets/images/staffPic3.png','assets/images/staffPic4.png'];
-		return avatars[0];
+	$scope.avatars = ['assets/images/staffPic1.png','assets/images/staffPic2.png','assets/images/staffPic3.png','assets/images/staffPic4.png'];
+	var count = 0;
+	$scope.getRandomAvatar = function(avatars){
+		return avatars[(count++ )%4];
 	}
 	$scope.$watch('locationSearchText', (n,o) => {
 		console.log(n);
