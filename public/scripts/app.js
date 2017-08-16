@@ -83,7 +83,9 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   $scope.$watch('$storage.incentiveCategory', function(newValue, oldValue) {
     //console.log(newValue);
     $scope.$storage.incentiveItems = _.filter($scope.$storage.menuitems, function(item) {
-      return item.category_id == newValue.id;
+    	if (newValue)  {
+      		return item.category_id == newValue.id;
+      	}
     });
     //console.log($scope.$storage.incentiveItems);
   });
@@ -286,7 +288,9 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.callGetTactics = function() {
 		$http.get("/tactics")
 			.then(function(data, status, headers, config) {
-				$scope.$storage.tactic = data.data[0].tactic;
+				if (data.data[0])  {
+					$scope.$storage.tactic = data.data[0].tactic;
+				}
 			}, function(data, status, headers, config) {
 				console.log("fail getting tactics");
 			});
