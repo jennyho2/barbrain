@@ -13,7 +13,7 @@
 		<table class="tableEmployeeStat">
 			<tr style="color:darkgrey">
 				<td>Total Sales</td>
-				<td>Total Checks</td>
+				<td>Total Orders</td>
 			</tr>
 			<tr class="spaceUnder">
 				<td>{{$storage.staffInfo.totalSales|currency:undefined:0}}</td>
@@ -25,16 +25,18 @@
 				<td>Tip %</td>
 			</tr>
 			<tr class="spaceUnder">
+			<!-- not sure if this is the correct number -->
 				<td>${{$storage.staffInfo.totalSales / $storage.staffInfo.totalOrders | number:0}}</td>
-				<td></td>
+				<td></td> <!-- fill in -->
 			</tr>
+
 			<tr style="color:darkgrey">
-				<td>% to Avg.</td>
+				<td>Items / Order</td>
 				<td>Order Time</td>
-				
 			</tr>
-			<tr>
-				<td>Items/Order</td>
+			<tr class="spaceUnder">
+				<td></td> <!-- fill in -->
+				<td></td> <!-- fill in -->
 			</tr>
 		</table>
 		<br>
