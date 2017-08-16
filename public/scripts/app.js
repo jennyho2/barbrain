@@ -90,7 +90,9 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   $scope.$watch('$storage.incentiveCategory', function(newValue, oldValue) {
     //console.log(newValue);
     $scope.$storage.incentiveItems = _.filter($scope.$storage.menuitems, function(item) {
-      return item.category_id == newValue.id;
+    	if (newValue)  {
+      		return item.category_id == newValue.id;
+      	}
     });
     //console.log($scope.$storage.incentiveItems);
   });
@@ -270,7 +272,9 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.callGetTactics = function() {
 		$http.get("/tactics")
 			.then(function(data, status, headers, config) {
-				$scope.$storage.tactic = data.data[0].tactic;
+				if (data.data[0])  {
+					$scope.$storage.tactic = data.data[0].tactic;
+				}
 			}, function(data, status, headers, config) {
 				console.log("fail getting tactics");
 			});
@@ -400,8 +404,10 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
           if (!$scope.$storage.incentive) $scope.$storage.incentive = {};
           console.log("Weekly incentive");
           console.log(response);
-          $scope.$storage.incentiveCategory = response.data.data[0];
-          $scope.$storage.weeklyIncentiveGoal = response.data.data[0].goal;
+          if (response.data.data[0])  {
+          	$scope.$storage.incentiveCategory = response.data.data[0];
+          	$scope.$storage.weeklyIncentiveGoal = response.data.data[0].goal;
+          }
         }, function(response)  {
           console.log("fail");
         });
