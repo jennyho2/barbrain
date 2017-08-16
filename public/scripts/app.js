@@ -30,7 +30,6 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.loading = false;
 	$scope.filteredLocations = [];
 	$scope.locationSearchText = null;
-	
 
 	$scope.getYesterdayDate = function(){
     	var date = new Date();
@@ -159,7 +158,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		$scope.$storage.salesDate = moment().format('YYYYMMDD');
 		if($scope.$storage.location){
 			// Preload data if we've got a saved location
-      $scope.loadIncentiveData();
+      		$scope.loadIncentiveData();
 			$scope.loadSalesData();
 		}
 		if (!$scope.$storage.allLocations) {
@@ -436,6 +435,11 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 				console.log('staff');
 				console.log(response);
 				$scope.$storage.staffSales[date] = response.data.data;
+				$scope.$storage.sales[date].totalGuests = 0;
+				$.each($scope.$storage.staffSales[date], function (key, value)  {
+					$scope.$storage.sales[date].totalGuests += value.totalGuests;
+				});
+
 	          // var from_date = moment().startOf('week').format('YYYYMMDD');
 	          // var to_date = moment().endOf('week').format('YYYYMMDD');
 	          	var from_date = moment().startOf('isoWeek').format('YYYYMMDD');
@@ -755,6 +759,12 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
     });
   }
 
+  	$scope.closeHamburger = function ()  {
+		var menuInput = $('#menuToggle > input');
+		menuInput.prop('checked', false);
+		$scope.$storage.salesDate = moment().format('YYYYMMDD');
+	}
+
   $scope.getWeekGoalsLavu();
 
 	$scope.init();
@@ -1070,11 +1080,6 @@ function hasOneDayPassed() {
 	localStorage.yourapp_date = date;
 	return true;
 };
-
-function closeHamburger()  {
-	var menuInput = $('#menuToggle > input');
-	menuInput.prop('checked', false);
-}
 
 var INCENTIVE = "TOUR CERVECERO4";
 

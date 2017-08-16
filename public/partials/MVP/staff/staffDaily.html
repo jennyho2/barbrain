@@ -1,9 +1,10 @@
 <div class="tactics">
 <br>
   <div class="center">
-    <span class="smallFont"><b>Avg. Check Overall</b></span>
+    <span class="smallFont"><b>Avg. Rev / Guest Overall</b></span>
     <div class="boxed ">
-      <span class="smallFont">{{$storage.sales[$storage.salesDate].averageOrderPrice|currency:undefined:0}}</span>
+        <span class="smallFont">{{ $storage.sales[$storage.salesDate].totalSales / $storage.sales[$storage.salesDate].totalGuests | currency:undefined:0 }}</span>
+      <!-- <span class="smallFont">{{$storage.sales[$storage.salesDate].averageOrderPrice|currency:undefined:0}}</span> -->
     </div>
   </div> <!-- End Insights -->
 <br>
@@ -29,7 +30,8 @@
                             <tr>
                                 <td class="alignLeft" style="font-size: small;">{{staffInfo.totalSales | currency:undefined:0}}</td>
                                 <td></td>
-                                <td class="alignLeft" style="font-size: small;">{{(((staffInfo.totalSales / staffInfo.totalOrders) / $storage.sales[$storage.salesDate].averageOrderPrice) * 100) - 100 | number:0}}%</td>
+                                <td class="alignLeft" style="font-size: small;">{{ (((staffInfo.totalSales / staffInfo.totalGuests) / ($storage.sales[$storage.salesDate].totalSales / $storage.sales[$storage.salesDate].totalGuests)) * 100) - 100 | number:0 }}%</td>
+                                <!-- <td class="alignLeft" style="font-size: small;">{{(((staffInfo.totalSales / staffInfo.totalOrders) / $storage.sales[$storage.salesDate].averageOrderPrice) * 100) - 100 | number:0}}%</td> -->
                             </tr>
                             <tr>
                                 <td></td>
