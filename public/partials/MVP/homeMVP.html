@@ -29,11 +29,11 @@ $( "Goal" ).click(function() {
   <!--set different graphs to display-->
   <div class="chartHolder smallDoughnut">
   <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
-  <canvas ng-if="$storage.weeklyIncentiveGoal - $storage.weekToDate.groups[$storage.incentiveItem.id].count > 0" id="doughnut" class="chart chart-doughnut"
-    chart-data="[$storage.weekToDate.groups[$storage.incentiveItem.id].count, $storage.weeklyIncentiveGoal - $storage.weekToDate.groups[$storage.incentiveItem.id].count]"  chart-labels="['Period Total Sales', 'Difference From Goal']" chart-options="options">
+  <canvas ng-if="$storage.weeklyIncentiveGoal - $storage.weekToDate.itemGroups[$storage.incentiveItem.id].count > 0" id="doughnut" class="chart chart-doughnut"
+    chart-data="[$storage.weekToDate.itemGroups[$storage.incentiveItem.id].count, $storage.weeklyIncentiveGoal - $storage.weekToDate.itemGroups[$storage.incentiveItem.id].count]"  chart-labels="['Period Total Sales', 'Difference From Goal']" chart-options="options">
   </canvas> 
-  <canvas ng-if="$storage.weeklyIncentiveGoal - $storage.weekToDate.groups[$storage.incentiveItem.id].count <= 0" id="doughnut" class="chart chart-doughnut"
-    chart-data="[$storage.weekToDate.groups[$storage.incentiveItem.id].count, $storage.weekToDate.groups[$storage.incentiveItem.id].count - $storage.weeklyIncentiveGoal ]"  chart-labels="['Period Total Sales', 'Amount Exceeding Goal']" chart-options="options">
+  <canvas ng-if="$storage.weeklyIncentiveGoal - $storage.weekToDate.itemGroups[$storage.incentiveItem.id].count <= 0" id="doughnut" class="chart chart-doughnut"
+    chart-data="[$storage.weekToDate.itemGroups[$storage.incentiveItem.id].count, $storage.weekToDate.itemGroups[$storage.incentiveItem.id].count - $storage.weeklyIncentiveGoal ]"  chart-labels="['Period Total Sales', 'Amount Exceeding Goal']" chart-options="options">
   </canvas> 
 </div>
   
