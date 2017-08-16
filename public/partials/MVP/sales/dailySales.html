@@ -97,13 +97,11 @@
       <div class="modal-header headerBKG">
         <h4 class="modal-title center xlargeFont" style="color:white">Current Goal: {{$storage.goals[$storage.salesDate].value}}</h4>
       </div>
-      
-      <div class="modal-body center">
+      <br>
+      <div class="modal-body center tactics">
       <span class="largeFont center">New Goal</span>
       <br>
-        <input type="number" id="salesGoalInput" />
-        <!-- <input type="range" min="{{$storage.dailyHardGoal-300}}" max="{{$storage.dailyHardGoal+300}}" id="weeklyGoalRange" ng-model="$storage.dailyHardGoal" />
-        <input type="number" id="weeklyGoalInput" ng-if="section == 0" ng-model="$storage.dailyHardGoal" /> -->
+        <input type="number" class="center" id="salesGoalInput" />
       </div>
       <div class="modal-footer headerBKG">
         <button type="button" class="btn btn-default" ng-click="callUpdateGoals()">Update</button>
