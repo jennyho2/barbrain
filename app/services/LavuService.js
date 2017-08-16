@@ -363,7 +363,8 @@ module.exports = class LavuService {
 				categories: [],
 				groups: {},
 				superGroups: {},
-				staffGroups: {}
+				staffGroups: {},
+				itemGroups: {}
 			};
 			
 			orders.forEach(order => {
@@ -417,14 +418,14 @@ module.exports = class LavuService {
 								}
 							}
 
-							// if (summary.groups[menuItem.id])  {
-							// 	summary.groups[menuItem.id].count += detail.quantity;
-							// 	summary.groups[menuItem.id].sales += detail.total;
-							// } else {
-							// 	summary.groups[menuItem.id] = {};
-							// 	summary.groups[menuItem.id].count = detail.quantity;
-							// 	summary.groups[menuItem.id].sales = detail.total;
-							// }
+							if (summary.itemGroups[menuItem.id])  {
+								summary.itemGroups[menuItem.id].count += detail.quantity;
+								summary.itemGroups[menuItem.id].sales += detail.total;
+							} else {
+								summary.itemGroups[menuItem.id] = {};
+								summary.itemGroups[menuItem.id].count = detail.quantity;
+								summary.itemGroups[menuItem.id].sales = detail.total;
+							}
 							if (summary.staffGroups[menuItem.id])  {
 								if (summary.staffGroups[menuItem.id][user.id] )  {
 									summary.staffGroups[menuItem.id][user.id].count += detail.quantity;

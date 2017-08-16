@@ -446,6 +446,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	          	$http.get('/locations/' + $scope.$storage.location + '/salessummary/' + from_date + '/' + to_date + (refresh ? '?refresh=true' : ''))
 	          	.then(function(response)  {
             	console.log("Week to date");
+            	console.log($scope.$storage.incentiveItem.id);
             	console.log(response);
             	$scope.$storage.weekToDate = response.data.data;
 

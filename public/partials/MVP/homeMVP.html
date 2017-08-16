@@ -24,7 +24,7 @@ $( "Goal" ).click(function() {
     API call timed out. Try again.
   </div>
 
-  <h4 class="center">{{ $storage.weekToDate.groups[$storage.incentiveItem.id].count }} / {{ $storage.weeklyIncentiveGoal }}</h4>
+  <h4 class="center">{{ $storage.weekToDate.itemGroups[$storage.incentiveItem.id].count }} / {{ $storage.weeklyIncentiveGoal }}</h4>
 
   <!--set different graphs to display-->
   <div class="chartHolder smallDoughnut">
@@ -40,7 +40,7 @@ $( "Goal" ).click(function() {
   
 
   <div class="center">
-  <span>{{ $storage.weekToDate.groups[$storage.incentiveItem.id].count / $storage.weeklyIncentiveGoal * 100 | number:0 }}%</span>
+  <span>{{ $storage.weekToDate.itemGroups[$storage.incentiveItem.id].count / $storage.weeklyIncentiveGoal * 100 | number:0 }}%</span>
   <br>
   <span class="smallFont">of this week's {{$storage.incentiveItem.name}} 
   <br> goal achieved</span>
@@ -77,8 +77,8 @@ $( "Goal" ).click(function() {
       <th class="smallFont">Sales</th>
     </tr>
     <tr class="center">
-      <td class="mediumFont" ng-init="callGetGoals()">{{ $storage.sales[$storage.salesDate].groups[$storage.incentiveItem.id].count}}</td>
-      <td class="mediumFont">{{ $storage.sales[$storage.salesDate].groups[$storage.incentiveItem.id].sales | currency:undefined:0 }}</td>
+      <td class="mediumFont" ng-init="callGetGoals()">{{ $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count}}</td>
+      <td class="mediumFont">{{ $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].sales | currency:undefined:0 }}</td>
     </tr>
   </table>
 
