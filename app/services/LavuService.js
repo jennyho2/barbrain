@@ -132,10 +132,10 @@ module.exports = class LavuService {
 		});
 	}
 	
-	loadMenuCategories(refresh){
+	loadMenuCategories(){
 		return database.connect().then(db => {
 			return db.collection('lavu_menu_categories').find({ location_id: this.locationId }).toArray().then(rows => {
-				if(!rows || rows.length == 0 || refresh){
+				if(!rows || rows.length == 0){
 					console.log('No Lavu menu categories found.  Loading from Lavu...');
 					return this.getMenuCategoriesFromApi()
 					.then(categories => {
@@ -305,7 +305,7 @@ module.exports = class LavuService {
 	getSalesSection(minDate, maxDate)  {
 		return this.loadOrders(minDate, maxDate, true)
 		.then(orders => this.loadMenuItems(true).then(menuItems => { return { orders, menuItems }; }))
-		.then(({orders, menuItems}) => this.loadMenuCategories(true).then(categories => { return { orders, menuItems, categories }; }))
+		.then(({orders, menuItems}) => this.loadMenuCategories().then(categories => { return { orders, menuItems, categories }; }))
 		.then(({orders, menuItems, categories}) => {
 
 			let summary = {
@@ -349,7 +349,7 @@ module.exports = class LavuService {
 	getSalesSummary(minDate, maxDate, refresh){
 		return this.loadOrders(minDate, maxDate, refresh)
 		.then(orders => this.loadMenuItems(refresh).then(menuItems => { return { orders, menuItems }; }))
-		.then(({orders, menuItems}) => this.loadMenuCategories(true).then(categories => { return { orders, menuItems, categories }; }))
+		.then(({orders, menuItems}) => this.loadMenuCategories().then(categories => { return { orders, menuItems, categories }; }))
 		.then(({orders, menuItems, categories}) => this.loadUsers().then(users => { return { orders, menuItems, categories, users }; }))
 		.then(({orders, menuItems, categories, users}) => this.loadSuperGroups().then(supergroups => { return { orders, menuItems, categories, users, supergroups }; }))
 		.then(({orders, menuItems, categories, users, supergroups}) => this.loadMenuGroups().then(groups => { return { orders, menuItems, categories, users, supergroups, groups }; }))
