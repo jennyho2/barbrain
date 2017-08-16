@@ -416,8 +416,10 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
           if (!$scope.$storage.incentive) $scope.$storage.incentive = {};
           console.log("Weekly incentive");
           console.log(response);
-          $scope.$storage.incentiveCategory = response.data.data[0];
-          $scope.$storage.weeklyIncentiveGoal = response.data.data[0].goal;
+          if (response.data.data[0])  {
+          	$scope.$storage.incentiveCategory = response.data.data[0];
+          	$scope.$storage.weeklyIncentiveGoal = response.data.data[0].goal;
+          }
         }, function(response)  {
           console.log("fail");
         });
