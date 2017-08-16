@@ -349,7 +349,7 @@ module.exports = class LavuService {
 	getSalesSummary(minDate, maxDate, refresh){
 		return this.loadOrders(minDate, maxDate, refresh)
 		.then(orders => this.loadMenuItems(refresh).then(menuItems => { return { orders, menuItems }; }))
-		.then(({orders, menuItems}) => this.loadMenuCategories().then(categories => { return { orders, menuItems, categories }; }))
+		.then(({orders, menuItems}) => this.loadMenuCategories(true).then(categories => { return { orders, menuItems, categories }; }))
 		.then(({orders, menuItems, categories}) => this.loadUsers().then(users => { return { orders, menuItems, categories, users }; }))
 		.then(({orders, menuItems, categories, users}) => this.loadSuperGroups().then(supergroups => { return { orders, menuItems, categories, users, supergroups }; }))
 		.then(({orders, menuItems, categories, users, supergroups}) => this.loadMenuGroups().then(groups => { return { orders, menuItems, categories, users, supergroups, groups }; }))

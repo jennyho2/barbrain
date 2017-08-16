@@ -19,7 +19,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.$storage.staffInfo = null;
 
 	// $scope.$storage.INCENTIVE = INCENTIVE;
-  $scope.$storage.weeklyIncentiveGoal = 0;
+  	$scope.$storage.weeklyIncentiveGoal = 0;
 	$scope.$storage.dailyHardGoal = 200000;
 	$scope.$storage.dailyHardIncentiveGoal = 45;
 	$scope.$storage.dailyHardIncentiveProjection = 45;
@@ -1029,6 +1029,12 @@ app.run(function($rootScope, $location, $localStorage) {
 		return section=sec;
 	};
 
+});
+
+app.filter('capitalizeFirst', function() {
+    return function(input) {
+      return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
+    }
 });
 
 angular.module('filters.stringUtils', [])
