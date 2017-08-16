@@ -124,6 +124,7 @@ module.exports = class LavuService {
 				return {
 					id: parseInt($row.find('id').text()),
 					group_id: parseInt($row.find('group_id').text()),
+					super_group_id: parseInt($row.find('super_group_id').text()),
 					name: $row.find('name').text(),
 					location_id: this.locationId
 				};
@@ -131,10 +132,10 @@ module.exports = class LavuService {
 		});
 	}
 	
-	loadMenuCategories(){
+	loadMenuCategories(refresh){
 		return database.connect().then(db => {
 			return db.collection('lavu_menu_categories').find({ location_id: this.locationId }).toArray().then(rows => {
-				if(!rows || rows.length == 0){
+				if(!rows || rows.length == 0 || refresh){
 					console.log('No Lavu menu categories found.  Loading from Lavu...');
 					return this.getMenuCategoriesFromApi()
 					.then(categories => {
@@ -173,6 +174,36 @@ module.exports = class LavuService {
 						return db.collection('lavu_menu_groups')
 							.insertMany(groups)
 							.then(() => groups);
+					});
+				}
+				return rows;
+			});
+		});
+	}
+
+	getMenuSuperGroupsFromApi() {
+		return this.post(this.buildApiData('super_groups'))
+		.then(body => {
+			return $(body).find('row').toArray().map(supergroup => {
+				let $row = $(supergroup);
+				return {
+					id: parseInt($row.find('id').text()),
+					name: $row.find('title').text()
+				};
+			});
+		});
+	}
+
+	loadSuperGroups() {
+		return database.connect().then(db => {
+			return db.collection('lavu_super_groups').find({ location_id: this.locationId }).toArray().then(rows => {
+				if (!rows || rows.length == 0)  {
+					console.log('No Lavu super groups found. Loading from lavu...');
+					return this.getMenuSuperGroupsFromApi()
+					.then(supergroups => {
+						return db.collection('lavu_super_groups')
+							.insertMany(supergroups)
+							.then(() => supergroups);
 					});
 				}
 				return rows;
@@ -317,9 +348,11 @@ module.exports = class LavuService {
 	getSalesSummary(minDate, maxDate, refresh){
 		return this.loadOrders(minDate, maxDate, refresh)
 		.then(orders => this.loadMenuItems(refresh).then(menuItems => { return { orders, menuItems }; }))
-		.then(({orders, menuItems}) => this.loadMenuCategories(refresh).then(categories => { return { orders, menuItems, categories }; }))
+		.then(({orders, menuItems}) => this.loadMenuCategories(true).then(categories => { return { orders, menuItems, categories }; }))
 		.then(({orders, menuItems, categories}) => this.loadUsers().then(users => { return { orders, menuItems, categories, users }; }))
-		.then(({orders, menuItems, categories, users}) => {
+		.then(({orders, menuItems, categories, users}) => this.loadSuperGroups().then(supergroups => { return { orders, menuItems, categories, users, supergroups }; }))
+		.then(({orders, menuItems, categories, users, supergroups}) => this.loadMenuGroups().then(groups => { return { orders, menuItems, categories, users, supergroups, groups }; }))
+		.then(({orders, menuItems, categories, users, supergroups, groups}) => {
 			
 			console.log(orders.length, menuItems.length, categories.length);
 			
@@ -327,8 +360,9 @@ module.exports = class LavuService {
 				totalSales: 0,
 				totalOrders: 0,
 				categories: [],
-				groups: [],
-				staffGroups: []
+				groups: {},
+				superGroups: {},
+				staffGroups: {}
 			};
 			
 			orders.forEach(order => {
@@ -350,21 +384,46 @@ module.exports = class LavuService {
 						else {
 							let category = find(summary.categories, cat => cat.id == menuCategory.id);
 							if(!category){
-								category = { id: menuCategory.id, name: menuCategory.name, count: 0, sales: 0, group_id: menuCategory.group_id };
+								category = { id: menuCategory.id, name: menuCategory.name, count: 0, sales: 0, group_id: menuCategory.group_id, super_group_id: menuCategory.super_group_id };
 								summary.categories.push(category);
 							}
 
 							category.count += detail.quantity;
 							category.sales += detail.total;
-
-							if (summary.groups[menuItem.id])  {
-								summary.groups[menuItem.id].count += detail.quantity;
-								summary.groups[menuItem.id].sales += detail.total;
+							if (summary.groups[category.group_id])  {
+								summary.groups[category.group_id].count += detail.quantity;
+								summary.groups[category.group_id].sales += detail.total;
 							} else {
-								summary.groups[menuItem.id] = {};
-								summary.groups[menuItem.id].count = detail.quantity;
-								summary.groups[menuItem.id].sales = detail.total;
+								let group = find(groups, g => g.id == category.group_id);
+								summary.groups[category.group_id] = {};
+								if (group) {
+									summary.groups[category.group_id].name = group.name;
+								}
+								summary.groups[category.group_id].count = detail.quantity;
+								summary.groups[category.group_id].sales = detail.total;
 							}
+
+							if (summary.superGroups[category.super_group_id])  {
+								summary.superGroups[category.super_group_id].count += detail.quantity;
+								summary.superGroups[category.super_group_id].sales += detail.total;
+							} else {
+								let supergroup = find(supergroups, sg => sg.id == category.super_group_id);
+								if (supergroup)  {
+									summary.superGroups[category.super_group_id] = {};
+									summary.superGroups[category.super_group_id].name = supergroup.name;
+									summary.superGroups[category.super_group_id].count = detail.quantity;
+									summary.superGroups[category.super_group_id].sales = detail.total;
+								}
+							}
+
+							// if (summary.groups[menuItem.id])  {
+							// 	summary.groups[menuItem.id].count += detail.quantity;
+							// 	summary.groups[menuItem.id].sales += detail.total;
+							// } else {
+							// 	summary.groups[menuItem.id] = {};
+							// 	summary.groups[menuItem.id].count = detail.quantity;
+							// 	summary.groups[menuItem.id].sales = detail.total;
+							// }
 							if (summary.staffGroups[menuItem.id])  {
 								if (summary.staffGroups[menuItem.id][user.id] )  {
 									summary.staffGroups[menuItem.id][user.id].count += detail.quantity;
