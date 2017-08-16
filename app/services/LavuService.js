@@ -445,7 +445,15 @@ module.exports = class LavuService {
 	getGoalsSummary(minDate, maxDate, weekly)  {
 		return database.connect().then(db => {
 			if (weekly)  { // if pulling a weekly or monthly request & ignore dailies
-				return db.collection('goals').find({ location_id: this.locationId, type: 'weekly', date: minDate }).sort({ created_at: -1 }).limit(1).toArray().then(result => result);
+				var locId = this.locationId;
+				return db.collection('goals').find({ location_id: this.locationId, type: 'monthly', date: minDate }).sort({ created_at: -1 }).limit(1).toArray()
+				.then(result => {
+					if (result.length == 0)  {
+						return db.collection('goals').find({ location_id: this.locationId, type: 'weekly', date: minDate }).sort({ created_at: -1 }).limit(1).toArray().then(result => result);
+					} else {
+						return result;
+					}
+				});
 			}
 			else {
 				var locId = this.locationId;
@@ -485,6 +493,18 @@ module.exports = class LavuService {
     getWeeklyGoal(dateValue)  {
     	return database.connect().then(db => {
         	return db.collection('goals').find({ location_id: this.locationId, type: 'weekly', date: dateValue }).sort({ created_at: -1 }).limit(1).toArray().then(result => result);
+        });
+    }
+
+    setMonthlyGoal(dateValue, amount)  {
+		return database.connect().then(db => {
+            return db.collection('goals').insert({ location_id: this.locationId, type: 'monthly', value: amount, date: dateValue, created_at: new Date() });
+        });
+    }
+
+    getMonthlyGoal(dateValue)  {
+    	return database.connect().then(db => {
+        	return db.collection('goals').find({ location_id: this.locationId, type: 'monthly', date: dateValue }).sort({ created_at: -1 }).limit(1).toArray().then(result => result);
         });
     }
 

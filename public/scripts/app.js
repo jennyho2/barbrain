@@ -222,14 +222,14 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
 	$scope.callUpdateGoals = function() {
 		$scope.$storage.goals[$scope.$storage.salesDate].value=$('#salesGoalInput').val();
-    $http.post("/locations/" + $scope.$storage.location + "/goals/" + $scope.$storage.goals[$scope.$storage.salesDate].type + "/" + $scope.$storage.salesDate, {
-      "value": $scope.$storage.goals[$scope.$storage.salesDate].value
-    })
-    .then(function(response)  {
-      console.log($scope.$storage.goals);
-    }, function(resposne)  {
-      console.log("Failing here");
-    });
+	    $http.post("/locations/" + $scope.$storage.location + "/goals/" + $scope.$storage.goals[$scope.$storage.salesDate].type + "/" + $scope.$storage.salesDate, {
+	      "value": $scope.$storage.goals[$scope.$storage.salesDate].value
+	    })
+	    .then(function(response)  {
+	      console.log($scope.$storage.goals);
+	    }, function(resposne)  {
+	      console.log("Failing here");
+	    });
 
 		// var newGoal = $('#weeklyGoalInput').val();
 		// //console.log("Section: " + section);
@@ -460,7 +460,10 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
               if (response.data.data.length == 0)  { //empty response
                 $scope.$storage.goals[date] = {};
                 $scope.$storage.goals[date].value = 0;
-                if ($scope.$storage.salesDateMax) {
+                if ($scope.$storage.salesDate == moment().startOf('month').format('YYYYMMDD'))  {
+                	$scope.$storage.goals[date].type = 'monthly';
+                } 
+                else if ($scope.$storage.salesDateMax) {
                   $scope.$storage.goals[date].type = 'weekly';
                 } else {
                   $scope.$storage.goals[date].type = 'daily';
@@ -503,6 +506,17 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
                       console.log("Failure");
                     });
                     console.log($scope.$storage.goals);
+                  }
+                  else {
+                  	$scope.$storage.goals[date].type = 'monthly';
+                  	$http.post('/locations/' + $scope.$storage.location + '/goals/monthly/' + date, {
+                      "value" : $scope.$storage.goals[date].value
+                    })
+                    .then(function (response)  {
+                      console.log("Succcess");
+                    }, function(resposne)  {
+                      console.log("Failure");
+                    });
                   }
                 }
               }

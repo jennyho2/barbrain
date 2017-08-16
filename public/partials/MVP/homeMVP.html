@@ -53,6 +53,7 @@ $( "Goal" ).click(function() {
     <th ng-class="{'selected': section === 0}" ng-click="setSalesDate('TODAY'); getDateRange(0); section = 0">Today <span ng-if='section==0'><br>{{dateRange}}</span></th>
     <th ng-class="{'selected': section === 1}" ng-click="setSalesDate('YESTERDAY'); getDateRange(1); section = 1">Yesterday <span ng-if='section==1'><br>{{dateRange}}</span></th></th>
     <th ng-class="{'selected': section === 2}" ng-click="setSalesDate('LASTWEEK'); getDateRange(2); section = 2">Last Week <span ng-if='section==2'><br>{{dateRange}}</span></th></th>
+    <th ng-class="{'selected': section === 3}" ng-click="setSalesDate('MONTHLY'); getDateRange(3); section = 3">Monthly</th>
      <!--  <th class="centeredPaddedCell" ng-class="{'selected': section === 0}" ng-click="section = 0">Today</th>
       <th class="centeredPaddedCell" ng-class="{'selected': section === 1}" ng-click="section = 1">Yesterday</th>
       <th class="centeredPaddedCell" ng-class="{'selected': section === 2}" ng-click="section = 2">Last Week</th> -->
