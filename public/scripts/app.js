@@ -1069,6 +1069,11 @@ function hasOneDayPassed() {
 	return true;
 };
 
+function closeHamburger()  {
+	var menuInput = $('#menuToggle > input');
+	menuInput.prop('checked', false);
+}
+
 var INCENTIVE = "TOUR CERVECERO4";
 
 
