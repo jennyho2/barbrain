@@ -51,9 +51,10 @@ $( "Goal" ).click(function() {
   <table class="dividerTable" ng-init="section = 0;getDateRange(0)">
     <tr class="smallFont bottomLine">
     <th ng-class="{'selected': section === 0}" ng-click="setSalesDate('TODAY'); getDateRange(0); section = 0">Today <span ng-if='section==0'><br>{{dateRange}}</span></th>
-    <th ng-class="{'selected': section === 1}" ng-click="setSalesDate('YESTERDAY'); getDateRange(1); section = 1">Yesterday <span ng-if='section==1'><br>{{dateRange}}</span></th></th>
-    <th ng-class="{'selected': section === 2}" ng-click="setSalesDate('LASTWEEK'); getDateRange(2); section = 2">Last Week <span ng-if='section==2'><br>{{dateRange}}</span></th></th>
-    <th ng-class="{'selected': section === 3}" ng-click="setSalesDate('MONTHLY'); getDateRange(3); section = 3">Monthly</th>
+    <th ng-class="{'selected': section === 1}" ng-click="setSalesDate('YESTERDAY'); getDateRange(1); section = 1">Yesterday <span ng-if='section==1'><br>{{dateRange}}</span></th>
+    <th ng-class="{'selected': section === 2}" ng-click="setSalesDate('WEEKTODATE'); getDateRange(4); section = 2">Week To Date <span ng-if='section==2'><br>{{dateRange}}</span></th>
+    <th ng-class="{'selected': section === 3}" ng-click="setSalesDate('LASTWEEK'); getDateRange(2); section = 3">Last Week <span ng-if='section==3'><br>{{dateRange}}</span></th>
+    <th ng-class="{'selected': section === 4}" ng-click="setSalesDate('MONTHLY'); getDateRange(3); section = 4">Monthly<span ng-if='section==4'><br>{{dateRange}}</span></th>
      <!--  <th class="centeredPaddedCell" ng-class="{'selected': section === 0}" ng-click="section = 0">Today</th>
       <th class="centeredPaddedCell" ng-class="{'selected': section === 1}" ng-click="section = 1">Yesterday</th>
       <th class="centeredPaddedCell" ng-class="{'selected': section === 2}" ng-click="section = 2">Last Week</th> -->
@@ -91,7 +92,7 @@ $( "Goal" ).click(function() {
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header headerBKG">
-        <h4 class="modal-title center xlargeFont" style="color:white">Current Goal: {{$storage.weeklyIncentiveGoal}}</h4>
+        <h4 class="modal-title center xlargeFont" style="color:white">{{dateRange}} Goal: {{$storage.weeklyIncentiveGoal}}</h4>
       </div>
       <div class="modal-body center tactics">
         <!-- <input type="range" min="{{$storage.dailyHardIncentiveGoal-300}}" max="{{$storage.dailyHardIncentiveGoal+300}}" id="weeklyGoalRange" ng-model="$storage.dailyHardIncentiveGoal" /> -->

@@ -432,99 +432,101 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		var date = $scope.$storage.salesDate;
 		$scope.loading = true;
 		$http.get("/locations/" + $scope.$storage.location + "/salessummary/" + date + ($scope.$storage.salesDateMax ? '/' + $scope.$storage.salesDateMax : '') + (refresh ? '?refresh=true' : ''))
-		.then(function(responseSummary) {
+		.then(function(response) {
 			if (!$scope.$storage.sales) $scope.$storage.sales = {};
 			// $scope.$storage.sales[date.format('YYYYMMDD')] = response.data.data;
-			let salesData = $scope.$storage.sales[date] = responseSummary.data.data;
+			let salesData = $scope.$storage.sales[date] = response.data.data;
 			salesData.averageOrderPrice = salesData.totalSales / salesData.totalOrders;
 
 			console.log($scope.$storage.sales);
 
 			$http.get('/locations/' + $scope.$storage.location + '/staffsales/' + date + ($scope.$storage.salesDateMax ? '/' + $scope.$storage.salesDateMax : '') + (refresh ? '?refresh=true' : ''))
-				.then(function(responseStaff) {
-					if (!$scope.$storage.staffSales) $scope.$storage.staffSales = {};
-					$scope.$storage.staffSales[date] = responseStaff.data.data;
-          // var from_date = moment().startOf('week').format('YYYYMMDD');
-          // var to_date = moment().endOf('week').format('YYYYMMDD');
-          var from_date = moment().startOf('isoWeek').format('YYYYMMDD');
-            var to_date = moment().endOf('isoWeek').format('YYYYMMDD');
-          $http.get('/locations/' + $scope.$storage.location + '/salessummary/' + from_date + '/' + to_date + (refresh ? '?refresh=true' : ''))
-          .then(function(response)  {
-            console.log("Week to date");
-            console.log(response);
-            $scope.$storage.weekToDate = response.data.data;
+			.then(function(response) {
+				if (!$scope.$storage.staffSales) $scope.$storage.staffSales = {};
+				console.log('staff');
+				console.log(response);
+				$scope.$storage.staffSales[date] = response.data.data;
+	          // var from_date = moment().startOf('week').format('YYYYMMDD');
+	          // var to_date = moment().endOf('week').format('YYYYMMDD');
+	          	var from_date = moment().startOf('isoWeek').format('YYYYMMDD');
+	            var to_date = moment().endOf('isoWeek').format('YYYYMMDD');
+	          	$http.get('/locations/' + $scope.$storage.location + '/salessummary/' + from_date + '/' + to_date + (refresh ? '?refresh=true' : ''))
+	          	.then(function(response)  {
+            	console.log("Week to date");
+            	console.log(response);
+            	$scope.$storage.weekToDate = response.data.data;
 
-            $http.get('/locations/' + $scope.$storage.location + '/goals/' + date + ($scope.$storage.salesDateMax ? '/' + $scope.$storage.salesDateMax : '') + (refresh ? '?refresh=true' : ''))
-            .then(function (response)  {
-              if (!$scope.$storage.goals) $scope.$storage.goals = {};
-              if (response.data.data.length == 0)  { //empty response
-                $scope.$storage.goals[date] = {};
-                $scope.$storage.goals[date].value = 0;
-                if ($scope.$storage.salesDate == moment().startOf('month').format('YYYYMMDD'))  {
-                	$scope.$storage.goals[date].type = 'monthly';
-                } 
-                else if ($scope.$storage.salesDateMax) {
-                  $scope.$storage.goals[date].type = 'weekly';
-                } else {
-                  $scope.$storage.goals[date].type = 'daily';
-                }
-              } 
-              else {
-                $scope.$storage.goals[date] = response.data.data[0];
+	            $http.get('/locations/' + $scope.$storage.location + '/goals/' + date + ($scope.$storage.salesDateMax ? '/' + $scope.$storage.salesDateMax : '') + (refresh ? '?refresh=true' : ''))
+	            .then(function (response)  {
+	              if (!$scope.$storage.goals) $scope.$storage.goals = {};
+	              if (response.data.data.length == 0)  { //empty response
+	                $scope.$storage.goals[date] = {};
+	                $scope.$storage.goals[date].value = 0;
+	                if ($scope.$storage.salesDate == moment().startOf('month').format('YYYYMMDD'))  {
+	                	$scope.$storage.goals[date].type = 'monthly';
+	                } 
+	                else if ($scope.$storage.salesDateMax) {
+	                  $scope.$storage.goals[date].type = 'weekly';
+	                } else {
+	                  $scope.$storage.goals[date].type = 'daily';
+	                }
+	              } 
+	              else {
+	                $scope.$storage.goals[date] = response.data.data[0];
 
-                if (!$scope.$storage.salesDateMax)  { // not weekly/monthly
-                  if (response.data.data[0].type == 'weekly')  { // no daily goal set yet
-                    switch(moment(date).day())  {
-                      case 0:
-                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.10;
-                        break;
-                      case 1:
-                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.04;
-                        break;
-                      case 2:
-                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.04;
-                        break;
-                      case 3:
-                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.07;
-                        break;
-                      case 4:
-                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.10;
-                        break;
-                      case 5:
-                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.30;
-                        break;
-                      case 6:
-                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.35;
-                        break;
-                    }
-                    $http.post('/locations/' + $scope.$storage.location + '/goals/daily/' + date, {
-                      "value" : $scope.$storage.goals[date].value
-                    })
-                    .then(function (response)  {
-                      console.log("Succcess");
-                    }, function(resposne)  {
-                      console.log("Failure");
-                    });
-                    console.log($scope.$storage.goals);
-                  }
-                  else {
-                  	$scope.$storage.goals[date].type = 'monthly';
-                  	$http.post('/locations/' + $scope.$storage.location + '/goals/monthly/' + date, {
-                      "value" : $scope.$storage.goals[date].value
-                    })
-                    .then(function (response)  {
-                      console.log("Succcess");
-                    }, function(resposne)  {
-                      console.log("Failure");
-                    });
-                  }
-                }
-              }
-              console.log($scope.$storage.sales);
-              $scope.loading = false;  
-            });
-          });
-				});
+	                if (!$scope.$storage.salesDateMax)  { // not weekly/monthly
+	                  if (response.data.data[0].type == 'weekly')  { // no daily goal set yet
+	                    switch(moment(date).day())  {
+	                      case 0:
+	                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.10;
+	                        break;
+	                      case 1:
+	                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.04;
+	                        break;
+	                      case 2:
+	                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.04;
+	                        break;
+	                      case 3:
+	                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.07;
+	                        break;
+	                      case 4:
+	                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.10;
+	                        break;
+	                      case 5:
+	                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.30;
+	                        break;
+	                      case 6:
+	                        $scope.$storage.goals[date].value = $scope.$storage.goals[date].value * 0.35;
+	                        break;
+	                    }
+	                    $http.post('/locations/' + $scope.$storage.location + '/goals/daily/' + date, {
+	                      "value" : $scope.$storage.goals[date].value
+	                    })
+	                    .then(function (response)  {
+	                      console.log("Success");
+	                    }, function(resposne)  {
+	                      console.log("Failure");
+	                    });
+	                    console.log($scope.$storage.goals);
+	                  }
+	                  // else {
+	                  // 	$scope.$storage.goals[date].type = 'monthly';
+	                  // 	$http.post('/locations/' + $scope.$storage.location + '/goals/monthly/' + date, {
+	                  //     "value" : $scope.$storage.goals[date].value
+	                  //   })
+	                  //   .then(function (response)  {
+	                  //     console.log("Succcess");
+	                  //   }, function(resposne)  {
+	                  //     console.log("Failure");
+	                  //   });
+	                  // }
+	                }
+	              }
+	              console.log($scope.$storage.sales);
+	              $scope.loading = false;  
+	            });
+	          });
+			});
 		}, function(response) {
       $scope.loading = false;
       $scope.error = true;

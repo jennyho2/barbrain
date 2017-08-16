@@ -257,10 +257,11 @@ module.exports = class LavuService {
 					var location_id = this.locationId;
 					var closed = moment($row.find('closed').text()).toDate();
 					var user_id = parseInt($row.find('server_id').text());
+					var guests = parseInt($row.find('guests').text());
 					
 					let details = filter(allDetails, d => d.order_id == order_id);
 					
-					return { _id, orderId: order_id, location_id, closed, total: total, details: details, user_id };
+					return { _id, orderId: order_id, location_id, closed, total: total, details: details, user_id, guests };
 					
 				});
 			});
@@ -348,7 +349,7 @@ module.exports = class LavuService {
 	getSalesSummary(minDate, maxDate, refresh){
 		return this.loadOrders(minDate, maxDate, refresh)
 		.then(orders => this.loadMenuItems(refresh).then(menuItems => { return { orders, menuItems }; }))
-		.then(({orders, menuItems}) => this.loadMenuCategories(true).then(categories => { return { orders, menuItems, categories }; }))
+		.then(({orders, menuItems}) => this.loadMenuCategories().then(categories => { return { orders, menuItems, categories }; }))
 		.then(({orders, menuItems, categories}) => this.loadUsers().then(users => { return { orders, menuItems, categories, users }; }))
 		.then(({orders, menuItems, categories, users}) => this.loadSuperGroups().then(supergroups => { return { orders, menuItems, categories, users, supergroups }; }))
 		.then(({orders, menuItems, categories, users, supergroups}) => this.loadMenuGroups().then(groups => { return { orders, menuItems, categories, users, supergroups, groups }; }))
@@ -489,11 +490,12 @@ module.exports = class LavuService {
 				
 				let s = find(staff, s => s.id == user.id);
 				if(!s) { 
-					s = { id: user.id, firstName: user.firstName, lastName: user.lastName, totalSales: 0, totalOrders: 0 }; 
+					s = { id: user.id, firstName: user.firstName, lastName: user.lastName, totalSales: 0, totalOrders: 0, totalGuests: 0 }; 
 					staff.push(s); 
 				}
 				s.totalSales += order.total;
 				s.totalOrders++;
+				s.totalGuests += order.guests;
 			});
 			return staff;
 		});
