@@ -17,14 +17,22 @@
 <br>
 </div>
 
-
-<!-- Insights -->
+<script>
+</script>
+<!-- Suggested -->
 <div class="tactics">
 <br>
   <div class="center">
     <span class="smallFont"><b>Suggested Incentives</b></span>
     <div class="boxed ">
-      <span class="smallFont">{{$storage.fullTactics.tactics[0].tips.suggestedIncentives}}</span>
+      <!--<span class="smallFont">Consider selling {{getRandomNumber()}}{{$storage.incentiveItem.name}}</span>-->
+      <!--<select class="smallRoundButton" ng-model="$storage.incentiveCategory" ng-options="x.name for x in $storage.menucategories | orderBy:'toString()'">
+      </select> -->
+      <div>
+        <span>{{$storage.tacticsByLocation.message}} Consider selling {{$storage.tacticsByLocation.count}} units of {{$storage.tacticsByLocation.item}}</span>
+      </div>
+      <button ng-if="$storage.incentiveAccepted==0" type="button" class="btn btn-default" ng-click="updateSuggestedIncentive()">Accept Incentive</button>
+      <button ng-if="$storage.incentiveAccepted==1" type="button" class="btn btn-default" ><a href="#!home">Track Incentive</a></button>
     </div>
   </div> <!-- End Insights -->
 <br>

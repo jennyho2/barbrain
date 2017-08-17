@@ -5,10 +5,11 @@
 var app = angular.module("goalsApp", ["ngRoute", "ngStorage", "filters.stringUtils", "filters.mathAbs", "angularModalService", "chart.js"]);
 
 app.controller('mainController', function($scope, $localStorage, $sessionStorage, $http, $location) {
-	$scope.randomNumber = 1;
+	
 	$scope.orderByField = 'name';
 	$scope.reverseSort = false;
 	$scope.$storage = $localStorage;
+	$scope.$storage.incentiveAccepted = 0;
 	$scope.$storage.goal = new Goal($http);
 	$scope.date = new Date();
 	$scope.data = {};
@@ -31,6 +32,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.loading = false;
 	$scope.filteredLocations = [];
 	$scope.locationSearchText = null;
+
 
 	$scope.getYesterdayDate = function(){
     	var date = new Date();
@@ -78,7 +80,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		return avatars[(count++ )%4];
 	}
 	$scope.$watch('locationSearchText', (n,o) => {
-		console.log(n);
+		//console.log(n);
 		var query = (n||'').toLowerCase();
 		if(query)
 			$scope.filteredLocations = _.filter($scope.$storage.allLocations, function(l) { return l.name.toLowerCase().indexOf(query) >= 0; });
@@ -89,7 +91,9 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   $scope.$watch('$storage.incentiveCategory', function(newValue, oldValue) {
     //console.log(newValue);
     $scope.$storage.incentiveItems = _.filter($scope.$storage.menuitems, function(item) {
+
     	if (newValue)  {
+    		$scope.$storage.randomNumber = $scope.getRandomNumber();
       		return item.category_id == newValue.id;
       	}
     });
@@ -98,8 +102,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
   $scope.$watch('$storage.incentiveItem', function(newValue, oldValue) {
     //console.log(newValue);
-    console.log(newValue);
-    console.log(oldValue);
+    //console.log(newValue);
+    //console.log(oldValue);
     //console.log($scope.$storage.incentiveItems);
   });
 
@@ -203,7 +207,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.openStaff = function(staffInfo) {
 		$scope.$storage.staffInfo = staffInfo;
 		location.href = "#!individualStaff"
-		console.log(staffInfo);
+		//console.log(staffInfo);
 	};
 
 	$scope.callUpdateGoals = function() {
@@ -212,7 +216,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	      "value": $scope.$storage.goals[$scope.$storage.salesDate].value
 	    })
 	    .then(function(response)  {
-	      console.log($scope.$storage.goals);
+	      //console.log($scope.$storage.goals);
 	    }, function(resposne)  {
 	      console.log("Failing here");
 	    });
@@ -359,8 +363,16 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.staffLocation = function(staff) {
 		return staff.location === 1;
 	}
-	$scope.tacticsLocation = function(tactics) {
-		return tactics.location === 1;
+	$scope.$storage.tacticsByLocation = null;
+	$scope.filterTactics = function(tactics) {
+		var i = 0;
+		for(i = 0; i < $scope.$storage.fullTactics.tactics.length; i++){
+			
+      		if($scope.$storage.fullTactics.tactics[i].location == $scope.$storage.location){
+          		$scope.$storage.tacticsByLocation = $scope.$storage.fullTactics.tactics[i];
+     	 	}
+    	}
+
 	}
 
 	$scope.onReloadLocation = function() {
@@ -372,7 +384,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 				'location': '1'
 			})
 			.then(function(data, status, headers, config) {
-				console.log(data);
+				//console.log(data);
 			}, function(data, status, headers, config) {
 				console.log("failing over here");
 			});
@@ -392,8 +404,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
     $http.get('/locations/' + $scope.$storage.location + '/menucategories')
     .then(function(response)  {
-      console.log("Categories");
-      console.log(response);
+      //console.log("Categories");
+      //console.log(response);
       if (!$scope.$storage.menugroups) $scope.$storage.menucategories = {};
       $scope.$storage.menucategories = response.data.data;
       $http.get('/locations/' + $scope.$storage.location + '/menuitems')
@@ -402,8 +414,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
         $http.get('/locations/' + $scope.$storage.location + '/incentives/weekly')
         .then(function(response)  {
           if (!$scope.$storage.incentive) $scope.$storage.incentive = {};
-          console.log("Weekly incentive");
-          console.log(response);
+          //console.log("Weekly incentive");
+          //console.log(response);
           if (response.data.data[0])  {
           	$scope.$storage.incentiveCategory = response.data.data[0];
           	$scope.$storage.weeklyIncentiveGoal = response.data.data[0].goal;
@@ -428,13 +440,13 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			let salesData = $scope.$storage.sales[date] = response.data.data;
 			salesData.averageOrderPrice = salesData.totalSales / salesData.totalOrders;
 
-			console.log($scope.$storage.sales);
+			//console.log($scope.$storage.sales);
 
 			$http.get('/locations/' + $scope.$storage.location + '/staffsales/' + date + ($scope.$storage.salesDateMax ? '/' + $scope.$storage.salesDateMax : '') + (refresh ? '?refresh=true' : ''))
 			.then(function(response) {
 				if (!$scope.$storage.staffSales) $scope.$storage.staffSales = {};
-				console.log('staff');
-				console.log(response);
+				//console.log('staff');
+				//console.log(response);
 				$scope.$storage.staffSales[date] = response.data.data;
 				$scope.$storage.sales[date].totalGuests = 0;
 				$.each($scope.$storage.staffSales[date], function (key, value)  {
@@ -506,7 +518,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	                    }, function(resposne)  {
 	                      console.log("Failure");
 	                    });
-	                    console.log($scope.$storage.goals);
+	                    //console.log($scope.$storage.goals);
 	                  }
 	                  // else {
 	                  // 	$scope.$storage.goals[date].type = 'monthly';
@@ -521,7 +533,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	                  // }
 	                }
 	              }
-	              console.log($scope.$storage.sales);
+	              //console.log($scope.$storage.sales);
 	              $scope.loading = false;  
 	            });
 	          });
@@ -577,7 +589,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 					})
 					.then(function(resposne) {
 						console.log("Sucesss");
-						console.log($scope.$storage.lavuStaff);
+						//console.log($scope.$storage.lavuStaff);
 					}, function(resposne) {
 						console.log("failure");
 					});
@@ -595,7 +607,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		$scope.$storage.lavuStaff.yesterday.totalIncentiveOrders = 0;
 		$http.get("/lookupYesterdayLavu")
 			.then(function(response) {
-				console.log(response);
+				//console.log(response);
 				$scope.$storage.lavuStaff.yesterdayTotalOrders = 0;
 				$scope.$storage.lavuStaff.yesterdayTotalSales = 0.0;
 				$scope.$storage.lavuStaff.yesterday.categories = {};
@@ -618,8 +630,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 				});
 				$scope.$storage.lavuStaff.yesterdayAverageTicket = $scope.$storage.lavuStaff.yesterdayTotalSales / $scope.$storage.lavuStaff.yesterdayTotalOrders;
 
-				console.log("THIs");
-				console.log(response);
+				//console.log("THIs");
+				//console.log(response);
 				// //$scope.$storage.lavuStaff.yesterday = {};
 				// // $scope.$storage.lavuStaff.yesterdayTotalOrders = 0;
 				// // $scope.$storage.lavuStaff.yesterdayTotalSales = 0.0;
@@ -679,7 +691,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 					}
 					getCategoryInfo($row, $scope, $http, "lastWeek");
 				})
-				$scope.data.lastWeek = [$scope.$storage.lavuStaff.lastWeekTotalSales, $scope.$storage.goal.dailyGoal];
+				$scope.$storage.sales[$storage.salesDate].groups = [$scope.$storage.lavuStaff.lastWeekTotalSales, $scope.$storage.goal.dailyGoal];
 				$scope.$storage.lavuStaff.lastWeekAverageTicket = $scope.$storage.lavuStaff.lastWeekTotalSales / $scope.$storage.lavuStaff.lastWeekTotalOrders;
 
 			}, function(response) {
@@ -764,6 +776,34 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
       console.log("Failing in incentive on change");
     });
   }
+  $scope.updateSuggestedIncentive = function()  {
+  	var goal = $scope.$storage.tacticsByLocation.count;
+  	$scope.$storage.incentiveAccepted = 1;
+	var i = 0;
+	//console.log($scope.$storage.menucategories);
+	//for(i=0; i < (Object.keys($scope.$storage.menucategories).length); i++){
+	//	console.log($scope.$storage.menucategories[i].name);
+  	//	if($scope.$storage.tacticsByLocation.category == $scope.$storage.menucategories[i].name){
+    //  	$scope.$storage.incentiveItem = $scope.$storage.tacticsByLocation.item;
+ 	//	}
+	//}
+	for(i=0; i < (Object.keys($scope.$storage.menuitems).length); i++){
+  		if($scope.$storage.tacticsByLocation.item == $scope.$storage.menuitems[i].name){
+  			console.log($scope.$storage.menuitems[i]);
+      		$scope.$storage.incentiveItem = $scope.$storage.menuitems[i];
+ 	 	}
+	}
+    $http.post('/locations/' + $scope.$storage.location + '/incentives/weekly', {
+      "incentive": $scope.$storage.incentiveItem,
+      "goal": parseInt(goal)
+    })
+    .then(function(response)  {
+    	$scope.$storage.weeklyIncentiveGoal = goal;
+      console.log("Updating incentive");
+    }, function(response)  {
+      console.log("Failing in incentive on change");
+    });
+  }
 
   	$scope.closeHamburger = function ()  {
 		var menuInput = $('#menuToggle > input');
@@ -774,6 +814,20 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   $scope.getWeekGoalsLavu();
 
 	$scope.init();
+
+	$scope.getRandomNumber = function(){
+		var min = Math.ceil(5);
+  		var max = Math.floor(10);
+  		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+
+	$scope.resetIncentive = function(){
+		$scope.$storage.incentiveCategory = null;
+		$scope.$storage.incentiveCategoryLength = 0;
+		$scope.$storage.incentiveAccepted = 0;
+		console.log("reset");
+	}
+	
 
 });
 
@@ -943,7 +997,6 @@ function Tactics($http) {
 	});
 };
 
-
 app.config(function($routeProvider) {
 	$routeProvider
 		.when("/", {
@@ -980,7 +1033,7 @@ app.config(function($routeProvider) {
 			templateUrl: "partials/setDailyGoals.html"
 		})
 		.when("/tips", {
-			templateUrl: "partials/tips.html"
+			templateUrl: "partials/MVP/tips.html"
 		})
 		.when("/individualStaff", {
 			templateUrl: "partials/MVP/staff/individualStaff.html"
