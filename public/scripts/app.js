@@ -447,8 +447,9 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	            var to_date = moment().endOf('isoWeek').format('YYYYMMDD');
 	          	$http.get('/locations/' + $scope.$storage.location + '/salessummary/' + from_date + '/' + to_date + (refresh ? '?refresh=true' : ''))
 	          	.then(function(response)  {
-            	console.log("Week to date");
-            	console.log(response);
+            	// console.log("Week to date");
+            	// console.log($scope.$storage.incentiveItem.id);
+            	// console.log(response);
             	$scope.$storage.weekToDate = response.data.data;
 
 	            $http.get('/locations/' + $scope.$storage.location + '/goals/' + date + ($scope.$storage.salesDateMax ? '/' + $scope.$storage.salesDateMax : '') + (refresh ? '?refresh=true' : ''))
@@ -459,11 +460,14 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	                $scope.$storage.goals[date].value = 0;
 	                if ($scope.$storage.salesDate == moment().startOf('month').format('YYYYMMDD'))  {
 	                	$scope.$storage.goals[date].type = 'monthly';
+	                	$scope.$storage.goals[date].value = 100000;
 	                } 
 	                else if ($scope.$storage.salesDateMax) {
 	                  $scope.$storage.goals[date].type = 'weekly';
+	                  $scope.$storage.goals[date].value = 50000;
 	                } else {
 	                  $scope.$storage.goals[date].type = 'daily';
+	                  $scope.$storage.goals[date].value = 10000;
 	                }
 	              } 
 	              else {
@@ -748,12 +752,13 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   }
 
   $scope.updateIncentive = function()  {
-  	
+  	var goal = $('#incentiveGoalInput').val();
     $http.post('/locations/' + $scope.$storage.location + '/incentives/weekly', {
       "incentive": $scope.$storage.incentiveItem,
-      "goal": parseInt($scope.$storage.weeklyIncentiveGoal)
+      "goal": parseInt(goal)
     })
     .then(function(response)  {
+    	$scope.$storage.weeklyIncentiveGoal = goal;
       console.log("Updating incentive");
     }, function(response)  {
       console.log("Failing in incentive on change");
