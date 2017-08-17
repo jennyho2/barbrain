@@ -16,6 +16,7 @@
     "io.js": "0.0.0",
     "jquery": "^3.2.1",
     "jsdom": "^3.1.2",
+    "json-mapping": "^1.1.0",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "mongodb": "^2.2.30",
@@ -24,6 +25,7 @@
     "request": "^2.81.0",
     "uniq": "^1.0.1",
     "util": "^0.10.3",
+    "xml2js": "^0.4.18",
     "zepto": "^1.2.0"
   },
   "devDependencies": {},

@@ -24,7 +24,7 @@ $( "Goal" ).click(function() {
     API call timed out. Try again.
   </div>
 
-  <h4 class="center">{{ $storage.weekToDate.itemGroups[$storage.incentiveItem.id].count }} / {{ $storage.weeklyIncentiveGoal }}</h4>
+  <h4 class="center">{{ $storage.weekToDate.itemGroups[$storage.incentiveItem.id].count }} units to {{ $storage.weeklyIncentiveGoal }} weekly goal</h4>
 
   <!--set different graphs to display-->
   <div class="chartHolder smallDoughnut">
@@ -45,7 +45,7 @@ $( "Goal" ).click(function() {
   <span class="smallFont">of this week's {{$storage.incentiveItem.name}} 
   <br> goal achieved</span>
   <br>
-  <a data-toggle="modal" data-target="#myModal"><span class="smallFont" style="color:deepskyblue">Adjust goal</span></a>
+  <a data-toggle="modal" data-target="#myModal" ng-click="onAdjustGoals()"><span class="smallFont" style="color:deepskyblue">Adjust goal</span></a>
   </div>
   <br>
 

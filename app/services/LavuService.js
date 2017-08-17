@@ -3,7 +3,10 @@ const request = require('request'),
 	  
 	  moment = require('moment');
 	  
-var $ = require('jquery')(require("jsdom").jsdom().parentWindow);
+var parseString = require('xml2js').parseString;
+const mapping = require('json-mapping');
+
+//var $ = require('jquery')(require("jsdom").jsdom().parentWindow);
 const database = require('../db');
 
 var api_url = "https://api.poslavu.com/cp/reqserv/";
@@ -49,14 +52,28 @@ module.exports = class LavuService {
 	getMenuItemsFromApi(){
 		return this.post(this.buildApiData('menu_items'))
 		.then(body => {
-			let items = $(body).find('row').toArray().map(item => {
-				let $row = $(item);
+			var res = [];
+			parseString(body, function(err, result) {
+				var resholder = JSON.parse(JSON.stringify(result)).results.row;
+				if (resholder) {
+					res = Array.from(resholder);
+				}
+			});
+			let items = res.map(item => {
+			
+			//let items = $(body).find('row').toArray().map(item => {
+				//let $row = $(item);
 				
 				return { 
-					id: parseInt($row.find('id').text()), 
-					category_id: parseInt($row.find('category_id').text()),
-					name: $row.find('name').text(),
+					id: parseInt(item.id[0]),
+					category_id: parseInt(item.category_id[0]),
+					name: item.name[0],
 					location_id: this.locationId
+
+					// id: parseInt($row.find('id').text()), 
+					// category_id: parseInt($row.find('category_id').text()),
+					// name: $row.find('name').text(),
+					// location_id: this.locationId
 				}
 			});
 			return items;
@@ -84,15 +101,27 @@ module.exports = class LavuService {
 	getUsersFromApi(){
 		return this.post(this.buildApiData('users'))
 		.then(body => {
-			let items = $(body).find('row').toArray().map(item => {
-				let $row = $(item);
+			var res = [];
+			parseString(body, function(err, result) {
+				var resholder = JSON.parse(JSON.stringify(result)).results.row;
+				if (resholder)  {
+					res = Array.from(resholder);
+				}
+			});
+			let items = res.map(item => {
+				//let $row = $(item);
 				
 				return { 
-					id: parseInt($row.find('id').text()), 
-					firstName: $row.find('f_name').text(),
-					lastName: $row.find('l_name').text(),
-					email: $row.find('email').text(),
+					id: parseInt(item.id[0]),
+					firstName: item.f_name[0],
+					lastName: item.l_name[0],
+					email: item.email[0],
 					location_id: this.locationId
+					// id: parseInt($row.find('id').text()), 
+					// firstName: $row.find('f_name').text(),
+					// lastName: $row.find('l_name').text(),
+					// email: $row.find('email').text(),
+					// location_id: this.locationId
 				};
 			});
 			return items;
@@ -119,14 +148,26 @@ module.exports = class LavuService {
 	getMenuCategoriesFromApi(){
 		return this.post(this.buildApiData('menu_categories'))
 		.then(body => {
-			return $(body).find('row').toArray().map(category => {
-				let $row = $(category);
+			var res = [];
+			parseString(body, function(err, result) {
+				var resholder = JSON.parse(JSON.stringify(result)).results.row;
+				if (resholder)  {
+					res = Array.from(resholder);
+				}
+			});
+			return res.map(category => {
+				//let $row = $(category);
 				return {
-					id: parseInt($row.find('id').text()),
-					group_id: parseInt($row.find('group_id').text()),
-					super_group_id: parseInt($row.find('super_group_id').text()),
-					name: $row.find('name').text(),
+					id: parseInt(category.id[0]),
+					group_id: parseInt(category.group_id[0]),
+					super_group_id: parseInt(category.super_group_id[0]),
+					name: category.name[0],
 					location_id: this.locationId
+					// id: parseInt($row.find('id').text()),
+					// group_id: parseInt($row.find('group_id').text()),
+					// super_group_id: parseInt($row.find('super_group_id').text()),
+					// name: $row.find('name').text(),
+					// location_id: this.locationId
 				};
 			});
 		});
@@ -152,12 +193,22 @@ module.exports = class LavuService {
 	getMenuGroupsFromApi(){
 		return this.post(this.buildApiData('menu_groups'))
 		.then(body => {
-			return $(body).find('row').toArray().map(category => {
-				let $row = $(category);
+			var res = [];
+			parseString(body, function(err, result) {
+				var resholder = JSON.parse(JSON.stringify(result)).results.row;
+				if (resholder) {
+					res = Array.from(resholder);
+				}
+			});
+			return res.map(category => {
+				//let $row = $(category);
 				return {
-					id: parseInt($row.find('id').text()),
-					name: $row.find('group_name').text(),
+					id: parseInt(category.id[0]),
+					name: category.group_name[0],
 					location_id: this.locationId
+					// id: parseInt($row.find('id').text()),
+					// name: $row.find('group_name').text(),
+					// location_id: this.locationId
 				};
 			});
 		});
@@ -184,11 +235,20 @@ module.exports = class LavuService {
 	getMenuSuperGroupsFromApi() {
 		return this.post(this.buildApiData('super_groups'))
 		.then(body => {
-			return $(body).find('row').toArray().map(supergroup => {
-				let $row = $(supergroup);
+			var res = [];
+			parseString(body, function(err, result) {
+				var resholder = JSON.parse(JSON.stringify(result)).results.row;
+				if (resholder) {
+					res = Array.from(resholder);	
+				}
+			});
+			return res.map(supergroup => {
+				//let $row = $(supergroup);
 				return {
-					id: parseInt($row.find('id').text()),
-					name: $row.find('title').text()
+					id: parseInt(supergroup.id[0]),
+					name: supergroup.title[0]
+					// id: parseInt($row.find('id').text()),
+					// name: $row.find('title').text()
 				};
 			});
 		});
@@ -224,40 +284,72 @@ module.exports = class LavuService {
 		return this.post(this.buildApiData('orders', data))
 		.then(body => {
 
-			var orders = $(body).find('row');
-			
+			var orders = [];
+			parseString(body, function(err, result) {
+				var orderholder = JSON.parse(JSON.stringify(result)).results.row;
+				if (orderholder)  {
+					orders = Array.from(orderholder);	
+				}
+				// orders = Array.from(JSON.parse(JSON.stringify(result)).results.row);
+			});
+
+				// let items = Array.from(res.row).map(user)
+				// var rows = Array.from(res.row);
+
+			//var orders = $(body).find('row');
 			console.log(`Found ${orders.length} orders from ${minDate} to ${maxDate}`);
+
 			
-			const allOrderIds = orders.toArray().map(orderRow => $(orderRow).find('order_id').text());
+			const allOrderIds = orders.map(orderRow => orderRow.order_id[0]);
+			//const allOrderIds = orders.toArray().map(orderRow => $(orderRow).find('order_id').text());
 			
 			return this.getOrderDetailsFromApi(allOrderIds)
 			.then(results => {
-				
-				return $(results).find('row').toArray().map(detail => {
+				var res = [];
+				parseString(results, function(error, result) {
+					var resholder = JSON.parse(JSON.stringify(result)).results.row;
+					if (resholder)  {
+						res = Array.from(resholder);
+					}
+				});
+				return res.map(detail => {
+				//return $(results).find('row').toArray().map(detail => {
+					//let $detail = $(detail);
+					var _id = detail.id[0];
+					var order_id = detail.order_id[0];
+					var item_id = detail.item_id[0];
+					var total = parseFloat(detail.total_with_tax[0]);
+					var quantity = parseFloat(detail.quantity[0]);
 					
-					let $detail = $(detail);
-					
-					var _id = $detail.find('id').text();
-					var order_id = $detail.find('order_id').text();
-					var item_id = $detail.find('item_id').text();
-					var total = parseFloat($detail.find('total_with_tax').text());
-					var quantity = parseFloat($detail.find('quantity').text());
+					// var _id = $detail.find('id').text();
+					// var order_id = $detail.find('order_id').text();
+					// var item_id = $detail.find('item_id').text();
+					// var total = parseFloat($detail.find('total_with_tax').text());
+					// var quantity = parseFloat($detail.find('quantity').text());
 					
 					return { _id, order_id, item_id, total, quantity };
 				});
 			})
 			.then(allDetails => {
-				
-				return orders.toArray().map(orderRow => {
-					var $row = $(orderRow);
-					var _id = $row.find('id').text();
-					var total = parseFloat($row.find('total').text());
-					var order_id = $row.find('order_id').text();
-					//var location_id = parseInt($row.find('location_id').text());
+				return orders.map(orderRow => {
+				//return orders.toArray().map(orderRow => {
+					// var $row = $(orderRow);
+					var _id = orderRow.id[0];
+					var order_id = orderRow.order_id[0];
+					var total = parseFloat(orderRow.total[0]);
 					var location_id = this.locationId;
-					var closed = moment($row.find('closed').text()).toDate();
-					var user_id = parseInt($row.find('server_id').text());
-					var guests = parseInt($row.find('guests').text());
+					var closed = moment(orderRow.closed[0]).toDate();
+					var user_id = parseInt(orderRow.server_id[0]);
+					var guests = parseInt(orderRow.guests[0]);
+
+					// var _id = $row.find('id').text();
+					// var total = parseFloat($row.find('total').text());
+					// var order_id = $row.find('order_id').text();
+					// //var location_id = parseInt($row.find('location_id').text());
+					// var location_id = this.locationId;
+					// var closed = moment($row.find('closed').text()).toDate();
+					// var user_id = parseInt($row.find('server_id').text());
+					// var guests = parseInt($row.find('guests').text());
 					
 					let details = filter(allDetails, d => d.order_id == order_id);
 					
@@ -501,6 +593,82 @@ module.exports = class LavuService {
 			return staff;
 		});
 
+	}
+
+	// return this.loadOrders(minDate, maxDate, refresh)
+	// 	.then(orders => this.loadMenuItems(refresh).then(menuItems => { return { orders, menuItems }; }))
+	// 	.then(({orders, menuItems}) => this.loadMenuCategories().then(categories => { return { orders, menuItems, categories }; }))
+	// 	.then(({orders, menuItems, categories}) => this.loadUsers().then(users => { return { orders, menuItems, categories, users }; }))
+	// 	.then(({orders, menuItems, categories, users}) => this.loadSuperGroups().then(supergroups => { return { orders, menuItems, categories, users, supergroups }; }))
+	// 	.then(({orders, menuItems, categories, users, supergroups}) => this.loadMenuGroups().then(groups => { return { orders, menuItems, categories, users, supergroups, groups }; }))
+	// 	.then(({orders, menuItems, categories, users, supergroups, groups}) => {
+
+	getSalesByDate(minDate, maxDate)  {
+		return this.loadOrders(minDate, maxDate, true)
+		.then(orders => this.loadMenuItems().then(menuItems => { return { orders, menuItems }; }))
+		.then(({orders, menuItems}) => this.loadMenuCategories().then(categories => { return { orders, menuItems, categories }; }))
+		.then(({orders, menuItems, categories}) => this.loadUsers().then(users => { return { orders, menuItems, categories, users }; }))
+		.then(({orders, menuItems, categories, users}) => {
+			
+			// return this.post(this.buildApiData('users'))
+			// .then(body => {
+			// 	var res = null;
+			// 	parseString(body, function(err, result) {
+			// 		res = JSON.parse(JSON.stringify(result)).results;
+					//console.log(res.results);
+					
+					//console.log("Result %j", res);
+
+					// console.log(util.inspect(result, false, null));
+					//items = JSON.stringify(result.results);
+				// });
+				// let items = Array.from(res.row).map(user)
+				// var rows = Array.from(res.row);
+				// console.log(rows);
+				//var newItems = [];
+				// for (var curr in res.row) {
+				//   if ((res.row).hasOwnProperty(curr)) {
+
+				//   	//console.log(res.row[curr].id);
+				//   	newItems.id = parseInt(res[row]['id']);
+				//     //console.log(row + " -> " + res[row]);
+				//   }
+				// }
+
+				// let items2 = $(body).find('row').toArray();
+				//console.log(items2);
+				// let items = $(body).find('row').toArray().map(item => {
+				// 	let $row = $(item);
+					
+				// 	return { 
+				// 		id: parseInt($row.find('id').text()), 
+				// 		firstName: $row.find('f_name').text(),
+				// 		lastName: $row.find('l_name').text(),
+				// 		email: $row.find('email').text(),
+				// 		location_id: this.locationId
+				// 	};
+				// });
+			// 	return items;
+			// });
+			let salesByDate = {
+				0: 0,
+				1: 0,
+				2: 0,
+				3: 50,
+				4: 0,
+				5: 0,
+				6: 0
+			};
+			console.log(salesByDate[3]);
+
+			orders.forEach(order => {
+				var orderDate = moment(order.closed);
+				var orderDay = ( (orderDate.day() == 0) ? 6 : (orderDate.day() - 1) );
+
+			});
+
+		});
+		
 	}
 
 
