@@ -484,6 +484,21 @@ router.post('/locations/:location_id/goals/weekly/:date', (req, res) => {
 	.catch(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
 });
 
+router.get('/locations/:location_id/salesByDay/:min_date/:max_date', (req, res) => {
+	var location = req.params.location_id,
+		min_date = moment(req.params.min_date, 'YYYYMMDD'),
+		max_date = moment(req.params.max_date, 'YYYYMMDD');
+	console.log(min_date);
+	console.log(max_date);
+	var newMinDate = moment(min_date).hour(3).minute(0).second(0).toDate();
+	var newMaxDate = moment(max_date).hour(3).minute(0).second(0).toDate();
+	new LocationService().resolve(location)
+	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
+	.then(service => service.getSalesByDate(newMinDate, newMaxDate))
+	.then(data => res.json({ success:true, data }))
+	.catch(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
+});
+
 /*
 function getCategoryInfo($sender, $row, period, res)  {
   var order_id = $row.find('order_id').text();

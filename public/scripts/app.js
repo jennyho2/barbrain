@@ -445,9 +445,9 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	            var to_date = moment().endOf('isoWeek').format('YYYYMMDD');
 	          	$http.get('/locations/' + $scope.$storage.location + '/salessummary/' + from_date + '/' + to_date + (refresh ? '?refresh=true' : ''))
 	          	.then(function(response)  {
-            	// console.log("Week to date");
+            	console.log("Week to date");
             	// console.log($scope.$storage.incentiveItem.id);
-            	// console.log(response);
+            	console.log(response);
             	$scope.$storage.weekToDate = response.data.data;
 
 	            $http.get('/locations/' + $scope.$storage.location + '/goals/' + date + ($scope.$storage.salesDateMax ? '/' + $scope.$storage.salesDateMax : '') + (refresh ? '?refresh=true' : ''))
@@ -770,6 +770,19 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	}
 
   $scope.getWeekGoalsLavu();
+
+	$scope.onAdjustGoals = function()  {
+		var weekBeginning = moment().startOf('isoWeek').format('YYYYMMDD');
+		var weekEnding = moment().endOf('isoWeek').format('YYYYMMDD');
+		$http.get('/locations/' + $scope.$storage.location + '/salesByDay/' + weekBeginning + '/' + weekEnding)
+		.then(function (response) {
+			console.log(response);
+			console.log("Success");
+		}, function (response)  {
+			console.log(response);
+			console.log("Failure");
+		});
+	}
 
 	$scope.init();
 
