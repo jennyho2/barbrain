@@ -1017,7 +1017,7 @@ app.filter('orderObjectBy', function() {
 			//	return (a["sales"] / a["orders"] > b["sales"] / b["orders"] ? 1 : -1);
 			//}
 			else {
-				return (a['totalSales'] > b['totalSales'] ? 1 : -1);
+				return (a['field'] > b['field'] ? 1 : -1);
 			}
 		});
 		if (reverse) filtered.reverse();

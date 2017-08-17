@@ -18,14 +18,20 @@
 </div>
 <table class="tableEmployeeStat">
     <thead>
-        <td>Sort by:</td>
-        <td colspan="2" style="color:#4acde2" ng-click="orderByField='totalSales'">Sales</td>
-        <td style="color:#4acde2" ng-click="orderByField='revenue'" >Revenue</td>
+        <td></td>
+        <th colspan="2" style="color:#4acde2" ng-click="orderByField='totalSales'">Sort
+            <span ng-if="orderByField=='totalSales'"> ٧ </span>
+        </th>
+        
+        <th style="color:#4acde2" ng-click="orderByField='revenue'" >Sort
+            <span ng-if="orderByField=='revenue'"> ٧ </span>
+        </th>
+
     </thead>
     <tbody>
         <tr ng-repeat="staffInfo in $storage.staffSales[$storage.salesDate] | orderObjectBy:orderByField:true " class="alternateBlocks" ng-click="openStaff(staffInfo)">
             <td class="v-a-m">
-                <img height='70px' ng-src="assets/images/emptyAvatar.png" hspace='20'/>
+                <img height='70px' ng-src="assets/images/emptyAvatar2.png" hspace='20'/>
             </td>
             <td colspan="3">
                 <table>
@@ -42,7 +48,8 @@
                             <tr>
                                 <td class="alignLeft" style="font-size: small;">{{staffInfo.totalSales | currency:undefined:0}}</td>
                                 <td></td>
-                                <td class="alignLeft" style="font-size: small;">{{ (((staffInfo.totalSales / staffInfo.totalGuests) / ($storage.sales[$storage.salesDate].totalSales / $storage.sales[$storage.salesDate].totalGuests)) * 100) - 100 | number:0 }}%</td>
+                                <td class="alignLeft" style="font-size: small;">
+                                    <span ng-if="(((staffInfo.totalSales / staffInfo.totalGuests) / ($storage.sales[$storage.salesDate].totalSales / $storage.sales[$storage.salesDate].totalGuests)) * 100) - 100 > 0">+</span>{{(((staffInfo.totalSales / staffInfo.totalGuests) / ($storage.sales[$storage.salesDate].totalSales / $storage.sales[$storage.salesDate].totalGuests)) * 100) - 100 | number:0 }}%</td>
                                 <!-- <td class="alignLeft" style="font-size: small;">{{(((staffInfo.totalSales / staffInfo.totalOrders) / $storage.sales[$storage.salesDate].averageOrderPrice) * 100) - 100 | number:0}}%</td> -->
                             </tr>
                             <tr>
