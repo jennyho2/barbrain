@@ -17,6 +17,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.$storage.salesDate = moment().toDate();
 	$scope.$storage.salesDateMax = null;
 	$scope.$storage.staffInfo = null;
+	//$scope.toggleSort = true;
 
 	// $scope.$storage.INCENTIVE = INCENTIVE;
   	$scope.$storage.weeklyIncentiveGoal = 0;
@@ -101,6 +102,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
     console.log(oldValue);
     //console.log($scope.$storage.incentiveItems);
   });
+
 
 	$scope.setSalesDate = function(date) {
 		if(date === 'TODAY') {
@@ -1002,20 +1004,21 @@ app.filter('orderObjectBy', function() {
 			filtered.push(item);
 		});
 
-
-
 		filtered.sort(function(a, b) {
-			if (field == "avgTicket" || field == "percentToAvg") {
-				return (a["sales"] / a["orders"] > b["sales"] / b["orders"] ? 1 : -1);
+			if (field == "revenue"){
+				return ((a['totalSales'] / a['totalGuests']) > (b['totalSales'] / b['totalGuests']) ? 1 : -1); 
 			}
+			//if (field == "avgTicket" || field == "percentToAvg") {
+			//	return (a["sales"] / a["orders"] > b["sales"] / b["orders"] ? 1 : -1);
+			//}
 			else {
-				//console.log(field);
-				return (a[field] > b[field] ? 1 : -1);
+				return (a['totalSales'] > b['totalSales'] ? 1 : -1);
 			}
 		});
 		if (reverse) filtered.reverse();
 		return filtered;
 	};
+
 });
 
 
