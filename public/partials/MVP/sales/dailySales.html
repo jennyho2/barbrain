@@ -17,7 +17,7 @@
   <!-- <span class="smallFont">{{$storage.sales[getSalesDate()].totalSales / $storage.dailyHardGoal * 100| number:0 }}% of goal achieved</span> <br> -->
   <span class="smallFont">{{$storage.sales[$storage.salesDate].totalSales / $storage.goals[$storage.salesDate].value * 100| number:0 }}% of goal achieved</span> <br>
   <br>
-  <a data-toggle="modal" data-target="#myModal"><span class="smallFont" style="color:deepskyblue">Adjust goal</span></a>
+  <a data-toggle="modal" data-target="#myModal" ng-click="onAdjustGoals()"><span class="smallFont" style="color:deepskyblue">Adjust goal</span></a>
 </div>
   <br />
   <table class="dividerTable" ng-init="level = 0;">
@@ -99,12 +99,12 @@
       </div>
       <br>
       <div class="modal-body center tactics">
-        <!-- <div ng-include="'partials/MVP/setSalesGoal.html'"></div> -->
+        <div ng-include="'partials/MVP/setSalesGoal.html'"></div>
       
-      <span class="largeFont center">New Goal</span>
+      <!-- <span class="largeFont center">New Goal</span>
       <br>
         <input type="number" class="center" id="salesGoalInput" />
-      </div>
+      </div> -->
       <div class="modal-footer headerBKG">
         <button type="button" class="btn btn-default" ng-click="callUpdateGoals()">Update</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

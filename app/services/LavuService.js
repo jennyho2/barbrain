@@ -4,7 +4,7 @@ const request = require('request'),
 	  moment = require('moment');
 	  
 var parseString = require('xml2js').parseString;
-const mapping = require('json-mapping');
+// const mapping = require('json-mapping');
 
 //var $ = require('jquery')(require("jsdom").jsdom().parentWindow);
 const database = require('../db');
@@ -439,7 +439,7 @@ module.exports = class LavuService {
 	
 	
 	getSalesSummary(minDate, maxDate, refresh){
-		return this.loadOrders(minDate, maxDate, refresh)
+		return this.loadOrders(minDate, maxDate, true)
 		.then(orders => this.loadMenuItems(refresh).then(menuItems => { return { orders, menuItems }; }))
 		.then(({orders, menuItems}) => this.loadMenuCategories().then(categories => { return { orders, menuItems, categories }; }))
 		.then(({orders, menuItems, categories}) => this.loadUsers().then(users => { return { orders, menuItems, categories, users }; }))
@@ -604,71 +604,100 @@ module.exports = class LavuService {
 	// 	.then(({orders, menuItems, categories, users, supergroups, groups}) => {
 
 	getSalesByDate(minDate, maxDate)  {
-		return this.loadOrders(minDate, maxDate, true)
+		return this.loadOrders(minDate, maxDate)
 		.then(orders => this.loadMenuItems().then(menuItems => { return { orders, menuItems }; }))
 		.then(({orders, menuItems}) => this.loadMenuCategories().then(categories => { return { orders, menuItems, categories }; }))
 		.then(({orders, menuItems, categories}) => this.loadUsers().then(users => { return { orders, menuItems, categories, users }; }))
 		.then(({orders, menuItems, categories, users}) => {
-			
-			// return this.post(this.buildApiData('users'))
-			// .then(body => {
-			// 	var res = null;
-			// 	parseString(body, function(err, result) {
-			// 		res = JSON.parse(JSON.stringify(result)).results;
-					//console.log(res.results);
-					
-					//console.log("Result %j", res);
-
-					// console.log(util.inspect(result, false, null));
-					//items = JSON.stringify(result.results);
-				// });
-				// let items = Array.from(res.row).map(user)
-				// var rows = Array.from(res.row);
-				// console.log(rows);
-				//var newItems = [];
-				// for (var curr in res.row) {
-				//   if ((res.row).hasOwnProperty(curr)) {
-
-				//   	//console.log(res.row[curr].id);
-				//   	newItems.id = parseInt(res[row]['id']);
-				//     //console.log(row + " -> " + res[row]);
-				//   }
-				// }
-
-				// let items2 = $(body).find('row').toArray();
-				//console.log(items2);
-				// let items = $(body).find('row').toArray().map(item => {
-				// 	let $row = $(item);
-					
-				// 	return { 
-				// 		id: parseInt($row.find('id').text()), 
-				// 		firstName: $row.find('f_name').text(),
-				// 		lastName: $row.find('l_name').text(),
-				// 		email: $row.find('email').text(),
-				// 		location_id: this.locationId
-				// 	};
-				// });
-			// 	return items;
-			// });
 			let salesByDate = {
 				0: 0,
 				1: 0,
 				2: 0,
-				3: 50,
+				3: 0,
 				4: 0,
 				5: 0,
 				6: 0
 			};
-			console.log(salesByDate[3]);
 
 			orders.forEach(order => {
 				var orderDate = moment(order.closed);
 				var orderDay = ( (orderDate.day() == 0) ? 6 : (orderDate.day() - 1) );
-
+				salesByDate[orderDay] += order.total;
 			});
-
+			return salesByDate;
 		});
-		
+	}
+
+	getGoalsByDate(minDate, maxDate)  {
+		return database.connect().then(db => {
+			let goalsByDate = {
+				0: 0,
+				1: 0,
+				2: 0,
+				3: 0,
+				4: 0,
+				5: 0,
+				6: 0,
+				weekly: 0,
+			};
+
+			return db.collection('goals').find({ location_id: this.locationId, type: 'daily' }).sort({ created_at: -1 }).toArray()
+			.then(result => {
+				
+				for (var i = 0; i < result.length; i++) {
+					var date = moment(result[i].date);
+					var goalDay = ( (date.day() == 0) ? 6 : (date.day() - 1) );
+					//console.log(goalDay);
+					if (goalsByDate[goalDay] === 0)  {
+						goalsByDate[goalDay] = parseInt(result[i].value);
+					}
+				}
+				return db.collection('goals').find({ location_id: this.locationId, type: 'weekly' }).sort({ created_at: -1 }).limit(1).toArray()
+				.then(result => {
+					var weeklyGoal = 10000;
+					if (result[0])  {
+						var weeklyGoal = parseInt(result[0].value);
+					}
+					goalsByDate['weekly'] = weeklyGoal;
+					// console.log("weekly goal");
+					// console.log(weeklyGoal);
+					var x = 0;
+					for (var goal in goalsByDate)  {
+						if (goal !== "weekly" && goalsByDate[goal] === 0)  {
+							var currDate = moment().startOf('isoWeek').add(x, 'day').format('YYYYMMDD');
+							console.log(goal);
+							//var currDay = ( (moment(currDate).day() == 0) ? 6 : (moment(currDate).day() - 1) );
+							switch(parseInt(goal))  {
+		                      case 0:
+		                        goalsByDate[goal] = parseInt(weeklyGoal * 0.04);
+		                        break;
+		                      case 1:
+		                        goalsByDate[goal] = parseInt(weeklyGoal * 0.04);
+		                        break;
+		                      case 2:
+		                        goalsByDate[goal] = parseInt(weeklyGoal * 0.07);
+		                        break;
+		                      case 3:
+		                        goalsByDate[goal] = parseInt(weeklyGoal * 0.10);
+		                        break;
+		                      case 4:
+		                        goalsByDate[goal] = parseInt(weeklyGoal * 0.30);
+		                        break;
+		                      case 5:
+		                        goalsByDate[goal] = parseInt(weeklyGoal * 0.35);
+		                        break;
+		                      case 6:
+		                        goalsByDate[goal] = parseInt(weeklyGoal * 0.10);
+		                        break;
+		                    }
+		                    this.setDailyGoal(moment(currDate).toDate(), goalsByDate[goal]);
+						}
+						x++;
+					}
+					return goalsByDate;
+				});
+			});
+		});
 	}
 
 
@@ -697,6 +726,16 @@ module.exports = class LavuService {
 					}
 				});
 			}
+		});
+	}
+
+	setBatchGoals(newMinDate, newMaxDate, body)  {
+		return database.connect().then(db => {
+			for (var i = 0; i < Object.keys(body).length - 1; i++)  {
+				var currDate = moment(newMinDate).add(i, 'day').hour(3).minute(0).second(0).toDate();
+				this.setDailyGoal(moment(currDate).toDate(), body[i]);
+			}
+			return this.setWeeklyGoal(moment(newMinDate).toDate(), body.weekly);
 		});
 	}
 
