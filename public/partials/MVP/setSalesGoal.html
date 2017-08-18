@@ -1,0 +1,22 @@
+<table class="dividerTable" ng-init="goalPeriod = 0;">
+  <tr class="smallFont bottomLine">
+    <th ng-class="{'selected': goalPeriod === 0}" ng-click="goalPeriod = 0">Super Groups</th>
+    <th ng-class="{'selected': goalPeriod === 1}" ng-click="goalPeriod = 1">Groups</th>
+  </tr>
+</table>
+
+<div class="chartHoler padding">
+  <canvas id="line" class="chart chart-line" chart-date="[$storage.weeklyGraphProjected, $storage.weeklyGraphActual]"
+    chart-labels="['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']" chart-options="lineOptions" chart-series="['Projected', 'Actual']">
+  </canvas>
+</div>
+
+<span class="xlargeFont center">Current Goal: {{dollarSign}}{{$storage.weeklyScale}}</span>
+<div class="center tactics" ng-init="callGetScales()">
+  <br>
+    <input type="number" class="xlargeFont center" id="weeklyGoalInput"/>
+    <br>
+    <button type="button" class="btn btn-default" ng-click="callUpdateGoals(1)">Update</button>
+  <br>
+  <br>
+</div>

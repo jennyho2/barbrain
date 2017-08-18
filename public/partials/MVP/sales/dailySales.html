@@ -5,7 +5,7 @@
 <div class="chartHolder doughnutSize">
   <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
   <canvas ng-if="$storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales > 0" id="doughnut" class="chart chart-doughnut"
-    chart-data="[$storage.sales[$storage.salesDate].totalSales, $storage.goals[$storage.salesDate].value - $storage.lavuStaff.todayTotalSales]"  chart-labels="['Period Total Sales', 'Difference From Goal']" chart-options="options">
+    chart-data="[$storage.sales[$storage.salesDate].totalSales, $storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales]"  chart-labels="['Period Total Sales', 'Difference From Goal']" chart-options="options">
   </canvas> 
   <canvas ng-if="$storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales <= 0" id="doughnut" class="chart chart-doughnut"
     chart-data="[$storage.sales[$storage.salesDate].totalSales, $storage.sales[$storage.salesDate].totalSales - $storage.goals[$storage.salesDate].value ]"  chart-labels="['Period Total Sales', 'Amount Exceeding Goal']" chart-options="options">
@@ -99,6 +99,8 @@
       </div>
       <br>
       <div class="modal-body center tactics">
+        <!-- <div ng-include="'partials/MVP/setSalesGoal.html'"></div> -->
+      
       <span class="largeFont center">New Goal</span>
       <br>
         <input type="number" class="center" id="salesGoalInput" />
