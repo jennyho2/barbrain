@@ -15,33 +15,32 @@
                         </td>
                         <td class="v-a-m smallFont">
                         <strong>
-                            <a ng-click="orderByField='currentProgress'; reverseSort = !reverseSort">
+                            <a ng-click="orderByField='count'; reverseSort = !reverseSort">
                                 <!-- {{$storage.fullTactics.tactics[0].incentive}} Unit Sales  -->
                                 {{$storage.incentiveItem.name}} Unit Sales
-                                <span ng-show="orderByField == 'currentProgress'">
-                                    <span ng-show="!reverseSort">^</span>
-                                    <span ng-show="reverseSort">v</span>
-                                </span>
+                                
+                                    <span ng-show="orderByField == 'count'">v</span>
+                                    <!--<span ng-show="!reverseSort">^</span>-->
+                                
                             </a>
                         </strong>
                         </td>
                         
                         <td class="v-a-m smallFont">
                         <strong>
-                            <a ng-click="orderByField='percentToAvg'; reverseSort = !reverseSort">
+                            <a ng-click="orderByField='sales'; reverseSort = !reverseSort">
                                 <!-- {{$storage.fullTactics.tactics[0].incentive}} $ Sales -->
                                 {{ $storage.incentiveItem.name }} $ Sales
-                                <span ng-show="orderByField == 'percentToAvg'">
-                                    <span ng-show="!reverseSort">^</span>
-                                    <span ng-show="reverseSort">v</span>
-                                </span>
+                                    <!--<span ng-show="!reverseSort">^</span>-->
+                                    <span ng-show="orderByField == 'sales'">v</span>
+                                
                             </a>
                         </strong>
                         </td>
                     </tr> 
                 </thead>
                 <tbody>
-                    <tr ng-repeat="staffInfo in $storage.sales[$storage.salesDate].staffGroups[$storage.incentiveItem.id]" class="tableEmployeeStat">
+                    <tr ng-repeat="staffInfo in $storage.sales[$storage.salesDate].staffGroups[$storage.incentiveItem.id] | orderObjectBy:orderByField:true" class="tableEmployeeStat">
                     <!-- <tr ng-repeat="staffInfo in $storage.lavuStaff.today.incentiveSales" 
                     class="tableEmployeeStat"> -->
                     <!--  <tr ng-repeat="staffInfo in fullStaff.staff | filter:staffLocation |orderBy:orderByField:reverseSort" class="tableEmployeeStat" ng-click="openStaff(staffInfo.firstName + ' ' + staffInfo.lastName, 3)"> -->

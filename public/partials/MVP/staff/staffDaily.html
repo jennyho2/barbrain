@@ -16,6 +16,7 @@
 </label>-->
 
 </div>
+<span>{{orderByField}}</span>
 <table class="tableEmployeeStat">
     <thead>
         <td></td>
@@ -29,7 +30,7 @@
 
     </thead>
     <tbody>
-        <tr ng-repeat="staffInfo in $storage.staffSales[$storage.salesDate] | orderObjectBy:orderByField:true " class="alternateBlocks" ng-click="openStaff(staffInfo)">
+        <tr ng-repeat="staffInfo in $storage.staffSales[$storage.salesDate] | orderObjectBy:orderByField:true" class="alternateBlocks" ng-click="openStaff(staffInfo)">
             <td class="v-a-m">
                 <img height='70px' ng-src="assets/images/emptyAvatar2.png" hspace='20'/>
             </td>
