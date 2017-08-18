@@ -19,26 +19,26 @@
   <br>
   <a data-toggle="modal" data-target="#myModal"><span class="smallFont" style="color:deepskyblue">Adjust goal</span></a>
 </div>
-  <br />
+  <br>
   <table class="dividerTable" ng-init="level = 0;">
     <tr class="smallFont bottomLine">
       <th ng-class="{'selected': level === 0}" ng-click="level = 0">Super Groups</th>
       <th ng-class="{'selected': level === 1}" ng-click="level = 1">Groups</th>
     </tr>
   </table>
-  <br />
-  
+  <br>
+
   <table class="dividerTable smallFont" ng-if="level === 0">  
     <thead>
       <tr class="tableEmployeeStat">
-        <th>Super Group</th>
-        <th>Sales</th>
-        <th>Tickets</th>
-        <th>% of Total Sales</th>
+        <th ng-click="level= 1">Super Group</th>
+        <th ng-click="orderByField='sales'">Sales</th>
+        <th ng-click="orderByField='count'">Tickets</th>
+        <th ng-click="orderByField='sales'">% of Total Sales</th>
       </tr>
     </thead>
     <tbody>
-      <tr class="tableEmployeeStat" ng-repeat="object in $storage.sales[$storage.salesDate].superGroups">
+      <tr class="tableEmployeeStat" ng-repeat="object in $storage.sales[$storage.salesDate].superGroups | orderObjectBy:orderByField:true">
         <td>{{object.name}}</td>
         <td>{{object.sales | currency:undefined:0 }}</td>
         <td>{{object.count}}</td>

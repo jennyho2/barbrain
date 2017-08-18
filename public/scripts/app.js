@@ -1061,7 +1061,7 @@ app.filter('orderObjectBy', function() {
 		angular.forEach(items, function(item) {
 			filtered.push(item);
 		});
-
+		console.log("filtering");
 		filtered.sort(function(a, b) {
 			if (field == "revenue"){
 				return ((a['totalSales'] / a['totalGuests']) > (b['totalSales'] / b['totalGuests']) ? 1 : -1); 
@@ -1070,7 +1070,7 @@ app.filter('orderObjectBy', function() {
 			//	return (a["sales"] / a["orders"] > b["sales"] / b["orders"] ? 1 : -1);
 			//}
 			else {
-				return (a['field'] > b['field'] ? 1 : -1);
+				return (a[field] > b[field] ? 1 : -1);
 			}
 		});
 		if (reverse) filtered.reverse();
