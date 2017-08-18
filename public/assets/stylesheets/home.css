@@ -1,7 +1,8 @@
+
 .progressHeader {
 	text-align: center;
 	/*margin-top: -25px;*/
-	background-color: #4acde2;
+	background: linear-gradient(#43ccff,#4acde2);
 	color: #ffffff;
 	border-width: 2px;
 	border-bottom: 1px #9b9b9b solid;
