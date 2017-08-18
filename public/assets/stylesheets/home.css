@@ -169,6 +169,13 @@ textarea {
 	border-collapse: collapse;
 	background-color: #f4f4f4;
 }
+.dividerTableNoColor { 
+	width: 100%;
+	table-layout: fixed;
+	border: none;
+	border-collapse: collapse;
+}
+
 
 .smallRoundButton {
 	border-radius: 10px;
@@ -190,6 +197,13 @@ textarea {
 	text-align: center; 
 	border-left: 1px solid #dcdcdc;
 	border-right: 1px solid #dcdcdc;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+.dividerTableNoColor td, .dividerTableNoColor th{
+	width: 33%;
+	text-align: center; 
+	
 	padding-top: 10px;
 	padding-bottom: 10px;
 }
