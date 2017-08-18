@@ -236,7 +236,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		//console.log(staffInfo);
 	};
 
-	$scope.callUpdateGoals = function() {
+	$scope.callUpdateWeekGoals = function() {
 		//$scope.$storage.goals[$scope.$storage.salesDate].value = $('#salesGoalInput').val();
 		var weekBeginning = moment().startOf('isoWeek').format('YYYYMMDD');
 		var weekEnding = moment().endOf('isoWeek').format('YYYYMMDD');
@@ -251,7 +251,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			'weekly': parseInt($('#weeklyGoalInput').val())
 		})
 		.then(function(response)  {
-			$scope.$storage.goals[weekBeginning].value = $('#weeklyGoalInput').val();
+			$scope.$storage.goals[weekBeginning].value = parseInt($('#weeklyGoalInput').val());
 			if (!$scope.$storage.goals[moment(weekBeginning).add(1, 'day')]) $scope.$storage.goals[moment(weekBeginning).add(1, 'day')] = {};
 			if (!$scope.$storage.goals[moment(weekBeginning).add(2, 'day')]) $scope.$storage.goals[moment(weekBeginning).add(2, 'day')] = {};
 			if (!$scope.$storage.goals[moment(weekBeginning).add(3, 'day')]) $scope.$storage.goals[moment(weekBeginning).add(3, 'day')] = {};
@@ -267,60 +267,33 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		}, function(resposne)  {
 
 		});
-	    // $http.post("/locations/" + $scope.$storage.location + "/goals/" + $scope.$storage.goals[$scope.$storage.salesDate].type + "/" + $scope.$storage.salesDate, {
-	    //   "value": $scope.$storage.goals[$scope.$storage.salesDate].value
-	    // })
-	    // .then(function(response)  {
-	    //   console.log($scope.$storage.goals);
-	    // }, function(resposne)  {
-	    //   console.log("Failing here");
-	    // });
-		//
-	    // $http.post("/locations/" + $scope.$storage.location + "/goals/" + $scope.$storage.goals[$scope.$storage.salesDate].type + "/" + $scope.$storage.salesDate, {
-	    //   "value": $scope.$storage.goals[$scope.$storage.salesDate].value
-	    // })
-	    // .then(function(response)  {
-	    //   //console.log($scope.$storage.goals);
-	    // }, function(resposne)  {
-	    //   console.log("Failing here");
-	    // });
+	}
 
-		// var newGoal = $('#weeklyGoalInput').val();
-		// //console.log("Section: " + section);
-		// if (section == 0) {
-		// 	$http.post("/updateGoals", {
-		// 			"location": "10 Barrel Boise",
-		// 			"dailyGoal": newGoal,
-		// 			"weeklyGoal": $scope.$storage.goal.weeklyGoal
-		// 		})
-		// 		.then(function(data, status, headers, config) {
-		// 			$scope.$storage.goal.dailyGoal = parseInt(newGoal);
-		// 			$scope.data = [$scope.$storage.goal.dailyProgress, Math.abs($scope.$storage.goal.dailyProgress - parseInt(newGoal))];
-		// 			//$scope.dailyGoal = $storage.dailyGoal;
-		// 		}, function(data, status, headers, config) {
-		// 			console.log("failure");
-		// 		});
-		// }
-		// else {
-		// 	$http.post("/updateGoals", {
-		// 			"location": "10 Barrel Boise",
-		// 			"dailyGoal": $scope.$storage.goal.dailyGoal,
-		// 			"weeklyGoal": newGoal
-		// 		})
-		// 		.then(function(data, status, headers, config) {
-		// 			$scope.$storage.goal.weeklyGoal = parseInt(newGoal);
-		// 			$scope.data = [$scope.$storage.goal.weeklyProgress, Math.abs($scope.$storage.goal.weeklyProgress - parseInt(newGoal))];
-		// 			//$scope.dailyGoal = $storage.dailyGoal;
+	$scope.callUpdateMonthGoals = function() {
+		//$scope.$storage.goals[$scope.$storage.salesDate].value = $('#salesGoalInput').val();
+		var monthBeginning = moment().startOf('month').format('YYYYMMDD');
+		var monthEnding = moment().endOf('month').format('YYYYMMDD');
+		$http.post('/locations/' + $scope.$storage.location + '/goals/batchupdatemonth/' + monthBeginning + '/' + monthEnding, {
+			0: parseInt($('#week1GoalInput').val()),
+			1: parseInt($('#week2GoalInput').val()),
+			2: parseInt($('#week3GoalInput').val()),
+			3: parseInt($('#week4GoalInput').val()),
+			4: parseInt($('#week5GoalInput').val()),
+			'monthly': parseInt($('#monthlyGoalInput').val())
+		})
+		.then(function(response)  {
+			$scope.$storage.goals[monthBeginning].value = parseInt($('#monthlyGoalInput').val());
+			if (!$scope.$storage.goals[moment(monthBeginning).add(1, 'week')]) $scope.$storage.goals[moment(monthBeginning).add(1, 'week')] = {};
+			if (!$scope.$storage.goals[moment(monthBeginning).add(2, 'week')]) $scope.$storage.goals[moment(monthBeginning).add(2, 'week')] = {};
+			if (!$scope.$storage.goals[moment(monthBeginning).add(3, 'week')]) $scope.$storage.goals[moment(monthBeginning).add(3, 'week')] = {};
+			if (!$scope.$storage.goals[moment(monthBeginning).add(4, 'week')]) $scope.$storage.goals[moment(monthBeginning).add(4, 'week')] = {};
+			$scope.$storage.goals[moment(monthBeginning).add(1, 'week')].value = $('#week2GoalInput').val();
+			$scope.$storage.goals[moment(monthBeginning).add(2, 'week')].value = $('#week3GoalInput').val();
+			$scope.$storage.goals[moment(monthBeginning).add(3, 'week')].value = $('#week4GoalInput').val();
+			$scope.$storage.goals[moment(monthBeginning).add(4, 'week')].value = $('#week5GoalInput').val();
+		}, function(resposne)  {
 
-		// 		}, function(data, status, headers, config) {
-		// 			console.log("failure");
-		// 		});
-		// 	$scope.weeklyData = [parseInt(newGoal) * .05, .1 * parseInt(newGoal), .2 * parseInt(newGoal),
-		// 		parseInt(newGoal) * .25, parseInt(newGoal) * .4, parseInt(newGoal) * .3, parseInt(newGoal) * .1
-		// 	];
-		// }
-
-
+		});
 	}
 
 	$scope.callGetGoals = function() {
@@ -879,29 +852,41 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   $scope.$storage.lineActualSalesData = [0,0,0,0,0,0,0];
   $scope.$storage.lineGoalsSalesData = [0,0,0,0,0,0,0];
 
-	$scope.onAdjustGoals = function()  {
-		var weekBeginning = moment().startOf('isoWeek').format('YYYYMMDD');
-		var weekEnding = moment().endOf('isoWeek').format('YYYYMMDD');
-		$http.get('/locations/' + $scope.$storage.location + '/salesByDay/' + weekBeginning + '/' + weekEnding)
-		.then(function (response) {
-			$scope.$storage.lineActualSalesData = [response.data.data[0], response.data.data[1], response.data.data[2]
-				, response.data.data[3], response.data.data[4], response.data.data[5], response.data.data[6] ];
-  		// 	$scope.lineData = [
-    // 			[response.data.data[0], response.data.data[1], response.data.data[2]
-				// , response.data.data[3], response.data.data[4], response.data.data[5], response.data.data[6]],
-    // 			[0, 0, 0, 0, 0, 0, 0]
-  		// 	];  		
-  			// console.log($scope.)
-			$http.get('/locations/' + $scope.$storage.location + '/goalsByDay/' + weekBeginning + '/' + weekEnding)
+	$scope.onAdjustGoals = function(period)  {
+		if (period === 0)  {
+			var weekBeginning = moment().startOf('isoWeek').format('YYYYMMDD');
+			var weekEnding = moment().endOf('isoWeek').format('YYYYMMDD');
+			$http.get('/locations/' + $scope.$storage.location + '/salesByDay/' + weekBeginning + '/' + weekEnding)
 			.then(function (response) {
-				$scope.$storage.lineGoalsSalesData = [response.data.data[0], response.data.data[1], response.data.data[2]
-				, response.data.data[3], response.data.data[4], response.data.data[5], response.data.data[6] ];
-				$scope.$storage.weeklySalesGoal = response.data.data['weekly'];
+				console.log(response);
+				$scope.$storage.lineActualSalesData = [response.data.data[0], response.data.data[1], response.data.data[2]
+					, response.data.data[3], response.data.data[4], response.data.data[5], response.data.data[6] ];
+				$http.get('/locations/' + $scope.$storage.location + '/goalsByDay/' + weekBeginning + '/' + weekEnding)
+				.then(function (response) {
+					$scope.$storage.lineGoalsSalesData = [response.data.data[0], response.data.data[1], response.data.data[2]
+					, response.data.data[3], response.data.data[4], response.data.data[5], response.data.data[6] ];
+					$scope.$storage.weeklySalesGoal = response.data.data['weekly'];
+				});
+			}, function (response)  {
+				console.log(response);
+				console.log("Failure");
 			});
-		}, function (response)  {
-			console.log(response);
-			console.log("Failure");
-		});
+		} else if (period === 1)  {
+			var monthBeginning = moment().startOf('month').format('YYYYMMDD');
+			var monthEnding = moment().endOf('month').format('YYYYMMDD');
+			$scope.lineLabels = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'];
+			$http.get('/locations/' + $scope.$storage.location + '/salesByWeek/' + monthBeginning + '/' + monthEnding)
+			.then(function (response)  {
+				$scope.$storage.lineActualSalesData = [response.data.data[0], response.data.data[1], response.data.data[2]
+					, response.data.data[3], response.data.data[4] ];
+				$http.get('/locations/' + $scope.$storage.location + '/goalsByWeek/' + monthBeginning + '/' + monthEnding)
+				.then(function (response)  {
+					$scope.$storage.lineGoalsSalesData = [response.data.data[0], response.data.data[1], response.data.data[2]
+					, response.data.data[3], response.data.data[4] ];
+					$scope.$storage.monthlySalesGoal = response.data.data['monthly'];
+				});
+			});
+		}
 	}
 
 	$scope.init();

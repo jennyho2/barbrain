@@ -510,6 +510,33 @@ router.get('/locations/:location_id/goalsByDay/:min_date/:max_date', (req, res) 
 	.catch(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
 });
 
+router.get('/locations/:location_id/salesByWeek/:min_date/:max_date', (req, res) => {
+	var location = req.params.location_id,
+		min_date = moment(req.params.min_date, 'YYYYMMDD'),
+		max_date = moment(req.params.max_date, 'YYYYMMDD');
+	var newMinDate = moment(min_date).hour(3).minute(0).second(0).toDate();
+	var newMaxDate = moment(max_date).hour(3).minute(0).second(0).toDate();
+	new LocationService().resolve(location)
+	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
+	.then(service => service.getSalesByWeek(newMinDate, newMaxDate))
+	.then(data => res.json({ success:true, data }))
+	.catch(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
+});
+
+router.get('/locations/:location_id/goalsByWeek/:min_date/:max_date', (req, res) => {
+	var location = req.params.location_id,
+		min_date = moment(req.params.min_date, 'YYYYMMDD'),
+		max_date = moment(req.params.max_date, 'YYYYMMDD');
+	var newMinDate = moment(min_date).hour(3).minute(0).second(0).toDate();
+	var newMaxDate = moment(max_date).hour(3).minute(0).second(0).toDate();
+	new LocationService().resolve(location)
+	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
+	.then(service => service.getGoalsByWeek(newMinDate, newMaxDate))
+	.then(data => res.json({ success:true, data }))
+	.catch(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
+});
+
+
 router.post('/locations/:location_id/goals/batchupdateweek/:weekstart/:weekend', (req, res) => {
 	var location = req.params.location_id,
 		from_date = moment(req.params.weekstart, 'YYYYMMDD'),
@@ -518,10 +545,24 @@ router.post('/locations/:location_id/goals/batchupdateweek/:weekstart/:weekend',
 	var newToDate = moment(to_date).hour(3).minute(0).second(0).toDate();
 	new LocationService().resolve(location)
 	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
-	.then(service => service.setBatchGoals(newFromDate, newToDate, req.body))
+	.then(service => service.setWeekBatchGoals(newFromDate, newToDate, req.body))
 	.then(data => res.json({ success:true, data }))
 	.catch(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
-})
+});
+
+router.post('/locations/:location_id/goals/batchupdatemonth/:monthstart/:monthend', (req, res) => {
+	var location = req.params.location_id,
+		from_date = moment(req.params.monthstart, 'YYYYMMDD'),
+		to_date = moment(req.params.monthend, 'YYYYMMDD');
+	var newFromDate = moment(from_date).hour(3).minute(0).second(0).toDate();
+	var newToDate = moment(to_date).hour(3).minute(0).second(0).toDate();
+	new LocationService().resolve(location)
+	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
+	.then(service => service.setMonthBatchGoals(newFromDate, newToDate, req.body))
+	.then(data => res.json({ success:true, data }))
+	.catch(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
+});
+
 
 /*
 function getCategoryInfo($sender, $row, period, res)  {

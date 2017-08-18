@@ -1,57 +1,77 @@
-<table class="dividerTable" ng-init="goalPeriod = 'this week';">
-  <tr class="smallFont bottomLine">
-    <th ng-class="{'selected': goalPeriod === 'this week'}" ng-click="goalPeriod = 'this week'">This Week</th>
-    <th ng-class="{'selected': goalPeriod === 'this month'}" ng-click="goalPeriod = 'this month'">Last Week</th>
-  </tr>
-</table>
-
 <div class="chartHolder padding">
   <canvas id="line" class="chart chart-line" chart-data="[$storage.lineActualSalesData, $storage.lineGoalsSalesData]"
   chart-labels="lineLabels" chart-series="lineSeries" chart-options="lineOptions"
   chart-dataset-override="lineDatasetOverride">
   </canvas>
-  <!-- <canvas class="chart chart-line" chart-date="[0,0,0,0,0,0,0]"
-    chart-labels="['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']" chart-options="lineOptions" chart-dataset-override="datasetOverride" chart-series="['Projected']">
-  </canvas> -->
-  <!-- <canvas class="chart chart-line" chart-date="[$storage.weeklyGraphProjected, $storage.weeklyGraphActual]"
-    chart-labels="['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']" chart-options="[]" chart-series="['Projected', 'Actual']">
-  </canvas> -->
 </div>
 
-<span class="xlargeFont center">{{ goalPeriod | capitalizeFirst }}'s total goal: {{dollarSign}}{{$storage.weeklyScale}}</span>
-<input type="number" class="xlargeFont center" id="weeklyGoalInput" value="{{ $storage.weeklySalesGoal }}" />
-<br>
-<div class="center tactics">
+<div ng-if="goalPeriod === 'this week'">
+  <span class="xlargeFont center">{{ goalPeriod | capitalizeFirst }}'s total goal: {{dollarSign}}{{$storage.weeklyScale}}</span>
+  <input type="number" class="xlargeFont center" id="weeklyGoalInput" value="{{ $storage.weeklySalesGoal }}" />
   <br>
-    <table>
-      <tr>
-        <td>Monday</td>
-        <td><input type="number" class="mediumFont center" id="mondayGoalInput" ng-model="$storage.lineGoalsSalesData[0]" /></td>
-      </tr>
-      <tr>
-        <td>Tuesday</td>
-        <td><input type="number" class="mediumFont center" id="tuesdayGoalInput" ng-model="$storage.lineGoalsSalesData[1]"/></td>
-      </tr>
-      <tr>
-        <td>Wednesday</td>
-        <td><input type="number" class="mediumFont center" id="wednesdayGoalInput" ng-model="$storage.lineGoalsSalesData[2]"/></td>
-      </tr>
-      <tr>
-        <td>Thursday</td>
-        <td><input type="number" class="mediumFont center" id="thursdayGoalInput" ng-model="$storage.lineGoalsSalesData[3]"/></td>
-      </tr>
-      <tr>
-        <td>Friday</td>
-        <td><input type="number" class="mediumFont center" id="fridayGoalInput" ng-model="$storage.lineGoalsSalesData[4]"/></td>
-      </tr>
-      <tr>
-        <td>Saturday</td>
-        <td><input type="number" class="mediumFont center" id="saturdayGoalInput" ng-model="$storage.lineGoalsSalesData[5]"/></td>
-      </tr>
-      <tr>
-        <td>Sunday</td>
-        <td><input type="number" class="mediumFont center" id="sundayGoalInput" ng-model="$storage.lineGoalsSalesData[6]"/></td>
-      </tr>
-    </table>
-    <!-- <button type="button" class="btn btn-default" ng-click="callUpdateGoals()">Update</button> -->
+  <div class="center tactics">
+    <br>
+      <table>
+        <tr>
+          <td>Monday</td>
+          <td><input type="number" class="mediumFont center" id="mondayGoalInput" ng-model="$storage.lineGoalsSalesData[0]" /></td>
+        </tr>
+        <tr>
+          <td>Tuesday</td>
+          <td><input type="number" class="mediumFont center" id="tuesdayGoalInput" ng-model="$storage.lineGoalsSalesData[1]"/></td>
+        </tr>
+        <tr>
+          <td>Wednesday</td>
+          <td><input type="number" class="mediumFont center" id="wednesdayGoalInput" ng-model="$storage.lineGoalsSalesData[2]"/></td>
+        </tr>
+        <tr>
+          <td>Thursday</td>
+          <td><input type="number" class="mediumFont center" id="thursdayGoalInput" ng-model="$storage.lineGoalsSalesData[3]"/></td>
+        </tr>
+        <tr>
+          <td>Friday</td>
+          <td><input type="number" class="mediumFont center" id="fridayGoalInput" ng-model="$storage.lineGoalsSalesData[4]"/></td>
+        </tr>
+        <tr>
+          <td>Saturday</td>
+          <td><input type="number" class="mediumFont center" id="saturdayGoalInput" ng-model="$storage.lineGoalsSalesData[5]"/></td>
+        </tr>
+        <tr>
+          <td>Sunday</td>
+          <td><input type="number" class="mediumFont center" id="sundayGoalInput" ng-model="$storage.lineGoalsSalesData[6]"/></td>
+        </tr>
+      </table>
+      <!-- <button type="button" class="btn btn-default" ng-click="callUpdateGoals()">Update</button> -->
+  </div>
+</div>
+
+<div ng-if="goalPeriod === 'this month'">
+  <span class="xlargeFont center">{{ goalPeriod | capitalizeFirst }}'s total goal:</span>
+  <input type="number" class="xlargeFont center" id="monthlyGoalInput" value="{{ $storage.monthlySalesGoal }}" />
+  <br>
+  <div class="center tactics">
+    <br>
+      <table>
+        <tr>
+          <td>Week 1</td>
+          <td><input type="number" class="mediumFont center" id="week1GoalInput" ng-model="$storage.lineGoalsSalesData[0]" /></td>
+        </tr>
+        <tr>
+          <td>Week 2</td>
+          <td><input type="number" class="mediumFont center" id="week2GoalInput" ng-model="$storage.lineGoalsSalesData[1]"/></td>
+        </tr>
+        <tr>
+          <td>Week 3</td>
+          <td><input type="number" class="mediumFont center" id="week3GoalInput" ng-model="$storage.lineGoalsSalesData[2]"/></td>
+        </tr>
+        <tr>
+          <td>Week 4</td>
+          <td><input type="number" class="mediumFont center" id="week4GoalInput" ng-model="$storage.lineGoalsSalesData[3]"/></td>
+        </tr>
+        <tr>
+          <td>Week 5</td>
+          <td><input type="number" class="mediumFont center" id="week5GoalInput" ng-model="$storage.lineGoalsSalesData[4]"/></td>
+        </tr>
+      </table>
+  </div>
 </div>

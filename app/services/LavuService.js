@@ -656,7 +656,7 @@ module.exports = class LavuService {
 				.then(result => {
 					var weeklyGoal = 10000;
 					if (result[0])  {
-						var weeklyGoal = parseInt(result[0].value);
+						weeklyGoal = parseInt(result[0].value);
 					}
 					goalsByDate['weekly'] = weeklyGoal;
 					// console.log("weekly goal");
@@ -700,6 +700,106 @@ module.exports = class LavuService {
 		});
 	}
 
+	getSalesByWeek(minDate, maxDate)  {
+		return this.loadOrders(minDate, maxDate)
+		.then(orders => this.loadMenuItems().then(menuItems => { return { orders, menuItems }; }))
+		.then(({orders, menuItems}) => this.loadMenuCategories().then(categories => { return { orders, menuItems, categories }; }))
+		.then(({orders, menuItems, categories}) => this.loadUsers().then(users => { return { orders, menuItems, categories, users }; }))
+		.then(({orders, menuItems, categories, users}) => {
+			let salesByDate = {
+				0: 0,
+				1: 0,
+				2: 0,
+				3: 0,
+				4: 0
+			};
+			var firstWeek = moment(minDate).isoWeek();
+			var secondWeek = firstWeek + 1;
+			var thirdWeek = firstWeek + 2;
+			var fourthWeek = firstWeek + 3;
+			var fifthWeek = firstWeek + 4;
+			orders.forEach(order => {
+				var orderDate = moment(order.closed);
+				salesByDate[orderDate.isoWeek() - firstWeek] += order.total;
+			});
+			return salesByDate;
+		});
+	}
+
+	getGoalsByWeek(minDate, maxDate)  {
+		return database.connect().then(db => {
+			let goalsByDate = {
+				0: 0,
+				1: 0,
+				2: 0,
+				3: 0,
+				4: 0,
+				monthly: 0,
+			};
+
+			return db.collection('goals').find({ location_id: this.locationId, type: 'weekly' }).sort({ created_at: -1 }).toArray()
+			.then(result => {
+				var firstWeek = moment(minDate).isoWeek();
+				var secondWeek = firstWeek + 1;
+				var thirdWeek = firstWeek + 2;
+				var fourthWeek = firstWeek + 3;
+				var fifthWeek = firstWeek + 4;
+				for (var i = 0; i < result.length; i++) {
+					var date = moment(result[i].date);
+					//console.log(goalDay);
+					if (goalsByDate[date.isoWeek() - firstWeek] === 0)  {
+						goalsByDate[date.isoWeek() - firstWeek] = parseInt(result[i].value);
+					}
+				}
+				return db.collection('goals').find({ location_id: this.locationId, type: 'monthly' }).sort({ created_at: -1 }).limit(1).toArray()
+				.then(result => {
+					var monthlyGoal = 100000;
+					if (result[0])  {
+						monthlyGoal = parseInt(result[0].value);
+					}
+					goalsByDate['monthly'] = monthlyGoal;
+					// console.log("weekly goal");
+					// console.log(weeklyGoal);
+					var x = 0;
+					for (var goal in goalsByDate)  {
+						if (goal !== "monthly" && goalsByDate[goal] === 0)  {
+							//var currDate = moment().startOf('isoWeek').add(x, 'day').format('YYYYMMDD');
+							//console.log(goal);
+							//var currDay = ( (moment(currDate).day() == 0) ? 6 : (moment(currDate).day() - 1) );
+							var currDate = moment().day("Monday");
+							switch(parseInt(goal))  {
+		                      case 0:
+		                        goalsByDate[goal] = parseInt(monthlyGoal * 0.20);
+		                        currDate.week(firstWeek);
+		                        break;
+		                      case 1:
+		                        goalsByDate[goal] = parseInt(monthlyGoal * 0.20);
+		                        currDate.week(secondWeek);
+		                        break;
+		                      case 2:
+		                        goalsByDate[goal] = parseInt(monthlyGoal * 0.20);
+		                        currDate.week(thirdWeek);
+		                        break;
+		                      case 3:
+		                        goalsByDate[goal] = parseInt(monthlyGoal * 0.20);
+		                        currDate.week(fourthWeek);
+		                        break;
+		                      case 4:
+		                        goalsByDate[goal] = parseInt(monthlyGoal * 0.20);
+		                        currDate.week(fifthWeek);
+		                        break;
+		                    }
+
+		                    this.setWeeklyGoal(moment(currDate).toDate(), goalsByDate[goal]);
+						}
+						x++;
+					}
+					return goalsByDate;
+				});
+			});
+		});
+	}
+
 
 	getGoalsSummary(minDate, maxDate, weekly)  {
 		return database.connect().then(db => {
@@ -729,13 +829,23 @@ module.exports = class LavuService {
 		});
 	}
 
-	setBatchGoals(newMinDate, newMaxDate, body)  {
+	setWeekBatchGoals(newMinDate, newMaxDate, body)  {
 		return database.connect().then(db => {
 			for (var i = 0; i < Object.keys(body).length - 1; i++)  {
 				var currDate = moment(newMinDate).add(i, 'day').hour(3).minute(0).second(0).toDate();
 				this.setDailyGoal(moment(currDate).toDate(), body[i]);
 			}
 			return this.setWeeklyGoal(moment(newMinDate).toDate(), body.weekly);
+		});
+	}
+
+	setMonthBatchGoals(newMinDate, newMaxDate, body)  {
+		return database.connect().then(db => {
+			for (var i = 0; i < Object.keys(body).length - 1; i++)  {
+				var currDate = moment(newMinDate).add(i, 'week').startOf('isoWeek').hour(3).minute(0).second(0).toDate();
+				this.setWeeklyGoal(moment(currDate).toDate(), body[i]);
+			}
+			return this.setMonthlyGoal(moment(newMinDate).toDate(), body.monthly);
 		});
 	}
 
