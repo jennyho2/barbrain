@@ -1082,6 +1082,9 @@ app.filter('orderObjectBy', function() {
 			//if (field == "avgTicket" || field == "percentToAvg") {
 			//	return (a["sales"] / a["orders"] > b["sales"] / b["orders"] ? 1 : -1);
 			//}
+			else if(field=="%"){
+				return (a['sales'] > b['sales'] ? 1 : -1);
+			}
 			else {
 				return (a[field] > b[field] ? 1 : -1);
 			}

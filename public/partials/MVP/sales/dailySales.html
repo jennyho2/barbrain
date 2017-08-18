@@ -28,16 +28,22 @@
   </table>
   <br>
 
-  <table class="dividerTable smallFont" ng-if="level === 0">  
+  <table class="dividerTableNoColor smallFont" ng-if="level === 0">  
     <thead>
       <tr class="tableEmployeeStat">
-        <th ng-click="level= 1">Super Group</th>
-        <th ng-click="orderByField='sales'">Sales</th>
-        <th ng-click="orderByField='count'">Tickets</th>
-        <th ng-click="orderByField='sales'">% of Total Sales</th>
+        <th >Super Group</th>
+        <th ng-click="orderByField='sales'" style="color:deepskyblue">Sales
+          <span ng-show="orderByField == 'sales'">v</span>
+        </th>
+        <th ng-click="orderByField='count'" style="color:deepskyblue">Tickets
+          <span ng-show="orderByField == 'count'">v</span>
+        </th>
+        <th ng-click="orderByField='%'" style="color:deepskyblue">% of Total
+          <span ng-show="orderByField == '%'">v</span>
+        </th>
       </tr>
     </thead>
-    <tbody>
+    <tbody class = dividerTable>
       <tr class="tableEmployeeStat" ng-repeat="object in $storage.sales[$storage.salesDate].superGroups | orderObjectBy:orderByField:true">
         <td>{{object.name}}</td>
         <td>{{object.sales | currency:undefined:0 }}</td>
@@ -48,16 +54,22 @@
     </tbody>
   </table>
 
-  <table class="dividerTable smallFont" ng-if="level === 1">  
+  <table class="dividerTableNoColor smallFont" ng-if="level === 1">  
     <thead>
       <tr class="tableEmployeeStat">
         <th>Group</th>
-        <th>Sales</th>
-        <th>Tickets</th>
-        <th>% of Total Sales</th>
+        <th ng-click="orderByField='sales'" style="color:deepskyblue">Sales
+          <span ng-show="orderByField == 'sales'">v</span>
+        </th>
+        <th ng-click="orderByField='count'" style="color:deepskyblue">Tickets
+          <span ng-show="orderByField == 'count'">v</span>
+        </th>
+        <th ng-click="orderByField='%'" style="color:deepskyblue">% of Total
+          <span ng-show="orderByField == '%'">v</span>
+        </th>
       </tr>
     </thead>
-    <tbody>
+    <tbody class="dividerTable">
       <tr class="tableEmployeeStat" ng-repeat="object in $storage.sales[$storage.salesDate].groups">
         <td>{{object.name}}</td>
         <td>{{object.sales | currency:undefined:0 }}</td>
