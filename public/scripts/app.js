@@ -168,6 +168,32 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.$storage.staff = {};
 	$scope.$storage.staffName = {};
 
+	$scope.lineLabels = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  	$scope.lineSeries = ['Actual', 'Goal'];
+  	$scope.lineData = [
+		[0, 0, 0, 0, 0, 0, 0],
+    	[0, 0, 0, 0, 0, 0, 0]
+  	];
+  	$scope.lineDatasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
+  	$scope.lineOptions = {
+	    scales: {
+	      yAxes: [
+	       {
+          id: 'y-axis-1',
+          type: 'linear',
+          display: true,
+          position: 'left'
+        },
+        {
+          id: 'y-axis-2',
+          type: 'linear',
+          display: true,
+          position: 'right'
+        }
+      ]
+    }
+  };
+
 	$scope.init = function() {
 		$scope.$storage.salesDate = moment().format('YYYYMMDD');
 		if($scope.$storage.location){
@@ -220,15 +246,53 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	};
 
 	$scope.callUpdateGoals = function() {
-		$scope.$storage.goals[$scope.$storage.salesDate].value=$('#salesGoalInput').val();
-	    $http.post("/locations/" + $scope.$storage.location + "/goals/" + $scope.$storage.goals[$scope.$storage.salesDate].type + "/" + $scope.$storage.salesDate, {
-	      "value": $scope.$storage.goals[$scope.$storage.salesDate].value
-	    })
-	    .then(function(response)  {
-	      //console.log($scope.$storage.goals);
-	    }, function(resposne)  {
-	      console.log("Failing here");
-	    });
+		//$scope.$storage.goals[$scope.$storage.salesDate].value = $('#salesGoalInput').val();
+		var weekBeginning = moment().startOf('isoWeek').format('YYYYMMDD');
+		var weekEnding = moment().endOf('isoWeek').format('YYYYMMDD');
+		$http.post('/locations/' + $scope.$storage.location + '/goals/batchupdateweek/' + weekBeginning + '/' + weekEnding, {
+			0: parseInt($('#mondayGoalInput').val()),
+			1: parseInt($('#tuesdayGoalInput').val()),
+			2: parseInt($('#wednesdayGoalInput').val()),
+			3: parseInt($('#thursdayGoalInput').val()),
+			4: parseInt($('#fridayGoalInput').val()),
+			5: parseInt($('#saturdayGoalInput').val()),
+			6: parseInt($('#sundayGoalInput').val()),
+			'weekly': parseInt($('#weeklyGoalInput').val())
+		})
+		.then(function(response)  {
+			$scope.$storage.goals[weekBeginning].value = $('#weeklyGoalInput').val();
+			if (!$scope.$storage.goals[moment(weekBeginning).add(1, 'day')]) $scope.$storage.goals[moment(weekBeginning).add(1, 'day')] = {};
+			if (!$scope.$storage.goals[moment(weekBeginning).add(2, 'day')]) $scope.$storage.goals[moment(weekBeginning).add(2, 'day')] = {};
+			if (!$scope.$storage.goals[moment(weekBeginning).add(3, 'day')]) $scope.$storage.goals[moment(weekBeginning).add(3, 'day')] = {};
+			if (!$scope.$storage.goals[moment(weekBeginning).add(4, 'day')]) $scope.$storage.goals[moment(weekBeginning).add(4, 'day')] = {};
+			if (!$scope.$storage.goals[moment(weekBeginning).add(5, 'day')]) $scope.$storage.goals[moment(weekBeginning).add(5, 'day')] = {};
+			if (!$scope.$storage.goals[moment(weekBeginning).add(6, 'day')]) $scope.$storage.goals[moment(weekBeginning).add(6, 'day')] = {};
+			$scope.$storage.goals[moment(weekBeginning).add(1, 'day')].value = $('#tuesdayGoalInput').val();
+			$scope.$storage.goals[moment(weekBeginning).add(2, 'day')].value = $('#wednesdayGoalInput').val();
+			$scope.$storage.goals[moment(weekBeginning).add(3, 'day')].value = $('#thursdayGoalInput').val();
+			$scope.$storage.goals[moment(weekBeginning).add(4, 'day')].value = $('#fridayGoalInput').val();
+			$scope.$storage.goals[moment(weekBeginning).add(5, 'day')].value = $('#saturdayGoalInput').val();
+			$scope.$storage.goals[moment(weekBeginning).add(6, 'day')].value = $('#sundayGoalInput').val();
+		}, function(resposne)  {
+
+		});
+	    // $http.post("/locations/" + $scope.$storage.location + "/goals/" + $scope.$storage.goals[$scope.$storage.salesDate].type + "/" + $scope.$storage.salesDate, {
+	    //   "value": $scope.$storage.goals[$scope.$storage.salesDate].value
+	    // })
+	    // .then(function(response)  {
+	    //   console.log($scope.$storage.goals);
+	    // }, function(resposne)  {
+	    //   console.log("Failing here");
+	    // });
+		//
+	    // $http.post("/locations/" + $scope.$storage.location + "/goals/" + $scope.$storage.goals[$scope.$storage.salesDate].type + "/" + $scope.$storage.salesDate, {
+	    //   "value": $scope.$storage.goals[$scope.$storage.salesDate].value
+	    // })
+	    // .then(function(response)  {
+	    //   //console.log($scope.$storage.goals);
+	    // }, function(resposne)  {
+	    //   console.log("Failing here");
+	    // });
 
 		// var newGoal = $('#weeklyGoalInput').val();
 		// //console.log("Section: " + section);
@@ -821,14 +885,28 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	}
 
   $scope.getWeekGoalsLavu();
+  $scope.$storage.lineActualSalesData = [0,0,0,0,0,0,0];
+  $scope.$storage.lineGoalsSalesData = [0,0,0,0,0,0,0];
 
 	$scope.onAdjustGoals = function()  {
 		var weekBeginning = moment().startOf('isoWeek').format('YYYYMMDD');
 		var weekEnding = moment().endOf('isoWeek').format('YYYYMMDD');
 		$http.get('/locations/' + $scope.$storage.location + '/salesByDay/' + weekBeginning + '/' + weekEnding)
 		.then(function (response) {
-			console.log(response);
-			console.log("Success");
+			$scope.$storage.lineActualSalesData = [response.data.data[0], response.data.data[1], response.data.data[2]
+				, response.data.data[3], response.data.data[4], response.data.data[5], response.data.data[6] ];
+  		// 	$scope.lineData = [
+    // 			[response.data.data[0], response.data.data[1], response.data.data[2]
+				// , response.data.data[3], response.data.data[4], response.data.data[5], response.data.data[6]],
+    // 			[0, 0, 0, 0, 0, 0, 0]
+  		// 	];  		
+  			// console.log($scope.)
+			$http.get('/locations/' + $scope.$storage.location + '/goalsByDay/' + weekBeginning + '/' + weekEnding)
+			.then(function (response) {
+				$scope.$storage.lineGoalsSalesData = [response.data.data[0], response.data.data[1], response.data.data[2]
+				, response.data.data[3], response.data.data[4], response.data.data[5], response.data.data[6] ];
+				$scope.$storage.weeklySalesGoal = response.data.data['weekly'];
+			});
 		}, function (response)  {
 			console.log(response);
 			console.log("Failure");
