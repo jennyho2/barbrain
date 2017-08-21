@@ -2,7 +2,7 @@
 
   <header class="progressHeader">
     <h5 class="location-name">{{ $storage.locationData.name }}</h5>
-    <h3 class="screen-heading">Staff Performanceham</h3>
+    <h3 class="screen-heading">Staff Performance</h3>
 
 
     <span class="xlargeFont screen-heading">{{dateRange}}</span>
@@ -25,4 +25,4 @@
 
 <div ng-if="loading" ng-include="'partials/loading.html'"></div>
 
-<button ng-click="loadSalesData(true)">Refresh Data</button>
+<button class="button" ng-click="loadSalesData(true)">Refresh Data</button>
