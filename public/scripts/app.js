@@ -189,6 +189,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
 	$scope.init = function() {
 		$scope.$storage.salesDate = moment().format('YYYYMMDD');
+		$scope.$storage.scrubDateMin = moment().startOf('isoWeek').format('YYYYMMDD');
+		$scope.$storage.scrubDateMax = moment().endOf('isoWeek').format('YYYYMMDD');
 		if($scope.$storage.location){
 			// Preload data if we've got a saved location
       		$scope.loadIncentiveData();
@@ -438,7 +440,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	}
 
 	$scope.printWeeklySales = function()  {
-		var itemGroup = $scope.$storage.sales[moment($scope.$storage.salesDate).startOf('isoWeek').format('YYYYMMDD')].itemGroups[$scope.$storage.incentiveItem.id];
+		var itemGroup = $scope.$storage.sales[moment($scope.$storage.scrubDateMin).startOf('isoWeek').format('YYYYMMDD')].itemGroups[$scope.$storage.incentiveItem.id];
 		if (itemGroup)  {
 			return itemGroup.count;
 		} else {
@@ -448,10 +450,12 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
 	$scope.scrubWeeks = function(offset)  {
 		$scope.currentWeek = false;
-		var currWeek = moment($scope.$storage.salesDate).startOf('isoWeek').format('YYYYMMDD');
-		$scope.$storage.salesDate = moment(currWeek).add(offset, 'day').startOf('isoWeek').format('YYYYMMDD');
-		$scope.$storage.salesDateMax = moment(currWeek).add(offset, 'day').endOf('isoWeek').format('YYYYMMDD');
-		if (moment($scope.$storage.salesDate).isSame(moment().startOf('isoWeek').format('YYYYMMDD')))  $scope.currentWeek = true;
+		var currWeek = moment($scope.$storage.scrubDateMin).startOf('isoWeek').format('YYYYMMDD');
+		$scope.$storage.scrubDateMin = moment(currWeek).add(offset, 'day').startOf('isoWeek').format('YYYYMMDD');
+		$scope.$storage.scrubDateMax = moment(currWeek).add(offset, 'day').endOf('isoWeek').format('YYYYMMDD');
+		$scope.$storage.salesDate = $scope.$storage.scrubDateMin;
+		$scope.$storage.salesDateMax = $scope.$storage.scrubDateMax;
+		if (moment($scope.$storage.scrubDateMin).isSame(moment().startOf('isoWeek').format('YYYYMMDD')))  $scope.currentWeek = true;
 		$scope.loadSalesData();
 	}
 

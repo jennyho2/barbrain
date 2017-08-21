@@ -26,11 +26,13 @@ $( "Goal" ).click(function() {
 
 <div class="center">
   <img ng-click="scrubWeeks(-7)" src="assets/images/backArrow.png" width="50px" />
-  <h4 class="keepInline">{{ printWeeklySales() }} units to {{ $storage.weeklyIncentiveGoal }} weekly goal</h4>
+  <h4 class="keepInline">{{ $storage.scrubDateMin }} - {{ $storage.scrubDateMax }}</h4>
   <!-- <h4 class="keepInline">{{ $storage.weekToDate.itemGroups[$storage.incentiveItem.id].count }} units to {{ $storage.weeklyIncentiveGoal }} weekly goal</h4> -->
   <!-- $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count -->
   <img ng-click="scrubWeeks(7)" class="flip" src="assets/images/backArrow.png" width="50px" />
 </div>
+
+<h4 class="center">{{ printWeeklySales() }} units to {{ $storage.weeklyIncentiveGoal }} weekly goal</h4>
 
   <!--set different graphs to display-->
   <div class="chartHolder smallDoughnut">
