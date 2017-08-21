@@ -475,7 +475,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			if (!$scope.$storage.sales) $scope.$storage.sales = {};
 			// $scope.$storage.sales[date.format('YYYYMMDD')] = response.data.data;
 			let salesData = $scope.$storage.sales[date] = response.data.data;
-			salesData.averageOrderPrice = salesData.totalSales / salesData.totalOrders;
+			salesData.averageOrderPrice = salesData.totalSales / salesData.totalOrders;	
 
 			//console.log($scope.$storage.sales);
 
@@ -485,6 +485,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 				//console.log('staff');
 				//console.log(response);
 				$scope.$storage.staffSales[date] = response.data.data;
+				console.log($scope.$storage.staffSales[date]);
 				$scope.$storage.sales[date].totalGuests = 0;
 				$.each($scope.$storage.staffSales[date], function (key, value)  {
 					$scope.$storage.sales[date].totalGuests += value.totalGuests;

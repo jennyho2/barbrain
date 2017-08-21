@@ -36,8 +36,9 @@
 				<td>Order Time</td>
 			</tr>
 			<tr class="spaceUnder">
-				<td></td> <!-- fill in -->
-				<td></td> <!-- fill in -->
+				<td>{{ $storage.staffInfo.totalItems / $storage.staffInfo.totalOrders | number:0 }}</td> <!-- fill in -->
+				<td ng-if="(($storage.staffInfo.totalMilli / 1000) / $storage.staffInfo.totalOrders) >= 60">{{ (($storage.staffInfo.totalMilli / 1000) / 60) / $storage.staffInfo.totalOrders | number:0}} Minutes</td>
+				<td ng-if="(($storage.staffInfo.totalMilli / 1000) / $storage.staffInfo.totalOrders) < 60">{{ ($storage.staffInfo.totalMilli / 1000) / $storage.staffInfo.totalOrders | number:0}} Seconds</td>
 			</tr>
 		</table>
 		<br>

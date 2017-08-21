@@ -301,6 +301,8 @@ module.exports = class LavuService {
 
 			
 			const allOrderIds = orders.map(orderRow => orderRow.order_id[0]);
+			
+			
 			//const allOrderIds = orders.toArray().map(orderRow => $(orderRow).find('order_id').text());
 			
 			return this.getOrderDetailsFromApi(allOrderIds)
@@ -339,6 +341,7 @@ module.exports = class LavuService {
 					var total = parseFloat(orderRow.total[0]);
 					var location_id = this.locationId;
 					var closed = moment(orderRow.closed[0]).toDate();
+					var opened = moment(orderRow.opened[0]).toDate();
 					var user_id = parseInt(orderRow.server_id[0]);
 					var guests = parseInt(orderRow.guests[0]);
 
@@ -352,8 +355,11 @@ module.exports = class LavuService {
 					// var guests = parseInt($row.find('guests').text());
 					
 					let details = filter(allDetails, d => d.order_id == order_id);
-					
-					return { _id, orderId: order_id, location_id, closed, total: total, details: details, user_id, guests };
+					var totalItems = 0;
+					for (var i = 0; i < details.length; i++)  {
+						totalItems += details[i].quantity;
+					}
+					return { _id, orderId: order_id, location_id, closed, opened, total: total, details: details, user_id, guests, totalItems };
 					
 				});
 			});
@@ -528,6 +534,7 @@ module.exports = class LavuService {
 									summary.staffGroups[menuItem.id][user.id].count = detail.quantity;
 									summary.staffGroups[menuItem.id][user.id].sales = detail.total;
 								}
+
 							} else {
 								summary.staffGroups[menuItem.id] = {};
 								summary.staffGroups[menuItem.id][user.id] = {};
@@ -572,7 +579,7 @@ module.exports = class LavuService {
 
 	getStaffSalesSummary(minDate, maxDate){
 		return this.loadUsers()
-		.then(users => this.loadOrders(minDate, maxDate).then(orders => ({users, orders})))
+		.then(users => this.loadOrders(minDate, maxDate, true).then(orders => ({users, orders})))
 		.then(({users, orders}) => this.loadMenuItems().then(menuItems => ({ users, orders, menuItems })))
 		.then(({users, orders, menuItems}) => this.loadMenuCategories().then(categories => ({ users, orders, menuItems, categories })))
 		.then(({ users, orders, menuItems, categories }) => {
@@ -583,12 +590,16 @@ module.exports = class LavuService {
 				
 				let s = find(staff, s => s.id == user.id);
 				if(!s) { 
-					s = { id: user.id, firstName: user.firstName, lastName: user.lastName, totalSales: 0, totalOrders: 0, totalGuests: 0 }; 
+					s = { id: user.id, firstName: user.firstName, lastName: user.lastName, totalSales: 0, totalOrders: 0, totalGuests: 0, totalItems: 0, totalMilli: 0 }; 
 					staff.push(s); 
 				}
 				s.totalSales += order.total;
 				s.totalOrders++;
 				s.totalGuests += order.guests;
+				s.totalMilli += (moment(order.closed).diff(moment(order.opened)));	
+				console.log(order.totalItems);
+				console.log(order);			
+				s.totalItems += order.totalItems;
 			});
 			return staff;
 		});
