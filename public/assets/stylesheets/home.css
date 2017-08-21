@@ -33,6 +33,15 @@
 	height: 0px;
 }
 
+
+.flip {
+	transform: scaleX(-1);
+}
+
+.keepInline {
+	display: inline;
+}
+
 .location {
 	cursor: pointer;
 	padding: 5px;

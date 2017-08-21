@@ -24,23 +24,30 @@ $( "Goal" ).click(function() {
     API call timed out. Try again.
   </div>
 
-  <h4 class="center">{{ $storage.weekToDate.itemGroups[$storage.incentiveItem.id].count }} units to {{ $storage.weeklyIncentiveGoal }} weekly goal</h4>
+<div class="center">
+  <img ng-click="scrubWeeks(-7)" src="assets/images/backArrow.png" width="50px" />
+  <h4 class="keepInline">{{ printWeeklySales() }} units to {{ $storage.weeklyIncentiveGoal }} weekly goal</h4>
+  <!-- <h4 class="keepInline">{{ $storage.weekToDate.itemGroups[$storage.incentiveItem.id].count }} units to {{ $storage.weeklyIncentiveGoal }} weekly goal</h4> -->
+  <!-- $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count -->
+  <img ng-click="scrubWeeks(7)" class="flip" src="assets/images/backArrow.png" width="50px" />
+</div>
 
   <!--set different graphs to display-->
   <div class="chartHolder smallDoughnut">
   <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
-  <canvas ng-if="$storage.weeklyIncentiveGoal - $storage.weekToDate.itemGroups[$storage.incentiveItem.id].count > 0" id="doughnut" class="chart chart-doughnut"
-    chart-data="[$storage.weekToDate.itemGroups[$storage.incentiveItem.id].count, $storage.weeklyIncentiveGoal - $storage.weekToDate.itemGroups[$storage.incentiveItem.id].count]"  chart-labels="['Period Total Sales', 'Difference From Goal']" chart-options="options">
+ <!--  <canvas chart-data="[printWeeklySales(), 200]" class="chart chart-doughnut" chart-labels="['stuff', 'staff']" chart-options="options"></canvas> -->
+  <canvas ng-if="$storage.weeklyIncentiveGoal - printWeeklySales() > 0" id="doughnut" class="chart chart-doughnut"
+    chart-data="[printWeeklySales(), $storage.weeklyIncentiveGoal - printWeeklySales()]"  chart-labels="['Period Total Sales', 'Difference From Goal']" chart-options="options">
   </canvas> 
-  <canvas ng-if="$storage.weeklyIncentiveGoal - $storage.weekToDate.itemGroups[$storage.incentiveItem.id].count <= 0" id="doughnut" class="chart chart-doughnut"
-    chart-data="[$storage.weekToDate.itemGroups[$storage.incentiveItem.id].count, $storage.weekToDate.itemGroups[$storage.incentiveItem.id].count - $storage.weeklyIncentiveGoal ]"  chart-labels="['Period Total Sales', 'Amount Exceeding Goal']" chart-options="options">
+  <canvas ng-if="$storage.weeklyIncentiveGoal - printWeeklySales() <= 0" id="doughnut" class="chart chart-doughnut"
+    chart-data="[printWeeklySales(), printWeeklySales() - $storage.weeklyIncentiveGoal ]"  chart-labels="['Period Total Sales', 'Amount Exceeding Goal']" chart-options="options">
   </canvas> 
 </div>
   
   
 
   <div class="center">
-  <span>{{ $storage.weekToDate.itemGroups[$storage.incentiveItem.id].count / $storage.weeklyIncentiveGoal * 100 | number:0 }}%</span>
+  <span>{{ printWeeklySales() / $storage.weeklyIncentiveGoal * 100 | number:0 }}%</span>
   <br>
   <span class="smallFont">of this week's {{$storage.incentiveItem.name}} 
   <br> goal achieved</span>
@@ -49,7 +56,7 @@ $( "Goal" ).click(function() {
   </div>
   <br>
 
-  <table class="dividerTable" ng-init="section = 'today';getDateRange(0)">
+  <table ng-if="currentWeek" class="dividerTable" ng-init="section = 'today';getDateRange(0)">
     <tr class="smallFont bottomLine">
     <th ng-class="{'selected': section === 'today'}" ng-click="setSalesDate('TODAY'); getDateRange(0); section = 'today'">Today <span ng-if="section==='today'"><br>{{dateRange}}</span></th>
     <th ng-class="{'selected': section === 'yesterday'}" ng-click="setSalesDate('YESTERDAY'); getDateRange(1); section = 'yesterday'">Yesterday <span ng-if="section==='yesterday'"><br>{{dateRange}}</span></th>

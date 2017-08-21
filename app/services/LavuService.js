@@ -401,7 +401,7 @@ module.exports = class LavuService {
 	}
 
 	getSalesSection(minDate, maxDate)  {
-		return this.loadOrders(minDate, maxDate, true)
+		return this.loadOrders(minDate, maxDate)
 		.then(orders => this.loadMenuItems(true).then(menuItems => { return { orders, menuItems }; }))
 		.then(({orders, menuItems}) => this.loadMenuCategories().then(categories => { return { orders, menuItems, categories }; }))
 		.then(({orders, menuItems, categories}) => {
@@ -445,7 +445,7 @@ module.exports = class LavuService {
 	
 	
 	getSalesSummary(minDate, maxDate, refresh){
-		return this.loadOrders(minDate, maxDate, true)
+		return this.loadOrders(minDate, maxDate)
 		.then(orders => this.loadMenuItems(refresh).then(menuItems => { return { orders, menuItems }; }))
 		.then(({orders, menuItems}) => this.loadMenuCategories().then(categories => { return { orders, menuItems, categories }; }))
 		.then(({orders, menuItems, categories}) => this.loadUsers().then(users => { return { orders, menuItems, categories, users }; }))
@@ -579,7 +579,7 @@ module.exports = class LavuService {
 
 	getStaffSalesSummary(minDate, maxDate){
 		return this.loadUsers()
-		.then(users => this.loadOrders(minDate, maxDate, true).then(orders => ({users, orders})))
+		.then(users => this.loadOrders(minDate, maxDate).then(orders => ({users, orders})))
 		.then(({users, orders}) => this.loadMenuItems().then(menuItems => ({ users, orders, menuItems })))
 		.then(({users, orders, menuItems}) => this.loadMenuCategories().then(categories => ({ users, orders, menuItems, categories })))
 		.then(({ users, orders, menuItems, categories }) => {

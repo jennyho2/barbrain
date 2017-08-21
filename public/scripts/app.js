@@ -18,6 +18,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.$storage.salesDate = moment().toDate();
 	$scope.$storage.salesDateMax = null;
 	$scope.$storage.staffInfo = null;
+	$scope.currentWeek = true;
 	//$scope.toggleSort = true;
 
 	// $scope.$storage.INCENTIVE = INCENTIVE;
@@ -41,8 +42,9 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
  	$scope.getDateRange = function(section){
  		$scope.dateRangeNum = section;
     	if(section == 0){ //today's date
-    		var date = new Date();
-    		$scope.dateRange = date.getMonth()+1+'/'+date.getDate();
+    		//var date = new Date();
+    		//$scope.dateRange = date.getMonth()+1+'/'+date.getDate();
+    		$scope.dateRange = moment($scope.$storage.salesDate).format('MM/DD');
     	}
     	else if(section == 1){ //yesterday's date
     	    var date = new Date($scope.getYesterdayDate());
@@ -433,6 +435,24 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
 	$scope.getSalesDate = function(offset) {
 		return moment().add(offset, 'days').format('YYYYMMDD');
+	}
+
+	$scope.printWeeklySales = function()  {
+		var itemGroup = $scope.$storage.sales[moment($scope.$storage.salesDate).startOf('isoWeek').format('YYYYMMDD')].itemGroups[$scope.$storage.incentiveItem.id];
+		if (itemGroup)  {
+			return itemGroup.count;
+		} else {
+			return 0;
+		}
+	}
+
+	$scope.scrubWeeks = function(offset)  {
+		$scope.currentWeek = false;
+		var currWeek = moment($scope.$storage.salesDate).startOf('isoWeek').format('YYYYMMDD');
+		$scope.$storage.salesDate = moment(currWeek).add(offset, 'day').startOf('isoWeek').format('YYYYMMDD');
+		$scope.$storage.salesDateMax = moment(currWeek).add(offset, 'day').endOf('isoWeek').format('YYYYMMDD');
+		if (moment($scope.$storage.salesDate).isSame(moment().startOf('isoWeek').format('YYYYMMDD')))  $scope.currentWeek = true;
+		$scope.loadSalesData();
 	}
 
   $scope.loadIncentiveData = function()  {
