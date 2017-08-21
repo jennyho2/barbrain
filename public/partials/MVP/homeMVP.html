@@ -32,10 +32,11 @@ $( "Goal" ).click(function() {
   <img ng-click="scrubWeeks(7)" class="flip" src="assets/images/backArrow.png" width="50px" />
 </div>
 
-<h4 class="center">{{ printWeeklySales() }} units to {{ $storage.weeklyIncentiveGoal }} weekly goal</h4>
+<h4 class="center" ng-if="$storage.incentiveItem">{{ printWeeklySales() }} units to {{ $storage.weeklyIncentiveGoal }} weekly goal</h4>
+<h4 class="center" ng-if="!$storage.incentiveItem">No Incentive set yet</h4>
 
   <!--set different graphs to display-->
-  <div class="chartHolder smallDoughnut">
+<div class="chartHolder smallDoughnut" ng-if="$storage.incentiveItem">
   <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
  <!--  <canvas chart-data="[printWeeklySales(), 200]" class="chart chart-doughnut" chart-labels="['stuff', 'staff']" chart-options="options"></canvas> -->
   <canvas ng-if="$storage.weeklyIncentiveGoal - printWeeklySales() > 0" id="doughnut" class="chart chart-doughnut"
@@ -46,9 +47,12 @@ $( "Goal" ).click(function() {
   </canvas> 
 </div>
   
+<div class="center" ng-if="!$storage.incentiveItem">
+<a data-toggle="modal" data-target="#myModal" ng-click="onAdjustGoals()"><span style="color:deepskyblue">Set Incentive Goal</span></a>
+</div>
   
 
-  <div class="center">
+<div class="center" ng-if="$storage.incentiveItem">
   <span>{{ printWeeklySales() / $storage.weeklyIncentiveGoal * 100 | number:0 }}%</span>
   <br>
   <span class="smallFont">of this week's {{$storage.incentiveItem.name}} 

@@ -33,6 +33,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.loading = false;
 	$scope.filteredLocations = [];
 	$scope.locationSearchText = null;
+	$scope.$storage.scrubDateMin = moment().startOf('isoWeek').format('YYYYMMDD');
+	$scope.$storage.scrubDateMax = moment().startOf('isoWeek').format('YYYYMMDD');
 
 
 	$scope.getYesterdayDate = function(){
@@ -218,6 +220,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			.then(function(response) {
 				$scope.$storage.location = id;
 				$scope.$storage.locationData = response.data;
+				$scope.$storage.scrubDateMin = moment().startOf('isoWeek').format('YYYYMMDD');
+				$scope.$storage.scrubDateMax = moment().startOf('isoWeek').format('YYYYMMDD');
 				$scope.$storage.lavuStaff = {};
 				$scope.$storage.sales = {};
 				$scope.$storage.staffSales = {};
@@ -440,11 +444,13 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	}
 
 	$scope.printWeeklySales = function()  {
-		var itemGroup = $scope.$storage.sales[moment($scope.$storage.scrubDateMin).startOf('isoWeek').format('YYYYMMDD')].itemGroups[$scope.$storage.incentiveItem.id];
-		if (itemGroup)  {
-			return itemGroup.count;
-		} else {
-			return 0;
+		if ($scope.$storage.sales[moment($scope.$storage.scrubDateMin).startOf('isoWeek').format('YYYYMMDD')])  {
+			var itemGroup = $scope.$storage.sales[moment($scope.$storage.scrubDateMin).startOf('isoWeek').format('YYYYMMDD')].itemGroups[$scope.$storage.incentiveItem.id];
+			if (itemGroup)  {
+				return itemGroup.count;
+			} else {
+				return 0;
+			}
 		}
 	}
 
@@ -477,9 +483,17 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
           if (!$scope.$storage.incentive) $scope.$storage.incentive = {};
           //console.log("Weekly incentive");
           //console.log(response);
+          console.log(response);
           if (response.data.data[0])  {
+          	$scope.$storage.incentiveItem = {};
+          	$scope.$storage.incentiveItem.name = response.data.data[0].name;
+          	$scope.$storage.incentiveItem.id = response.data.data[0].id;
           	$scope.$storage.incentiveCategory = response.data.data[0];
           	$scope.$storage.weeklyIncentiveGoal = response.data.data[0].goal;
+          } else {
+          	$scope.$storage.incentiveItem = null;
+          	$scope.$storage.incentiveCategory = "";
+          	$scope.$storage.weeklyIncentiveGoal = 0;
           }
         }, function(response)  {
           console.log("fail");
@@ -1162,7 +1176,7 @@ app.filter('orderObjectBy', function() {
 		angular.forEach(items, function(item) {
 			filtered.push(item);
 		});
-		console.log("filtering");
+		//console.log("filtering");
 		filtered.sort(function(a, b) {
 			if (field == "revenue"){
 				return ((a['totalSales'] / a['totalGuests']) > (b['totalSales'] / b['totalGuests']) ? 1 : -1); 
