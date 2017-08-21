@@ -12,7 +12,17 @@
 	top:-75px;
 
 }
-
+.roundBox {
+	background-color: #f4f4f4;
+	border: 1px solid black;
+}
+.roundBox {
+	background-color: #f4f4f4;
+	border: 1px solid black;
+}
+.roundBox .roundBoxed{
+	border: 1px solid black;
+}
 .progressHeader {
 	text-align: center;
 	/*margin-top: -25px;*/

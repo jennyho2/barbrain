@@ -9,14 +9,13 @@
     </div>
   </div> <!-- End Insights -->
 <br>
-
 <!--<label class="switch">
   <input type="checkbox" ng-click ="toggleSort =! toggleSort">
   <span class="slider round"></span>
 </label>-->
 
 </div>
-<table class="tableEmployeeStat">
+<table class="tableEmployeeStat roundBox">
     <thead>
         <td></td>
         <th colspan="2" style="color:deepskyblue" ng-click="orderByField='totalSales'">Sort Sales
@@ -29,11 +28,14 @@
 
     </thead>
     <tbody>
-        <tr ng-repeat="staffInfo in $storage.staffSales[$storage.salesDate] | orderObjectBy:orderByField:true" class="alternateBlocks" ng-click="openStaff(staffInfo)">
+
+        <tr ng-repeat="staffInfo in $storage.staffSales[$storage.salesDate] | orderObjectBy:orderByField:true" class="roundBoxed" ng-click="openStaff(staffInfo)" > <!--alternateBlocks-->
+        <div>
             <td class="v-a-m">
                 <img height='70px' ng-src="assets/images/emptyAvatar2.png" hspace='20'/>
             </td>
             <td colspan="3">
+
                 <table>
                     <tr>
                         <td class="mediumFont">{{staffInfo.firstName}} {{staffInfo.lastName}}</td>
@@ -57,11 +59,14 @@
                                 <td></td>
                                 <td class="alignLeft" style="color:grey;font-size: small;">to Average</td>
                             </tr>
-                        </table
+                        </table>
+
                     </tr>
                 </table>
-            
+                
             </td>
+            </div>
         </tr>
+        
     </tbody>
 </table>
