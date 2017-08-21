@@ -177,7 +177,7 @@ h2,h3{page-break-after:avoid}
 .glyphicon-resize-horizontal:before{content:"\e120"}
 .glyphicon-hdd:before{content:"\e121"}
 .glyphicon-bullhorn:before{content:"\e122"}
-.glyphicon-bell:before{content:"\e123"}
+.glyphicon-bell:before{content:"\065"}
 .glyphicon-certificate:before{content:"\e124"}
 .glyphicon-thumbs-up:before{content:"\e125"}
 .glyphicon-thumbs-down:before{content:"\e126"}
@@ -2919,25 +2919,35 @@ body.sidebar-light-info .navigation .sidebar .sidebar-content .side-menu>li ul>l
 body.sidebar-light-warning .navigation .sidebar .sidebar-content .side-menu>li ul>li.active>a,body.sidebar-light-warning .navigation .sidebar .sidebar-content .side-menu>li.active>a,body.sidebar-light-warning .navigation .sidebar .sidebar-content .side-menu>li.nested-active:not(.expanded)>a{box-shadow:3px 0 0 0 #e76d3b inset,0 -1px 0 0 #fff inset}
 body.sidebar-light-danger .navigation .sidebar .sidebar-content .side-menu>li ul>li.active>a,body.sidebar-light-danger .navigation .sidebar .sidebar-content .side-menu>li.active>a,body.sidebar-light-danger .navigation .sidebar .sidebar-content .side-menu>li.nested-active:not(.expanded)>a{box-shadow:3px 0 0 0 #cc3e4a inset,0 -1px 0 0 #fff inset}
 body.sidebar-dark-primary .navigation .sidebar .side-menu>li.active:hover>a,body.sidebar-dark-primary .navigation .sidebar .side-menu>li.active>a,body.sidebar-dark-primary .navigation .sidebar .side-menu>li.nested-active:not(.expanded):hover>a,body.sidebar-dark-primary .navigation .sidebar .side-menu>li.nested-active:not(.expanded)>a{box-shadow:3px 0 0 0 #2c97de inset}
-body.sidebar-dark-primary .navigation .sidebar .side-menu>li:hover>a{box-shadow:0 -1px 0 0 #1A1A1A inset, 0 1px 0 0 #1A1A1A inset}
+body.sidebar-dark-primary .navigation .sidebar .side-menu>li:hover>a{box-shadow:0 -1px 0 0 #1A1A1A inset,
+ 0 1px 0 0 #1A1A1A inset}
 body.sidebar-dark-primary:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu li.active:hover>a,body.sidebar-dark-primary:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu li.active>a,body.sidebar-dark-primary:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu li.nested-active:not(.expanded):hover>a,body.sidebar-dark-primary:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu li.nested-active:not(.expanded)>a{box-shadow:3px 0 0 0 #2c97de inset}
-body.sidebar-dark-primary:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu ul>li>a:hover,body.sidebar-dark-primary:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu>li>a:hover{box-shadow:0 -1px 0 0 #1A1A1A inset, 0 1px 0 0 #1A1A1A inset}
+body.sidebar-dark-primary:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu ul>li>a:hover,body.sidebar-dark-primary:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu>li>a:hover{box-shadow:0 -1px 0 0 #1A1A1A inset,
+ 0 1px 0 0 #1A1A1A inset}
 body.sidebar-dark-success .navigation .sidebar .side-menu>li.active:hover>a,body.sidebar-dark-success .navigation .sidebar .side-menu>li.active>a,body.sidebar-dark-success .navigation .sidebar .side-menu>li.nested-active:not(.expanded):hover>a,body.sidebar-dark-success .navigation .sidebar .side-menu>li.nested-active:not(.expanded)>a{box-shadow:3px 0 0 0 #84b547 inset}
-body.sidebar-dark-success .navigation .sidebar .side-menu>li:hover>a{box-shadow:0 -1px 0 0 #1A1A1A inset, 0 1px 0 0 #1A1A1A inset}
+body.sidebar-dark-success .navigation .sidebar .side-menu>li:hover>a{box-shadow:0 -1px 0 0 #1A1A1A inset,
+ 0 1px 0 0 #1A1A1A inset}
 body.sidebar-dark-success:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu li.active:hover>a,body.sidebar-dark-success:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu li.active>a,body.sidebar-dark-success:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu li.nested-active:not(.expanded):hover>a,body.sidebar-dark-success:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu li.nested-active:not(.expanded)>a{box-shadow:3px 0 0 0 #84b547 inset}
-body.sidebar-dark-success:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu ul>li>a:hover,body.sidebar-dark-success:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu>li>a:hover{box-shadow:0 -1px 0 0 #1A1A1A inset, 0 1px 0 0 #1A1A1A inset}
+body.sidebar-dark-success:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu ul>li>a:hover,body.sidebar-dark-success:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu>li>a:hover{box-shadow:0 -1px 0 0 #1A1A1A inset,
+ 0 1px 0 0 #1A1A1A inset}
 body.sidebar-dark-info .navigation .sidebar .side-menu>li.active:hover>a,body.sidebar-dark-info .navigation .sidebar .side-menu>li.active>a,body.sidebar-dark-info .navigation .sidebar .side-menu>li.nested-active:not(.expanded):hover>a,body.sidebar-dark-info .navigation .sidebar .side-menu>li.nested-active:not(.expanded)>a{box-shadow:3px 0 0 0 #2dbda8 inset}
-body.sidebar-dark-info .navigation .sidebar .side-menu>li:hover>a{box-shadow:0 -1px 0 0 #1A1A1A inset, 0 1px 0 0 #1A1A1A inset}
+body.sidebar-dark-info .navigation .sidebar .side-menu>li:hover>a{box-shadow:0 -1px 0 0 #1A1A1A inset,
+ 0 1px 0 0 #1A1A1A inset}
 body.sidebar-dark-info:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu li.active:hover>a,body.sidebar-dark-info:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu li.active>a,body.sidebar-dark-info:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu li.nested-active:not(.expanded):hover>a,body.sidebar-dark-info:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu li.nested-active:not(.expanded)>a{box-shadow:3px 0 0 0 #2dbda8 inset}
-body.sidebar-dark-info:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu ul>li>a:hover,body.sidebar-dark-info:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu>li>a:hover{box-shadow:0 -1px 0 0 #1A1A1A inset, 0 1px 0 0 #1A1A1A inset}
+body.sidebar-dark-info:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu ul>li>a:hover,body.sidebar-dark-info:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu>li>a:hover{box-shadow:0 -1px 0 0 #1A1A1A inset,
+ 0 1px 0 0 #1A1A1A inset}
 body.sidebar-dark-warning .navigation .sidebar .side-menu>li.active:hover>a,body.sidebar-dark-warning .navigation .sidebar .side-menu>li.active>a,body.sidebar-dark-warning .navigation .sidebar .side-menu>li.nested-active:not(.expanded):hover>a,body.sidebar-dark-warning .navigation .sidebar .side-menu>li.nested-active:not(.expanded)>a{box-shadow:3px 0 0 0 #e76d3b inset}
-body.sidebar-dark-warning .navigation .sidebar .side-menu>li:hover>a{box-shadow:0 -1px 0 0 #1A1A1A inset, 0 1px 0 0 #1A1A1A inset}
+body.sidebar-dark-warning .navigation .sidebar .side-menu>li:hover>a{box-shadow:0 -1px 0 0 #1A1A1A inset,
+ 0 1px 0 0 #1A1A1A inset}
 body.sidebar-dark-warning:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu li.active:hover>a,body.sidebar-dark-warning:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu li.active>a,body.sidebar-dark-warning:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu li.nested-active:not(.expanded):hover>a,body.sidebar-dark-warning:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu li.nested-active:not(.expanded)>a{box-shadow:3px 0 0 0 #e76d3b inset}
-body.sidebar-dark-warning:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu ul>li>a:hover,body.sidebar-dark-warning:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu>li>a:hover{box-shadow:0 -1px 0 0 #1A1A1A inset, 0 1px 0 0 #1A1A1A inset}
+body.sidebar-dark-warning:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu ul>li>a:hover,body.sidebar-dark-warning:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu>li>a:hover{box-shadow:0 -1px 0 0 #1A1A1A inset,
+ 0 1px 0 0 #1A1A1A inset}
 body.sidebar-dark-danger .navigation .sidebar .side-menu>li.active:hover>a,body.sidebar-dark-danger .navigation .sidebar .side-menu>li.active>a,body.sidebar-dark-danger .navigation .sidebar .side-menu>li.nested-active:not(.expanded):hover>a,body.sidebar-dark-danger .navigation .sidebar .side-menu>li.nested-active:not(.expanded)>a{box-shadow:3px 0 0 0 #cc3e4a inset}
-body.sidebar-dark-danger .navigation .sidebar .side-menu>li:hover>a{box-shadow:0 -1px 0 0 #1A1A1A inset, 0 1px 0 0 #1A1A1A inset}
+body.sidebar-dark-danger .navigation .sidebar .side-menu>li:hover>a{box-shadow:0 -1px 0 0 #1A1A1A inset,
+ 0 1px 0 0 #1A1A1A inset}
 body.sidebar-dark-danger:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu li.active:hover>a,body.sidebar-dark-danger:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu li.active>a,body.sidebar-dark-danger:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu li.nested-active:not(.expanded):hover>a,body.sidebar-dark-danger:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu li.nested-active:not(.expanded)>a{box-shadow:3px 0 0 0 #cc3e4a inset}
-body.sidebar-dark-danger:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu ul>li>a:hover,body.sidebar-dark-danger:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu>li>a:hover{box-shadow:0 -1px 0 0 #1A1A1A inset, 0 1px 0 0 #1A1A1A inset}
+body.sidebar-dark-danger:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu ul>li>a:hover,body.sidebar-dark-danger:not(.sidebar-big-icons):not(.sidebar-slim) .navigation .sidebar .side-menu>li>a:hover{box-shadow:0 -1px 0 0 #1A1A1A inset,
+ 0 1px 0 0 #1A1A1A inset}
 /*! Select2 Bootstrap Theme v0.1.0-beta.7 | MIT License | github.com/select2/select2-bootstrap-theme */
 .select2-container.select2-container--bootstrap{display:block}
 .select2-container.select2-container--bootstrap .select2-selection{box-shadow:none;background-color:#353535;border:1px solid #404040;border-radius:2px;color:#fff;font-family:-apple-system,"Helvetica Neue",Helvetica,"Segoe UI",Arial,sans-serif;font-size:13px;outline:0}

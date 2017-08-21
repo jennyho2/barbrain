@@ -6,13 +6,19 @@
   </header>
 
 <table class="dividerTable" ng-init="section = 'today';getDateRange(0)">
+  <div class="tabs tabs-style-linemove">
+  <nav>
   <tr class="smallFont bottomLine">
+
     <th ng-class="{'selected': section === 'today'}" ng-click="setSalesDate('TODAY'); getDateRange(0); section = 'today'">Today</th>
     <th ng-class="{'selected': section === 'yesterday'}" ng-click="setSalesDate('YESTERDAY'); getDateRange(1); section = 'yesterday'">Yesterday</th>
     <th ng-class="{'selected': section === 'this week'}" ng-click="setSalesDate('WEEKTODATE'); getDateRange(4); section = 'this week'">Week To Date</th>
     <th ng-class="{'selected': section === 'last week'}" ng-click="setSalesDate('LASTWEEK');getDateRange(2);  section = 'last week'">Last Week</th>
     <th ng-class="{'selected': section === 'this month'}" ng-click="setSalesDate('MONTHLY');getDateRange(3);  section = 'this month'">Month to Date</th>
-  </tr>
+    </tr>
+  </nav>
+  </div>
+  
 </table>
 
 <div ng-include src="'partials/MVP/sales/dailySales.html'" class="full"></div>

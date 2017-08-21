@@ -1,3 +1,17 @@
+.absolute{
+	height: 50%;
+}
+}
+.absolute .innerGraph{
+	text-align: center;
+	top:0%;
+}
+.absolute .innerText{
+	display:inline-block;
+	position: relative;
+	top:-75px;
+
+}
 
 .progressHeader {
 	text-align: center;
@@ -66,9 +80,10 @@
 }
 .chartHolder {
 	text-align: center;
+	padding:0;
 	margin: auto;
-	padding-top: 20px;
-	padding-bottom: 20px;
+	width:50%;
+	height: 50%;
 }
 .tableEmployeeStat {
 	width: 100%;
@@ -150,7 +165,13 @@
 }
 
 .selected {
-	background-color: #4acde2;
+	
+	color:white;
+	background-color: #4acde2; /* 2 */
+
+  	/*border-bottom: 6px solid #4acde2; /* 1 */
+  	
+  
 }
 
 #myChart {
@@ -163,6 +184,7 @@
     border: none;
     padding: 10px;
     background-color: #fff;
+    box-sizing: border-box;
 }
 textarea {
     resize: none;
@@ -234,6 +256,8 @@ textarea {
 }
 .doughnutSize{
 	width: 50%;
+	max-height: 50%;
+	 box-sizing: border-box;
 }
 
 table td:first-child, table th:first-child {
@@ -248,8 +272,9 @@ border-right: none;
 	background-color: #f4f4f4;
 }
 
-.selected {
-	background-color: #4acde2;
+.shadow{
+	-webkit-box-shadow: 0 0 10px #fff;
+        box-shadow: 0 0 10px #fff;
 }
 
 .grayBKG {

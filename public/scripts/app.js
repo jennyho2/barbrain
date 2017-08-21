@@ -137,7 +137,16 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
 	$scope.location = null;
 
-	$scope.options = { responsive: true, stacked: true, pointstyle: "crossRot" };
+	$scope.options = { responsive: true, stacked: true, pointstyle: "crossRot"};
+	$scope.donutOptions = { 
+		responsive: true, 
+		stacked: true, 
+		pointstyle: "crossRot", 
+		rotation: -Math.PI, 
+		circumference: Math.PI, 
+		cutoutPercentage: 80,
+
+	};
 
 	$scope.labels = ["Current Sales", "Distance From Goal"];
 	// $scope.yesterdayData = [$scope.$storage.lavuStaff.yesterdayTotalSales, 200000];
@@ -1162,7 +1171,7 @@ app.filter('orderObjectBy', function() {
 		angular.forEach(items, function(item) {
 			filtered.push(item);
 		});
-		console.log("filtering");
+		//console.log("filtering");
 		filtered.sort(function(a, b) {
 			if (field == "revenue"){
 				return ((a['totalSales'] / a['totalGuests']) > (b['totalSales'] / b['totalGuests']) ? 1 : -1); 
