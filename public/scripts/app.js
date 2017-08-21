@@ -76,11 +76,17 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	        $scope.dateRange = (start.getMonth()+1) + '/' + start.getDate()  +'-'+ (end.getMonth()+1) + '/' + end.getDate();;
 	    }
 	};
+	$scope.formatDate = function(date){
+		var day = date[6]+date[7];
+		var month = date[4]+date[5];
+		var year = date[2]+date[3];
+		return month+'/'+day+'/'+year;
+	};
 	$scope.avatars = ['assets/images/staffPic1.png','assets/images/staffPic2.png','assets/images/staffPic3.png','assets/images/staffPic4.png'];
 	var count = 0;
 	$scope.getRandomAvatar = function(avatars){
 		return avatars[(count++ )%4];
-	}
+	};
 	$scope.$watch('locationSearchText', (n,o) => {
 		//console.log(n);
 		var query = (n||'').toLowerCase();

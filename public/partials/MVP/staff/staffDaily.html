@@ -3,7 +3,7 @@
   <div class="center">
     <span class="smallFont"><b>Avg. Revenue / Guest Overall</b></span>
 
-    <div class="boxed ">
+    <div class="boxed shadow">
         <span class="smallFont">{{ $storage.sales[$storage.salesDate].totalSales / $storage.sales[$storage.salesDate].totalGuests | currency:undefined:0 }}</span>
       <!-- <span class="smallFont">{{$storage.sales[$storage.salesDate].averageOrderPrice|currency:undefined:0}}</span> -->
     </div>
@@ -15,7 +15,7 @@
 </label>-->
 
 </div>
-<table class="tableEmployeeStat roundBox">
+<table class="tableEmployeeStat">
     <thead>
         <td></td>
         <th colspan="2" style="color:deepskyblue" ng-click="orderByField='totalSales'">Sort Sales
@@ -29,8 +29,8 @@
     </thead>
     <tbody>
 
-        <tr ng-repeat="staffInfo in $storage.staffSales[$storage.salesDate] | orderObjectBy:orderByField:true" class="roundBoxed" ng-click="openStaff(staffInfo)" > <!--alternateBlocks-->
-        <div>
+        <tr ng-repeat="staffInfo in $storage.staffSales[$storage.salesDate] | orderObjectBy:orderByField:true" class="alternateBlocks" ng-click="openStaff(staffInfo)" > <!--alternateBlocks-->
+        
             <td class="v-a-m">
                 <img height='70px' ng-src="assets/images/emptyAvatar2.png" hspace='20'/>
             </td>
@@ -65,7 +65,7 @@
                 </table>
                 
             </td>
-            </div>
+            
         </tr>
         
     </tbody>
