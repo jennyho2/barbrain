@@ -1,6 +1,7 @@
 <!--    Made by Erik Terwan    -->
 <!--   24th of November 2015   -->
 <!--    All rights reserved    -->
+<script src="https://cdn.rawgit.com/download/glyphicons/0.1.0/glyphicons.js"></script>
 <nav role="navigation">
   <div id="menuToggle">
     <!--
@@ -18,17 +19,29 @@
     but hey, it's pure CSS magic.
     -->
     <ul id="menu">
-      <a href="#!home" ng-click="closeHamburger()"><li style="font-size:medium";>Incentives</li></a>
-      <a href="#!/" ng-click="closeHamburger()"><li style="font-size:medium;">Sales</li></a>
-      <!--<a href="#!daily" onclick="closeHamburger()"><li style="font-size:medium;">Set Daily Goal</li></a>-->
-      <!--<a href="#!weeklyGoals" onclick="closeHamburger()"><li style="font-size:medium;">Set Weekly Goal</li></a>-->
-      <!-- <a href="#!weeklyGoals" onclick="closeHamburger()"><li style="font-size:medium;">Set Weekly Goal</li></a> -->
-      <!--<a href="#!yesterdayTab" onclick="closeHamburger()"><li style="font-size:medium";>Yesterday Performance</li></a>-->
+      <a href="#!home" ng-click="closeHamburger()">
+        
+        <li style="font-size:medium";><div class="glyphicon glyphicon-check"/>
+            &nbsp; Incentives</li>
+      </a>
       
-      <a href="#!staff" ng-click="closeHamburger()"><li style="font-size:medium;">Staff</li></a>
-      <a href="#!tips" ng-click="closeHamburger(); resetIncentive(); filterTactics()"><li style="font-size:medium;">Tips</li></a>
+      <a href="#!/" ng-click="closeHamburger()">
+        <li style="font-size:medium;"><div class="glyphicon glyphicon-signal"/>
+            &nbsp; Sales</li>
+      </a>
+      <a href="#!staff" ng-click="closeHamburger()">
+        <li style="font-size:medium;"><div class="glyphicon glyphicon-user"/>
+            &nbsp; Staff</li>
+      </a>
+      <a href="#!tips" ng-click="closeHamburger(); resetIncentive(); filterTactics()">
+        <li style="font-size:medium;"><div class="glyphicon glyphicon-exclamation-sign"/>
+            &nbsp; Tips</li>
+      </a>
       <hr />
-      <a href="#!locations" ng-click="closeHamburger()"><li style="font-size:medium;">Change Location</li></a>
+      <a href="#!locations" ng-click="closeHamburger()">
+        <li style="font-size:medium;"><div class="glyphicon glyphicon-map-marker"/>
+            &nbsp; Change Location</li>
+      </a>
       <!--<a href="#!lavu" onclick="closeHamburger()"><li style="font-size:medium;">Lavu</li></a>-->
     </ul>
   </div>
