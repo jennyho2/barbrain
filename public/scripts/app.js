@@ -142,7 +142,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		pointstyle: "crossRot", 
 		rotation: -Math.PI, 
 		circumference: Math.PI, 
-		cutoutPercentage: 80
+		cutoutPercentage: 80,
+
 	};
 
 	$scope.labels = ["Current Sales", "Distance From Goal"];
@@ -1082,7 +1083,7 @@ app.filter('orderObjectBy', function() {
 		angular.forEach(items, function(item) {
 			filtered.push(item);
 		});
-		console.log("filtering");
+		//console.log("filtering");
 		filtered.sort(function(a, b) {
 			if (field == "revenue"){
 				return ((a['totalSales'] / a['totalGuests']) > (b['totalSales'] / b['totalGuests']) ? 1 : -1); 

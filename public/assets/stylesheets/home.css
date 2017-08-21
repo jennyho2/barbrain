@@ -1,8 +1,17 @@
+.absolute{
+	height: 50%;
+}
+}
+.absolute .innerGraph{
+	text-align: center;
+	top:0%;
+}
+.absolute .innerText{
+	display:inline-block;
+	position: relative;
+	top:-75px;
 
-
-
-
-
+}
 
 .progressHeader {
 	text-align: center;
@@ -62,9 +71,10 @@
 }
 .chartHolder {
 	text-align: center;
+	padding:0;
 	margin: auto;
-	padding-top: 20px;
-	padding-bottom: 20px;
+	width:50%;
+	height: 50%;
 }
 .tableEmployeeStat {
 	width: 100%;
@@ -165,6 +175,7 @@
     border: none;
     padding: 10px;
     background-color: #fff;
+    box-sizing: border-box;
 }
 textarea {
     resize: none;
@@ -236,6 +247,8 @@ textarea {
 }
 .doughnutSize{
 	width: 50%;
+	max-height: 50%;
+	 box-sizing: border-box;
 }
 
 table td:first-child, table th:first-child {

@@ -1,30 +1,34 @@
 <div ng-if="loading" ng-include="'partials/loading.html'"></div>
 
-<h4 class="center">{{ $storage.sales[$storage.salesDate].totalSales | currency:undefined:0 }} / {{ $storage.goals[$storage.salesDate].value | currency:undefined:0 }}</h4>
+<h4 class="center xlargeFont">{{ $storage.sales[$storage.salesDate].totalSales | currency:undefined:0 }} / {{ $storage.goals[$storage.salesDate].value | currency:undefined:0 }}</h4>
+<script src="node_modules/chart.js/Chart.min.js"></script>
+<script src="node_modules/angular-chart.js/dist/angular-chart.min.js"></script>
 
 
 
 
 
-
-<div class="chartHolder doughnutSize boxed">
+<div class="chartHolder absolute">
   <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
-  <canvas ng-if="$storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales > 0" id="doughnut" class="chart chart-doughnut"
-    chart-data="[$storage.sales[$storage.salesDate].totalSales, $storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales]"  chart-labels="['Period Total Sales', 'Difference From Goal']" chart-options="donutOptions">
+  <canvas ng-if="$storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales > 0" id="doughnut" class="chart chart-doughnut" style="width: 50%"
+      chart-data="[$storage.sales[$storage.salesDate].totalSales, $storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales]"  chart-labels="['Period Total Sales', 'Difference From Goal']" chart-options="donutOptions" chart-colors="['#46C646', '#D3D3D3']">
   </canvas> 
+  
   <canvas ng-if="$storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales <= 0" id="doughnut" class="chart chart-doughnut"
-    chart-data="[$storage.sales[$storage.salesDate].totalSales, $storage.sales[$storage.salesDate].totalSales - $storage.goals[$storage.salesDate].value ]"  chart-labels="['Period Total Sales', 'Amount Exceeding Goal']" chart-options="donutOptions">
+    chart-data="[$storage.sales[$storage.salesDate].totalSales]" chart-labels="['Period Total Sales', 'Amount Exceeding Goal']" chart-options="donutOptions" chart-colors="['#46C646','#46C646']">
   </canvas> 
+  <div class="innerText"><span class="xlargeFont" style="color:deepskyblue">{{$storage.sales[$storage.salesDate].totalSales / $storage.goals[$storage.salesDate].value * 100| number:0 }}% </span><br> 
+  <span class="smallFont">of goal achieved</span>
+    <a data-toggle="modal" data-target="#myModal"> <br>
+      <span class="smallFont" style="color:deepskyblue">Adjust goal</span>
+    </a>
+  </div>
 </div>
 
 <div class="center">
   <!-- <h4>Total Sales: {{ $storage.sales[getSalesDate()].totalSales | currency }}</h4> -->
   <!-- <span class="smallFont">{{$storage.sales[getSalesDate()].totalSales / $storage.dailyHardGoal * 100| number:0 }}% of goal achieved</span> <br> -->
-  <span class="smallFont">{{$storage.sales[$storage.salesDate].totalSales / $storage.goals[$storage.salesDate].value * 100| number:0 }}% of goal achieved</span> <br>
-  <br>
-  <a data-toggle="modal" data-target="#myModal"><span class="smallFont" style="color:deepskyblue">Adjust goal</span></a>
 </div>
-  <br>
   <table class="dividerTable" ng-init="level = 0;">
     <tr class="smallFont bottomLine">
       <th ng-class="{'selected': level === 0}" ng-click="level = 0">Super Groups</th>
