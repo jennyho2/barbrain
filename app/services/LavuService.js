@@ -173,10 +173,10 @@ module.exports = class LavuService {
 		});
 	}
 	
-	loadMenuCategories(){
+	loadMenuCategories(refresh){
 		return database.connect().then(db => {
 			return db.collection('lavu_menu_categories').find({ location_id: this.locationId }).toArray().then(rows => {
-				if(!rows || rows.length == 0){
+				if(!rows || rows.length == 0 || refresh){
 					console.log('No Lavu menu categories found.  Loading from Lavu...');
 					return this.getMenuCategoriesFromApi()
 					.then(categories => {
@@ -301,8 +301,7 @@ module.exports = class LavuService {
 
 			
 			const allOrderIds = orders.map(orderRow => orderRow.order_id[0]);
-			
-			
+		
 			//const allOrderIds = orders.toArray().map(orderRow => $(orderRow).find('order_id').text());
 			
 			return this.getOrderDetailsFromApi(allOrderIds)
@@ -314,9 +313,12 @@ module.exports = class LavuService {
 						res = Array.from(resholder);
 					}
 				});
+				//console.log("This is res");
+				//console.log(res);
 				return res.map(detail => {
 				//return $(results).find('row').toArray().map(detail => {
 					//let $detail = $(detail);
+
 					var _id = detail.id[0];
 					var order_id = detail.order_id[0];
 					var item_id = detail.item_id[0];
@@ -402,7 +404,7 @@ module.exports = class LavuService {
 
 	getSalesSection(minDate, maxDate)  {
 		return this.loadOrders(minDate, maxDate)
-		.then(orders => this.loadMenuItems(true).then(menuItems => { return { orders, menuItems }; }))
+		.then(orders => this.loadMenuItems().then(menuItems => { return { orders, menuItems }; }))
 		.then(({orders, menuItems}) => this.loadMenuCategories().then(categories => { return { orders, menuItems, categories }; }))
 		.then(({orders, menuItems, categories}) => {
 
@@ -502,7 +504,6 @@ module.exports = class LavuService {
 								summary.groups[category.group_id].count = detail.quantity;
 								summary.groups[category.group_id].sales = detail.total;
 							}
-
 							if (summary.superGroups[category.super_group_id])  {
 								summary.superGroups[category.super_group_id].count += detail.quantity;
 								summary.superGroups[category.super_group_id].sales += detail.total;
@@ -597,13 +598,10 @@ module.exports = class LavuService {
 				s.totalOrders++;
 				s.totalGuests += order.guests;
 				s.totalMilli += (moment(order.closed).diff(moment(order.opened)));	
-				console.log(order.totalItems);
-				console.log(order);			
 				s.totalItems += order.totalItems;
 			});
 			return staff;
 		});
-
 	}
 
 	// return this.loadOrders(minDate, maxDate, refresh)

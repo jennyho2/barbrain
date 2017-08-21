@@ -1,12 +1,6 @@
 <div ng-if="loading" ng-include="'partials/loading.html'"></div>
 
 <h4 class="center xlargeFont">{{ $storage.sales[$storage.salesDate].totalSales | currency:undefined:0 }} / {{ $storage.goals[$storage.salesDate].value | currency:undefined:0 }}</h4>
-<script src="node_modules/chart.js/Chart.min.js"></script>
-<script src="node_modules/angular-chart.js/dist/angular-chart.min.js"></script>
-
-
-
-
 
 <div class="chartHolder absolute">
   <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
