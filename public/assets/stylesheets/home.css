@@ -250,6 +250,10 @@ border-right: none;
 	background-color: #f4f4f4;
 }
 
+.shadow{
+	-webkit-box-shadow: 0 0 10px #fff;
+        box-shadow: 0 0 10px #fff;
+}
 
 .grayBKG {
 	background-color: #f4f4f4;

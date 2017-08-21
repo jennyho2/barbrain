@@ -135,7 +135,15 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
 	$scope.location = null;
 
-	$scope.options = { responsive: true, stacked: true, pointstyle: "crossRot" };
+	$scope.options = { responsive: true, stacked: true, pointstyle: "crossRot"};
+	$scope.donutOptions = { 
+		responsive: true, 
+		stacked: true, 
+		pointstyle: "crossRot", 
+		rotation: -Math.PI, 
+		circumference: Math.PI, 
+		cutoutPercentage: 80
+	};
 
 	$scope.labels = ["Current Sales", "Distance From Goal"];
 	// $scope.yesterdayData = [$scope.$storage.lavuStaff.yesterdayTotalSales, 200000];

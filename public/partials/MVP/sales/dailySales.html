@@ -2,13 +2,18 @@
 
 <h4 class="center">{{ $storage.sales[$storage.salesDate].totalSales | currency:undefined:0 }} / {{ $storage.goals[$storage.salesDate].value | currency:undefined:0 }}</h4>
 
-<div class="chartHolder doughnutSize">
+
+
+
+
+
+<div class="chartHolder doughnutSize boxed">
   <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
   <canvas ng-if="$storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales > 0" id="doughnut" class="chart chart-doughnut"
-    chart-data="[$storage.sales[$storage.salesDate].totalSales, $storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales]"  chart-labels="['Period Total Sales', 'Difference From Goal']" chart-options="options">
+    chart-data="[$storage.sales[$storage.salesDate].totalSales, $storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales]"  chart-labels="['Period Total Sales', 'Difference From Goal']" chart-options="donutOptions">
   </canvas> 
   <canvas ng-if="$storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales <= 0" id="doughnut" class="chart chart-doughnut"
-    chart-data="[$storage.sales[$storage.salesDate].totalSales, $storage.sales[$storage.salesDate].totalSales - $storage.goals[$storage.salesDate].value ]"  chart-labels="['Period Total Sales', 'Amount Exceeding Goal']" chart-options="options">
+    chart-data="[$storage.sales[$storage.salesDate].totalSales, $storage.sales[$storage.salesDate].totalSales - $storage.goals[$storage.salesDate].value ]"  chart-labels="['Period Total Sales', 'Amount Exceeding Goal']" chart-options="donutOptions">
   </canvas> 
 </div>
 
