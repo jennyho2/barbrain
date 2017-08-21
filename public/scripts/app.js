@@ -913,7 +913,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 				.then(function (response) {
 					$scope.$storage.lineGoalsSalesData = [response.data.data[0], response.data.data[1], response.data.data[2]
 					, response.data.data[3], response.data.data[4], response.data.data[5], response.data.data[6] ];
-					$scope.$storage.weeklySalesGoal = response.data.data['weekly'];
+					$scope.$storage.weeklySalesGoal = parseInt(response.data.data['weekly']);
 				});
 			}, function (response)  {
 				console.log(response);
@@ -931,7 +931,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 				.then(function (response)  {
 					$scope.$storage.lineGoalsSalesData = [response.data.data[0], response.data.data[1], response.data.data[2]
 					, response.data.data[3], response.data.data[4] ];
-					$scope.$storage.monthlySalesGoal = response.data.data['monthly'];
+					$scope.$storage.monthlySalesGoal = parseInt(response.data.data['monthly']);
 				});
 			});
 		}
