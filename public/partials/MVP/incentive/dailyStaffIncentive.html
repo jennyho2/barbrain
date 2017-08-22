@@ -1,9 +1,62 @@
 
-<div class="container">
-    <!-- START EDIT CONTENT -->
+</div>
+<table class="tableEmployeeStat">
+    <thead>
+        <td></td>
+        <th colspan="2" style="color:deepskyblue" ng-click="orderByField='totalSales'">Sort by Units
+            <span ng-if="orderByField=='totalSales'"> ٧ </span>
+        </th>
+        
+        <th style="color:deepskyblue" ng-click="orderByField='revenue'" >Sort by Sales
+            <span ng-if="orderByField=='revenue'"> ٧ </span>
+        </th>
+
+    </thead>
+    <tbody>
+
+        <tr ng-repeat="staffInfo in $storage.sales[$storage.salesDate].staffGroups[$storage.incentiveItem.id] | orderObjectBy:orderByField:true" class="alternateBlocks" ng-click="openStaff(staffInfo)" > <!--alternateBlocks-->
+        
+            <td class="v-a-m">
+                <img height='60px' ng-src="assets/images/emptyAvatar2.png"/>
+            </td>
+            <td colspan="3">
+                <table>
+                    <tr>
+                        <td class="smallFont">{{staffInfo.name}}</td>
+                    </tr>
+                    <tr>
+                        <table class="noPaddingTable">
+                            <tr>
+                                <td class="alignLeft" style="color:grey; font-size: small;">Unit Sales</td>
+                                <td></td>
+                                <td class="alignLeft" style="color:grey; font-size: small">$ Sales</td>
+                            </tr>
+                            <tr>
+                                <td class="alignLeft" style="font-size: small;">{{staffInfo.count}}</td>
+                                <td></td>
+                                <td class="alignLeft" style="font-size: small;">{{staffInfo.sales|currency:undefined:0}}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+
+                    </tr>
+                </table>
+                
+            </td>
+            
+        </tr>
+        
+    </tbody>
+</table>
+<!--<div class="container">
+    
    
         <div>
-            <!-- START Basic Example Table -->
+            
             <table class="table">
             <table class="tableEmployeeStat">
               <thead>
@@ -16,11 +69,11 @@
                         <td class="v-a-m smallFont">
                         <strong>
                             <a ng-click="orderByField='count'; reverseSort = !reverseSort">
-                                <!-- {{$storage.fullTactics.tactics[0].incentive}} Unit Sales  -->
+                                
                                 {{$storage.incentiveItem.name}} Unit Sales
                                 
                                     <span ng-show="orderByField == 'count'">v</span>
-                                    <!--<span ng-show="!reverseSort">^</span>-->
+                                    
                                 
                             </a>
                         </strong>
@@ -29,9 +82,9 @@
                         <td class="v-a-m smallFont">
                         <strong>
                             <a ng-click="orderByField='sales'; reverseSort = !reverseSort">
-                                <!-- {{$storage.fullTactics.tactics[0].incentive}} $ Sales -->
+                                
                                 {{ $storage.incentiveItem.name }} $ Sales
-                                    <!--<span ng-show="!reverseSort">^</span>-->
+                                    
                                     <span ng-show="orderByField == 'sales'">v</span>
                                 
                             </a>
@@ -41,9 +94,6 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="staffInfo in $storage.sales[$storage.salesDate].staffGroups[$storage.incentiveItem.id] | orderObjectBy:orderByField:true" class="tableEmployeeStat">
-                    <!-- <tr ng-repeat="staffInfo in $storage.lavuStaff.today.incentiveSales" 
-                    class="tableEmployeeStat"> -->
-                    <!--  <tr ng-repeat="staffInfo in fullStaff.staff | filter:staffLocation |orderBy:orderByField:reverseSort" class="tableEmployeeStat" ng-click="openStaff(staffInfo.firstName + ' ' + staffInfo.lastName, 3)"> -->
                         <td class="v-a-m">
                             <span class="smallFont"><b>{{staffInfo.name}}</b></span>
                         </td>
@@ -54,19 +104,10 @@
                             <span class="smallFont"><b>{{staffInfo.sales}}</b></span>
                         </td>
 
-                        <!-- <td class="v-a-m">
-                            <span class="smallFont"><b>{{staffInfo.firstName}}</b></span>              
-                        </td>
-                        <td class="v-a-m"> 
-                            <span class="smallFont">{{staffInfo.lastWeek.checks}}</span>
-                        </td>
-                        <td class="v-a-m"> 
-                            <span class="smallFont">{{staffInfo.lastWeek.percentToAvg}}%</span>
-                        </td> -->
                     </tr>
                 </tbody>
             </table>
             </table>
         </div>
     
-</div>
+</div>-->

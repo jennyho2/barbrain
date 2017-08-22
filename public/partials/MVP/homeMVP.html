@@ -36,16 +36,24 @@ $( "Goal" ).click(function() {
 <h4 class="center" ng-if="!$storage.incentiveItem">No Incentive set yet</h4>
 
   <!--set different graphs to display-->
-<div class="chartHolder smallDoughnut" ng-if="$storage.incentiveItem">
+<div class="chartHolder absolute" ng-if="$storage.incentiveItem">
   <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
  <!--  <canvas chart-data="[printWeeklySales(), 200]" class="chart chart-doughnut" chart-labels="['stuff', 'staff']" chart-options="options"></canvas> -->
   <canvas ng-if="$storage.weeklyIncentiveGoal - printWeeklySales() > 0" id="doughnut" class="chart chart-doughnut"
-    chart-data="[printWeeklySales(), $storage.weeklyIncentiveGoal - printWeeklySales()]"  chart-labels="['Period Total Sales', 'Difference From Goal']" chart-options="options">
+    chart-data="[printWeeklySales(), $storage.weeklyIncentiveGoal - printWeeklySales()]"  chart-labels="['Period Total Sales', 'Difference From Goal']" chart-options="donutOptions" chart-colors="['#46C646','#46C646']">
   </canvas> 
   <canvas ng-if="$storage.weeklyIncentiveGoal - printWeeklySales() <= 0" id="doughnut" class="chart chart-doughnut"
-    chart-data="[printWeeklySales(), printWeeklySales() - $storage.weeklyIncentiveGoal ]"  chart-labels="['Period Total Sales', 'Amount Exceeding Goal']" chart-options="options">
+    chart-data="[printWeeklySales()]"  chart-labels="['Period Total Sales', 'Amount Exceeding Goal']" chart-options="donutOptions" chart-colors="['#46C646','#46C646']">
   </canvas> 
-</div>
+
+    <div class="innerText"><span class="xlargeFont" style="color:deepskyblue">{{ printWeeklySales() / $storage.weeklyIncentiveGoal * 100 | number:0 }}%</span><br> 
+      <span class="smallFont">of goal achieved</span>
+        <a data-toggle="modal" data-target="#myModal"> <br>
+          <span class="smallFont" style="color:deepskyblue">Adjust goal</span>
+        </a>
+      </div>
+
+    </div>
   
 <div class="center" ng-if="!$storage.incentiveItem">
 <a data-toggle="modal" data-target="#myModal" ng-click="onAdjustGoals()"><span style="color:deepskyblue">Set Incentive Goal</span></a>
@@ -53,15 +61,6 @@ $( "Goal" ).click(function() {
   
 
 <div class="center" ng-if="$storage.incentiveItem">
-  <span>{{ printWeeklySales() / $storage.weeklyIncentiveGoal * 100 | number:0 }}%</span>
-  <br>
-  <span class="smallFont">of this week's {{$storage.incentiveItem.name}} 
-  <br> goal achieved</span>
-  <br>
-  <a data-toggle="modal" data-target="#myModal" ng-click="onAdjustGoals()"><span class="smallFont" style="color:deepskyblue">Adjust goal</span></a>
-  </div>
-  <br>
-
   <table ng-if="currentWeek" class="dividerTable" ng-init="section = 'today';getDateRange(0)">
   <div class="tabs tabs-style-linemove">
     <tr class="smallFont bottomLine progressHeader"><td colspan="5" style="color:white">
@@ -73,22 +72,13 @@ $( "Goal" ).click(function() {
       <th ng-class="{'selected': section === 'this week'}" ng-click="setSalesDate('WEEKTODATE'); getDateRange(4); section = 'this week'">Week To Date</th>
       <th ng-class="{'selected': section === 'last week'}" ng-click="setSalesDate('LASTWEEK'); getDateRange(2); section = 'last week'">Last Week </th>
       <th ng-class="{'selected': section === 'this month'}" ng-click="setSalesDate('MONTHLY'); getDateRange(3); section = 'this month'">Monthly</th>
-  </div>
-  <!-- <table class="dividerTable" ng-init="section = 0;getDateRange(0)">
-    <tr class="smallFont bottomLine">
-    <th ng-class="{'selected': section === 0}" ng-click="setSalesDate('TODAY'); getDateRange(0); section = 0">Today <span ng-if='section==0'><br>{{dateRange}}</span></th>
-    <th ng-class="{'selected': section === 1}" ng-click="setSalesDate('YESTERDAY'); getDateRange(1); section = 1">Yesterday <span ng-if='section==1'><br>{{dateRange}}</span></th>
-    <th ng-class="{'selected': section === 2}" ng-click="setSalesDate('WEEKTODATE'); getDateRange(4); section = 2">Week To Date <span ng-if='section==2'><br>{{dateRange}}</span></th>
-    <th ng-class="{'selected': section === 3}" ng-click="setSalesDate('LASTWEEK'); getDateRange(2); section = 3">Last Week <span ng-if='section==3'><br>{{dateRange}}</span></th>
-    <th ng-class="{'selected': section === 4}" ng-click="setSalesDate('MONTHLY'); getDateRange(3); section = 4">Monthly<span ng-if='section==4'><br>{{dateRange}}</span></th> -->
-     <!--  <th class="centeredPaddedCell" ng-class="{'selected': section === 0}" ng-click="section = 0">Today</th>
-      <th class="centeredPaddedCell" ng-class="{'selected': section === 1}" ng-click="section = 1">Yesterday</th>
-      <th class="centeredPaddedCell" ng-class="{'selected': section === 2}" ng-click="section = 2">Last Week</th> -->
     </tr>
+  </div>
   </table>
+</div>
 
-  <div>
-    <table class="dividerTable grayBKG centeredPaddedCell">
+<div>
+  <table class="dividerTable grayBKG centeredPaddedCell">
     <tr class="center">
       <th class="smallFont">Units Sold</th>
       <th class="smallFont">Sales</th>
@@ -96,18 +86,11 @@ $( "Goal" ).click(function() {
     <tr class="center">
       <td class="mediumFont" ng-init="callGetGoals()">{{ $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count}}</td>
       <td class="mediumFont">{{ $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].sales | currency:undefined:0 }}</td>
-    </tr>
+      </tr>
   </table>
-
-  </div>
-
-  <!-- <div ng-if="section==0" ng-include src="'partials/MVP/incentiveDaily.html'" class="full"></div>
-  <div ng-if="section==1" ng-include src="'partials/MVP/incentiveYesterday.html'" class="full"></div>
-  <div ng-if="section==2" ng-include src="'partials/MVP/incentiveWeekly.html'" class="full"></div> -->
-
 </div>
 
-<button class="button grayBKG" ng-click="loadSalesData(true)">Refresh Data</button>
+<button class="button grayBKG" style="width:100%" ng-click="loadSalesData(true)">Refresh Data</button>
 
 <div ng-include src="'partials/MVP/incentive/dailyStaffIncentive.html'"></div>
 
@@ -121,15 +104,14 @@ $( "Goal" ).click(function() {
         <h4 class="modal-title center xlargeFont" style="color:white">This week's goal: {{$storage.weeklyIncentiveGoal}}</h4>
       </div>
       <div class="modal-body center tactics">
-        <!-- <input type="range" min="{{$storage.dailyHardIncentiveGoal-300}}" max="{{$storage.dailyHardIncentiveGoal+300}}" id="weeklyGoalRange" ng-model="$storage.dailyHardIncentiveGoal" /> -->
         <input type="number" id="incentiveGoalInput" value='{{$storage.weeklyIncentiveGoal}}' />
-        <br />
+        <br>
         <select class="smallRoundButton" ng-model="$storage.incentiveCategory" ng-options="x.name for x in $storage.menucategories | orderBy:'toString()'">
         </select>
-        <br />
+        <br>
         <select class="smallRoundButton" ng-model="$storage.incentiveItem" ng-options="x.name for x in $storage.incentiveItems | orderBy:'toString()'">
         </select>
-      <br>
+        <br>
       </div>
       <div class="modal-footer headerBKG">
         <button type="button" class="btn btn-default" ng-click="updateIncentive()">Update</button>

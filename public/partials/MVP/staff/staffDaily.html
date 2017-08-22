@@ -18,11 +18,11 @@
 <table class="tableEmployeeStat">
     <thead>
         <td></td>
-        <th colspan="2" style="color:deepskyblue" ng-click="orderByField='totalSales'">Sort Sales
+        <th colspan="2" style="color:deepskyblue" ng-click="orderByField='totalSales'">Sort by Sales
             <span ng-if="orderByField=='totalSales'"> ٧ </span>
         </th>
         
-        <th style="color:deepskyblue" ng-click="orderByField='revenue'" >Sort %
+        <th style="color:deepskyblue" ng-click="orderByField='revenue'" >Sort by %
             <span ng-if="orderByField=='revenue'"> ٧ </span>
         </th>
 
@@ -32,7 +32,7 @@
         <tr ng-repeat="staffInfo in $storage.staffSales[$storage.salesDate] | orderObjectBy:orderByField:true" class="alternateBlocks" ng-click="openStaff(staffInfo)" > <!--alternateBlocks-->
         
             <td class="v-a-m">
-                <img height='70px' ng-src="assets/images/emptyAvatar2.png" hspace='20'/>
+                <img height='60px' ng-src="assets/images/emptyAvatar2.png"/>
             </td>
             <td colspan="3">
 
