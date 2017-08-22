@@ -24,6 +24,8 @@ $( "Goal" ).click(function() {
     API call timed out. Try again.
   </div>
 
+<br />
+
 <div class="center">
   <img ng-click="scrubWeeks(-7)" src="assets/images/backArrow.png" width="20px" />
   <h4 class="keepInline">{{ formatDate($storage.scrubDateMin)}} - {{formatDate($storage.scrubDateMax)}}</h4>
@@ -61,7 +63,7 @@ $( "Goal" ).click(function() {
   
 
 <div class="center" ng-if="$storage.incentiveItem">
-  <table ng-if="currentWeek" class="dividerTable" ng-init="section = 'today';getDateRange(0)">
+  <table ng-if="$storage.currentWeek" class="dividerTable" ng-init="section = 'today';getDateRange(0)">
   <div class="tabs tabs-style-linemove">
     <tr class="smallFont bottomLine progressHeader"><td colspan="5" style="color:white">
       <b>{{dateRange}}</b></td>

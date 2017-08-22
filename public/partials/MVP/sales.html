@@ -5,7 +5,18 @@
     <span class="xlargeFont screen-heading">{{dateRange}}</span>
   </header>
 
-<table class="dividerTable" ng-init="section = 'today';getDateRange(0)">
+<br />
+<div class="center">
+  <img ng-click="scrubWeeks(-7)" src="assets/images/backArrow.png" width="20px" />
+  <h4 class="keepInline">{{ formatDate($storage.scrubDateMin)}} - {{formatDate($storage.scrubDateMax)}}</h4>
+  <!-- <h4 class="keepInline">{{ $storage.weekToDate.itemGroups[$storage.incentiveItem.id].count }} units to {{ $storage.weeklyIncentiveGoal }} weekly goal</h4> -->
+  <!-- $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count -->
+  <img ng-click="scrubWeeks(7)" class="flip" src="assets/images/backArrow.png" width="20px" />
+</div>
+
+<br />
+
+<table ng-if="$storage.currentWeek" class="dividerTable" ng-init="section = 'today';getDateRange(0)">
   <div class="tabs tabs-style-linemove">
   
   <tr class="smallFont bottomLine">

@@ -18,7 +18,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.$storage.salesDate = moment().toDate();
 	$scope.$storage.salesDateMax = null;
 	$scope.$storage.staffInfo = null;
-	$scope.currentWeek = true;
+	$scope.$storage.currentWeek = true;
 	//$scope.toggleSort = true;
 
 	// $scope.$storage.INCENTIVE = INCENTIVE;
@@ -470,13 +470,13 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	}
 
 	$scope.scrubWeeks = function(offset)  {
-		$scope.currentWeek = false;
+		$scope.$storage.currentWeek = false;
 		var currWeek = moment($scope.$storage.scrubDateMin).startOf('isoWeek').format('YYYYMMDD');
 		$scope.$storage.scrubDateMin = moment(currWeek).add(offset, 'day').startOf('isoWeek').format('YYYYMMDD');
 		$scope.$storage.scrubDateMax = moment(currWeek).add(offset, 'day').endOf('isoWeek').format('YYYYMMDD');
 		$scope.$storage.salesDate = $scope.$storage.scrubDateMin;
 		$scope.$storage.salesDateMax = $scope.$storage.scrubDateMax;
-		if (moment($scope.$storage.scrubDateMin).isSame(moment().startOf('isoWeek').format('YYYYMMDD')))  $scope.currentWeek = true;
+		if (moment($scope.$storage.scrubDateMin).isSame(moment().startOf('isoWeek').format('YYYYMMDD')))  $scope.$storage.currentWeek = true;
 		$scope.loadSalesData();
 	}
 
@@ -900,6 +900,9 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		var menuInput = $('#menuToggle > input');
 		menuInput.prop('checked', false);
 		$scope.$storage.salesDate = moment().format('YYYYMMDD');
+		$scope.$storage.scrubDateMin = moment().startOf('isoWeek').format('YYYYMMDD');
+		$scope.$storage.scrubDateMax = moment().endOf('isoWeek').format('YYYYMMDD');
+		$scope.$storage.currentWeek = true;
 	}
 
   $scope.getWeekGoalsLavu();
