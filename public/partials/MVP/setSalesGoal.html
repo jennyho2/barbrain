@@ -6,12 +6,14 @@
 </div>
 
 <div ng-if="goalPeriod === 'this week'">
-  <span class="xlargeFont center">{{ goalPeriod | capitalizeFirst }}'s total goal: {{dollarSign}}{{$storage.weeklyScale}}</span>
-  <input type="number" class="xlargeFont center" id="weeklyGoalInput" value="{{ $storage.weeklySalesGoal }}" />
+  <span class="xlargeFont center">{{ goalPeriod | capitalizeFirst }}'s total goal: {{$storage.weeklyScale|currency:undefined:0}}</span>
+  <br>
+
+  <input type="number" style="width:100%" class="xlargeFont center" id="weeklyGoalInput" value="{{ $storage.weeklySalesGoal }}" />
   <br>
   <div class="center tactics">
     <br>
-      <table>
+      <table class="dividerTable">
         <tr>
           <td>Monday</td>
           <td><input type="number" class="mediumFont center" id="mondayGoalInput" ng-model="$storage.lineGoalsSalesData[0]" /></td>
@@ -47,11 +49,12 @@
 
 <div ng-if="goalPeriod === 'this month'">
   <span class="xlargeFont center">{{ goalPeriod | capitalizeFirst }}'s total goal:</span>
-  <input type="number" class="xlargeFont center" id="monthlyGoalInput" value="{{ $storage.monthlySalesGoal }}" />
+  <br>
+  <input type="number" style="width:100%" class="xlargeFont center" id="monthlyGoalInput" value="{{ $storage.monthlySalesGoal | currency:undefined:0 | ifEmpty:0}}" />
   <br>
   <div class="center tactics">
     <br>
-      <table>
+      <table class="dividerTable">
         <tr>
           <td>Week 1</td>
           <td><input type="number" class="mediumFont center" id="week1GoalInput" ng-model="$storage.lineGoalsSalesData[0]" /></td>

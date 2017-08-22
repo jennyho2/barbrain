@@ -23,35 +23,42 @@ $( "Goal" ).click(function() {
     <div ng-include="'partials/error.html'"></div>
     API call timed out. Try again.
   </div>
-
-<br />
-
+<br>
 <div class="center">
-  <img ng-click="scrubWeeks(-7)" src="assets/images/backArrow.png" width="20px" />
-  <h4 class="keepInline">{{ formatDate($storage.scrubDateMin)}} - {{formatDate($storage.scrubDateMax)}}</h4>
+  <img ng-click="scrubWeeks(7)" style="top:-5px" src="assets/images/backArrow.png" width="15px" />
+  <h4 class="keepInline">&nbsp;&nbsp;{{ formatDate($storage.scrubDateMin)}} - {{formatDate($storage.scrubDateMax)}}&nbsp;&nbsp;</h4>
   <!-- <h4 class="keepInline">{{ $storage.weekToDate.itemGroups[$storage.incentiveItem.id].count }} units to {{ $storage.weeklyIncentiveGoal }} weekly goal</h4> -->
   <!-- $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count -->
-  <img ng-click="scrubWeeks(7)" class="flip" src="assets/images/backArrow.png" width="20px" />
+  <img ng-click="scrubWeeks(-7)" class="flip" src="assets/images/backArrow.png" width="15px" />
 </div>
 
-<h4 class="center" ng-if="$storage.incentiveItem">{{ printWeeklySales() }} units to {{ $storage.weeklyIncentiveGoal }} weekly goal</h4>
-<h4 class="center" ng-if="!$storage.incentiveItem">No Incentive set yet</h4>
+<h4 class="center" ng-if="$storage.incentiveItem">{{ $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count|ifEmpty:0}} / {{ $storage.weeklyIncentiveGoal }} units of {{$storage.incentiveItem.name}} weekly goal</h4>
+<h4 class="center" ng-if="!$storage.incentiveItem">No incentive set yet</h4>
 
   <!--set different graphs to display-->
 <div class="chartHolder absolute" ng-if="$storage.incentiveItem">
   <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
  <!--  <canvas chart-data="[printWeeklySales(), 200]" class="chart chart-doughnut" chart-labels="['stuff', 'staff']" chart-options="options"></canvas> -->
-  <canvas ng-if="$storage.weeklyIncentiveGoal - printWeeklySales() > 0" id="doughnut" class="chart chart-doughnut"
-    chart-data="[printWeeklySales(), $storage.weeklyIncentiveGoal - printWeeklySales()]"  chart-labels="['Period Total Sales', 'Difference From Goal']" chart-options="donutOptions" chart-colors="['#46C646','#46C646']">
+  <canvas ng-if="($storage.weeklyIncentiveGoal - $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count )> 0" 
+    id="doughnut" 
+    class="chart chart-doughnut"
+    chart-data="[$storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count, $storage.weeklyIncentiveGoal - $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count]"  
+    chart-labels="['Period Total Sales', 'Difference From Goal']" 
+    chart-options="donutOptions" 
+    chart-colors="['#46C646', '#D3D3D3']">
   </canvas> 
-  <canvas ng-if="$storage.weeklyIncentiveGoal - printWeeklySales() <= 0" id="doughnut" class="chart chart-doughnut"
-    chart-data="[printWeeklySales()]"  chart-labels="['Period Total Sales', 'Amount Exceeding Goal']" chart-options="donutOptions" chart-colors="['#46C646','#46C646']">
+  <canvas ng-if="($storage.weeklyIncentiveGoal - $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count) <= 0" 
+    id="doughnut" 
+    class="chart chart-doughnut"
+    chart-data="[$storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count]"  chart-labels="['Period Total Sales', 'Amount Exceeding Goal']" 
+    chart-options="donutOptions" 
+    chart-colors="['#46C646','#46C646']">
   </canvas> 
 
-    <div class="innerText"><span class="xlargeFont" style="color:deepskyblue">{{ printWeeklySales() / $storage.weeklyIncentiveGoal * 100 | number:0 }}%</span><br> 
-      <span class="smallFont">of goal achieved</span>
+    <div class="innerText"><span class="xlargeFont" style="color:deepskyblue">{{ $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count / $storage.weeklyIncentiveGoal * 100 | number:0 | ifEmpty:0 }}%</span><br> 
+      <span class="smallFont">of {{}} goal achieved</span>
         <a data-toggle="modal" data-target="#myModal"> <br>
-          <span class="smallFont" style="color:deepskyblue">Adjust goal</span>
+          <button class="smallFont button" style="color:deepskyblue">Adjust goal</button>
         </a>
       </div>
 
@@ -72,7 +79,7 @@ $( "Goal" ).click(function() {
       <th ng-class="{'selected': section === 'today'}" ng-click="setSalesDate('TODAY'); getDateRange(0); section = 'today'">Today </th>
       <th ng-class="{'selected': section === 'yesterday'}" ng-click="setSalesDate('YESTERDAY'); getDateRange(1); section = 'yesterday'">Yesterday</th>
       <th ng-class="{'selected': section === 'this week'}" ng-click="setSalesDate('WEEKTODATE'); getDateRange(4); section = 'this week'">Week To Date</th>
-      <th ng-class="{'selected': section === 'last week'}" ng-click="setSalesDate('LASTWEEK'); getDateRange(2); section = 'last week'">Last Week </th>
+      <th ng-class="{'selected': section === 'last week'}" ng-click="setSalesDate('LASTWEEK'); getDateRange(2); section = 'last week'; getLastWeekData()">Last Week </th>
       <th ng-class="{'selected': section === 'this month'}" ng-click="setSalesDate('MONTHLY'); getDateRange(3); section = 'this month'">Monthly</th>
     </tr>
   </div>

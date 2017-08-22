@@ -1,27 +1,33 @@
 <div ng-if="loading" ng-include="'partials/loading.html'"></div>
 
-<h4 class="center xlargeFont">{{ $storage.sales[$storage.salesDate].totalSales | currency:undefined:0 }} Sales of {{ $storage.goals[$storage.salesDate].value | currency:undefined:0 }} Goal</h4>
+<h4 class="center xlargeFont">{{ $storage.sales[$storage.salesDate].totalSales | ifEmpty:0 | currency:undefined:0 }} / {{ $storage.goals[$storage.salesDate].value | ifEmpty:0 | currency:undefined:0 }}</h4>
 
-<div class="chartHolder absolute" ng-if="section !== 'last week'">
+
+<div class="chartHolder absolute">
   <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
-  <canvas ng-if="$storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales > 0" id="doughnut" class="chart chart-doughnut" style="width: 50%"
-      chart-data="[$storage.sales[$storage.salesDate].totalSales, $storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales]"  chart-labels="['Period Total Sales', 'Difference From Goal']" chart-options="donutOptions" chart-colors="['#46C646', '#D3D3D3']">
+  <canvas ng-if="($storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales) > 0" 
+    id="doughnut" 
+    class="chart chart-doughnut" 
+    chart-data="[$storage.sales[$storage.salesDate].totalSales, $storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales]"  
+    chart-labels="['Period Total Sales', 'Difference From Goal']" 
+    chart-options="donutOptions" 
+    chart-colors="['#46C646', '#D3D3D3']">
   </canvas> 
   
-  <canvas ng-if="$storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales <= 0" id="doughnut" class="chart chart-doughnut"
-    chart-data="[$storage.sales[$storage.salesDate].totalSales]" chart-labels="['Period Total Sales', 'Amount Exceeding Goal']" chart-options="donutOptions" chart-colors="['#46C646','#46C646']">
+  <canvas ng-if="($storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales )<= 0" 
+    id="doughnut" 
+    class="chart chart-doughnut"
+    chart-data="[$storage.sales[$storage.salesDate].totalSales]" 
+    chart-labels="['Period Total Sales', 'Amount Exceeding Goal']" 
+    chart-options="donutOptions" 
+    chart-colors="['#46C646','#46C646']">
   </canvas> 
-  <div class="innerText"><span class="xlargeFont" style="color:deepskyblue">{{$storage.sales[$storage.salesDate].totalSales / $storage.goals[$storage.salesDate].value * 100| number:0 }}% </span><br> 
+  <div class="innerText"><span class="xlargeFont" style="color:deepskyblue">{{$storage.sales[$storage.salesDate].totalSales / $storage.goals[$storage.salesDate].value * 100| number:0 |ifEmpty:0 }}% </span><br> 
   <span class="smallFont">of goal achieved</span>
-    <a data-toggle="modal" data-target="#myModal"> <br>
-      <span class="smallFont" style="color:deepskyblue">Adjust goal</span>
+    <a data-toggle="modal" data-target="#myModal"> <br> <br>
+      <button class="smallFont button" style="color:deepskyblue">Adjust goal</button>
     </a>
   </div>
-</div>
-
-<div ng-if="section === 'last week'">
-  <canvas class="chart chart-line" chart-data="$storage.lastWeekChartData" chart-labels="['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']" chart-options="{legend: {display: true}};" chart-series="['Sales Actual', 'Sales Goal']"></canvas>
-
 </div>
 
 <div class="center">
@@ -94,19 +100,6 @@
 <button class="button grayBKG" ng-click="loadSalesData(true)">Refresh Data</button>
 
 
-<!-- Insights -->
-<!-- <div class="tactics">
-<br>
-  <div class="center">
-    <span class="smallFont"><b>Thought of the Day</b></span>
-    <br>
-    <br>
-    <div class="boxed ">
-      <span class="smallFont">{{$storage.fullTactics.tactics[0].tips.thoughtOfTheDay}}</span>
-    </div>
-  </div>
-<br>
-</div> -->
 
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
@@ -115,7 +108,7 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header headerBKG">
-        <h4 class="modal-title center xlargeFont" style="color:white">{{section | capitalizeFirst}}'s Goal: {{$storage.goals[$storage.salesDate].value}}</h4>
+        <h4 class="modal-title center xlargeFont" style="color:white">{{goalPeriod | capitalizeFirst}}'s Goal: {{$storage.goals[$storage.salesDate].value|currency:undefined:0}}</h4>
       </div>
       <br>
       <div class="modal-body center tactics">

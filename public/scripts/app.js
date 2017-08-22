@@ -134,6 +134,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		else if(date === 'LASTWEEK') {
 			$scope.$storage.salesDate = moment().subtract(7, 'day').startOf('isoWeek').format('YYYYMMDD');
 			$scope.$storage.salesDateMax = moment().subtract(7, 'day').endOf('isoWeek').format('YYYYMMDD');
+			console.log("setting LAst Week");
 		}
 		else if(date === 'MONTHLY') {
 			$scope.$storage.salesDate = moment().startOf('month').format('YYYYMMDD');
@@ -435,6 +436,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			
       		if($scope.$storage.fullTactics.tactics[i].location == $scope.$storage.location){
           		$scope.$storage.tacticsByLocation = $scope.$storage.fullTactics.tactics[i];
+          		console.log($scope.$storage.tacticsByLocation);
      	 	}
     	}
 
@@ -1237,7 +1239,15 @@ app.filter('orderObjectBy', function() {
 	};
 
 });
+app.filter('ifEmpty', function() {
+    return function(input, defaultValue) {
+        if (angular.isUndefined(input) || input === null || input === '') {
+            return defaultValue;
+        }
 
+        return input;
+    }
+});
 
 app.run(function($rootScope, $location, $localStorage) {
 
@@ -1262,7 +1272,10 @@ app.run(function($rootScope, $location, $localStorage) {
 
 app.filter('capitalizeFirst', function() {
     return function(input) {
-      return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
+		var idx = input.indexOf(' ');
+		var res = input.split(" ");
+      	return (!!input) ? res[0].charAt(0).toUpperCase() + res[0].substring(1) + 
+      		" " + res[1].charAt(0).toUpperCase() + res[1].substring(1) : '';
     }
 });
 

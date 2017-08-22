@@ -1,6 +1,15 @@
 .absolute{
 	height: 50%;
 }
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait){
+  .foo {
+    height: 1024px;
+  }
+}
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape){
+  .foo {
+    height: 768px;
+  }
 }
 .absolute .innerGraph{
 	text-align: center;
@@ -9,8 +18,7 @@
 .absolute .innerText{
 	display:inline-block;
 	position: relative;
-	top:-75px;
-
+	top:-16vw;
 }
 .roundBox {
 	background-color: #f4f4f4;
@@ -116,7 +124,7 @@
 	border: none;
 }
 .shadow{
-	box-shadow: 0 0 1em gold;
+	box-shadow: 0 0 1em black;
 }
 /*.tableEmployeeStat tr:nth-child(even) {
     background-color: #F0F8FF;
@@ -320,7 +328,6 @@ border-right: none;
 	background-color: #f4f4f4;
 	flex-grow: 1;
 }
-
 .cyanBKG {
 	background-color: deepskyblue;
 }
