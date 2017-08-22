@@ -10,7 +10,6 @@
 	display:inline-block;
 	position: relative;
 	top:-16vw;
-
 }
 .roundBox {
 	background-color: #f4f4f4;
@@ -320,7 +319,6 @@ border-right: none;
 	background-color: #f4f4f4;
 	flex-grow: 1;
 }
-
 .cyanBKG {
 	background-color: deepskyblue;
 }
