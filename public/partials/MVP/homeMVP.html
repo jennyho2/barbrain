@@ -32,23 +32,31 @@ $( "Goal" ).click(function() {
   <img ng-click="scrubWeeks(7)" class="flip" src="assets/images/backArrow.png" width="15px" />
 </div>
 
-<h4 class="center" ng-if="$storage.incentiveItem">{{ $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count }} units to {{ $storage.weeklyIncentiveGoal }} weekly goal</h4>
-<h4 class="center" ng-if="!$storage.incentiveItem">No Incentive set yet</h4>
+<h4 class="center" ng-if="$storage.incentiveItem">{{ $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count|ifEmpty:0}} / {{ $storage.weeklyIncentiveGoal }} units of {{$storage.incentiveItem.name}} weekly goal</h4>
+<h4 class="center" ng-if="!$storage.incentiveItem">No incentive set yet</h4>
 
   <!--set different graphs to display-->
 <div class="chartHolder absolute" ng-if="$storage.incentiveItem">
   <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
  <!--  <canvas chart-data="[printWeeklySales(), 200]" class="chart chart-doughnut" chart-labels="['stuff', 'staff']" chart-options="options"></canvas> -->
-  <canvas ng-if="$storage.weeklyIncentiveGoal - $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count > 0" id="doughnut" class="chart chart-doughnut"
-    chart-data="[$storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count, $storage.weeklyIncentiveGoal - $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count]"  chart-labels="['Period Total Sales', 'Difference From Goal']" chart-options="donutOptions" 
+  <canvas ng-if="($storage.weeklyIncentiveGoal - $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count )> 0" 
+    id="doughnut" 
+    class="chart chart-doughnut"
+    chart-data="[$storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count, $storage.weeklyIncentiveGoal - $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count]"  
+    chart-labels="['Period Total Sales', 'Difference From Goal']" 
+    chart-options="donutOptions" 
     chart-colors="['#46C646', '#D3D3D3']">
   </canvas> 
-  <canvas ng-if="$storage.weeklyIncentiveGoal - $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count <= 0" id="doughnut" class="chart chart-doughnut"
-    chart-data="[$storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count]"  chart-labels="['Period Total Sales', 'Amount Exceeding Goal']" chart-options="donutOptions" chart-colors="['#46C646','#46C646']">
+  <canvas ng-if="($storage.weeklyIncentiveGoal - $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count) <= 0" 
+    id="doughnut" 
+    class="chart chart-doughnut"
+    chart-data="[$storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count]"  chart-labels="['Period Total Sales', 'Amount Exceeding Goal']" 
+    chart-options="donutOptions" 
+    chart-colors="['#46C646','#46C646']">
   </canvas> 
 
-    <div class="innerText"><span class="xlargeFont" style="color:deepskyblue">{{ $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count / $storage.weeklyIncentiveGoal * 100 | number:0 }}%</span><br> 
-      <span class="smallFont">of goal achieved</span>
+    <div class="innerText"><span class="xlargeFont" style="color:deepskyblue">{{ $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count / $storage.weeklyIncentiveGoal * 100 | number:0 | ifEmpty:0 }}%</span><br> 
+      <span class="smallFont">of {{}} goal achieved</span>
         <a data-toggle="modal" data-target="#myModal"> <br>
           <span class="smallFont" style="color:deepskyblue">Adjust goal</span>
         </a>

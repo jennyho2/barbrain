@@ -3,19 +3,26 @@
 <h4 class="center xlargeFont">{{ $storage.sales[$storage.salesDate].totalSales | currency:undefined:0 }} / {{ $storage.goals[$storage.salesDate].value | currency:undefined:0 }}</h4>
 
 
-
-
-
 <div class="chartHolder absolute">
   <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
-  <canvas ng-if="$storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales > 0" id="doughnut" class="chart chart-doughnut" style="width: 50%"
-      chart-data="[$storage.sales[$storage.salesDate].totalSales, $storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales]"  chart-labels="['Period Total Sales', 'Difference From Goal']" chart-options="donutOptions" chart-colors="['#46C646', '#D3D3D3']">
+  <canvas ng-if="($storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales) > 0" 
+    id="doughnut" 
+    class="chart chart-doughnut" 
+    chart-data="[$storage.sales[$storage.salesDate].totalSales, $storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales]"  
+    chart-labels="['Period Total Sales', 'Difference From Goal']" 
+    chart-options="donutOptions" 
+    chart-colors="['#46C646', '#D3D3D3']">
   </canvas> 
   
-  <canvas ng-if="$storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales <= 0" id="doughnut" class="chart chart-doughnut"
-    chart-data="[$storage.sales[$storage.salesDate].totalSales]" chart-labels="['Period Total Sales', 'Amount Exceeding Goal']" chart-options="donutOptions" chart-colors="['#46C646','#46C646']">
+  <canvas ng-if="($storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales )<= 0" 
+    id="doughnut" 
+    class="chart chart-doughnut"
+    chart-data="[$storage.sales[$storage.salesDate].totalSales]" 
+    chart-labels="['Period Total Sales', 'Amount Exceeding Goal']" 
+    chart-options="donutOptions" 
+    chart-colors="['#46C646','#46C646']">
   </canvas> 
-  <div class="innerText"><span class="xlargeFont" style="color:deepskyblue">{{$storage.sales[$storage.salesDate].totalSales / $storage.goals[$storage.salesDate].value * 100| number:0 }}% </span><br> 
+  <div class="innerText"><span class="xlargeFont" style="color:deepskyblue">{{$storage.sales[$storage.salesDate].totalSales / $storage.goals[$storage.salesDate].value * 100| number:0 |ifEmpty:0 }}% </span><br> 
   <span class="smallFont">of goal achieved</span>
     <a data-toggle="modal" data-target="#myModal"> <br>
       <span class="smallFont" style="color:deepskyblue">Adjust goal</span>
