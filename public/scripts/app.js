@@ -961,6 +961,16 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.getLastWeekData = function()  {
 		$http.get('locations/' + $scope.$storage.location + '/salesByDay/' + $scope.$storage.salesDate + '/' + $scope.$storage.salesDateMax)
 		.then(function (response)  {
+			var sales = response.data.data;
+			$http.get('locations/' + $scope.$storage.location + '/goalsByDay/' + $scope.$storage.salesDate + '/' + $scope.$storage.salesDateMax)
+			.then(function (response)  {
+				$scope.$storage.lastWeekChartData = [
+					[sales[0], sales[1], sales[2], sales[3], sales[4], sales[5], sales[6]],
+					[response.data.data[0], response.data.data[1], response.data.data[2], response.data.data[3], response.data.data[4],
+						response.data.data[5], response.data.data[6]]
+				];
+			});
+			// m,t,w,th,f,s,sa
 			console.log("bing bong");
 			console.log(response);
 		});

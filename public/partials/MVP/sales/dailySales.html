@@ -1,8 +1,8 @@
 <div ng-if="loading" ng-include="'partials/loading.html'"></div>
 
-<h4 class="center xlargeFont">{{ $storage.sales[$storage.salesDate].totalSales | currency:undefined:0 }} / {{ $storage.goals[$storage.salesDate].value | currency:undefined:0 }}</h4>
+<h4 class="center xlargeFont">{{ $storage.sales[$storage.salesDate].totalSales | currency:undefined:0 }} Sales of {{ $storage.goals[$storage.salesDate].value | currency:undefined:0 }} Goal</h4>
 
-<div class="chartHolder absolute">
+<div class="chartHolder absolute" ng-if="section !== 'last week'">
   <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
   <canvas ng-if="$storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales > 0" id="doughnut" class="chart chart-doughnut" style="width: 50%"
       chart-data="[$storage.sales[$storage.salesDate].totalSales, $storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales]"  chart-labels="['Period Total Sales', 'Difference From Goal']" chart-options="donutOptions" chart-colors="['#46C646', '#D3D3D3']">
@@ -17,6 +17,11 @@
       <span class="smallFont" style="color:deepskyblue">Adjust goal</span>
     </a>
   </div>
+</div>
+
+<div ng-if="section === 'last week'">
+  <canvas class="chart chart-line" chart-data="$storage.lastWeekChartData" chart-labels="['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']" chart-options="{legend: {display: true}};" chart-series="['Sales Actual', 'Sales Goal']"></canvas>
+
 </div>
 
 <div class="center">
