@@ -134,6 +134,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		else if(date === 'LASTWEEK') {
 			$scope.$storage.salesDate = moment().subtract(7, 'day').startOf('isoWeek').format('YYYYMMDD');
 			$scope.$storage.salesDateMax = moment().subtract(7, 'day').endOf('isoWeek').format('YYYYMMDD');
+			console.log("setting LAst Week");
 		}
 		else if(date === 'MONTHLY') {
 			$scope.$storage.salesDate = moment().startOf('month').format('YYYYMMDD');
