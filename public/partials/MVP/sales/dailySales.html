@@ -24,8 +24,8 @@
   </canvas> 
   <div class="innerText"><span class="xlargeFont" style="color:deepskyblue">{{$storage.sales[$storage.salesDate].totalSales / $storage.goals[$storage.salesDate].value * 100| number:0 |ifEmpty:0 }}% </span><br> 
   <span class="smallFont">of goal achieved</span>
-    <a data-toggle="modal" data-target="#myModal"> <br>
-      <span class="smallFont" style="color:deepskyblue">Adjust goal</span>
+    <a data-toggle="modal" data-target="#myModal"> <br> <br>
+      <button class="smallFont button" style="color:deepskyblue">Adjust goal</button>
     </a>
   </div>
 </div>
