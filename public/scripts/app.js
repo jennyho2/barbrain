@@ -957,6 +957,14 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		$scope.$storage.incentiveAccepted = 0;
 		console.log("reset");
 	}
+
+	$scope.getLastWeekData = function()  {
+		$http.get('locations/' + $scope.$storage.location + '/salesByDay/' + $scope.$storage.salesDate + '/' + $scope.$storage.salesDateMax)
+		.then(function (response)  {
+			console.log("bing bong");
+			console.log(response);
+		});
+	}
 	
 
 });
