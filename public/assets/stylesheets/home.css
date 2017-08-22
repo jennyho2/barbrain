@@ -124,7 +124,7 @@
 	border: none;
 }
 .shadow{
-	box-shadow: 0 0 1em gold;
+	box-shadow: 0 0 1em black;
 }
 /*.tableEmployeeStat tr:nth-child(even) {
     background-color: #F0F8FF;
