@@ -241,6 +241,11 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 				$scope.$storage.sales = {};
 				$scope.$storage.staffSales = {};
 				$scope.$storage.salesDate = moment().format('YYYYMMDD');
+				$http.get('/locationInfo/' + $scope.$storage.location)
+				.then(function (response)  {
+					console.log("this loc");
+					console.log(response);
+				});
 
         $scope.loadIncentiveData();
 				$scope.loadSalesData();
