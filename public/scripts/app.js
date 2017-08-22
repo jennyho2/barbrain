@@ -431,6 +431,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			
       		if($scope.$storage.fullTactics.tactics[i].location == $scope.$storage.location){
           		$scope.$storage.tacticsByLocation = $scope.$storage.fullTactics.tactics[i];
+          		console.log($scope.$storage.tacticsByLocation);
      	 	}
     	}
 
