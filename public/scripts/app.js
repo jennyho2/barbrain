@@ -1267,7 +1267,10 @@ app.run(function($rootScope, $location, $localStorage) {
 
 app.filter('capitalizeFirst', function() {
     return function(input) {
-      return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
+		var idx = input.indexOf(' ');
+		var res = input.split(" ");
+      	return (!!input) ? res[0].charAt(0).toUpperCase() + res[0].substring(1) + 
+      		" " + res[1].charAt(0).toUpperCase() + res[1].substring(1) : '';
     }
 });
 

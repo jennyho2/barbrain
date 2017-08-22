@@ -1,6 +1,6 @@
 <div ng-if="loading" ng-include="'partials/loading.html'"></div>
 
-<h4 class="center xlargeFont">{{ $storage.sales[$storage.salesDate].totalSales | currency:undefined:0 }} / {{ $storage.goals[$storage.salesDate].value | currency:undefined:0 }}</h4>
+<h4 class="center xlargeFont">{{ $storage.sales[$storage.salesDate].totalSales | ifEmpty:0 | currency:undefined:0 }} / {{ $storage.goals[$storage.salesDate].value | ifEmpty:0 | currency:undefined:0 }}</h4>
 
 
 <div class="chartHolder absolute">
@@ -121,7 +121,7 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header headerBKG">
-        <h4 class="modal-title center xlargeFont" style="color:white">{{section | capitalizeFirst}}'s Goal: {{$storage.goals[$storage.salesDate].value}}</h4>
+        <h4 class="modal-title center xlargeFont" style="color:white">{{goalPeriod | capitalizeFirst}}'s Goal: {{$storage.goals[$storage.salesDate].value|currency:undefined:0}}</h4>
       </div>
       <br>
       <div class="modal-body center tactics">

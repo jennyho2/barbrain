@@ -23,13 +23,13 @@ $( "Goal" ).click(function() {
     <div ng-include="'partials/error.html'"></div>
     API call timed out. Try again.
   </div>
-
+<br>
 <div class="center">
-  <img ng-click="scrubWeeks(-7)" src="assets/images/backArrow.png" width="15px" />
-  <h4 class="keepInline">{{ formatDate($storage.scrubDateMin)}} - {{formatDate($storage.scrubDateMax)}}</h4>
+  <img ng-click="scrubWeeks(7)" style="top:-5px" src="assets/images/backArrow.png" width="15px" />
+  <h4 class="keepInline">&nbsp;&nbsp;{{ formatDate($storage.scrubDateMin)}} - {{formatDate($storage.scrubDateMax)}}&nbsp;&nbsp;</h4>
   <!-- <h4 class="keepInline">{{ $storage.weekToDate.itemGroups[$storage.incentiveItem.id].count }} units to {{ $storage.weeklyIncentiveGoal }} weekly goal</h4> -->
   <!-- $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count -->
-  <img ng-click="scrubWeeks(7)" class="flip" src="assets/images/backArrow.png" width="15px" />
+  <img ng-click="scrubWeeks(-7)" class="flip" src="assets/images/backArrow.png" width="15px" />
 </div>
 
 <h4 class="center" ng-if="$storage.incentiveItem">{{ $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count|ifEmpty:0}} / {{ $storage.weeklyIncentiveGoal }} units of {{$storage.incentiveItem.name}} weekly goal</h4>
