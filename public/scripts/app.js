@@ -4,7 +4,7 @@
 
 var app = angular.module("goalsApp", ["ngRoute", "ngStorage", "filters.stringUtils", "filters.mathAbs", "angularModalService", "chart.js"]);
 
-app.controller('mainController', function($scope, $localStorage, $sessionStorage, $http, $location) {
+app.controller('mainController', function($scope, $localStorage, $sessionStorage, $http, $location, $locale) {
 	
 	$scope.orderByField = 'name';
 	$scope.reverseSort = false;
@@ -245,6 +245,20 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 				$scope.$storage.salesDate = moment().format('YYYYMMDD');
 				$http.get('/locationInfo/' + $scope.$storage.location)
 				.then(function (response)  {
+					$scope.$storage.decimal_char = (response.data.data[0].decimal_char) ? response.data.data[0].decimal_char : '.';
+					if (!response.data.data[0].thousands_char && $scope.$storage.decimal_char)  {
+						if ($scope.$storage.decimal_char === ",")  $scope.$storage.thousands_char = ".";
+						if ($scope.$storage.decimal_char === ".")  $scope.$storage.thousands_char = ",";
+						if ($scope.$storage.decimal_char === "") $scope.$storage.thousands_char = ",";
+					} else if (response.data.data[0].thousands_char)  {
+						$scope.$storage.thousands_char = (response.data.data[0].thousands_char) ? response.data.data[0].thousands_char : ',';	
+					}
+					$locale.NUMBER_FORMATS.GROUP_SEP = $scope.$storage.thousands_char;
+					if (response.data.data[0].timezone)  {
+						$scope.$storage.timezone = response.data.data[0].timezone.split("/").pop();
+					} else {
+						$scope.$storage.timezone = 'default';
+					}
 					console.log("this loc");
 					console.log(response);
 				});
@@ -995,9 +1009,6 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 						response.data.data[5], response.data.data[6]]
 				];
 			});
-			// m,t,w,th,f,s,sa
-			console.log("bing bong");
-			console.log(response);
 		});
 	}
 	

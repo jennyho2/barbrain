@@ -302,9 +302,13 @@ module.exports = class LavuService {
 					console.log('No Lavu super groups found. Loading from lavu...');
 					return this.getMenuSuperGroupsFromApi()
 					.then(supergroups => {
-						return db.collection('lavu_super_groups')
-							.insertMany(supergroups)
-							.then(() => supergroups);
+						if (supergroups.length > 0)  {
+							return db.collection('lavu_super_groups')
+								.insertMany(supergroups)
+								.then(() => supergroups);
+						} else {
+							return [];
+						}
 					});
 				}
 				return rows;
