@@ -428,8 +428,10 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.filterTactics = function(tactics) {
 		var i = 0;
 		for(i = 0; i < $scope.$storage.fullTactics.tactics.length; i++){
-			
-      		if($scope.$storage.fullTactics.tactics[i].location == $scope.$storage.location){
+//cerveza_patago13	
+//cerveza_patago9	
+//goose_island_p
+      		if($scope.$storage.location == ){
           		$scope.$storage.tacticsByLocation = $scope.$storage.fullTactics.tactics[i];
           		console.log($scope.$storage.tacticsByLocation);
      	 	}
