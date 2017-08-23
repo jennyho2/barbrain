@@ -5,7 +5,8 @@ const router = require('express').Router(),
 const database = require('../db');
 var $ = require('jquery')(require("jsdom").jsdom().parentWindow);
 const LavuService = require('../services/LavuService'),
-	  LocationService = require('../services/Locations');
+	  LocationService = require('../services/Locations')
+	  WeatherService = require('../services/WeatherService');
 
 
 router.get('/', function(request, response) {
@@ -559,6 +560,22 @@ router.post('/locations/:location_id/goals/batchupdatemonth/:monthstart/:monthen
 	new LocationService().resolve(location)
 	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
 	.then(service => service.setMonthBatchGoals(newFromDate, newToDate, req.body))
+	.then(data => res.json({ success:true, data }))
+	.catch(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
+});
+
+router.get("/locationInfo/:location_id", function(req, res)  {
+	var location = req.params.location_id;
+	new LocationService().resolve(location)
+	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
+	.then(service => service.loadLocation())
+	.then(data => res.json({ success:true, data }))
+	.catch(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
+});
+
+router.get('/locations/:location_weather_id/getWeather', (req, res) => {
+	var location = req.params.location_weather_id;
+	new WeatherService().loadWeather(location)
 	.then(data => res.json({ success:true, data }))
 	.catch(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
 });

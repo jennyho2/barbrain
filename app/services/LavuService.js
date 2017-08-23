@@ -144,6 +144,47 @@ module.exports = class LavuService {
 			});
 		});
 	}
+
+	getLocationMetaDateFromApi() {
+		return this.post(this.buildApiData('locations'))
+		.then(body => {
+			var res = [];
+			parseString(body, function(err, result) {
+				var resholder = JSON.parse(JSON.stringify(result)).results.row;
+				if (resholder) {
+					res = Array.from(resholder);
+				}
+			});
+			let items = res.map(item => {
+
+				return {
+					id: parseInt(item.id[0]),
+					title: item.title[0],
+					decimal_char: item.decimal_char[0],
+					thousands_char: item.thousands_char[0],
+					timezone: item.timezone[0]
+				};
+			});
+			return items;
+		});
+	}
+
+	loadLocation() {
+		return database.connect().then(db => {
+			return db.collection('lavu_location').find({ location_id: this.locationId }).toArray().then(rows => {
+				if (!rows || rows.length == 0)  {
+					console.log("No Lavu Location meta data found. Loading from lavu...");
+					return this.getLocationMetaDateFromApi()
+					.then(locationMetaData => {
+						return db.collection('lavu_location')
+							.insertMany(locationMetaData)
+							.then(() => locationMetaData);
+					});
+				}
+				return rows;
+			});
+		});
+	}
 	
 	getMenuCategoriesFromApi(){
 		return this.post(this.buildApiData('menu_categories'))

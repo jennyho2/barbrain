@@ -23,18 +23,19 @@
 
     <th ng-class="{'selected': section === 'today'}" ng-click="setSalesDate('TODAY');
      getDateRange(0); 
-     section = 'today'">Today</th>
+     section = 'today';
+     $storage.thisWeek = false;">Today</th>
     <th ng-class="{'selected': section === 'yesterday'}" ng-click="setSalesDate('YESTERDAY'); getDateRange(1); 
-    section = 'yesterday'">Yesterday</th>
+    section = 'yesterday'; $storage.thisWeek = false;">Yesterday</th>
     <th ng-class="{'selected': section === 'this week'}" ng-click="setSalesDate('WEEKTODATE'); getDateRange(4); 
-    section = 'this week'">Week To Date</th>
+    section = 'this week'; $storage.thisWeek = false;">Week To Date</th>
     <th ng-class="{'selected': section === 'last week'}" ng-click="setSalesDate('LASTWEEK'); getDateRange(2);  
-    section = 'last week'; getLastWeekData();">Last Week</th>
+    section = 'last week'; getLastWeekData(); $storage.thisWeek = true;">Last Week</th>
     <th ng-class="{'selected': section === 'this month'}" ng-click="setSalesDate('MONTHLY');
     getDateRange(3);  
-    section = 'this month'">Month to Date</th>
+    section = 'this month';
+    $storage.thisWeek = false;">Month to Date</th>
   </tr>
-  
   </div>
   
 </table>
