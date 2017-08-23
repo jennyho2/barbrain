@@ -123,14 +123,20 @@ chart-data="[$storage.sales[$storage.salesDate].itemGroups[$storage.incentiveIte
         <h4 class="modal-title center xlargeFont" style="color:white">This week's goal: {{$storage.weeklyIncentiveGoal}}</h4>
       </div>
       <div class="modal-body center tactics">
-        <input type="number" id="incentiveGoalInput" value='{{$storage.weeklyIncentiveGoal}}' />
+        <input type="number" class="mediumFont" id="incentiveGoalInput" value='{{$storage.weeklyIncentiveGoal}}' />
         <br>
-        <select class="smallRoundButton" ng-model="$storage.incentiveCategory" ng-options="x.name for x in $storage.menucategories | orderBy:'toString()'">
-        </select>
-        <br>
-        <select class="smallRoundButton" ng-model="$storage.incentiveItem" ng-options="x.name for x in $storage.incentiveItems | orderBy:'toString()'">
-        </select>
-        <br>
+        <table class="incentiveTable">
+          <tr>
+            <td>Item Category:</td>
+            <td> <select class="smallRoundButton" ng-model="$storage.incentiveCategory" ng-options="x.name for x in $storage.menucategories | orderBy:'toString()'">
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>Item:</td>
+            <td><select class="smallRoundButton" ng-model="$storage.incentiveItem" ng-options="x.name for x in $storage.incentiveItems | orderBy:'toString()'"></select></td>
+          </tr>
+        </table>
       </div>
       <div class="modal-footer headerBKG">
         <button type="button" class="btn btn-default" ng-click="updateIncentive()">Update</button>

@@ -470,3 +470,11 @@ input:checked + .slider:before {
 .weeklyGoalsTable tr td:last-child {
 	width: 50%;
 }
+
+.incentiveTable td {
+	width: 50%;
+}
+
+.incentiveTable td select {
+	width: 100%;
+}
