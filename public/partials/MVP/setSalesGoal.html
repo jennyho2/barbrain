@@ -64,7 +64,7 @@
 <div ng-if="goalPeriod === 'this month'">
   <span class="xlargeFont center">{{ goalPeriod | capitalizeFirst }}'s total goal:</span>
   <br>
-  <input type="number" style="width:100%" class="xlargeFont center" id="monthlyGoalInput" value="{{ $storage.monthlySalesGoal | currency:undefined:0 | ifEmpty:0}}" />
+  <input type="number" style="width:100%" class="xlargeFont center" id="monthlyGoalInput" value="{{ $storage.monthlySalesGoal }}" />
   <br>
   <div class="center tactics">
     <br>
