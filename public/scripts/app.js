@@ -913,6 +913,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		$scope.$storage.scrubDateMin = moment().startOf('isoWeek').format('YYYYMMDD');
 		$scope.$storage.scrubDateMax = moment().endOf('isoWeek').format('YYYYMMDD');
 		$scope.$storage.currentWeek = true;
+		$scope.$storage.thisWeek = false;
+		$scope.section = 'today';
 	}
 
   $scope.getWeekGoalsLavu();
