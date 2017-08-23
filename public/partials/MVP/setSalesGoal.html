@@ -15,31 +15,31 @@
     <br>
       <table class="dividerTable">
         <tr>
-          <td>Monday</td>
+          <td>Monday<br />{{ ($storage.weeklyWeather.monday.main.temp - 273.15) | number:0 }}&deg;C | {{ $storage.weeklyWeather.monday.weather[0].main }}</td>
           <td><input type="number" class="mediumFont center" id="mondayGoalInput" ng-model="$storage.lineGoalsSalesData[0]" /></td>
         </tr>
         <tr>
-          <td>Tuesday</td>
+          <td>Tuesday<br />{{ ($storage.weeklyWeather.tuesday.main.temp - 273.15) | number:0 }}&deg;C | {{ $storage.weeklyWeather.tuesday.weather[0].main }}</td>
           <td><input type="number" class="mediumFont center" id="tuesdayGoalInput" ng-model="$storage.lineGoalsSalesData[1]"/></td>
         </tr>
         <tr>
-          <td>Wednesday</td>
+          <td>Wednesday<br />{{ ($storage.weeklyWeather.wednesday.main.temp - 273.15) | number:0 }}&deg;C | {{ $storage.weeklyWeather.wednesday.weather[0].main }}</td>
           <td><input type="number" class="mediumFont center" id="wednesdayGoalInput" ng-model="$storage.lineGoalsSalesData[2]"/></td>
         </tr>
         <tr>
-          <td>Thursday</td>
+          <td>Thursday<br />{{ ($storage.weeklyWeather.thursday.main.temp - 273.15) | number:0 }}&deg;C | {{ $storage.weeklyWeather.thursday.weather[0].main }}</td>
           <td><input type="number" class="mediumFont center" id="thursdayGoalInput" ng-model="$storage.lineGoalsSalesData[3]"/></td>
         </tr>
         <tr>
-          <td>Friday</td>
+          <td>Friday<br />{{ ($storage.weeklyWeather.friday.main.temp - 273.15) | number:0 }}&deg;C | {{ $storage.weeklyWeather.friday.weather[0].main }}</td>
           <td><input type="number" class="mediumFont center" id="fridayGoalInput" ng-model="$storage.lineGoalsSalesData[4]"/></td>
         </tr>
         <tr>
-          <td>Saturday</td>
+          <td>Saturday<br />{{ ($storage.weeklyWeather.saturday.main.temp - 273.15) | number:0 }}&deg;C | {{ $storage.weeklyWeather.saturday.weather[0].main }}</td>
           <td><input type="number" class="mediumFont center" id="saturdayGoalInput" ng-model="$storage.lineGoalsSalesData[5]"/></td>
         </tr>
         <tr>
-          <td>Sunday</td>
+          <td>Sunday<br />{{ ($storage.weeklyWeather.sunday.main.temp - 273.15) | number:0 }}&deg;C | {{ $storage.weeklyWeather.sunday.weather[0].main }}</td>
           <td><input type="number" class="mediumFont center" id="sundayGoalInput" ng-model="$storage.lineGoalsSalesData[6]"/></td>
         </tr>
       </table>
