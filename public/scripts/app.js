@@ -29,6 +29,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.$storage.yesterdayHardGoal = 199000;
 	$scope.$storage.yesterdayHardIncentiveGoal = 43;
 	$scope.$storage.yesterdayHardIncentiveProjection = 49;
+	$scope.$storage.thisWeek = false;
 
 	$scope.loading = false;
 	$scope.filteredLocations = [];

@@ -2,8 +2,7 @@
 
 <h4 class="center xlargeFont">{{ $storage.sales[$storage.salesDate].totalSales | ifEmpty:0 | currency:undefined:0 }} / {{ $storage.goals[$storage.salesDate].value | ifEmpty:0 | currency:undefined:0 }}</h4>
 
-
-<div class="chartHolder absolute">
+<div class="chartHolder absolute" ng-if="!$storage.thisWeek">
   <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
   <canvas ng-if="($storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales) > 0" 
     id="doughnut" 
@@ -28,6 +27,10 @@
       <button class="smallFont button" style="color:deepskyblue">Adjust goal</button>
     </a>
   </div>
+</div>
+
+<div ng-if="$storage.thisWeek">
+  <canvas class="chart chart-line" chart-data="$storage.lastWeekChartData" chart-labels="['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']" chart-options="{legend: {display: true}};" chart-series="['Sales Actual', 'Sales Goal']"></canvas>
 </div>
 
 <div class="center">
