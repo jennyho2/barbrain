@@ -462,3 +462,11 @@ input:checked + .slider:before {
 	width: 100%;
 	border-width: 2px;
 }
+
+.weeklyGoalsTable tr td:first-child {
+	width: 15%;
+}
+
+.weeklyGoalsTable tr td:last-child {
+	width: 50%;
+}
