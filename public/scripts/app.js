@@ -437,10 +437,10 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 //cerveza_patago13	
 //cerveza_patago9	
 //goose_island_p
-      		if($scope.$storage.location == ){
+      		
           		$scope.$storage.tacticsByLocation = $scope.$storage.fullTactics.tactics[i];
           		console.log($scope.$storage.tacticsByLocation);
-     	 	}
+     	 	
     	}
 
 	}
