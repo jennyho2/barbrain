@@ -6,7 +6,7 @@
 </div>
 
 <div ng-if="goalPeriod === 'this week'">
-  <span class="xlargeFont center">{{ goalPeriod | capitalizeFirst }}'s total goal: {{$storage.weeklyScale|currency:undefined:0}}</span>
+  <span class="xlargeFont center" style="color:#4acde2">{{ goalPeriod | capitalizeFirst }}'s total goal: {{$storage.weeklyScale|currency:undefined:0}}</span>
   <br>
 
   <input type="number" style="width:100%" class="xlargeFont center" id="weeklyGoalInput" value="{{ $storage.weeklySalesGoal }}" />
@@ -17,43 +17,43 @@
         <tr>
           <td>
           <img ng-src="http://openweathermap.org/img/w/{{ $storage.weeklyWeather.monday.weather[0].icon }}.png" /></td>
-          <td>Monday<br />{{ ($storage.weeklyWeather.monday.main.temp - 273.15) | number:0 }}&deg;C | {{ $storage.weeklyWeather.monday.weather[0].main }}</td>
+          <td><span class=""><b> Monday </b></span><br />{{ ($storage.weeklyWeather.monday.main.temp - 273.15) | number:0 }}&deg;C | {{ $storage.weeklyWeather.monday.weather[0].main }}</td>
           <td><input type="number" class="mediumFont center" id="mondayGoalInput" ng-model="$storage.lineGoalsSalesData[0]" /></td>
         </tr>
         <tr>
           <td>
           <img ng-src="http://openweathermap.org/img/w/{{ $storage.weeklyWeather.tuesday.weather[0].icon }}.png" /></td>
-          <td>Tuesday<br />{{ ($storage.weeklyWeather.tuesday.main.temp - 273.15) | number:0 }}&deg;C | {{ $storage.weeklyWeather.tuesday.weather[0].main }}</td>
+          <td><span class=""><b>Tuesday</b></span><br />{{ ($storage.weeklyWeather.tuesday.main.temp - 273.15) | number:0 }}&deg;C | {{ $storage.weeklyWeather.tuesday.weather[0].main }}</td>
           <td><input type="number" class="mediumFont center" id="tuesdayGoalInput" ng-model="$storage.lineGoalsSalesData[1]"/></td>
         </tr>
         <tr>
           <td>
           <img ng-src="http://openweathermap.org/img/w/{{ $storage.weeklyWeather.wednesday.weather[0].icon }}.png" /></td>
-          <td>Wednesday<br />{{ ($storage.weeklyWeather.wednesday.main.temp - 273.15) | number:0 }}&deg;C | {{ $storage.weeklyWeather.wednesday.weather[0].main }}</td>
+          <td><span class=""><b>Wednesday</b></span><br />{{ ($storage.weeklyWeather.wednesday.main.temp - 273.15) | number:0 }}&deg;C | {{ $storage.weeklyWeather.wednesday.weather[0].main }}</td>
           <td><input type="number" class="mediumFont center" id="wednesdayGoalInput" ng-model="$storage.lineGoalsSalesData[2]"/></td>
         </tr>
         <tr>
           <td>
           <img ng-src="http://openweathermap.org/img/w/{{ $storage.weeklyWeather.thursday.weather[0].icon }}.png" /></td>
-          <td>Thursday<br />{{ ($storage.weeklyWeather.thursday.main.temp - 273.15) | number:0 }}&deg;C | {{ $storage.weeklyWeather.thursday.weather[0].main }}</td>
+          <td><b>Thursday</b><br />{{ ($storage.weeklyWeather.thursday.main.temp - 273.15) | number:0 }}&deg;C | {{ $storage.weeklyWeather.thursday.weather[0].main }}</td>
           <td><input type="number" class="mediumFont center" id="thursdayGoalInput" ng-model="$storage.lineGoalsSalesData[3]"/></td>
         </tr>
         <tr>
           <td>
           <img ng-src="http://openweathermap.org/img/w/{{ $storage.weeklyWeather.friday.weather[0].icon }}.png" /></td>
-          <td>Friday<br />{{ ($storage.weeklyWeather.friday.main.temp - 273.15) | number:0 }}&deg;C | {{ $storage.weeklyWeather.friday.weather[0].main }}</td>
+          <td><b>Friday</b><br />{{ ($storage.weeklyWeather.friday.main.temp - 273.15) | number:0 }}&deg;C | {{ $storage.weeklyWeather.friday.weather[0].main }}</td>
           <td><input type="number" class="mediumFont center" id="fridayGoalInput" ng-model="$storage.lineGoalsSalesData[4]"/></td>
         </tr>
         <tr>
           <td>
           <img ng-src="http://openweathermap.org/img/w/{{ $storage.weeklyWeather.saturday.weather[0].icon }}.png" /></td>
-          <td>Saturday<br />{{ ($storage.weeklyWeather.saturday.main.temp - 273.15) | number:0 }}&deg;C | {{ $storage.weeklyWeather.saturday.weather[0].main }}</td>
+          <td><b>Saturday</b><br />{{ ($storage.weeklyWeather.saturday.main.temp - 273.15) | number:0 }}&deg;C | {{ $storage.weeklyWeather.saturday.weather[0].main }}</td>
           <td><input type="number" class="mediumFont center" id="saturdayGoalInput" ng-model="$storage.lineGoalsSalesData[5]"/></td>
         </tr>
         <tr>
           <td>
           <img ng-src="http://openweathermap.org/img/w/{{ $storage.weeklyWeather.sunday.weather[0].icon }}.png" /></td>
-          <td>Sunday<br />{{ ($storage.weeklyWeather.sunday.main.temp - 273.15) | number:0 }}&deg;C | {{ $storage.weeklyWeather.sunday.weather[0].main }}</td>
+          <td><b>Sunday</b><br />{{ ($storage.weeklyWeather.sunday.main.temp - 273.15) | number:0 }}&deg;C | {{ $storage.weeklyWeather.sunday.weather[0].main }}</td>
           <td><input type="number" class="mediumFont center" id="sundayGoalInput" ng-model="$storage.lineGoalsSalesData[6]"/></td>
         </tr>
       </table>
@@ -62,7 +62,7 @@
 </div>
 
 <div ng-if="goalPeriod === 'this month'">
-  <span class="xlargeFont center">{{ goalPeriod | capitalizeFirst }}'s total goal:</span>
+  <span class="xlargeFont center" style="color:#4acde2">{{ goalPeriod | capitalizeFirst }}'s total goal:</span>
   <br>
   <input type="number" style="width:100%" class="xlargeFont center" id="monthlyGoalInput" value="{{ $storage.monthlySalesGoal }}" />
   <br>
@@ -70,23 +70,23 @@
     <br>
       <table class="dividerTable">
         <tr>
-          <td>Week 1</td>
+          <td><b>Week 1</b></td>
           <td><input type="number" class="mediumFont center" id="week1GoalInput" ng-model="$storage.lineGoalsSalesData[0]" /></td>
         </tr>
         <tr>
-          <td>Week 2</td>
+          <td><b>Week 2</b></td>
           <td><input type="number" class="mediumFont center" id="week2GoalInput" ng-model="$storage.lineGoalsSalesData[1]"/></td>
         </tr>
         <tr>
-          <td>Week 3</td>
+          <td><b>Week 3</b></td>
           <td><input type="number" class="mediumFont center" id="week3GoalInput" ng-model="$storage.lineGoalsSalesData[2]"/></td>
         </tr>
         <tr>
-          <td>Week 4</td>
+          <td><b>Week 4</b></td>
           <td><input type="number" class="mediumFont center" id="week4GoalInput" ng-model="$storage.lineGoalsSalesData[3]"/></td>
         </tr>
         <tr>
-          <td>Week 5</td>
+          <td><b>Week 5</b></td>
           <td><input type="number" class="mediumFont center" id="week5GoalInput" ng-model="$storage.lineGoalsSalesData[4]"/></td>
         </tr>
       </table>
