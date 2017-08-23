@@ -1026,9 +1026,11 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		$scope.$storage.incentiveCategory = null;
 		$scope.$storage.incentiveCategoryLength = 0;
 		//$scope.$storage.incentiveAccepted = 0;
-		
 	}
-
+	
+	$scope.reset = function(){
+		$scope.$storage.incentiveAccepted = 0;
+	}
 	$scope.getLastWeekData = function()  {
 		$http.get('locations/' + $scope.$storage.location + '/salesByDay/' + $scope.$storage.salesDate + '/' + $scope.$storage.salesDateMax)
 		.then(function (response)  {
