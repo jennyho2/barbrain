@@ -27,7 +27,7 @@
         <span>Consider selling {{$storage.tacticsGoal}} units of {{$storage.tacticsItem}}</span>
       </div>
       <button ng-if="$storage.incentiveAccepted==0" type="button" class="btn btn-default" ng-click="updateSuggestedIncentive()">Accept Incentive</button>
-      <button ng-if="$storage.incentiveAccepted==1" type="button" class="btn btn-default" ><a href="#!home">Track Incentive</a></button>
+      <button ng-if="$storage.incentiveAccepted==1" type="button" class="btn btn-default" ><a href="#!home">Track Incentive</a></button>&nbsp;<img ng-if="$storage.incentiveAccepted==1" src="assets/images/checkmark.png" height="20px" width="20px"/>
     </div>
   </div> <!-- End Insights -->
 <br>
