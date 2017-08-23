@@ -19,7 +19,7 @@ module.exports = class WeatherService {
 	loadWeather(location)  {
 		console.log(location);
 		return database.connect().then(db => {
-			return db.collection('weather').find({ location: this.location }).sort({ created_at: -1 }).limit(1).toArray().then(row => {
+			return db.collection('weather').find({ location: this.location }).sort({ created_at: -1 }).limit(5).toArray().then(row => {
 				if (!row || row.length == 0)  {
 					console.log("No weather pulled for " + location + " yet. Loading from OpenWeather Api...");
 					return this.getWeatherFromApi(location)

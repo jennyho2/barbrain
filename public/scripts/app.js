@@ -989,9 +989,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 						$scope.$storage.weeklyWeather.saturday = response.data.data[2];
 						$scope.$storage.weeklyWeather.sunday = response.data.data[3];
 
-						console.log($scope.$storage.weeklyWeather.monday);
-						console.log("Weather");
-						console.log(response);
+						console.log($scope.$storage.weeklyWeather);
 					});
 				});
 			}, function (response)  {
