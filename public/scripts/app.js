@@ -30,6 +30,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.$storage.yesterdayHardIncentiveGoal = 43;
 	$scope.$storage.yesterdayHardIncentiveProjection = 49;
 	$scope.$storage.thisWeek = false;
+	$scope.$storage.thisMonth = false;
 
 	$scope.loading = false;
 	$scope.filteredLocations = [];
@@ -135,7 +136,6 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		else if(date === 'LASTWEEK') {
 			$scope.$storage.salesDate = moment().subtract(7, 'day').startOf('isoWeek').format('YYYYMMDD');
 			$scope.$storage.salesDateMax = moment().subtract(7, 'day').endOf('isoWeek').format('YYYYMMDD');
-			console.log("setting LAst Week");
 		}
 		else if(date === 'MONTHLY') {
 			$scope.$storage.salesDate = moment().startOf('month').format('YYYYMMDD');
@@ -232,7 +232,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
 	$scope.updateLocation = function(id, goHome) {
 		$scope.locationSearchText = null;
-		
+		$scope.$storage.incentiveAccepted = 0;
 		$http.get("/resolveLocation/" + id)
 			.then(function(response) {
 				$scope.$storage.location = id;
@@ -260,7 +260,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 						$scope.$storage.timezone = 'default';
 					}
 					console.log("this loc");
-					console.log(response);
+					//console.log(response);
 				});
 
         $scope.loadIncentiveData();
@@ -573,7 +573,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 				//console.log('staff');
 				//console.log(response);
 				$scope.$storage.staffSales[date] = response.data.data;
-				console.log($scope.$storage.staffSales[date]);
+				//console.log($scope.$storage.staffSales[date]);
 				$scope.$storage.sales[date].totalGuests = 0;
 				$.each($scope.$storage.staffSales[date], function (key, value)  {
 					$scope.$storage.sales[date].totalGuests += value.totalGuests;
@@ -587,7 +587,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	          	.then(function(response)  {
             	console.log("Week to date");
             	// console.log($scope.$storage.incentiveItem.id);
-            	console.log(response);
+            	//console.log(response);
             	$scope.$storage.weekToDate = response.data.data;
 
 	            $http.get('/locations/' + $scope.$storage.location + '/goals/' + date + ($scope.$storage.salesDateMax ? '/' + $scope.$storage.salesDateMax : '') + (refresh ? '?refresh=true' : ''))
@@ -883,9 +883,9 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
   $scope.getWeekGoalsLavu = function()  {
     $http.get('/locations/' + $scope.$storage.location + '/goals/weekly')
     .then(function(response)  {
-      console.log(response);
+     // console.log(response);
     }, function(response)  {
-      console.log(response);
+     // console.log(response);
     });
   }
 
@@ -951,7 +951,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			var weekEnding = moment().endOf('isoWeek').format('YYYYMMDD');
 			$http.get('/locations/' + $scope.$storage.location + '/salesByDay/' + weekBeginning + '/' + weekEnding)
 			.then(function (response) {
-				console.log(response);
+			//	console.log(response);
 				$scope.$storage.lineActualSalesData = [response.data.data[0], response.data.data[1], response.data.data[2]
 					, response.data.data[3], response.data.data[4], response.data.data[5], response.data.data[6] ];
 				$http.get('/locations/' + $scope.$storage.location + '/goalsByDay/' + weekBeginning + '/' + weekEnding)
@@ -961,7 +961,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 					$scope.$storage.weeklySalesGoal = parseInt(response.data.data['weekly']);
 				});
 			}, function (response)  {
-				console.log(response);
+				//console.log(response);
 				console.log("Failure");
 			});
 		} else if (period === 1)  {
@@ -993,7 +993,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.resetIncentive = function(){
 		$scope.$storage.incentiveCategory = null;
 		$scope.$storage.incentiveCategoryLength = 0;
-		$scope.$storage.incentiveAccepted = 0;
+		//$scope.$storage.incentiveAccepted = 0;
 		
 	}
 
@@ -1011,8 +1011,48 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 			});
 		});
 	}
-	
+	$scope.formatDateLabels=function(labels){
+		var i = 0;
+		for(i = 0; i < labels.length; i++){
+			labels[i] = labels[i].charAt(4)+labels[i].charAt(5)+'/'+labels[i].charAt(6)+labels[i].charAt(7);
+		}
+		return labels;
+	}
+	$scope.getThisMonthData = function()  {
+	// 	console.log( $scope.$storage.salesDateMax);
+	//	console.log( $scope.$storage.salesDateMax);
+		$http.get('locations/' + $scope.$storage.location + '/salesByDay/' + $scope.$storage.salesDate + '/' + $scope.$storage.salesDateMax)
+		.then(function (response)  {
+			var sales = response.data.data;
+			$http.get('locations/' + $scope.$storage.location + '/goalsByDay/' + $scope.$storage.salesDate + '/' + $scope.$storage.salesDateMax)
+			.then(function (response)  {
 
+				$scope.$storage.lastMonthChartData = [
+					[sales[0], sales[1], sales[2], sales[3], sales[4], sales[5], sales[6],
+					sales[7], sales[8], sales[9], sales[10], sales[11], sales[12], sales[13],
+					sales[14], sales[15], sales[16], sales[17], sales[18], sales[19], sales[20],
+					sales[21], sales[22], sales[23], sales[24], sales[25], sales[26], sales[27],
+					sales[28], sales[29], sales[30], sales[31]],
+					[response.data.data[0], response.data.data[1], response.data.data[2], response.data.data[3], response.data.data[4], response.data.data[5], response.data.data[6]
+					, response.data.data[7], response.data.data[8], response.data.data[9], response.data.data[10], response.data.data[11], response.data.data[12], response.data.data[13]
+					, response.data.data[14], response.data.data[15], response.data.data[16], response.data.data[17], response.data.data[18], response.data.data[19], response.data.data[20]
+					, response.data.data[21], response.data.data[22], response.data.data[23], response.data.data[24], response.data.data[25], response.data.data[26], response.data.data[27]
+					, response.data.data[28], response.data.data[29], response.data.data[30], response.data.data[31]]
+				];
+				//get the dates
+				$scope.monthLabels = [];
+				var days = 0;
+				var date = moment().startOf('month').format('YYYYMMDD');
+				while(date != moment().endOf('month').format('YYYYMMDD')){
+					$scope.monthLabels.push(date);
+					date = moment().startOf('month').add(++count, 'days').format('YYYYMMDD');
+				}
+				$scope.monthLabels.push($scope.$storage.salesDateMax = moment().endOf('month').format('YYYYMMDD'));
+				$scope.monthLabels = $scope.formatDateLabels($scope.monthLabels);
+				
+			});
+		});
+	}
 });
 
 function getCategoryInfo($row, $scope, $http, period) {
