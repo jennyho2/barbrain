@@ -105,7 +105,6 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
     $scope.$storage.incentiveItems = _.filter($scope.$storage.menuitems, function(item) {
 
     	if (newValue)  {
-    		$scope.$storage.randomNumber = $scope.getRandomNumber();
       		return item.category_id == newValue.id;
       	}
     });
@@ -212,6 +211,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		$scope.$storage.scrubDateMax = moment().endOf('isoWeek').format('YYYYMMDD');
 		if($scope.$storage.location){
 			// Preload data if we've got a saved location
+			$scope.$storage.tacticsGoal = Math.floor(Math.random() * 20)+5;
       		$scope.loadIncentiveData();
 			$scope.loadSalesData();
 		}
@@ -235,6 +235,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	}
 
 	$scope.updateLocation = function(id, goHome) {
+		$scope.$storage.tacticsGoal = Math.floor(Math.random() * 20)+5;
 		$scope.locationSearchText = null;
 		$scope.$storage.incentiveAccepted = 0;
 		$http.get("/resolveLocation/" + id)
@@ -461,16 +462,16 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
 
 	$scope.filterTactics = function(tactics) {
-		var i = 0;
+		
+		console.log($scope.$storage.menuitems[0].name);
+		
 //for(i = 0; i < $scope.$storage.fullTactics.tactics.length; i++){
 //cerveza_patago13	
 //cerveza_patago9	
 //goose_island_p
 		$scope.$storage.tactics1 = "Beverages made up at least 30% of sales for weeks with higher average ticket. Consider targeting drink sales of 35%+ a percentage of sale!";
 		$scope.$storage.tactics3 = "Your highest average ticket week was August week 2 ($71), due to high sales of Grill and Rotisserie items and incremental sales from breakast and lunch.";
-		$scope.$storage.tacticsGoal = 9;
-		$scope.$storage.tacticsItem = "Matilda Tap";
-    	
+		$scope.$storage.tacticsItem = $scope.$storage.menuitems[0].name;	
 
 	}
 
@@ -1020,12 +1021,6 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	}
 
 	$scope.init();
-
-	$scope.getRandomNumber = function(){
-		var min = Math.ceil(5);
-  		var max = Math.floor(10);
-  		return Math.floor(Math.random() * (max - min + 1)) + min;
-	}
 
 	$scope.resetIncentive = function(){
 		$scope.$storage.incentiveCategory = null;
