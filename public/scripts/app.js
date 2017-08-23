@@ -972,24 +972,28 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 						$scope.$storage.weeklyWeather.monday.weather[0] = {};
 						$scope.$storage.weeklyWeather.monday.main.temp = 295.15;
 						$scope.$storage.weeklyWeather.monday.weather[0].main = "Cloudy";
+						$scope.$storage.weeklyWeather.monday.weather[0].icon = "03d";
 						$scope.$storage.weeklyWeather.tuesday = {};
 						$scope.$storage.weeklyWeather.tuesday.main = {};
 						$scope.$storage.weeklyWeather.tuesday.weather = [];
 						$scope.$storage.weeklyWeather.tuesday.weather[0] = {};
 						$scope.$storage.weeklyWeather.tuesday.main.temp = 297.15;
 						$scope.$storage.weeklyWeather.tuesday.weather[0].main = "Sunny";
+						$scope.$storage.weeklyWeather.tuesday.weather[0].icon = "01d";
 						$scope.$storage.weeklyWeather.wednesday = {};
 						$scope.$storage.weeklyWeather.wednesday.main = {};
 						$scope.$storage.weeklyWeather.wednesday.weather = [];
 						$scope.$storage.weeklyWeather.wednesday.weather[0] = {};
 						$scope.$storage.weeklyWeather.wednesday.main.temp = 296.15;
 						$scope.$storage.weeklyWeather.wednesday.weather[0].main = "Rainy";
+						$scope.$storage.weeklyWeather.wednesday.weather[0].icon = "09d";
 						$scope.$storage.weeklyWeather.thursday = response.data.data[0];
 						$scope.$storage.weeklyWeather.friday = response.data.data[1];
 						$scope.$storage.weeklyWeather.saturday = response.data.data[2];
 						$scope.$storage.weeklyWeather.sunday = response.data.data[3];
 
 						console.log($scope.$storage.weeklyWeather);
+						
 					});
 				});
 			}, function (response)  {
