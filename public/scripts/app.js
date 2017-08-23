@@ -953,6 +953,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		if (period === 0)  {
 			var weekBeginning = moment().startOf('isoWeek').format('YYYYMMDD');
 			var weekEnding = moment().endOf('isoWeek').format('YYYYMMDD');
+			$scope.lineLabels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 			$scope.$storage.weeklyWeather = {};
 			$http.get('/locations/' + $scope.$storage.location + '/salesByDay/' + weekBeginning + '/' + weekEnding)
 			.then(function (response) {
@@ -984,9 +985,9 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 						$scope.$storage.weeklyWeather.wednesday.main = {};
 						$scope.$storage.weeklyWeather.wednesday.weather = [];
 						$scope.$storage.weeklyWeather.wednesday.weather[0] = {};
-						$scope.$storage.weeklyWeather.wednesday.main.temp = 296.15;
-						$scope.$storage.weeklyWeather.wednesday.weather[0].main = "Rainy";
-						$scope.$storage.weeklyWeather.wednesday.weather[0].icon = "09d";
+						$scope.$storage.weeklyWeather.wednesday.main.temp = 290.15;
+						$scope.$storage.weeklyWeather.wednesday.weather[0].main = "Rain";
+						$scope.$storage.weeklyWeather.wednesday.weather[0].icon = "10d";
 						$scope.$storage.weeklyWeather.thursday = response.data.data[0];
 						$scope.$storage.weeklyWeather.friday = response.data.data[1];
 						$scope.$storage.weeklyWeather.saturday = response.data.data[2];
