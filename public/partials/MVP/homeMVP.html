@@ -32,30 +32,41 @@ $( "Goal" ).click(function() {
   <img ng-click="scrubWeeks(-7)" class="flip" src="assets/images/backArrow.png" width="15px" />
 </div>
 
-<h4 class="center" ng-if="$storage.incentiveItem">{{ $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count|ifEmpty:0}} / {{ $storage.weeklyIncentiveGoal }} units of {{$storage.incentiveItem.name}} weekly goal</h4>
+<h4 class="center" ng-if="$storage.incentiveItem">{{ printWeeklySales() }} items sold of {{ $storage.weeklyIncentiveGoal }} goal</h4>
+<!-- <h4 class="center" ng-if="$storage.incentiveItem">{{ $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count|ifEmpty:0}} / {{ $storage.weeklyIncentiveGoal }} units of {{$storage.incentiveItem.name}} weekly goal</h4> -->
 <h4 class="center" ng-if="!$storage.incentiveItem">No incentive set yet</h4>
 
   <!--set different graphs to display-->
 <div class="chartHolder absolute" ng-if="$storage.incentiveItem">
   <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
  <!--  <canvas chart-data="[printWeeklySales(), 200]" class="chart chart-doughnut" chart-labels="['stuff', 'staff']" chart-options="options"></canvas> -->
-  <canvas ng-if="($storage.weeklyIncentiveGoal - $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count )> 0" 
+ <!-- <canvas ng-if="($storage.weeklyIncentiveGoal - $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count )> 0" 
+chart-data="[$storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count, $storage.weeklyIncentiveGoal - $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count]"  
+ -->
+ <canvas ng-if="$storage.weeklyIncentiveGoal - printWeeklySales() > 0"
     id="doughnut" 
     class="chart chart-doughnut"
-    chart-data="[$storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count, $storage.weeklyIncentiveGoal - $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count]"  
+    chart-data="[printWeeklySales(), $storage.weeklyIncentiveGoal - printWeeklySales()]"
     chart-labels="['Period Total Sales', 'Difference From Goal']" 
     chart-options="donutOptions" 
     chart-colors="['#46C646', '#D3D3D3']">
   </canvas> 
-  <canvas ng-if="($storage.weeklyIncentiveGoal - $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count) <= 0" 
+<!-- <canvas ng-if="($storage.weeklyIncentiveGoal - $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count) <= 0" 
+chart-data="[$storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count]" 
+ -->
+  <canvas ng-if="$storage.weeklyIncentiveGoal - printWeeklySales() <= 0"
     id="doughnut" 
     class="chart chart-doughnut"
-    chart-data="[$storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count]"  chart-labels="['Period Total Sales', 'Amount Exceeding Goal']" 
+    chart-data="[printWeeklySales()]"
+    chart-labels="['Period Total Sales', 'Amount Exceeding Goal']" 
     chart-options="donutOptions" 
     chart-colors="['#46C646','#46C646']">
   </canvas> 
 
-    <div class="innerText"><span class="xlargeFont" style="color:deepskyblue">{{ $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count / $storage.weeklyIncentiveGoal * 100 | number:0 | ifEmpty:0 }}%</span><br> 
+<!--  $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count / $storage.weeklyIncentiveGoal * 100 | number:0 | ifEmpty:0 -->
+    <div class="innerText"><span class="xlargeFont" style="color:deepskyblue">{{
+    (printWeeklySales() / $storage.weeklyIncentiveGoal) * 100 | number:0
+    }}%</span><br> 
       <span class="smallFont">of {{}} goal achieved</span>
         <a data-toggle="modal" data-target="#myModal"> <br> <br>
           <button class="smallFont button" style="color:deepskyblue">Adjust goal</button>
@@ -93,8 +104,8 @@ $( "Goal" ).click(function() {
       <th class="smallFont">Sales</th>
     </tr>
     <tr class="center">
-      <td class="mediumFont" ng-init="callGetGoals()">{{ $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count}}</td>
-      <td class="mediumFont">{{ $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].sales | currency:undefined:0 }}</td>
+      <td class="mediumFont" ng-init="callGetGoals()">{{ $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count | ifEmpty:0}}</td>
+      <td class="mediumFont">{{ $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].sales | currency:undefined:0 | ifEmpty:0 }}</td>
       </tr>
   </table>
 </div>
