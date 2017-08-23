@@ -2,7 +2,7 @@
 
 <h4 class="center xlargeFont">{{ $storage.sales[$storage.salesDate].totalSales | ifEmpty:0 | currency:undefined:0 }} / {{ $storage.goals[$storage.salesDate].value | ifEmpty:0 | currency:undefined:0 }}</h4>
 
-<div class="chartHolder absolute" ng-if="!$storage.thisWeek">
+<div class="chartHolder absolute sparkley" ng-if="!$storage.thisWeek">
   <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
   <canvas ng-if="($storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales) > 0" 
     id="doughnut" 

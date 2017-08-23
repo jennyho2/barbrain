@@ -1,3 +1,8 @@
+.sparkley {
+
+  background: lighten( $buttonBackground , 10% );
+}
+
 .absolute{
 	height: 50%;
 }
