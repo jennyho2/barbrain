@@ -68,7 +68,7 @@ chart-data="[$storage.sales[$storage.salesDate].itemGroups[$storage.incentiveIte
     (printWeeklySales() / $storage.weeklyIncentiveGoal) * 100 | number:0
     }}%</span><br> 
       <span class="smallFont">of {{}} goal achieved</span>
-        <a data-toggle="modal" data-target="#myModal"> <br>
+        <a data-toggle="modal" data-target="#myModal"> <br> <br>
           <button class="smallFont button" style="color:deepskyblue">Adjust goal</button>
         </a>
       </div>
@@ -110,8 +110,6 @@ chart-data="[$storage.sales[$storage.salesDate].itemGroups[$storage.incentiveIte
   </table>
 </div>
 
-<button class="button grayBKG" style="width:100%" ng-click="loadSalesData(true)">Refresh Data</button>
-
 <div ng-include src="'partials/MVP/incentive/dailyStaffIncentive.html'"></div>
 
 <!-- Modal -->
@@ -141,4 +139,5 @@ chart-data="[$storage.sales[$storage.salesDate].itemGroups[$storage.incentiveIte
 
   </div>
 </div>
+<button class="button grayBKG" style="width:100%" ng-click="loadSalesData(true)">Refresh Data</button>
     <!-- END EDIT CONTENT -->
