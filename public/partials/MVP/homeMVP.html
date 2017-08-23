@@ -26,14 +26,14 @@ $( "Goal" ).click(function() {
   </div>
 <br>
 <div class="center">
-  <img ng-click="scrubWeeks(7)" style="top:-5px" src="assets/images/backArrow.png" width="15px" />
+  <img ng-click="scrubWeeks(-7)" style="top:-5px" src="assets/images/backArrow.png" width="15px" />
   <h4 class="keepInline">&nbsp;&nbsp;{{ formatDate($storage.scrubDateMin)}} - {{formatDate($storage.scrubDateMax)}}&nbsp;&nbsp;</h4>
   <!-- <h4 class="keepInline">{{ $storage.weekToDate.itemGroups[$storage.incentiveItem.id].count }} units to {{ $storage.weeklyIncentiveGoal }} weekly goal</h4> -->
   <!-- $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count -->
-  <img ng-click="scrubWeeks(-7)" class="flip" src="assets/images/backArrow.png" width="15px" />
+  <img ng-click="scrubWeeks(7)" class="flip" src="assets/images/backArrow.png" width="15px" />
 </div>
 
-<h4 class="center" ng-if="$storage.incentiveItem">{{ printWeeklySales() }} items sold of {{ $storage.weeklyIncentiveGoal }} goal</h4>
+<h4 class="center" ng-if="$storage.incentiveItem">{{ printWeeklySales() | ifEmpty:0}} items sold of {{ $storage.weeklyIncentiveGoal }} goal</h4>
 <!-- <h4 class="center" ng-if="$storage.incentiveItem">{{ $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count|ifEmpty:0}} / {{ $storage.weeklyIncentiveGoal }} units of {{$storage.incentiveItem.name}} weekly goal</h4> -->
 <h4 class="center" ng-if="!$storage.incentiveItem">No incentive set yet</h4>
 
@@ -66,9 +66,9 @@ chart-data="[$storage.sales[$storage.salesDate].itemGroups[$storage.incentiveIte
 
 <!--  $storage.sales[$storage.salesDate].itemGroups[$storage.incentiveItem.id].count / $storage.weeklyIncentiveGoal * 100 | number:0 | ifEmpty:0 -->
     <div class="innerText"><span class="xlargeFont" style="color:deepskyblue">{{
-    (printWeeklySales() / $storage.weeklyIncentiveGoal) * 100 | number:0
+    (printWeeklySales() / $storage.weeklyIncentiveGoal) * 100 | number:0 | ifEmpty:0
     }}%</span><br> 
-      <span class="smallFont">of {{}} goal achieved</span>
+      <span class="smallFont">of goal achieved</span>
         <a data-toggle="modal" data-target="#myModal"> <br> <br>
           <button class="smallFont button" style="color:deepskyblue">Adjust goal</button>
         </a>

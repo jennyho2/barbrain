@@ -5,7 +5,7 @@
     <h3 class="screen-heading">Tips</h3>
     <span class="xlargeFont screen-heading">{{dateRange}}</span>
   </header>
-<span>where are my hourly insides? {{$storage.location}}</span>
+<!--<span>where are my hourly insides? {{$storage.location}}</span>-->
 <!-- Insights -->
 <div class="tactics">
 <br>
@@ -17,8 +17,6 @@
   </div> <!-- End Insights -->
 <br>
 </div>
-
-<span>{{$storage.tacticsByLocation}}</span>
 <!-- Suggested -->
 <div class="tactics">
 <br>
@@ -26,7 +24,7 @@
     <span class="smallFont"><b>Suggested Incentives</b></span>
     <div class="boxed ">
       <div>
-        <span>{{$storage.tacticsByLocation.message}} Consider selling {{$storage.tacticsByLocation.count}} units of {{$storage.tacticsByLocation.item}}</span>
+        <span>Consider selling {{$storage.tacticsGoal}} units of {{$storage.tacticsItem}}</span>
       </div>
       <button ng-if="$storage.incentiveAccepted==0" type="button" class="btn btn-default" ng-click="updateSuggestedIncentive()">Accept Incentive</button>
       <button ng-if="$storage.incentiveAccepted==1" type="button" class="btn btn-default" ><a href="#!home">Track Incentive</a></button>
