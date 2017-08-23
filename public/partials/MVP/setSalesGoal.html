@@ -17,7 +17,7 @@
         <tr>
           <td>
           <img ng-src="http://openweathermap.org/img/w/{{ $storage.weeklyWeather.monday.weather[0].icon }}.png" /></td>
-          <td><span class=""><b> Monday </b></span><br />{{ ($storage.weeklyWeather.monday.main.temp - 273.15) | number:0 }}&deg;C | {{ $storage.weeklyWeather.monday.weather[0].main }}</td>
+          <td><span class=""><b> Monday</b></span><br />{{ ($storage.weeklyWeather.monday.main.temp - 273.15) | number:0 }}&deg;C | {{ $storage.weeklyWeather.monday.weather[0].main }}</td>
           <td><input type="number" class="mediumFont center" id="mondayGoalInput" ng-model="$storage.lineGoalsSalesData[0]" /></td>
         </tr>
         <tr>
