@@ -448,18 +448,29 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 	$scope.staffLocation = function(staff) {
 		return staff.location === 1;
 	}
+
+
 	$scope.$storage.tacticsByLocation = null;
+	$scope.$storage.tacticsItem = null;
+	$scope.$storage.tacticsGoal = null;
+	$scope.$storage.tactics1 = null;
+	$scope.$storage.tactics2 = null;
+	$scope.$storage.tactics3 = null;
+	$scope.$storage.message1 = null;
+
+
+
 	$scope.filterTactics = function(tactics) {
 		var i = 0;
-		for(i = 0; i < $scope.$storage.fullTactics.tactics.length; i++){
+//for(i = 0; i < $scope.$storage.fullTactics.tactics.length; i++){
 //cerveza_patago13	
 //cerveza_patago9	
 //goose_island_p
-      		
-          		$scope.$storage.tacticsByLocation = $scope.$storage.fullTactics.tactics[i];
-          		console.log($scope.$storage.tacticsByLocation);
-     	 	
-    	}
+		$scope.$storage.tactics1 = "Beverages made up at least 30% of sales for weeks with higher average ticket. Consider targeting drink sales of 35%+ a percentage of sale!";
+		$scope.$storage.tactics3 = "Your highest average ticket week was August week 2 ($71), due to high sales of Grill and Rotisserie items and incremental sales from breakast and lunch.";
+		$scope.$storage.tacticsGoal = 9;
+		$scope.$storage.tacticsItem = "Matilda Tap";
+    	
 
 	}
 
@@ -896,7 +907,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
     });
   }
   $scope.updateSuggestedIncentive = function()  {
-  	var goal = $scope.$storage.tacticsByLocation.count;
+  	var goal = $scope.$storage.tacticsGoal;
   	$scope.$storage.incentiveAccepted = 1;
 	var i = 0;
 	//console.log($scope.$storage.menucategories);
@@ -907,8 +918,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
  	//	}
 	//}
 	for(i=0; i < (Object.keys($scope.$storage.menuitems).length); i++){
-  		if($scope.$storage.tacticsByLocation.item == $scope.$storage.menuitems[i].name){
-  			console.log($scope.$storage.menuitems[i]);
+  		if($scope.$storage.tacticsItem == $scope.$storage.menuitems[i].name){
       		$scope.$storage.incentiveItem = $scope.$storage.menuitems[i];
  	 	}
 	}
@@ -1018,7 +1028,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		$scope.$storage.incentiveCategory = null;
 		$scope.$storage.incentiveCategoryLength = 0;
 		$scope.$storage.incentiveAccepted = 0;
-		console.log("reset");
+		
 	}
 
 	$scope.getLastWeekData = function()  {

@@ -1,9 +1,17 @@
 <div ng-if="loading" ng-include="'partials/loading.html'"></div>
 
 <h4 class="center xlargeFont">{{ $storage.sales[$storage.salesDate].totalSales | ifEmpty:0 | currency:undefined:0 }} / {{ $storage.goals[$storage.salesDate].value | ifEmpty:0 | currency:undefined:0 }}</h4>
-
-<div class="chartHolder absolute" ng-if="!$storage.thisWeek">
+<div class="chartHolder absolute sparkley" ng-if="!$storage.thisWeek">
   <!-- <canvas id="myChart" width="200" height="200"></canvas> -->
+  <canvas ng-if="($storage.goals[$storage.salesDate].value == 0) && ($storage.sales[$storage.salesDate].totalSales == 0)" 
+    id="doughnut" 
+    class="chart chart-doughnut"
+    chart-data="[1]" 
+    chart-labels="['Period Total Sales']" 
+    chart-options="donutOptions" 
+    chart-colors="['#D3D3D3']">
+  </canvas> 
+
   <canvas ng-if="($storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales) > 0" 
     id="doughnut" 
     class="chart chart-doughnut" 
@@ -13,7 +21,7 @@
     chart-colors="['#46C646', '#D3D3D3']">
   </canvas> 
   
-  <canvas ng-if="($storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales )<= 0" 
+  <canvas ng-if="($storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales )< 0" 
     id="doughnut" 
     class="chart chart-doughnut"
     chart-data="[$storage.sales[$storage.salesDate].totalSales]" 
@@ -30,7 +38,7 @@
 </div>
 
 <div ng-if="$storage.thisWeek">
-  <canvas class="chart chart-line" chart-data="$storage.lastWeekChartData" chart-labels="['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']" chart-options="{legend: {display: true}};" chart-series="['Sales Actual', 'Sales Goal']"></canvas>
+  <canvas class="chart chart-line" chart-data="$storage.lastWeekChartData" chart-labels="['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']" chart-options="{legend: {display: true}};" chart-series="['Actual Sales', 'Projected Sales']"></canvas>
 </div>
 
 <div class="center">
