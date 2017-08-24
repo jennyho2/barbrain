@@ -555,8 +555,6 @@ module.exports = class LavuService {
 							} else {
 								let supergroup = find(supergroups, sg => sg.id == category.super_group_id);
 								if (supergroup)  {
-									console.log("adding");
-									console.log(supergroup);
 									summary.superGroups[category.super_group_id] = {};
 									summary.superGroups[category.super_group_id].name = supergroup.name;
 									summary.superGroups[category.super_group_id].count = detail.quantity;
