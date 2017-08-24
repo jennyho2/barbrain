@@ -462,18 +462,30 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
 
 	$scope.filterTactics = function(tactics) {
-		
-		console.log($scope.$storage.menuitems[0].name);
-		
+        
+        console.log($scope.$storage.menuitems[0].name);
+        
 //for(i = 0; i < $scope.$storage.fullTactics.tactics.length; i++){
-//cerveza_patago13	
-//cerveza_patago9	
+//cerveza_patago13    
+//cerveza_patago9    
 //goose_island_p
-		$scope.$storage.tactics1 = "Beverages made up at least 30% of sales for weeks with higher average ticket. Consider targeting drink sales of 35%+ a percentage of sale!";
-		$scope.$storage.tactics3 = "Your highest average ticket week was August week 2 ($71), due to high sales of Grill and Rotisserie items and incremental sales from breakast and lunch.";
-		$scope.$storage.tacticsItem = $scope.$storage.menuitems[0].name;	
+        $scope.$storage.tactics1 = "Beer sales are down 7% over the last 5 weeks. Try setting an incentive targeting beverages!";
+        $scope.$storage.tactics3 = "Your highest average ticket week was August week 2 ($71), due to high sales of Grill and Rotisserie items and incremental sales from breakast and lunch.";
+        if($scope.location == "goose_island_p"){
+            $scope.$storage.tacticsItem = "Matilda Tap";
+        }
+        else if($scope.location == "cerveza_patago9"){
+            $scope.$storage.tacticsItem = "KUNE + IPA GLASS";
+        }
+        else if($scope.location == "cerveza_patago13"){
+            $scope.$storage.tacticsItem = "Growler + Carga";    
+        }
+        else{
+            $scope.$storage.tacticsItem = $scope.$storage.menuitems[0].name;
+        }
 
-	}
+
+    }
 
 	$scope.onReloadLocation = function() {
 		delete $localStorage.location;

@@ -18,7 +18,7 @@
     chart-data="[$storage.sales[$storage.salesDate].totalSales, $storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales]"  
     chart-labels="['Period Total Sales', 'Difference From Goal']" 
     chart-options="donutOptions" 
-    chart-colors="['#46C646', '#D3D3D3']">
+    chart-colors="['#00BFFF', '#D3D3D3']">
   </canvas> 
   
   <canvas ng-if="($storage.goals[$storage.salesDate].value - $storage.sales[$storage.salesDate].totalSales )< 0" 
