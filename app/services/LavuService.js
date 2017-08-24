@@ -256,10 +256,10 @@ module.exports = class LavuService {
 	}
 
 	
-	loadMenuGroups(){
+	loadMenuGroups(refresh){
 		return database.connect().then(db => {
 			return db.collection('lavu_menu_groups').find({ location_id: this.locationId }).toArray().then(rows => {
-				if(!rows || rows.length == 0){
+				if(!rows || rows.length == 0 || refresh){
 					console.log('No Lavu menu groups found.  Loading from Lavu...');
 					return this.getMenuGroupsFromApi() // this.getMenuCategoriesFromApi()
 					.then(groups => {
@@ -295,10 +295,10 @@ module.exports = class LavuService {
 		});
 	}
 
-	loadSuperGroups() {
+	loadSuperGroups(refresh) {
 		return database.connect().then(db => {
 			return db.collection('lavu_super_groups').find({ location_id: this.locationId }).toArray().then(rows => {
-				if (!rows || rows.length == 0)  {
+				if (!rows || rows.length == 0 || refresh)  {
 					console.log('No Lavu super groups found. Loading from lavu...');
 					return this.getMenuSuperGroupsFromApi()
 					.then(supergroups => {
@@ -492,12 +492,12 @@ module.exports = class LavuService {
 	
 	
 	getSalesSummary(minDate, maxDate, refresh){
-		return this.loadOrders(minDate, maxDate)
+		return this.loadOrders(minDate, maxDate, refresh)
 		.then(orders => this.loadMenuItems(refresh).then(menuItems => { return { orders, menuItems }; }))
 		.then(({orders, menuItems}) => this.loadMenuCategories().then(categories => { return { orders, menuItems, categories }; }))
 		.then(({orders, menuItems, categories}) => this.loadUsers().then(users => { return { orders, menuItems, categories, users }; }))
-		.then(({orders, menuItems, categories, users}) => this.loadSuperGroups().then(supergroups => { return { orders, menuItems, categories, users, supergroups }; }))
-		.then(({orders, menuItems, categories, users, supergroups}) => this.loadMenuGroups().then(groups => { return { orders, menuItems, categories, users, supergroups, groups }; }))
+		.then(({orders, menuItems, categories, users}) => this.loadSuperGroups(refresh).then(supergroups => { return { orders, menuItems, categories, users, supergroups }; }))
+		.then(({orders, menuItems, categories, users, supergroups}) => this.loadMenuGroups(refresh).then(groups => { return { orders, menuItems, categories, users, supergroups, groups }; }))
 		.then(({orders, menuItems, categories, users, supergroups, groups}) => {
 			
 			console.log(orders.length, menuItems.length, categories.length);
