@@ -80,10 +80,10 @@ module.exports = class LavuService {
 		});
 	}
 	
-	loadMenuItems(){
+	loadMenuItems(refresh){
 		return database.connect().then(db => {
 			return db.collection('lavu_menu_items').find({ location_id: this.locationId }).toArray().then(rows => {
-				if(!rows || rows.length == 0){
+				if(!rows || rows.length == 0 || refresh){
 					console.log('No Lavu menu items found.  Loading from Lavu...');
 					return this.getMenuItemsFromApi()
 					.then(menuItems => {
@@ -511,6 +511,7 @@ module.exports = class LavuService {
 				staffGroups: {},
 				itemGroups: {}
 			};
+			console.log(supergroups);
 			
 			orders.forEach(order => {
 				summary.totalSales += order.total;
