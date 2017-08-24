@@ -312,7 +312,7 @@ router.get("/locations/:location_id/salessummary/:from_date/:to_date?", (req, re
 		
 	new LocationService().resolve(location)
 	.then(({ datanameString, keyString, tokenString }) => new LavuService().configure(datanameString, keyString, tokenString, datanameString))
-	.then(service => service.getSalesSummary(minDate, maxDate, refresh))
+	.then(service => service.getSalesSummary(minDate, maxDate, true))
 	.then(data => res.json({ success: true, data }))
 	.catch(err => { console.log(err); res.status(500).json({ success: false, error: err }); });
 });
