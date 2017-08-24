@@ -128,10 +128,10 @@ module.exports = class LavuService {
 		});
 	}
 	
-	loadUsers(){
+	loadUsers(refresh){
 		return database.connect().then(db => {
 			return db.collection('lavu_users').find({ location_id: this.locationId }).toArray().then(rows => {
-				if(!rows || rows.length == 0){
+				if(!rows || rows.length == 0 || refresh){
 					console.log('No Lavu users found.  Loading from Lavu...');
 					return this.getUsersFromApi()
 					.then(users => {
@@ -494,8 +494,8 @@ module.exports = class LavuService {
 	getSalesSummary(minDate, maxDate, refresh){
 		return this.loadOrders(minDate, maxDate, refresh)
 		.then(orders => this.loadMenuItems(refresh).then(menuItems => { return { orders, menuItems }; }))
-		.then(({orders, menuItems}) => this.loadMenuCategories().then(categories => { return { orders, menuItems, categories }; }))
-		.then(({orders, menuItems, categories}) => this.loadUsers().then(users => { return { orders, menuItems, categories, users }; }))
+		.then(({orders, menuItems}) => this.loadMenuCategories(refresh).then(categories => { return { orders, menuItems, categories }; }))
+		.then(({orders, menuItems, categories}) => this.loadUsers(refresh).then(users => { return { orders, menuItems, categories, users }; }))
 		.then(({orders, menuItems, categories, users}) => this.loadSuperGroups(refresh).then(supergroups => { return { orders, menuItems, categories, users, supergroups }; }))
 		.then(({orders, menuItems, categories, users, supergroups}) => this.loadMenuGroups(refresh).then(groups => { return { orders, menuItems, categories, users, supergroups, groups }; }))
 		.then(({orders, menuItems, categories, users, supergroups, groups}) => {
@@ -511,7 +511,6 @@ module.exports = class LavuService {
 				staffGroups: {},
 				itemGroups: {}
 			};
-			console.log(supergroups);
 			
 			orders.forEach(order => {
 				summary.totalSales += order.total;
