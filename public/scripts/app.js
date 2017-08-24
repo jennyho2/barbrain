@@ -211,7 +211,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		$scope.$storage.scrubDateMax = moment().endOf('isoWeek').format('YYYYMMDD');
 		if($scope.$storage.location){
 			// Preload data if we've got a saved location
-			$scope.$storage.tacticsGoal = Math.floor(Math.random() * 20)+5;
+			//$scope.$storage.tacticsGoal = Math.floor(Math.random() * 20)+5;
       		$scope.loadIncentiveData();
 			$scope.loadSalesData();
 		}
@@ -463,25 +463,28 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 
 	$scope.filterTactics = function(tactics) {
         
-        console.log($scope.$storage.menuitems[0].name);
-        
+        console.log($localStorage.location);
 //for(i = 0; i < $scope.$storage.fullTactics.tactics.length; i++){
 //cerveza_patago13    
 //cerveza_patago9    
 //goose_island_p
         $scope.$storage.tactics1 = "Beer sales are down 7% over the last 5 weeks. Try setting an incentive targeting beverages!";
         $scope.$storage.tactics3 = "Your highest average ticket week was August week 2 ($71), due to high sales of Grill and Rotisserie items and incremental sales from breakast and lunch.";
-        if($scope.location == "goose_island_p"){
+        if($scope.$storage.location == "goose_island_p"){
+        	$scope.$storage.tacticsGoal = 90;
             $scope.$storage.tacticsItem = "IPA Tap";
         }
-        else if($scope.location == "cerveza_patago9"){
+        else if($scope.$storage.location == "cerveza_patago9"){
+        	$scope.$storage.tacticsGoal = 600;
             $scope.$storage.tacticsItem = "IPA";
         }
-        else if($scope.location == "cerveza_patago13"){
+        else if($scope.$storage.location == "cerveza_patago13"){
+        	$scope.$storage.tacticsGoal = 600;
             $scope.$storage.tacticsItem = "Growler + Carga";    
         }
         else{
             $scope.$storage.tacticsItem = $scope.$storage.menuitems[0].name;
+            $scope.$storage.tacticsGoal = 45;
         }
 
 
