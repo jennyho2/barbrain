@@ -472,10 +472,10 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
         $scope.$storage.tactics1 = "Beer sales are down 7% over the last 5 weeks. Try setting an incentive targeting beverages!";
         $scope.$storage.tactics3 = "Your highest average ticket week was August week 2 ($71), due to high sales of Grill and Rotisserie items and incremental sales from breakast and lunch.";
         if($scope.location == "goose_island_p"){
-            $scope.$storage.tacticsItem = "Matilda Tap";
+            $scope.$storage.tacticsItem = "IPA Tap";
         }
         else if($scope.location == "cerveza_patago9"){
-            $scope.$storage.tacticsItem = "KUNE + IPA GLASS";
+            $scope.$storage.tacticsItem = "IPA";
         }
         else if($scope.location == "cerveza_patago13"){
             $scope.$storage.tacticsItem = "Growler + Carga";    
