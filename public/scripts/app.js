@@ -566,6 +566,8 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
 		$http.get("/locations/" + $scope.$storage.location + "/salessummary/" + date + ($scope.$storage.salesDateMax ? '/' + $scope.$storage.salesDateMax : '') + (refresh ? '?refresh=true' : ''))
 		.then(function(response) {
 			if (!$scope.$storage.sales) $scope.$storage.sales = {};
+			console.log("This is data");
+			console.log(response);
 			// $scope.$storage.sales[date.format('YYYYMMDD')] = response.data.data;
 			let salesData = $scope.$storage.sales[date] = response.data.data;
 			salesData.averageOrderPrice = salesData.totalSales / salesData.totalOrders;	
