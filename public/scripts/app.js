@@ -480,7 +480,7 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
         }
         else if($scope.$storage.location == "cerveza_patago13"){
         	$scope.$storage.tacticsGoal = 600;
-            $scope.$storage.tacticsItem = "Growler + Carga";    
+            $scope.$storage.tacticsItem = "IPA";    
         }
         else{
             $scope.$storage.tacticsItem = $scope.$storage.menuitems[0].name;
