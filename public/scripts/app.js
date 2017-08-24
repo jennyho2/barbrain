@@ -940,12 +940,18 @@ app.controller('mainController', function($scope, $localStorage, $sessionStorage
       		$scope.$storage.incentiveItem = $scope.$storage.menuitems[i];
  	 	}
 	}
+	if ($scope.$storage.location === "cerveza_patago13")  { // bariloche
+		$scope.$storage.incentiveItem.id = 1049;
+	} else if ($scope.$storage.location === "goose_island_p")  {
+		$scope.$storage.incentiveItem.id = 1216;
+	}
     $http.post('/locations/' + $scope.$storage.location + '/incentives/weekly', {
       "incentive": $scope.$storage.incentiveItem,
       "goal": parseInt(goal)
     })
     .then(function(response)  {
     	$scope.$storage.weeklyIncentiveGoal = goal;
+    	$scope.loadSalesData();
       console.log("Updating incentive");
     }, function(response)  {
       console.log("Failing in incentive on change");
